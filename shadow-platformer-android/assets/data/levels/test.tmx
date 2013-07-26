@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="100" height="60" tilewidth="16" tileheight="16">
+ <properties>
+  <property name="bg" value="bg_grey 0 1 0"/>
+  <property name="hasvoid" value="false"/>
+ </properties>
+ <tileset firstgid="1" name="brick" tilewidth="16" tileheight="16">
+  <image source="tiles/brick.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockBrick"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="2" name="dirt" tilewidth="16" tileheight="16">
+  <image source="tiles/dirt.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockDirt"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="3" name="grass" tilewidth="16" tileheight="16">
+  <image source="tiles/grass.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockGrass"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="4" name="wood" tilewidth="16" tileheight="16">
+  <image source="tiles/wood.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockWood"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="5" name="player" tilewidth="16" tileheight="16">
+  <image source="tiles/player.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="Player"/>
+    <property name="type" value="entity"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="6" name="lab1" tilewidth="16" tileheight="16">
+  <image source="tiles/lab1.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockLab.1"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="7" name="lab2" tilewidth="16" tileheight="16">
+  <image source="tiles/lab2.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockLab.2"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="8" name="sign_bg" tilewidth="16" tileheight="16">
+  <image source="tiles/sign_bg.png" width="32" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockSignBG.1"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="subtype" value="BlockSignBG.2"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="10" name="glass" tilewidth="16" tileheight="16">
+  <image source="tiles/glass.png" width="64" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockGlass.1"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="subtype" value="BlockGlass.2"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="subtype" value="BlockGlass.3"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="subtype" value="BlockGlass.4"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="14" name="vast_grass" tilewidth="16" tileheight="16">
+  <image source="tiles/vast_grass.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockVast_Grass"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="15" name="vast_dirt" tilewidth="16" tileheight="16">
+  <image source="tiles/vast_dirt.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockVast_Dirt"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="16" name="point" tilewidth="16" tileheight="16">
+  <image source="tiles/point.png" width="64" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockPoint"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="20" name="spring" tilewidth="16" tileheight="16">
+  <image source="tiles/spring.png" width="64" height="32"/>
+  <tile id="4">
+   <properties>
+    <property name="subtype" value="BlockSpring"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="28" name="ladder" tilewidth="16" tileheight="16">
+  <image source="tiles/ladder.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockLadder"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="29" name="pushblock" tilewidth="16" tileheight="16">
+  <image source="tiles/pushblock.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockPush"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="30" name="wire" tilewidth="16" tileheight="16">
+  <image source="tiles/wire.png" width="16" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockWire"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="31" name="button" tilewidth="16" tileheight="16">
+  <image source="tiles/button.png" width="32" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockButton"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="subtype" value="BlockButton.1"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="33" name="dissolve" tilewidth="16" tileheight="16">
+  <image source="tiles/dissolve.png" width="32" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockDissolve"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="subtype" value="BlockDissolve.1"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="35" name="clock" tilewidth="16" tileheight="16">
+  <image source="tiles/clock.png" width="64" height="16"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockClock.1"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="subtype" value="BlockClock.2"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="subtype" value="BlockClock.3"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="subtype" value="BlockClock.4"/>
+    <property name="type" value="block"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="layer-3" width="100" height="60" opacity="0.76">
+  <properties>
+   <property name="solid" value="false"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3XQQqAIBRFUYMGNXAH7X+djpoJRSF+P+fAm4cXIUsBAAAAto9jDD1iuc+3vpweY+kRix6xZOixd7YqPWLJ1KOWnD1m/u+enT3JeD+ivD/0WL8H4xydwV/X7A8AAAAAAAAAAAAAAAAAACCkBi21nrzAXQAA
+  </data>
+ </layer>
+ <layer name="layer-2" width="100" height="60" opacity="0.76">
+  <properties>
+   <property name="solid" value="false"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3XwQqEIBQFUItZRf3/785qIMTSRoZ5yjlwNyku3sWolAAAAIDly/Ab+ojlM9+9MVH7eJ0yMn3Eoo9YZuhjK2RU+ohlpj72NGcf//zePQqpmfF+RPn/0Mf4fRDfevOstEaffKbrTfJ1nqvNtDb/q7N4rnXWtR7yffQp3Y2rfS1n0c+7BgAAAAAAAAAAAAAAAIjqDWyjD2TAXQAA
+  </data>
+ </layer>
+ <layer name="layer-1" width="100" height="60" opacity="0.69">
+  <properties>
+   <property name="solid" value="false"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3WwQqAIBBAQc/R/39v97ByU2GVGRAKCcqHUikAAADA8XMwhx657NIj87tF6JGLHrns0CP7+0Xs1ON+vaJderzdryRbj7Myvtgf8/T0yLp/I56+YaUezDOqfe2542WOPpH9fJ8n7mtNI2epFn1a17r1XNNijNb/2Ja11mMMZw0AAAAAAAAAAAAAAACQ1QU5LybwwF0AAA==
+  </data>
+ </layer>
+ <layer name="layer0" width="100" height="60" opacity="0.93">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+2Yy27CMBBF3dLCqgnLLtr//83KKlFHZl4eGxiae6RZ2CTEuieO45QCAAAAAAAAAACM8f7oAQicjTblJVjAT6+PXrL6yDquPfrIPHf35mPz8FHGnZyLnlf0P7U25dl9zF7jjpeayZ58VN6Y8kDnwpEpjq/A+PboQ2tLcA4sJ/BhE/FRsz6V6/xPTD8FPuZxuJSU/Ynpa51QH2elSnOc1q5YmWbfDx6C9UqKez5ZTjYfWjb0nHrNz/J3HyyX9tIcF92XP9qHlC1XR6Of0jrh2hU6PzxOXslYa3stvy7Wwt8Pz+DC64BmUJjfS7n20KKtJ5WIDzq+lZT0DpHJg+c5w+Wt0buf4JxwPiqeZ5a3tutk8LAh5Wtlfgu09aOl14n2LpHBg5d7e/G+72o+uHeDtv+ZXDxibkhEfUhOrHUD6Gj7wZF1BC5iePbnmg9pfwMPMXp9SE44F6Af7/cr7zMLLsbo/Z6YZV/3X4l8363AxW2I+qjAw3xGfID5wEcu4CMX8JEL+MgFfOQCPnIBH/fjm5SE5MNzLujDk+lCqvdc0IeWKfWwlmsn8DGPxVlrU9bxwAe9h6WsZxSwae9fLkN4uB9a9twxPQ7gIoblo+235g0Yg67HUqatg/ZcuJiLlamWNVzchmimcAEAAAAAAAAA4/wAl75DM8BdAAA=
+  </data>
+ </layer>
+ <layer name="layer1" width="100" height="60" opacity="0.79">
+  <properties>
+   <property name="solid" value="false"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3WMQrAIBAEQGuT/783pElxKKQxnnGmEbaSWxVLAQAAAIA9HLM3wOPu4iw6yUQXwF/VTtbKGS/OvjYy5qphJR/d5OH92pfe5+n9JRivN+fYB99w9uEddyUffQAAAAAAAAAAAAAAACu5AHcZd17AXQAA
+  </data>
+ </layer>
+ <layer name="layer2" width="100" height="60" opacity="0.74">
+  <properties>
+   <property name="solid" value="false"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+3WMQrAIAxAUefc/8DdOgSFLo2pfW8RnCQfxTEAAAAA4B9i9wG4RVrZTwvgVLP3LRb7vC/PXYu+dOlLmz60gHr57+AvUWc159yDGmYNz7gr/WgCAAAAAAAAAAAAAAB8yQXOjXl8wF0AAA==
+  </data>
+ </layer>
+</map>

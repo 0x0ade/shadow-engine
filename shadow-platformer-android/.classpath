@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<classpath>
+    <classpathentry kind="src" path="src"/>
+    <classpathentry kind="src" path="gen"/>
+    <classpathentry combineaccessrules="false" exported="true" kind="src" path="/shadow-platformer"/>
+    <classpathentry kind="con" path="com.android.ide.eclipse.adt.LIBRARIES"/>
+    <classpathentry kind="con" path="com.android.ide.eclipse.adt.ANDROID_FRAMEWORK"/>
+    <classpathentry kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
+    <classpathentry kind="output" path="bin/classes"/>
+    <classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
+    <classpathentry exported="true" kind="lib" path="/shadow-platformer/libs/bodyeditor-loader.jar" sourcepath="/shadow-platformer/libs/bodyeditor-loader-sources.jar"/>
+    <classpathentry exported="true" kind="lib" path="/shadow-platformer/libs/gdx-audio.jar" sourcepath="/shadow-platformer/libs/gdx-audio-sources.jar"/>
+    <classpathentry exported="true" kind="lib" path="/shadow-platformer/libs/gdx-freetype.jar" sourcepath="/shadow-platformer/libs/gdx-freetype-sources.jar"/>
+    <classpathentry exported="true" kind="lib" path="/shadow-platformer/libs/gdx.jar" sourcepath="/shadow-platformer/libs/gdx-sources.jar"/>
+</classpath>
