@@ -1,4 +1,4 @@
-shit-engine
+shadow-engine
 ===========
 
-Successor to Shadow Engine and IGM2E.
+Successor to IGM2E.
