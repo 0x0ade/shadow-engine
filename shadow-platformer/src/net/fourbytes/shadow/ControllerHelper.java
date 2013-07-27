@@ -7,6 +7,7 @@ import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.controllers.mappings.Ouya;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -47,6 +48,9 @@ public final class ControllerHelper implements ControllerListener {
 	public MenuItem assignKeyHelper;
 	
 	public ControllerHelper() {
+		for (Controller controller : Controllers.getControllers()) {
+			connected(controller);
+		}
 	}
 	
 	public void refreshMapping() {
@@ -100,17 +104,36 @@ public final class ControllerHelper implements ControllerListener {
 	
 	@Override
 	public void connected(Controller controller) {
-		//Ignore, just use Controllers.getControllers() instead
+		String os = System.getProperty("os.name").toLowerCase();
+		if ((os.equals("linux") || os.equals("unix")) && controller.getName().contains("PLAYSTATION(R)3")) {
+			//Sidenote: Third-Party bluetooth PS3 controllers should use the same button mapping as the original controller. 
+			//Otherwise, the PS3 itself would even have problems with the button IDs being different.
+			System.out.println("Automapping PS3 controller on Linux...");
+			//TODO
+			mapping.put(Input.up, new ControllerButton(controller, 4));
+			mapping.put(Input.down, new ControllerButton(controller, 6));
+			mapping.put(Input.left, new ControllerButton(controller, 7));
+			mapping.put(Input.right, new ControllerButton(controller, 5));
+			mapping.put(Input.jump, new ControllerButton(controller, 14));
+			mapping.put(Input.pause, new ControllerButton(controller, 3));
+			mapping.put(Input.enter, new ControllerButton(controller, 14));
+			mapping.put(Input.androidBack, new ControllerButton(controller, 13));
+		}
+		if (Ouya.ID.equals(controller.getName())) {
+			System.out.println("Automapping Ouya controller...");
+			//TODO
+			
+		}
+		
+		refreshMapping();
 	}
-
+	
 	@Override
 	public void disconnected(Controller controller) {
-		//Ignore, just use Controllers.getControllers() instead
 	}
 
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
-		//TODO
 		//System.out.println("Pressed button "+buttonCode+" on controller "+controller);
 		ControllerButton button = new ControllerButton(controller, buttonCode);
 		for (Key key : getKeysForButton(button)) {
@@ -131,7 +154,6 @@ public final class ControllerHelper implements ControllerListener {
 
 	@Override
 	public boolean buttonUp(Controller controller, int buttonCode) {
-		//TODO
 		//System.out.println("Released button "+buttonCode+" on controller "+controller);
 		ControllerButton button = new ControllerButton(controller, buttonCode);
 		for (Key key : getKeysForButton(button)) {
