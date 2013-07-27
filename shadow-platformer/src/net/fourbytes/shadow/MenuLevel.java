@@ -47,7 +47,11 @@ public abstract class MenuLevel extends Level implements KeyListener {
 	}
 	
 	public MenuLevel(MenuLevel parent) {
+		hasvoid = false;
 		this.parent = parent;
+		if (parent != null) {
+			this.bglevel = parent.bglevel;
+		}
 		Input.up.listeners.add(this);
 		Input.down.listeners.add(this);
 		Input.enter.listeners.add(this);
@@ -253,6 +257,9 @@ public abstract class MenuLevel extends Level implements KeyListener {
 	
 	@Override
 	public void keyDown(Key key) {
+		if (Shadow.level != this) {
+			return;
+		}
 		if (key == Input.up || key == Input.down) {
 			int dir = 0;
 			if (key == Input.up) {
@@ -284,6 +291,9 @@ public abstract class MenuLevel extends Level implements KeyListener {
 	
 	@Override
 	public void keyUp(Key key) {
+		if (Shadow.level != this) {
+			return;
+		}
 		if (key == Input.enter) {
 			Runnable action = current.action;
 			if (action != null) {

@@ -44,7 +44,7 @@ public class Player extends Entity implements Input.KeyListener {
 	
 	public Player(Vector2 position, Layer layer) {
 		super(position, layer);
-		Input.up.listeners.add(this);
+		Input.jump.listeners.add(this);
 		Input.down.listeners.add(this);
 		Input.left.listeners.add(this);
 		Input.right.listeners.add(this);
@@ -138,8 +138,8 @@ public class Player extends Entity implements Input.KeyListener {
 	@Override
 	public void keyDown(Input.Key key) {
 		//canJump = 1; //comment line when not debugging
-		if (key == Input.up && canJump > 0 && canInteract) {
-			Sounds.getSound("jump").play(1f, Shadow.calcPitch(1f, 0.3f), 0f);
+		if (key == Input.jump && canJump > 0 && canInteract) {
+			Sounds.getSound("jump").play(1f, Sounds.calcPitch(1f, 0.3f), 0f);
 			movement.add(0f, -movement.y - JUMPH);
 			canJump--;
 			//pixelify();

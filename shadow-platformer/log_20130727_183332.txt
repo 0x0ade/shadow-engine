@@ -1,0 +1,10 @@
+java.lang.NullPointerException
+	at net.fourbytes.shadow.ControllerHelper.buttonDown(ControllerHelper.java:136)
+	at com.badlogic.gdx.controllers.desktop.OisControllers$OisController$1.buttonPressed(OisControllers.java:83)
+	at com.badlogic.gdx.controllers.desktop.ois.OisJoystick.buttonPressed(OisJoystick.java:52)
+	at com.badlogic.gdx.controllers.desktop.ois.OisJoystick.update(Native Method)
+	at com.badlogic.gdx.controllers.desktop.ois.OisJoystick.update(OisJoystick.java:82)
+	at com.badlogic.gdx.controllers.desktop.ois.Ois.update(Ois.java:41)
+	at com.badlogic.gdx.controllers.desktop.OisControllers$1.run(OisControllers.java:58)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:199)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:112)

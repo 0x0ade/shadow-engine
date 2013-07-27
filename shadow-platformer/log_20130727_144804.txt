@@ -1,0 +1,11 @@
+java.lang.NullPointerException
+	at net.fourbytes.shadow.ControllerHelper.getButtonLabelForKey(ControllerHelper.java:70)
+	at net.fourbytes.shadow.SetupControllerLevel.getMenuItemFor(SetupControllerLevel.java:37)
+	at net.fourbytes.shadow.SetupControllerLevel.<init>(SetupControllerLevel.java:22)
+	at net.fourbytes.shadow.TitleLevel$2.run(TitleLevel.java:21)
+	at net.fourbytes.shadow.MenuLevel.keyUp(MenuLevel.java:293)
+	at net.fourbytes.shadow.MenuLevel.tick(MenuLevel.java:125)
+	at net.fourbytes.shadow.Shadow.tick(Shadow.java:307)
+	at net.fourbytes.shadow.Shadow.render(Shadow.java:148)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:214)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:112)

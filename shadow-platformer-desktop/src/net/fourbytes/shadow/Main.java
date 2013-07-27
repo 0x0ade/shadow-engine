@@ -2,7 +2,6 @@ package net.fourbytes.shadow;
 
 import net.fourbytes.shadow.Shadow;
 
-import com.badlogic.gdx.backends.lwjgl.AsyncRunnableLwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -14,6 +13,6 @@ public class Main {
 		cfg.width = 600;
 		cfg.height = 480;
 		
-		new AsyncRunnableLwjglApplication(new Shadow(), cfg);
+		new LwjglApplication(new Shadow(), cfg);
 	}
 }

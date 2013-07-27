@@ -79,10 +79,16 @@ public class Input {
 		}
 		
 		public void down() {
-			//System.out.println("N: "+name+"; M: D; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
+			System.out.println("N: "+name+"; M: D; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
 			tmp.clear();
 			tmp.addAll(listeners);
 			for (KeyListener l : tmp) {
+				if (l instanceof Level && ((Level)l) != Shadow.level) {
+					continue;
+				}
+				if (l instanceof GameObject && ((GameObject)l).layer.level != Shadow.level) {
+					continue;
+				}
 				l.keyDown(this);
 			}
 		}
@@ -92,6 +98,12 @@ public class Input {
 			tmp.clear();
 			tmp.addAll(listeners);
 			for (KeyListener l : tmp) {
+				if (l instanceof Level && ((Level)l) != Shadow.level) {
+					continue;
+				}
+				if (l instanceof GameObject && ((GameObject)l).layer.level != Shadow.level) {
+					continue;
+				}
 				l.keyUp(this);
 			}
 		}
@@ -122,45 +134,50 @@ public class Input {
 					continue;
 				}
 				
-				if (kl instanceof Level) {
-					Level l = (Level) kl;
-					Level sl = Shadow.level;
+				check(kl);
+			}
+		}
+		
+		public void check(KeyListener kl) {
+			if (kl instanceof Level) {
+				Level l = (Level) kl;
+				Level sl = Shadow.level;
+				
+				if (!(sl instanceof MenuLevel)) {
 					if (l instanceof MenuLevel) {
 						MenuLevel ml = (MenuLevel) l;
 						if (ml != sl) {
 							listeners.removeValue(kl, true);
 						}
 					} else {
-						if (sl instanceof MenuLevel) {
-							MenuLevel ml = (MenuLevel) sl;
-							if (l != ml.bglevel) {
-								listeners.removeValue(kl, true);
-							}
-						}
-					}
-				}
-				if (kl instanceof GameObject) {
-					GameObject go = (GameObject) kl;
-					Level clevel = Shadow.level;
-					if (clevel instanceof MenuLevel) {
-						clevel = ((MenuLevel)clevel).bglevel;
-					}
-					if (go instanceof Entity) {
-						Entity e = (Entity) go;
-						if (e.layer == null || !e.layer.entities.contains(e, true) || clevel != e.layer.level) {
-							listeners.removeValue(kl, true);
-						}
-					}
-					if (go instanceof Block) {
-						Block b = (Block) go;
-						if (b.layer == null || !b.layer.blocks.contains(b, true) || clevel != b.layer.level) {
+						MenuLevel ml = (MenuLevel) sl;
+						if (l != ml.bglevel) {
 							listeners.removeValue(kl, true);
 						}
 					}
 				}
 			}
+			if (kl instanceof GameObject) {
+				GameObject go = (GameObject) kl;
+				Level clevel = Shadow.level;
+				if (clevel instanceof MenuLevel) {
+					clevel = ((MenuLevel)clevel).bglevel;
+				}
+				if (go instanceof Entity) {
+					Entity e = (Entity) go;
+					if (e.layer == null || !e.layer.entities.contains(e, true) || clevel != e.layer.level) {
+						listeners.removeValue(kl, true);
+					}
+				}
+				if (go instanceof Block) {
+					Block b = (Block) go;
+					if (b.layer == null || !b.layer.blocks.contains(b, true) || clevel != b.layer.level) {
+						listeners.removeValue(kl, true);
+					}
+				}
+			}
 		}
-		
+
 		public void render() {
 			ShapeType type = Shadow.shapeRenderer.getCurrentType();
 			Shadow.shapeRenderer.end();
@@ -186,19 +203,17 @@ public class Input {
 	
 	public static Array<Key> all = new Array<Key>();
 	
-	public static Key up = new Key("up", new int[] {Keys.UP, Keys.W}, new Rectangle(-1, -1, -1, -1));
-	public static Key down = new Key("down", new int[] {Keys.DOWN, Keys.S}, new Rectangle(-1, -1, -1, -1));
-	public static Key left = new Key("left", new int[] {Keys.LEFT, Keys.A}, new Rectangle(-1, -1, -1, -1));
-	public static Key right = new Key("right", new int[] {Keys.RIGHT, Keys.D}, new Rectangle(-1, -1, -1, -1));
+	public static Key up = new Key("Up", new int[] {Keys.UP, Keys.W}, new Rectangle(-1, -1, -1, -1));
+	public static Key jump = new Key("Jump", new int[] {Keys.UP, Keys.W}, new Rectangle(-1, -1, -1, -1));
+	public static Key down = new Key("Down", new int[] {Keys.DOWN, Keys.S}, new Rectangle(-1, -1, -1, -1));
+	public static Key left = new Key("Left", new int[] {Keys.LEFT, Keys.A}, new Rectangle(-1, -1, -1, -1));
+	public static Key right = new Key("Right", new int[] {Keys.RIGHT, Keys.D}, new Rectangle(-1, -1, -1, -1));
 	
-	public static Key pause = new Key("pause", new int[] {Keys.ESCAPE}, new Rectangle(-1, -1, -1, -1));
-	public static Key enter = new Key("enter", new int[] {Keys.ENTER}, new Rectangle(-1, -1, -1, -1));
+	public static Key pause = new Key("Pause", new int[] {Keys.ESCAPE}, new Rectangle(-1, -1, -1, -1));
+	public static Key enter = new Key("Confirm", new int[] {Keys.ENTER}, new Rectangle(-1, -1, -1, -1));
 	
-	//public static Key debug1 = new Key("debug1", new int[] {Keys.NUM_1}, new Rectangle(-1, -1, -1, -1));
-	//public static Key debug2 = new Key("debug2", new int[] {Keys.NUM_2}, new Rectangle(-1, -1, -1, -1));
-	
-	public static Key androidBack = new Key("android_back", new int[] {Keys.BACK}, new Rectangle(-1, -1, -1, -1));
-	public static Key androidMenu = new Key("android_menu", new int[] {Keys.MENU}, new Rectangle(-1, -1, -1, -1));
+	public static Key androidBack = new Key("Back", new int[] {Keys.BACK}, new Rectangle(-1, -1, -1, -1));
+	public static Key androidMenu = new Key("Menu", new int[] {Keys.MENU}, new Rectangle(-1, -1, -1, -1));
 	
 	public static ObjectMap<Integer, TouchPoint> touches = new ObjectMap<Integer, TouchPoint>();
 	
@@ -220,13 +235,11 @@ public class Input {
 		cam.position.set(Shadow.touchw/2, Shadow.touchh/2, 0);
 		cam.update();
 		
-		up.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
+		//up.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
+		jump.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
 		down.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-2, 1, 1);
 		left.disprec = new Rectangle(1, Shadow.touchh-2, 1, 1);
 		right.disprec = new Rectangle(3, Shadow.touchh-2, 1, 1);
-		
-		//debug1.disprec = new Rectangle(Shadow.touchw-3, 1, 1, 1);
-		//debug2.disprec = new Rectangle(Shadow.touchw-2, 1, 1, 1);
 	}
 	
 	public static void tick() {

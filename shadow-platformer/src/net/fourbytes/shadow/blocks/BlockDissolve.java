@@ -61,7 +61,7 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 	@Override
 	public void handle(boolean triggered) {
 		if (triggered != this.triggered) {
-			Sounds.getSound("disappear").play(Shadow.calcVolume(block.pos), Shadow.calcPitch(1f, 0.15f), 0f);
+			Sounds.getSound("disappear").play(Sounds.calcVolume(block.pos), Sounds.calcPitch(1f, 0.15f), 0f);
 			this.triggered = triggered;
 			
 			if ((!inverted && !triggered) || (inverted && triggered)) {

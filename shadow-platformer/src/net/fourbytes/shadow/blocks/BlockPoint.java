@@ -51,7 +51,7 @@ public class BlockPoint extends BlockType {
 	public void collide(Entity e) {
 		super.collide(e);
 		if (e instanceof Player) {
-			Sounds.getSound("point").play(1f, Shadow.calcPitch(1f, 0.2f), 0f);
+			Sounds.getSound("point").play(1f, Sounds.calcPitch(1f, 0.2f), 0f);
 			Player p = (Player) e;
 			block.pixelify();
 			block.layer.remove(block);

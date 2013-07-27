@@ -64,7 +64,7 @@ public class BlockButton extends BlockType implements BlockLogic {
 			
 			//TODO: only trigger if player is ON the button
 			if (triggered == false && p.pos.y < block.pos.y-0.1f) {
-				Sounds.getSound("button_ingame").play(1f, Shadow.calcPitch(1f, 0.2f), 0f);
+				Sounds.getSound("button_ingame").play(1f, Sounds.calcPitch(1f, 0.2f), 0f);
 				block.imgupdate = true;
 				imgupdate = true;
 				triggered = true;

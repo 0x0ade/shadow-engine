@@ -21,6 +21,11 @@ import net.fourbytes.shadow.mod.ModLoader;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controller;
+import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.controllers.mappings.Ouya;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap.Format;
@@ -63,6 +68,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static int loadstate = 0;
 	public static int loadtick = 0;
 	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6}};
+	public static ControllerHelper controllerHelper;
 	
 	public Shadow() {
 		super();
@@ -113,6 +119,8 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		touchw = touchh*dispw/disph;
 		
 		Gdx.input.setInputProcessor(this);
+		controllerHelper = new ControllerHelper();
+		Controllers.addListener(controllerHelper);
 		Input.setUp();
 		for (Key k : Input.all) {
 			k.listeners.add(this);
@@ -293,6 +301,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	
 	public void tick() {
 		ModLoader.preTick();
+		controllerHelper.tick();
 		Input.tick();
 		if (level != null) {
 			level.tick();
@@ -474,7 +483,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	
 	@Override
 	public void keyDown(Key key) {
-		if (key == Input.pause || key == Input.androidBack || key == Input.androidMenu) {
+		if (key == Input.pause || (!Ouya.runningOnOuya && (key == Input.androidBack || key == Input.androidMenu))) {
 			if (!(level instanceof MenuLevel)) {
 				MenuLevel pause = new PauseLevel();
 				pause.bglevel = level;
@@ -491,44 +500,6 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 
 	@Override
 	public void keyUp(Key key) {
-	}
-	
-	public static float calcVolume(Vector2 pos) {
-		float vol = 1f;
-		Rectangle vp = cam.camrec;
-		if (!vp.contains(pos.x, pos.y)) {
-			return 0f;
-		}
-		Vector2 orgpos = Garbage.vec2;
-		orgpos.set(0, 0);
-		if (level != null && level.player != null) {
-			orgpos.set(level.player.pos);
-			orgpos.add(level.player.rec.width/2f, level.player.rec.height/2f);
-		}
-		float xdiff = pos.x - orgpos.x;
-		if (xdiff < 0) xdiff = -xdiff;
-		float ydiff = pos.y - orgpos.y;
-		if (ydiff < 0) ydiff = -ydiff;
-		float xrad = vp.width/4f;
-		float xvol = xdiff / xrad;
-		if (xvol > 1f) xvol = 1f;
-		xvol = 1f - xvol;
-		float yrad = vp.height/4f;
-		float yvol = ydiff / yrad;
-		if (yvol > 1f) yvol = 1f;
-		yvol = 1f - yvol;
-		
-		vol = (xvol + yvol) / 2f;
-		
-		return vol;
-	}
-
-	public static float calcPitch(float a, float b) {
-		float c = a;
-		float d = (float)Math.random()*b;
-		d -= d/2f;
-		c += d;
-		return c;
 	}
 	
 }

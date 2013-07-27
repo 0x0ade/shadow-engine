@@ -45,7 +45,7 @@ public class BlockSpringTop extends BlockType {
 		if (e instanceof Player) {
 			Player p = (Player) e;
 			
-			if (Input.up.isDown) {
+			if (Input.jump.isDown) {
 				p.movement.add(0, -p.movement.y - p.JUMPH*1.414f);
 				type_spring.doanim = true;
 				type_spring.frame = 1;

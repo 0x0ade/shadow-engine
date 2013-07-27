@@ -177,7 +177,7 @@ public abstract class Mob extends Entity {
 		}
 		
 		if (canAIClimb && climbed && canJump > 0) {
-			Sounds.getSound("jump").play(Shadow.calcVolume(pos), Shadow.calcPitch(1f, 0.3f), 0f);
+			Sounds.getSound("jump").play(Sounds.calcVolume(pos), Sounds.calcPitch(1f, 0.3f), 0f);
 			movement.add(0, -movement.y - JUMPH);
 			canJump--;
 		}
@@ -186,7 +186,7 @@ public abstract class Mob extends Entity {
 		
 		if (canAIJump && !climbed && canJump > 0) {
 			if ((int)(Math.random()*64) == 0) {
-				Sounds.getSound("jump").play(Shadow.calcVolume(pos), Shadow.calcPitch(1f, 0.3f), 0f);
+				Sounds.getSound("jump").play(Sounds.calcVolume(pos), Sounds.calcPitch(1f, 0.3f), 0f);
 				movement.add(0, -movement.y - JUMPH);
 				canJump--;
 			}

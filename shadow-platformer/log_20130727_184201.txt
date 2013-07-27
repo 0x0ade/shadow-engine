@@ -1,0 +1,9 @@
+java.lang.NullPointerException
+	at net.fourbytes.shadow.SetupControllerLevel.keyDown(SetupControllerLevel.java:53)
+	at net.fourbytes.shadow.Input$Key.down(Input.java:92)
+	at net.fourbytes.shadow.Input$Key.tick(Input.java:121)
+	at net.fourbytes.shadow.Input.tick(Input.java:247)
+	at net.fourbytes.shadow.Shadow.tick(Shadow.java:305)
+	at net.fourbytes.shadow.Shadow.render(Shadow.java:148)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:214)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:112)
