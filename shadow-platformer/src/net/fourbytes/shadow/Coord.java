@@ -11,7 +11,7 @@ public class Coord {
 	}
 	
 	public static long get(float x, float y) {
-		return get((int) Math.floor(x), (int) Math.floor(y));
+		return get((int) x, (int) y);
 	}
 	
 	public static int[] getXY(long l) {
