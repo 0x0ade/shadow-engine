@@ -484,7 +484,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	@Override
 	public void keyDown(Key key) {
 		if (key == Input.pause || key == Input.androidBack || key == Input.androidMenu) {
-			if (!(level instanceof MenuLevel)) {
+			if (!(level instanceof MenuLevel) && (isAndroid || key == Input.pause)) {
 				MenuLevel pause = new PauseLevel();
 				pause.bglevel = level;
 				level = pause;
