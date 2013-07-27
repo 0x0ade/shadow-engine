@@ -4,3 +4,9 @@
 *.jar
 *.war
 *.ear
+
+# Eclipse output folder #
+bin/
+
+# Mac OSX files #
+.DS_Store

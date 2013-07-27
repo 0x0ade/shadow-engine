@@ -1,8 +1,0 @@
-com.badlogic.gdx.utils.GdxRuntimeException: java.lang.Error: Switching key to assign while assigning key not supported!
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:118)
-Caused by: java.lang.Error: Switching key to assign while assigning key not supported!
-	at net.fourbytes.shadow.ControllerHelper.tick(ControllerHelper.java:85)
-	at net.fourbytes.shadow.Shadow.tick(Shadow.java:304)
-	at net.fourbytes.shadow.Shadow.render(Shadow.java:148)
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:214)
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:112)
