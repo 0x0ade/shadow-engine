@@ -122,7 +122,14 @@ public final class ControllerHelper implements ControllerListener {
 		if (Ouya.ID.equals(controller.getName())) {
 			System.out.println("Automapping Ouya controller...");
 			//TODO
-			
+			mapping.put(Input.up, new ControllerButton(controller, -1));
+			mapping.put(Input.down, new ControllerButton(controller, -1));
+			mapping.put(Input.left, new ControllerButton(controller, -1));
+			mapping.put(Input.right, new ControllerButton(controller, -1));
+			mapping.put(Input.jump, new ControllerButton(controller, Ouya.BUTTON_O));
+			mapping.put(Input.pause, new ControllerButton(controller, Ouya.BUTTON_MENU));
+			mapping.put(Input.enter, new ControllerButton(controller, Ouya.BUTTON_O));
+			mapping.put(Input.androidBack, new ControllerButton(controller, Ouya.BUTTON_A));
 		}
 		
 		refreshMapping();
