@@ -79,7 +79,7 @@ public class Input {
 		}
 		
 		public void down() {
-			System.out.println("N: "+name+"; M: D; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
+			//System.out.println("N: "+name+"; M: D; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
 			tmp.clear();
 			tmp.addAll(listeners);
 			for (KeyListener l : tmp) {

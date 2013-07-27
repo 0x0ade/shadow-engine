@@ -483,18 +483,23 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	
 	@Override
 	public void keyDown(Key key) {
-		if (key == Input.pause || (!Ouya.runningOnOuya && (key == Input.androidBack || key == Input.androidMenu))) {
+		if (key == Input.pause || key == Input.androidBack || key == Input.androidMenu) {
 			if (!(level instanceof MenuLevel)) {
 				MenuLevel pause = new PauseLevel();
 				pause.bglevel = level;
 				level = pause;
-			} else if (isAndroid) {
-				if (level instanceof PauseLevel) {
-					level = new TitleLevel();
-				} else if (key == Input.androidBack ){
-					Gdx.app.exit();
+			} else if (isAndroid && level instanceof PauseLevel && key == Input.androidBack) {
+				level = new TitleLevel();
+			} else if (isAndroid && level instanceof TitleLevel && key == Input.androidBack){
+				Gdx.app.exit();
+			} else if (level instanceof MenuLevel && key == Input.androidBack) {
+				MenuLevel ml = (MenuLevel) level;
+				if (ml.parent != null) {
+					level = ml.parent;
+				} else if (ml.bglevel != null) {
+					level = ml.bglevel;
 				}
-			}
+			} 
 		}
 	}
 

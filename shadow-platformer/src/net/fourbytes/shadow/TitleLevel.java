@@ -25,7 +25,6 @@ public class TitleLevel extends MenuLevel {
 			Gdx.app.exit();
 			}}));
 		
-		hasvoid = false;
 		ready = true;
 	}
 

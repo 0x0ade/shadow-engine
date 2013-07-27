@@ -24,12 +24,13 @@ public class SetupControllerLevel extends MenuLevel {
 		items.add(getMenuItemFor(Input.jump));
 		items.add(getMenuItemFor(Input.pause));
 		items.add(getMenuItemFor(Input.enter));
+		items.add(getMenuItemFor(Input.androidBack));
 		
 		items.add(new MenuItem(this, "Back", new Runnable(){public void run(){
 			Shadow.level = parent;
 			}}));
 		
-		System.gc();
+		ready = true;
 	}
 
 	protected MenuItem getMenuItemFor(final Key key) {

@@ -13,7 +13,7 @@ public class BlockWater extends BlockFluid {
 	public void tick() {
 		block.interactive = true;
 		block.passSunlight = true;
-		block.tintSunlight.set(0f, 0.5f, 1f, 1f);
+		block.tintSunlight.set(0f, 0.5f, 0.7625f, 1f);
 		float ff = 5f;
 		block.tintSunlight.add((1f/ff)-((float)Math.random())/ff, (1f/ff)-((float)Math.random())/ff, (1f/ff)-((float)Math.random())/ff, 0f);
 		super.tick();

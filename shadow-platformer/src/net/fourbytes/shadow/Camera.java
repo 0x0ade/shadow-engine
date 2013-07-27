@@ -27,8 +27,8 @@ import com.badlogic.gdx.utils.IntMap.Entry;
 public class Camera implements Input.KeyListener {
 	
 	public Background bg;
-	OrthographicCamera cam;
-	BitmapFont fpsFont = Fonts.light_normal;
+	public OrthographicCamera cam;
+	public BitmapFont fpsFont = Fonts.light_normal;
 	
 	public Camera() {
 		this.cam = new OrthographicCamera(Shadow.vieww, -Shadow.viewh);
@@ -68,6 +68,8 @@ public class Camera implements Input.KeyListener {
 		//oh wait, resize glitch :/
 		cam.update();
 	}
+	
+	protected Player player;
 	
 	public boolean debug = false;
 	public boolean level = true;
@@ -114,7 +116,9 @@ public class Camera implements Input.KeyListener {
 			
 			return;
 		}
-		Player player = Shadow.level.player;
+		if (!(Shadow.level instanceof MenuLevel)) {
+			player = Shadow.level.player;
+		}
 		if (player == null) {
 			Shadow.level.fillLayer(0);
 			player = new Player(new Vector2(0, 0), Shadow.level.layers.get(0));
