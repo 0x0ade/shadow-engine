@@ -21,9 +21,10 @@ import com.badlogic.gdx.utils.ObjectMap;
 public class Layer {
 	
 	public static enum BlockMapSystem {
-		coordinate,
-		row,
-		column;
+		coordinate, //Default, most performance, most garbage
+		row, //performance decreased, less garbage
+		column, //performance decreased, less garbage
+		none //least performance, "no garbage"
 	}
 	
 	public Level level;
@@ -41,7 +42,7 @@ public class Layer {
 	
 	public static BlockMapSystem bms = BlockMapSystem.coordinate;
 	protected BlockMapSystem lastbms;
-	public static float round = 1f;
+	public static float round = 5f;
 	
 	public Layer(Level level) {
 		this.level = level;
@@ -163,6 +164,9 @@ public class Layer {
 		case column:
 			al = rowmap.get(Coord.getX(c));
 			break;
+		case none:
+			al = blocks;
+			break;
 		}
 		return al;
 	}
@@ -184,6 +188,8 @@ public class Layer {
 			al = new Array<Block>(4);
 			rowmap.put(Coord.getX(c), al);
 			break;
+		case none:
+			break;
 		}
 		return al;
 	}
@@ -200,6 +206,8 @@ public class Layer {
 			break;
 		case column:
 			rowmap.remove(Coord.getX(c));
+			break;
+		case none:
 			break;
 		}
 	}
