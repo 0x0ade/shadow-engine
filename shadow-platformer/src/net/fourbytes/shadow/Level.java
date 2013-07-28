@@ -148,8 +148,6 @@ public class Level {
 		Layer ll = mainLayer;
 		
 		ll.cache = true;
-		nblocks += ll.blocks.size;
-		nentities += ll.entities.size;
 		//TODO find perfect FPS
 		//TODO decide
 		//if (ll.blocks.size() <= 25000) {
