@@ -15,14 +15,28 @@ import com.badlogic.gdx.utils.ObjectMap.Entry;
 
 public final class ControllerHelper implements ControllerListener {
 	
-	public static class ControllerButton {
-		
+	public static abstract class ControllerInput {
 		public Controller controller;
+		
+		protected ControllerInput(Controller controller) {
+			this.controller = controller;
+		}
+		
+		public abstract String getLabel();
+	}
+	
+	public static class ControllerButton extends ControllerInput {
+		
 		public int buttonCode;
 		
 		public ControllerButton(Controller controller, int buttonCode) {
-			this.controller = controller;
+			super(controller);
 			this.buttonCode = buttonCode;
+		}
+		
+		@Override
+		public String getLabel() {
+			return buttonCode+"";
 		}
 		
 		@Override
@@ -40,8 +54,8 @@ public final class ControllerHelper implements ControllerListener {
 		}
 	}
 
-	public ObjectMap<Key, ControllerButton> mapping = new ObjectMap<Key, ControllerButton>();
-	public ObjectMap<Key, ControllerButton> tmpmap = new ObjectMap<Key, ControllerButton>();
+	public ObjectMap<Key, ControllerInput> mapping = new ObjectMap<Key, ControllerInput>();
+	public ObjectMap<Key, ControllerInput> tmpmap = new ObjectMap<Key, ControllerInput>();
 	
 	private Key tmpkey;
 	public Key assignKey;
@@ -56,42 +70,42 @@ public final class ControllerHelper implements ControllerListener {
 	public void refreshMapping() {
 		tmpmap.clear();
 		Array<Controller> controllers = Controllers.getControllers();
-		for (Entry<Key, ControllerButton> entry : mapping.entries()) {
-			ControllerButton button = entry.value;
+		for (Entry<Key, ControllerInput> entry : mapping.entries()) {
+			ControllerInput input = entry.value;
 			Key key = entry.key;
 			
-			if (!controllers.contains(button.controller, true)) {
+			if (!controllers.contains(input.controller, true)) {
 				mapping.remove(key);
 				continue;
 			}
 		}
 	}
 	
-	public Array<Key> getKeysForButton(ControllerButton button) {
+	public Array<Key> getKeysForInput(ControllerInput input) {
 		Array<Key> keys = new Array<Key>();
-		for (Entry<Key, ControllerButton> entry : mapping.entries()) {
-			ControllerButton ebutton = entry.value;
+		for (Entry<Key, ControllerInput> entry : mapping.entries()) {
+			ControllerInput einput = entry.value;
 			Key ekey = entry.key;
-			if (button.equals(ebutton)) {
+			if (input.equals(einput)) {
 				keys.add(ekey);
 			}
 		}
 		return keys;
 	}
 	
-	public String getButtonLabelForKey(Key key) {
-		ControllerButton button = mapping.get(key);
-		if (button == null) {
+	public String getInputLabelForKey(Key key) {
+		ControllerInput input = mapping.get(key);
+		if (input == null) {
 			return "NONE";
 		}
-		String label = button.buttonCode+""; //TODO
+		String label = input.getLabel();
 		return label;
 	}
 	
 	public void tick() {
 		if (assignKey != null) {
 			if (assignKeyHelper != null) {
-				assignKeyHelper.text = assignKey.name+" ("+Shadow.controllerHelper.getButtonLabelForKey(assignKey)+") ...";
+				assignKeyHelper.text = assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(assignKey)+") ...";
 			}
 			if (tmpkey != null && tmpkey != assignKey) {
 				throw new Error("Switching key to assign while assigning key not supported!");
@@ -138,12 +152,12 @@ public final class ControllerHelper implements ControllerListener {
 	@Override
 	public void disconnected(Controller controller) {
 	}
-
+	
 	@Override
 	public boolean buttonDown(Controller controller, int buttonCode) {
 		//System.out.println("Pressed button "+buttonCode+" on controller "+controller);
 		ControllerButton button = new ControllerButton(controller, buttonCode);
-		for (Key key : getKeysForButton(button)) {
+		for (Key key : getKeysForInput(button)) {
 			//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
 			key.nextState = true;
 		}
@@ -152,7 +166,7 @@ public final class ControllerHelper implements ControllerListener {
 			mapping.put(assignKey, button);
 			refreshMapping();
 			if (assignKeyHelper != null) {
-				assignKeyHelper.text = assignKey.name+" ("+Shadow.controllerHelper.getButtonLabelForKey(assignKey)+")";
+				assignKeyHelper.text = assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(assignKey)+")";
 			}
 			assignKey = null;
 		}
@@ -163,7 +177,7 @@ public final class ControllerHelper implements ControllerListener {
 	public boolean buttonUp(Controller controller, int buttonCode) {
 		//System.out.println("Released button "+buttonCode+" on controller "+controller);
 		ControllerButton button = new ControllerButton(controller, buttonCode);
-		for (Key key : getKeysForButton(button)) {
+		for (Key key : getKeysForInput(button)) {
 			//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to false");
 			key.nextState = false;
 		}
