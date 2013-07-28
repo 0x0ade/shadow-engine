@@ -57,7 +57,8 @@ public class Input {
 		public static final class Triggerer {
 			public static final int KEYBOARD = 0;
 			public static final int SCREEN = 0;//Screen simulates keyboard presses and as for now shares same ID.
-			public static final int CONTROLLER = 1;
+			public static final int CONTROLLER_BUTTON = 1;
+			public static final int CONTROLLER_AXIS = 2;
 		}
 
 		public String name;

@@ -185,7 +185,7 @@ public final class ControllerHelper implements ControllerListener {
 					if ((value < -deadzone && axis.negative) || (value > deadzone && !axis.negative)) {
 						//Do nothing - the listener should handle this.
 					} else {
-						if (key.triggerer == Triggerer.CONTROLLER && key.isDown) {
+						if (key.triggerer == Triggerer.CONTROLLER_AXIS && key.isDown) {
 							key.nextState = false;
 						}
 					}
@@ -245,7 +245,7 @@ public final class ControllerHelper implements ControllerListener {
 		ControllerButton button = new ControllerButton(controller, buttonCode);
 		for (Key key : getKeysForInput(button)) {
 			//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
-			key.triggerer = Triggerer.CONTROLLER;
+			key.triggerer = Triggerer.CONTROLLER_BUTTON;
 			key.nextState = true;
 		}
 		if (assignKey != null) {
@@ -266,7 +266,7 @@ public final class ControllerHelper implements ControllerListener {
 		ControllerButton button = new ControllerButton(controller, buttonCode);
 		for (Key key : getKeysForInput(button)) {
 			//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to false");
-			key.triggerer = Triggerer.CONTROLLER;
+			key.triggerer = Triggerer.CONTROLLER_BUTTON;
 			key.nextState = false;
 		}
 		return false;
@@ -286,7 +286,7 @@ public final class ControllerHelper implements ControllerListener {
 			//System.out.println("Moved axis "+axisCode+" with current value "+value+" on controller "+controller);
 			for (Key key : getKeysForInput(axis)) {
 				//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
-				key.triggerer = Triggerer.CONTROLLER;
+				key.triggerer = Triggerer.CONTROLLER_AXIS;
 				key.nextState = true;
 			}
 			if (pvalue >= 0.25f && assignKey != null) {//To eliminate minor accidental movements while assigning
@@ -301,7 +301,7 @@ public final class ControllerHelper implements ControllerListener {
 		} else {
 			for (Key key : getKeysForInput(axis)) {
 				//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
-				key.triggerer = Triggerer.CONTROLLER;
+				key.triggerer = Triggerer.CONTROLLER_AXIS;
 				key.nextState = false;
 			}
 			//System.out.println("Moved axis "+axisCode+" with current value "+value+" on controller "+controller+" inside \"internal deadzone\"");
