@@ -65,6 +65,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static long elastmicro = 0;
 	public static int efps = 0;
 	public static boolean isAndroid = false;
+	public static boolean isOuya = false;
 	public static boolean gdxpaused = false;
 	public static int loadstate = 0;
 	public static int loadtick = 0;
@@ -386,7 +387,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			pointer = -1;
 		}
 		//System.out.println("X: "+screenX+"; Y: "+screenY+"; P: "+pointer+"; B: "+button+"; M: D");
-		if (Input.isAndroid && !Input.isInMenu) {
+		if (Input.isAndroid && !Input.isOuya && !Input.isInMenu) {
 			for (Input.Key k : Input.all) {
 				if (k.rec.contains(screenX, screenY)) {
 					k.triggerer = Triggerer.SCREEN;
@@ -417,7 +418,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		if (!Input.isAndroid) {
 			pointer = -1;
 		}
-		if (Input.isAndroid && !Input.isInMenu) {
+		if (Input.isAndroid && !Input.isOuya && !Input.isInMenu) {
 			//System.out.println("X: "+screenX+"; Y: "+screenY+"; P: "+pointer+"; B: "+button+"; M: U");
 			for (Input.Key k : Input.all) {
 				if (k.rec.contains(screenX, screenY)) {
@@ -442,7 +443,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		TouchPoint tp = Input.touches.get(pointer);
 		if (tp != null) {
 			tp.pos.set(screenX, screenY);
-			if (Input.isAndroid && !Input.isInMenu && tp.touchmode == TouchMode.KeyInput) {
+			if (Input.isAndroid && !Input.isOuya && !Input.isInMenu && tp.touchmode == TouchMode.KeyInput) {
 				//System.out.println("X: "+screenX+"; Y: "+screenY+"; P: "+pointer+"; M: D");
 				for (Input.Key k : Input.all) {
 					if (k.pointer == pointer && !k.rec.contains(screenX, screenY)) {

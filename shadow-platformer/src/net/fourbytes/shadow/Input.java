@@ -33,7 +33,7 @@ public class Input {
 			this.button = button;
 			this.pos.set(x, y);
 			this.touchmode = touchmode;
-			if (touchmode == TouchMode.Cursor && Shadow.level != null && Shadow.level.player != null && Input.isAndroid) {
+			if (touchmode == TouchMode.Cursor && Shadow.level != null && Shadow.level.player != null && Input.isAndroid && !Input.isOuya) {
 				this.button = -1; //Special button id for Android
 				Shadow.level.fillLayer(0);
 				Cursor c = new Cursor(new Vector2(0f, 0f), Shadow.level.layers.get(0), id);
@@ -51,6 +51,7 @@ public class Input {
 	static OrthographicCamera cam;
 	
 	public static boolean isAndroid = false;
+	public static boolean isOuya = false;
 	public static boolean isInMenu = false;
 	
 	public static class Key {
@@ -259,7 +260,7 @@ public class Input {
 	public static void render() {
 		Shadow.shapeRenderer.setProjectionMatrix(cam.combined);
 		Shadow.shapeRenderer.begin(ShapeType.Line);
-		if (isAndroid && !isInMenu) {
+		if (isAndroid && !isOuya && !isInMenu) {
 			for (Key k : all) {
 				k.render();
 			}
