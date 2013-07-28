@@ -34,7 +34,7 @@ public class SetupControllerLevel extends MenuLevel {
 	}
 
 	protected MenuItem getMenuItemFor(final Key key) {
-		final MenuItem item = new MenuItem(this, key.name+" ("+Shadow.controllerHelper.getButtonLabelForKey(key)+")", null);
+		final MenuItem item = new MenuItem(this, key.name+" ("+Shadow.controllerHelper.getInputLabelForKey(key)+")", null);
 		item.action = new Runnable(){public void run(){
 			Shadow.controllerHelper.assignKey = key;
 			Shadow.controllerHelper.assignKeyHelper = item;
@@ -51,7 +51,7 @@ public class SetupControllerLevel extends MenuLevel {
 		if (key == Input.pause) {
 			Shadow.controllerHelper.mapping.remove(Shadow.controllerHelper.assignKey);
 			if (Shadow.controllerHelper.assignKeyHelper != null) {
-				Shadow.controllerHelper.assignKeyHelper.text = Shadow.controllerHelper.assignKey.name+" ("+Shadow.controllerHelper.getButtonLabelForKey(Shadow.controllerHelper.assignKey)+")";
+				Shadow.controllerHelper.assignKeyHelper.text = Shadow.controllerHelper.assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(Shadow.controllerHelper.assignKey)+")";
 			}
 			Shadow.controllerHelper.assignKey = null;
 			Shadow.controllerHelper.assignKeyHelper = null;
