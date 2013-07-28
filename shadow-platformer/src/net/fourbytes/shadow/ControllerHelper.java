@@ -1,6 +1,7 @@
 package net.fourbytes.shadow;
 
 import net.fourbytes.shadow.Input.Key;
+import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.MenuLevel.MenuItem;
 
 import com.badlogic.gdx.controllers.Controller;
@@ -88,6 +89,8 @@ public final class ControllerHelper implements ControllerListener {
 			return false;
 		}
 	}
+	
+	public static float deadzone = 0.15f;
 
 	public ObjectMap<Key, Array<ControllerInput>> mapping = new ObjectMap<Key, Array<ControllerInput>>();
 	public ObjectMap<Key, Array<ControllerInput>> tmpmap = new ObjectMap<Key, Array<ControllerInput>>();
@@ -169,6 +172,26 @@ public final class ControllerHelper implements ControllerListener {
 		} else {
 			tmpkey = null;
 		}
+		
+		//"Unstick" axes.
+		for (Entry<Key, Array<ControllerInput>> entry : mapping.entries()) {
+			Array<ControllerInput> inputs = entry.value;
+			Key key = entry.key;
+			
+			for (ControllerInput input : inputs) {
+				if (input instanceof ControllerAxis) {
+					ControllerAxis axis = (ControllerAxis) input;
+					float value = axis.controller.getAxis(axis.axisCode);
+					if ((value < -deadzone && axis.negative) || (value > deadzone && !axis.negative)) {
+						//Do nothing - the listener should handle this.
+					} else {
+						if (key.triggerer == Triggerer.CONTROLLER && key.isDown) {
+							key.nextState = false;
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -222,6 +245,7 @@ public final class ControllerHelper implements ControllerListener {
 		ControllerButton button = new ControllerButton(controller, buttonCode);
 		for (Key key : getKeysForInput(button)) {
 			//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
+			key.triggerer = Triggerer.CONTROLLER;
 			key.nextState = true;
 		}
 		if (assignKey != null) {
@@ -242,6 +266,7 @@ public final class ControllerHelper implements ControllerListener {
 		ControllerButton button = new ControllerButton(controller, buttonCode);
 		for (Key key : getKeysForInput(button)) {
 			//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to false");
+			key.triggerer = Triggerer.CONTROLLER;
 			key.nextState = false;
 		}
 		return false;
@@ -250,12 +275,18 @@ public final class ControllerHelper implements ControllerListener {
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
 		//TODO
-		float pvalue = Math.max(-value, value);
-		ControllerAxis axis = new ControllerAxis(controller, axisCode, value < 0f);
-		if (pvalue >= 0.125f) {//Internal deadzone.
+		float pvalue = value;
+		boolean negative = false;
+		if (value < 0f) {
+			pvalue = -value;
+			negative = true;
+		}
+		ControllerAxis axis = new ControllerAxis(controller, axisCode, negative);
+		if (pvalue >= deadzone) {//Internal deadzone.
 			//System.out.println("Moved axis "+axisCode+" with current value "+value+" on controller "+controller);
 			for (Key key : getKeysForInput(axis)) {
 				//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
+				key.triggerer = Triggerer.CONTROLLER;
 				key.nextState = true;
 			}
 			if (pvalue >= 0.25f && assignKey != null) {//To eliminate minor accidental movements while assigning
@@ -270,6 +301,7 @@ public final class ControllerHelper implements ControllerListener {
 		} else {
 			for (Key key : getKeysForInput(axis)) {
 				//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
+				key.triggerer = Triggerer.CONTROLLER;
 				key.nextState = false;
 			}
 			//System.out.println("Moved axis "+axisCode+" with current value "+value+" on controller "+controller+" inside \"internal deadzone\"");

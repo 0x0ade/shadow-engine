@@ -15,6 +15,7 @@ import java.util.Random;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.Input.TouchPoint;
+import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.mod.ModLoader;
 
@@ -346,6 +347,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		for (Input.Key k : Input.all) {
 			for (int id : k.keyid) {
 				if (id == keycode) {
+					k.triggerer = Triggerer.KEYBOARD;
 					k.nextState = true;
 					handle = true;
 				}
@@ -360,6 +362,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		for (Input.Key k : Input.all) {
 			for (int id : k.keyid) {
 				if (id == keycode) {
+					k.triggerer = Triggerer.KEYBOARD;
 					k.nextState = false;
 					handle = true;
 				}
@@ -386,6 +389,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		if (Input.isAndroid && !Input.isInMenu) {
 			for (Input.Key k : Input.all) {
 				if (k.rec.contains(screenX, screenY)) {
+					k.triggerer = Triggerer.SCREEN;
 					k.nextState = true;
 					k.pointer = pointer;
 					TouchPoint tp = new TouchPoint(screenX, screenY, pointer, button, TouchMode.KeyInput);
@@ -417,6 +421,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			//System.out.println("X: "+screenX+"; Y: "+screenY+"; P: "+pointer+"; B: "+button+"; M: U");
 			for (Input.Key k : Input.all) {
 				if (k.rec.contains(screenX, screenY)) {
+					k.triggerer = Triggerer.SCREEN;
 					k.nextState = false;
 					k.pointer = -2;
 				}
@@ -441,12 +446,14 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 				//System.out.println("X: "+screenX+"; Y: "+screenY+"; P: "+pointer+"; M: D");
 				for (Input.Key k : Input.all) {
 					if (k.pointer == pointer && !k.rec.contains(screenX, screenY)) {
+						k.triggerer = Triggerer.SCREEN;
 						k.nextState = false;
 						k.pointer = -2;
 					}
 				}
 				for (Input.Key k : Input.all) {
 					if (k.rec.contains(screenX, screenY)) {
+						k.triggerer = Triggerer.SCREEN;
 						k.nextState = true;
 						k.pointer = pointer;
 					}

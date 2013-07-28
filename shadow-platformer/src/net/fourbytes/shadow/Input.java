@@ -54,14 +54,21 @@ public class Input {
 	public static boolean isInMenu = false;
 	
 	public static class Key {
-		String name;
-		int[] keyid;
+		public static final class Triggerer {
+			public static final int KEYBOARD = 0;
+			public static final int SCREEN = 0;//Screen simulates keyboard presses and as for now shares same ID.
+			public static final int CONTROLLER = 1;
+		}
+
+		public String name;
+		public int[] keyid;
 		Rectangle disprec;
 		Rectangle rec;
 		public Array<KeyListener> listeners = new Array<KeyListener>();
 		public Array<KeyListener> tmp;
 		public Array<KeyListener> tmp2;
 		int pointer = -1;
+		int triggerer = 0;
 		
 		public boolean wasDown = false;
 		public boolean isDown = false;
