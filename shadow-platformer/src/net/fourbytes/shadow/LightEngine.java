@@ -33,7 +33,7 @@ public abstract class LightEngine {
 			btick = 0;
 		}
 		//for (Layer ll : level.layers.values()) {
-		Layer ll = level.lightLayer;
+		Layer ll = level.mainLayer;
 		//	if (ll == null) continue;
 			if (canBlock) {
 				Garbage.blocks.clear();
@@ -42,7 +42,7 @@ public abstract class LightEngine {
 					if (block == null) continue;
 					objrec.set(block.pos.x-2f, block.pos.y-2f, block.rec.width+4f, block.rec.height+4f);
 					if (inview && Shadow.cam.camrec.overlaps(objrec)) {
-						setLight(block, level.lightLayer);
+						setLight(block, level.mainLayer);
 					}
 				}
 			}
@@ -54,7 +54,7 @@ public abstract class LightEngine {
 					if (entity == null) continue;
 					objrec.set(entity.pos.x-4f, entity.pos.y-4f, entity.rec.width+8f, entity.rec.height+8f);
 					if (inview && Shadow.cam.camrec.overlaps(objrec)) {
-						setLight(entity, level.lightLayer);
+						setLight(entity, level.mainLayer);
 					}
 				}
 			}

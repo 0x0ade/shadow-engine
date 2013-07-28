@@ -29,10 +29,10 @@ import com.badlogic.gdx.utils.IntMap.Entry;
 public class Level {
 	
 	public IntMap<Layer> layers = new IntMap<Layer>();
+	public Layer mainLayer = new Layer(this);
 	public LightEngine lights = new BasicLightEngine(this);
 	public TimeDayEngine timeday = new TimeDayEngine(this);
 	public Color globalLight = new Color(1f, 1f, 1f, 1f);
-	public Layer lightLayer = new Layer(this);
 	public Player player;
 	public Cursor c;
 	public Array<Cursor> cursors = new Array<Cursor>();
@@ -148,7 +148,7 @@ public class Level {
 		int nblocks = 0;
 		int nentities = 0;
 		//for (Layer ll : layers.values()) {
-		Layer ll = lightLayer;
+		Layer ll = mainLayer;
 			//if (ll == null) continue;
 			ll.cache = true;
 			nblocks += ll.blocks.size;

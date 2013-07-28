@@ -48,8 +48,8 @@ public class Layer {
 	}
 	
 	public void add(GameObject go) {
-		if (this != level.lightLayer) {
-			level.lightLayer.add(go);
+		if (this != level.mainLayer) {
+			level.mainLayer.add(go);
 		}
 		if (cache) {
 			addcache.add(go);
@@ -68,8 +68,8 @@ public class Layer {
 	}
 	
 	public void remove(GameObject go) {
-		if (this != level.lightLayer) {
-			level.lightLayer.remove(go);
+		if (this != level.mainLayer) {
+			level.mainLayer.remove(go);
 		}
 		if (cache) {
 			remcache.add(go);
@@ -90,8 +90,8 @@ public class Layer {
 	}
 
 	public void move(Block b, long oldc, long newc) {
-		if (this != level.lightLayer) {
-			level.lightLayer.move(b, oldc, newc);
+		if (this != level.mainLayer) {
+			level.mainLayer.move(b, oldc, newc);
 		}
 		int oldx = Coord.getX(oldc);
 		int oldy = Coord.getY(oldc);

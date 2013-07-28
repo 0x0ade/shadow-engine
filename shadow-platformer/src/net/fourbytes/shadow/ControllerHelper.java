@@ -237,6 +237,7 @@ public final class ControllerHelper implements ControllerListener {
 	
 	@Override
 	public void disconnected(Controller controller) {
+		refreshMapping();
 	}
 	
 	@Override

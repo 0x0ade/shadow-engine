@@ -187,7 +187,7 @@ public class Camera implements Input.KeyListener {
 	
 	public void renderLevel(Level level) {
 		//for (Layer ll : level.layers.values()) {
-		Layer ll = level.lightLayer;
+		Layer ll = level.mainLayer;
 			renderLayer(ll);
 		//}
 		if (this.level) {
