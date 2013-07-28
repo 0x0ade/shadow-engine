@@ -145,74 +145,75 @@ public class Level {
 		if (tickid >= 20000) {
 			tickid = 10000;
 		}
-		int nblocks = 0;
-		int nentities = 0;
-		//for (Layer ll : layers.values()) {
 		Layer ll = mainLayer;
-			//if (ll == null) continue;
-			ll.cache = true;
-			nblocks += ll.blocks.size;
-			nentities += ll.entities.size;
-			//TODO find perfect FPS
-			//TODO decide
-			//if (ll.blocks.size() <= 25000) {
-			tickTiles(ll.blocks);
-			/*} else {
-				Rectangle vp = Shadow.cam.camrec;
-				for (float y = vp.y-25f; y <= vp.y+vp.height+25f; y++) {
-					for (float x = vp.x-25f; x <= vp.x+vp.width+25f; x++) {
-						Coord c = new Coord(x, y);
-						Vector<Block> blocks = ll.blockmap.get(c);
-						if (blocks != null) {
-							//blocks = (Vector<Block>) blocks.clone();
-							tickTiles(blocks);
-						}
+		
+		ll.cache = true;
+		nblocks += ll.blocks.size;
+		nentities += ll.entities.size;
+		//TODO find perfect FPS
+		//TODO decide
+		//if (ll.blocks.size() <= 25000) {
+		tickTiles(ll.blocks);
+		/*} else {
+			Rectangle vp = Shadow.cam.camrec;
+			for (float y = vp.y-25f; y <= vp.y+vp.height+25f; y++) {
+				for (float x = vp.x-25f; x <= vp.x+vp.width+25f; x++) {
+					Coord c = new Coord(x, y);
+					Vector<Block> blocks = ll.blockmap.get(c);
+					if (blocks != null) {
+						//blocks = (Vector<Block>) blocks.clone();
+						tickTiles(blocks);
 					}
 				}
-			}*/
-			
-			int particle = 0;
-			Array<Entity> entities = ll.entities;
-			Array<Particle> particles = Garbage.particles;
-			particles.clear();
-			for (Entity entity : entities) {
-				if (entity == null) continue;
-				if (entity instanceof Particle) {
-					if (!((Particle)entity).isStatic) {
-						particles.add((Particle)entity);
-						if (particle >= maxParticles) {
-							ll.remove(particles.get(0));
-							particles.removeIndex(0);
-							continue;
-						}
-						particle++;
+			}
+		}*/
+		
+		int particle = 0;
+		Array<Entity> entities = ll.entities;
+		Array<Particle> particles = Garbage.particles;
+		particles.clear();
+		for (Entity entity : entities) {
+			if (entity == null) continue;
+			if (entity instanceof Particle) {
+				if (!((Particle)entity).isStatic) {
+					particles.add((Particle)entity);
+					if (particle >= maxParticles) {
+						ll.remove(particles.get(0));
+						particles.removeIndex(0);
+						continue;
 					}
+					particle++;
 				}
-				entity.tick();
 			}
-			
-			ll.cache = false;
-			for (GameObject go : ll.addcache) {
-				//go.tick();
-				ll.add(go);
-			}
-			ll.addcache.clear();
-			for (GameObject go : ll.remcache) {
-				ll.remove(go);
-			}
-			ll.remcache.clear();
-		//}
+			entity.tick();
+		}
+		
+		ll.cache = false;
+		for (GameObject go : ll.addcache) {
+			//go.tick();
+			ll.add(go);
+		}
+		ll.addcache.clear();
+		for (GameObject go : ll.remcache) {
+			ll.remove(go);
+		}
+		ll.remcache.clear();
+		
 		lights.tick();
 		timeday.tick();
-		Garbage.cursors.clear();
-		Garbage.cursors.addAll(cursors);
-		for (Cursor c : Garbage.cursors) {
+		
+		if (Shadow.level == this) {
+			Garbage.cursors.clear();
+			Garbage.cursors.addAll(cursors);
+			for (Cursor c : Garbage.cursors) {
+				c.tick();
+			}
 			c.tick();
+			if (pointblock != null) {
+				pointblock.tick();
+			}
 		}
-		c.tick();
-		if (pointblock != null) {
-			pointblock.tick();
-		}
+		
 		ftick = false;
 		
 		//System.out.println("Blocks: "+nblocks+"; Entities: "+nentities);
