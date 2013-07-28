@@ -150,21 +150,19 @@ public class Level {
 		ll.cache = true;
 		//TODO find perfect FPS
 		//TODO decide
-		//if (ll.blocks.size() <= 25000) {
+		//if (ll.blocks.size <= 25000) {
 		tickTiles(ll.blocks);
-		/*} else {
-			Rectangle vp = Shadow.cam.camrec;
+		//} else {
+			/*Rectangle vp = Shadow.cam.camrec;
 			for (float y = vp.y-25f; y <= vp.y+vp.height+25f; y++) {
 				for (float x = vp.x-25f; x <= vp.x+vp.width+25f; x++) {
-					Coord c = new Coord(x, y);
-					Vector<Block> blocks = ll.blockmap.get(c);
+					Array<Block> blocks = ll.blockmap.get(Coord.get(x, y));
 					if (blocks != null) {
-						//blocks = (Vector<Block>) blocks.clone();
 						tickTiles(blocks);
 					}
 				}
-			}
-		}*/
+			}*/
+		//}
 		
 		int particle = 0;
 		Array<Entity> entities = ll.entities;
