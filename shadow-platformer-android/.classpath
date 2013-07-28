@@ -11,6 +11,6 @@
 	<classpathentry exported="true" kind="lib" path="/shadow-platformer/libs/gdx-audio.jar" sourcepath="/shadow-platformer/libs/gdx-audio-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/shadow-platformer/libs/gdx-freetype.jar" sourcepath="/shadow-platformer/libs/gdx-freetype-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/shadow-platformer/libs/gdx.jar" sourcepath="/shadow-platformer/libs/gdx-sources.jar"/>
-	<classpathentry kind="lib" path="libs/gdx-controllers-android.jar" sourcepath="libs/gdx-controllers-android-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="libs/gdx-controllers-android.jar" sourcepath="libs/gdx-controllers-android-sources.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
