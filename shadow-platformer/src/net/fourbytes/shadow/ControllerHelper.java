@@ -36,7 +36,7 @@ public final class ControllerHelper implements ControllerListener {
 		
 		@Override
 		public String getLabel() {
-			return buttonCode+"";
+			return "Button "+buttonCode;
 		}
 		
 		@Override
@@ -53,9 +53,44 @@ public final class ControllerHelper implements ControllerListener {
 			return false;
 		}
 	}
+	
+	public static class ControllerAxis extends ControllerInput {
+		
+		public int axisCode;
+		public boolean negative;
+		
+		public ControllerAxis(Controller controller, int axisCode, boolean negative) {
+			super(controller);
+			this.axisCode = axisCode;
+			this.negative = negative;
+		}
+		
+		@Override
+		public String getLabel() {
+			return "Axis "+axisCode;
+		}
+		
+		@Override
+		public int hashCode() {
+			int hash = controller.hashCode()*axisCode;
+			if (negative) {
+				hash = -hash;
+			}
+			return hash;
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			if (o instanceof ControllerAxis) {
+				ControllerAxis axis = (ControllerAxis) o;
+				return axis.controller.equals(controller) && axis.axisCode == axisCode && axis.negative == negative;
+			}
+			return false;
+		}
+	}
 
-	public ObjectMap<Key, ControllerInput> mapping = new ObjectMap<Key, ControllerInput>();
-	public ObjectMap<Key, ControllerInput> tmpmap = new ObjectMap<Key, ControllerInput>();
+	public ObjectMap<Key, Array<ControllerInput>> mapping = new ObjectMap<Key, Array<ControllerInput>>();
+	public ObjectMap<Key, Array<ControllerInput>> tmpmap = new ObjectMap<Key, Array<ControllerInput>>();
 	
 	private Key tmpkey;
 	public Key assignKey;
@@ -70,23 +105,28 @@ public final class ControllerHelper implements ControllerListener {
 	public void refreshMapping() {
 		tmpmap.clear();
 		Array<Controller> controllers = Controllers.getControllers();
-		for (Entry<Key, ControllerInput> entry : mapping.entries()) {
-			ControllerInput input = entry.value;
+		for (Entry<Key, Array<ControllerInput>> entry : mapping.entries()) {
+			Array<ControllerInput> inputs = entry.value;
 			Key key = entry.key;
 			
-			if (!controllers.contains(input.controller, true)) {
+			for (ControllerInput input : inputs) {
+				if (!controllers.contains(input.controller, true)) {
+					inputs.removeValue(input, false);
+				}
+			}
+			
+			if (inputs.size == 0) {
 				mapping.remove(key);
-				continue;
 			}
 		}
 	}
 	
 	public Array<Key> getKeysForInput(ControllerInput input) {
 		Array<Key> keys = new Array<Key>();
-		for (Entry<Key, ControllerInput> entry : mapping.entries()) {
-			ControllerInput einput = entry.value;
+		for (Entry<Key, Array<ControllerInput>> entry : mapping.entries()) {
+			Array<ControllerInput> einputs = entry.value;
 			Key ekey = entry.key;
-			if (input.equals(einput)) {
+			if (einputs.contains(input, false)) {
 				keys.add(ekey);
 			}
 		}
@@ -94,12 +134,27 @@ public final class ControllerHelper implements ControllerListener {
 	}
 	
 	public String getInputLabelForKey(Key key) {
-		ControllerInput input = mapping.get(key);
-		if (input == null) {
+		Array<ControllerInput> inputs = mapping.get(key);
+		if (inputs == null) {
 			return "NONE";
 		}
-		String label = input.getLabel();
-		return label;
+		if (inputs.size == 1) {
+			ControllerInput input = inputs.get(0);
+			if (input == null) {
+				return "NONE";
+			}
+			return input.getLabel();
+		}
+		return "AUTO";
+	}
+	
+	public void map(Key key, ControllerInput input) {
+		Array<ControllerInput> inputs = mapping.get(key);
+		if (inputs == null) {
+			inputs = new Array<ControllerInput>(2);
+			mapping.put(key, inputs);
+		}
+		inputs.add(input);
 	}
 	
 	public void tick() {
@@ -124,26 +179,34 @@ public final class ControllerHelper implements ControllerListener {
 			//Otherwise, the PS3 itself would even have problems with the button IDs being different.
 			System.out.println("Automapping PS3 controller on Linux...");
 			//TODO
-			mapping.put(Input.up, new ControllerButton(controller, 4));
-			mapping.put(Input.down, new ControllerButton(controller, 6));
-			mapping.put(Input.left, new ControllerButton(controller, 7));
-			mapping.put(Input.right, new ControllerButton(controller, 5));
-			mapping.put(Input.jump, new ControllerButton(controller, 14));
-			mapping.put(Input.pause, new ControllerButton(controller, 3));
-			mapping.put(Input.enter, new ControllerButton(controller, 14));
-			mapping.put(Input.androidBack, new ControllerButton(controller, 13));
+			map(Input.up, new ControllerButton(controller, 4));
+			map(Input.down, new ControllerButton(controller, 6));
+			map(Input.left, new ControllerButton(controller, 7));
+			map(Input.right, new ControllerButton(controller, 5));
+			map(Input.up, new ControllerAxis(controller, 1, true));
+			map(Input.down, new ControllerAxis(controller, 1, false));
+			map(Input.left, new ControllerAxis(controller, 0, true));
+			map(Input.right, new ControllerAxis(controller, 0, false));
+			map(Input.jump, new ControllerButton(controller, 14));
+			map(Input.pause, new ControllerButton(controller, 3));
+			map(Input.enter, new ControllerButton(controller, 14));
+			map(Input.androidBack, new ControllerButton(controller, 13));
 		}
 		if (Ouya.ID.equals(controller.getName())) {
 			System.out.println("Automapping Ouya controller...");
 			//TODO
-			mapping.put(Input.up, new ControllerButton(controller, -1));
-			mapping.put(Input.down, new ControllerButton(controller, -1));
-			mapping.put(Input.left, new ControllerButton(controller, -1));
-			mapping.put(Input.right, new ControllerButton(controller, -1));
-			mapping.put(Input.jump, new ControllerButton(controller, Ouya.BUTTON_O));
-			mapping.put(Input.pause, new ControllerButton(controller, Ouya.BUTTON_MENU));
-			mapping.put(Input.enter, new ControllerButton(controller, Ouya.BUTTON_O));
-			mapping.put(Input.androidBack, new ControllerButton(controller, Ouya.BUTTON_A));
+			map(Input.up, new ControllerButton(controller, Ouya.BUTTON_DPAD_UP));
+			map(Input.down, new ControllerButton(controller, Ouya.BUTTON_DPAD_DOWN));
+			map(Input.left, new ControllerButton(controller, Ouya.BUTTON_DPAD_LEFT));
+			map(Input.right, new ControllerButton(controller, Ouya.BUTTON_DPAD_RIGHT));
+			map(Input.up, new ControllerAxis(controller, Ouya.AXIS_LEFT_Y, true));
+			map(Input.down, new ControllerAxis(controller, Ouya.AXIS_LEFT_Y, false));
+			map(Input.left, new ControllerAxis(controller, Ouya.AXIS_LEFT_X, true));
+			map(Input.right, new ControllerAxis(controller, Ouya.AXIS_LEFT_X, false));
+			map(Input.jump, new ControllerButton(controller, Ouya.BUTTON_O));
+			map(Input.pause, new ControllerButton(controller, Ouya.BUTTON_MENU));
+			map(Input.enter, new ControllerButton(controller, Ouya.BUTTON_O));
+			map(Input.androidBack, new ControllerButton(controller, Ouya.BUTTON_A));
 		}
 		
 		refreshMapping();
@@ -163,7 +226,7 @@ public final class ControllerHelper implements ControllerListener {
 		}
 		if (assignKey != null) {
 			System.out.println("Mapped in-game key \""+assignKey.name+"\" to button "+buttonCode+" on controller "+controller);
-			mapping.put(assignKey, button);
+			map(assignKey, button);
 			refreshMapping();
 			if (assignKeyHelper != null) {
 				assignKeyHelper.text = assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(assignKey)+")";
@@ -187,7 +250,30 @@ public final class ControllerHelper implements ControllerListener {
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
 		//TODO
-		//System.out.println("Moved axis "+axisCode+" with current value "+value+" on controller "+controller);
+		float pvalue = Math.max(-value, value);
+		ControllerAxis axis = new ControllerAxis(controller, axisCode, value < 0f);
+		if (pvalue >= 0.125f) {//Internal deadzone.
+			//System.out.println("Moved axis "+axisCode+" with current value "+value+" on controller "+controller);
+			for (Key key : getKeysForInput(axis)) {
+				//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
+				key.nextState = true;
+			}
+			if (pvalue >= 0.25f && assignKey != null) {//To eliminate minor accidental movements while assigning
+				System.out.println("Mapped in-game key \""+assignKey.name+"\" to axis "+axisCode+" on controller "+controller);
+				map(assignKey, axis);
+				refreshMapping();
+				if (assignKeyHelper != null) {
+					assignKeyHelper.text = assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(assignKey)+")";
+				}
+				assignKey = null;
+			}
+		} else {
+			for (Key key : getKeysForInput(axis)) {
+				//System.out.println("ControllerHelper triggered key \""+key.name+"\"'s nextstate to true");
+				key.nextState = false;
+			}
+			//System.out.println("Moved axis "+axisCode+" with current value "+value+" on controller "+controller+" inside \"internal deadzone\"");
+		}
 		return false;
 	}
 

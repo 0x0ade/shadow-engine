@@ -123,7 +123,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			for (MenuItem mi : items) {
 				if (mi.mouseDown) {
 					current = mi;
-					keyUp(Input.enter);
+					keyDown(Input.enter);
 					mi.mouseDown = false;
 				} else {
 				}
