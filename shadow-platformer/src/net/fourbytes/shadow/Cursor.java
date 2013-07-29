@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 
 public class Cursor extends Entity {
 	
@@ -117,8 +118,12 @@ public class Cursor extends Entity {
 	public void rmb(TouchPoint point, boolean isDown) {
 		downtick++;
 		if (isDown && (!rmb || downtick > 20)) {
-			Entity e = new MobTest(new Vector2(pos), layer.level.player.layer);
-			e.layer.add(e);
+			Array<Block> blocks = layer.level.player.layer.get(Coord.get(pos.x, pos.y));
+			if (blocks != null) {
+				for (Block b : blocks) {
+					b.layer.remove(b);
+				}
+			}
 		}
 		rmb = isDown;
 	}
