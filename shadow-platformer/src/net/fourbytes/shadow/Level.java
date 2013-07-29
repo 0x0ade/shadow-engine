@@ -182,8 +182,12 @@ public class Level {
 			entity.tick();
 		}
 		
-		lights.tick();
-		timeday.tick();
+		if (lights != null) {
+			lights.tick();
+		}
+		if (timeday != null) {
+			timeday.tick();
+		}
 		
 		if (Shadow.level == this) {
 			for (Cursor c : cursors) {
