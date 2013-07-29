@@ -30,8 +30,8 @@ public class Level {
 	
 	public IntMap<Layer> layers = new IntMap<Layer>();
 	public Layer mainLayer = new Layer(this);
-	public LightEngine lights = new BasicLightEngine(this);
-	public TimeDayEngine timeday = new TimeDayEngine(this);
+	public LightSystem lights = new BasicLightSystem(this);
+	public TimeDaySystem timeday = new TimeDaySystem(this);
 	public Color globalLight = new Color(1f, 1f, 1f, 1f);
 	public Player player;
 	public Cursor c;
