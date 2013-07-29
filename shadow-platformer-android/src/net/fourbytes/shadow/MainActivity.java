@@ -10,6 +10,7 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.controllers.mappings.Ouya;
 
 public class MainActivity extends AndroidApplication {
 	
@@ -38,6 +39,10 @@ public class MainActivity extends AndroidApplication {
         
         Input.isAndroid = true;
         Shadow.isAndroid = true;
+        if (Ouya.runningOnOuya){
+			Input.isOuya = true;
+			Shadow.isOuya = true;
+		}
         
         game = new Shadow();
         game.resize(height, width); //landscape mode!
