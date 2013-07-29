@@ -186,10 +186,9 @@ public class Camera implements Input.KeyListener {
 	}
 	
 	public void renderLevel(Level level) {
-		//for (Layer ll : level.layers.values()) {
-		Layer ll = level.mainLayer;
+		for (Layer ll : level.layers.values()) {
 			renderLayer(ll);
-		//}
+		}
 		if (this.level) {
 			if (level.hasvoid) {
 				Image levoid = Images.getImage("void", false);
