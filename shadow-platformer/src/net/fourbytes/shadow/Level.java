@@ -147,7 +147,6 @@ public class Level {
 		}
 		Layer ll = mainLayer;
 		
-		ll.cache = true;
 		//TODO find perfect FPS
 		//TODO decide
 		//if (ll.blocks.size <= 25000) {
@@ -183,17 +182,6 @@ public class Level {
 			}
 			entity.tick();
 		}
-		
-		ll.cache = false;
-		for (GameObject go : ll.addcache) {
-			//go.tick();
-			ll.add(go);
-		}
-		ll.addcache.clear();
-		for (GameObject go : ll.remcache) {
-			ll.remove(go);
-		}
-		ll.remcache.clear();
 		
 		lights.tick();
 		timeday.tick();

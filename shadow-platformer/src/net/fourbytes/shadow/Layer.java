@@ -34,10 +34,6 @@ public class Layer {
 	protected IntMap<Array<Block>> rowmap = new IntMap<Array<Block>>(256);
 	protected LongMap<Array<Block>> blockmap = new LongMap<Array<Block>>(1024);
 	
-	public boolean cache = false;
-	public Array<GameObject> addcache = new Array<GameObject>(true, 64);
-	public Array<GameObject> remcache = new Array<GameObject>(true, 64);
-	
 	public Color tint = new Color(1f, 1f, 1f, 1f);
 	
 	public static BlockMapSystem bms = BlockMapSystem.coordinate;
@@ -51,10 +47,6 @@ public class Layer {
 	public void add(GameObject go) {
 		if (this != level.mainLayer) {
 			level.mainLayer.add(go);
-		}
-		if (cache) {
-			addcache.add(go);
-			return;
 		}
 		if (go instanceof Block) {
 			blocks.add((Block) go);
@@ -71,10 +63,6 @@ public class Layer {
 	public void remove(GameObject go) {
 		if (this != level.mainLayer) {
 			level.mainLayer.remove(go);
-		}
-		if (cache) {
-			remcache.add(go);
-			return;
 		}
 		if (go instanceof Block) {
 			blocks.removeValue((Block) go, true);
@@ -131,16 +119,6 @@ public class Layer {
 			for (Block b : vv) {
 				if (cx == (int)b.pos.x && cy == (int)b.pos.y) {
 					v.add(b);
-				}
-			}
-		}
-		if (v != null && v.size == 0) {
-			for (GameObject go : addcache) {
-				if (go instanceof Block) {
-					Block b = (Block)go;
-					if (cx == (int)b.pos.x && cy == (int)b.pos.y) {
-						v.add(b);
-					}
 				}
 			}
 		}
