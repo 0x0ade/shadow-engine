@@ -216,27 +216,28 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			fb = new FrameBuffer(Format.RGB565, (int) dispw, (int) disph, false); //TODO Decide if 565 or 4444
 			shapeRenderer = new ShapeRenderer();
 			
-			if (!isAndroid) {
-				try {
-					//TODO Change / update / fix / complete GLSL shaders
-					final String VERTEX = Gdx.files.internal("shaders/vignette.vert").readString();
-					final String FRAGMENT = Gdx.files.internal("shaders/vignette.frag").readString();
-					
-					ShaderProgram.pedantic = false;
-					
-					shader = new ShaderProgram(VERTEX, FRAGMENT);
-					
-					if (shader.getLog().length()!=0) {
-						System.err.println(shader.getLog());
-					}
-					
-					spriteBatch = new SpriteBatch(2048, shader);
-					spriteBatch.setShader(shader);
-				} catch (Exception e) {
-					e.printStackTrace();
-					spriteBatch = new SpriteBatch(2048);
+			String shaderDesktop = "shaders/vignette";
+			String shaderAndroid = "shaders/basic";
+			String shaderOuya = "shaders/vignette";
+			String shaderLoad = isOuya?shaderOuya:isAndroid?shaderAndroid:shaderDesktop;
+			
+			try {
+				//TODO Change / update / fix / complete GLSL shaders
+				final String VERTEX = Gdx.files.internal(shaderLoad+".vert").readString();
+				final String FRAGMENT = Gdx.files.internal(shaderLoad+".frag").readString();
+				
+				ShaderProgram.pedantic = false;
+				
+				shader = new ShaderProgram(VERTEX, FRAGMENT);
+				
+				if (shader.getLog().length()!=0) {
+					System.err.println(shader.getLog());
 				}
-			} else {
+				
+				spriteBatch = new SpriteBatch(2048, shader);
+				spriteBatch.setShader(shader);
+			} catch (Exception e) {
+				e.printStackTrace();
 				spriteBatch = new SpriteBatch(2048);
 			}
 			
