@@ -70,12 +70,7 @@ public abstract class Entity extends GameObject {
 				for (float y = pos.y-rec.height*2; y <= pos.y+rec.height*3; y++) {
 					Array<Block> blocks = layer.get(Coord.get(x, y));
 					if (blocks != null) {
-						if (!Shadow.isAndroid) {
-							//blocks = (Vector<Block>)blocks.clone();
-						}
-						Garbage.blocks.clear();
-						Garbage.blocks.addAll(blocks);
-						for (Block b : Garbage.blocks) {
+						for (Block b : blocks) {
 							if (b == null) continue;
 							if (!b.solid) collide(b, true);
 							else collide(b, false);
@@ -84,9 +79,7 @@ public abstract class Entity extends GameObject {
 				}
 			}
 			
-			Garbage.entities.clear();
-			Garbage.entities.addAll(layer.entities);
-			for (Entity e : Garbage.entities) {
+			for (Entity e : layer.entities) {
 				if (e == null) continue;
 				if (e == this) continue;
 				if (!e.solid) collide(e, true);

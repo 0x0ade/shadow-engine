@@ -234,9 +234,7 @@ public class Camera implements Input.KeyListener {
 		if (l == null) {
 			return;
 		}
-		Garbage.blocks.clear();
-		Garbage.blocks.addAll(l.blocks);
-		for (Block block : Garbage.blocks) {
+		for (Block block : l.blocks) {
 			if (block == null) continue;
 			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
 			if (camrec.overlaps(objrec) && level) {
@@ -250,9 +248,7 @@ public class Camera implements Input.KeyListener {
 				img.setColor(origc);
 			}
 		}
-		Garbage.entities.clear();
-		Garbage.entities.addAll(l.entities);
-		for (Entity entity : Garbage.entities) {
+		for (Entity entity : l.entities) {
 			if (entity == null) continue;
 			objrec.set(entity.pos.x + entity.renderoffs.x, entity.pos.y + entity.renderoffs.y, entity.rec.width + entity.renderoffs.width, entity.rec.height + entity.renderoffs.height);
 			if (camrec.overlaps(objrec) && level) {
@@ -267,9 +263,7 @@ public class Camera implements Input.KeyListener {
 			}
 		}
 		
-		Garbage.blocks.clear();
-		Garbage.blocks.addAll(l.blocks);
-		for (Block block : Garbage.blocks) {
+		for (Block block : l.blocks) {
 			if (block == null) continue;
 			if (block.rendertop) continue;
 			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
@@ -298,9 +292,7 @@ public class Camera implements Input.KeyListener {
 				}
 			}
 		}
-		Garbage.entities.clear();
-		Garbage.entities.addAll(l.entities);
-		for (Entity entity : Garbage.entities) {
+		for (Entity entity : l.entities) {
 			if (entity == null) continue;
 			objrec.set(entity.pos.x + entity.renderoffs.x, entity.pos.y + entity.renderoffs.y, entity.rec.width + entity.renderoffs.width, entity.rec.height + entity.renderoffs.height);
 			if (camrec.overlaps(objrec) && level) {
@@ -328,9 +320,7 @@ public class Camera implements Input.KeyListener {
 				}
 			}
 		}
-		Garbage.blocks.clear();
-		Garbage.blocks.addAll(l.blocks);
-		for (Block block : Garbage.blocks) {
+		for (Block block : l.blocks) {
 			if (block == null) continue;
 			if (!block.rendertop) continue;
 			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);

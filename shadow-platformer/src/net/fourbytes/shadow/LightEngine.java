@@ -32,33 +32,26 @@ public abstract class LightEngine {
 		if (canBlock) {
 			btick = 0;
 		}
-		//for (Layer ll : level.layers.values()) {
 		Layer ll = level.mainLayer;
-		//	if (ll == null) continue;
-			if (canBlock) {
-				Garbage.blocks.clear();
-				Garbage.blocks.addAll(ll.blocks);
-				for (Block block : Garbage.blocks) {
-					if (block == null) continue;
-					objrec.set(block.pos.x-2f, block.pos.y-2f, block.rec.width+4f, block.rec.height+4f);
-					if (inview && Shadow.cam.camrec.overlaps(objrec)) {
-						setLight(block, level.mainLayer);
-					}
+		if (canBlock) {
+			for (Block block : ll.blocks) {
+				if (block == null) continue;
+				objrec.set(block.pos.x-2f, block.pos.y-2f, block.rec.width+4f, block.rec.height+4f);
+				if (inview && Shadow.cam.camrec.overlaps(objrec)) {
+					setLight(block, level.mainLayer);
 				}
 			}
-			
-			if (canEntity) {
-				Garbage.entities.clear();
-				Garbage.entities.addAll(ll.entities);
-				for (Entity entity : Garbage.entities) {
-					if (entity == null) continue;
-					objrec.set(entity.pos.x-4f, entity.pos.y-4f, entity.rec.width+8f, entity.rec.height+8f);
-					if (inview && Shadow.cam.camrec.overlaps(objrec)) {
-						setLight(entity, level.mainLayer);
-					}
+		}
+		
+		if (canEntity) {
+			for (Entity entity : ll.entities) {
+				if (entity == null) continue;
+				objrec.set(entity.pos.x-4f, entity.pos.y-4f, entity.rec.width+8f, entity.rec.height+8f);
+				if (inview && Shadow.cam.camrec.overlaps(objrec)) {
+					setLight(entity, level.mainLayer);
 				}
 			}
-		//}
+		}
 		etick++;
 		btick++;
 	}

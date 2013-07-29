@@ -14,13 +14,9 @@ public final class Garbage {
 	private Garbage() {
 	}
 	
-	public final static Array<KeyListener> keys = new Array<KeyListener>(true, 32);
-	public final static Array<KeyListener> keys2 = new Array<KeyListener>(true, 32);
-	public final static Array<Cursor> cursors = new Array<Cursor>(true, 16);
-	public final static Array<Block> blocks = new Array<Block>(true, 512);
-	public final static Array<BlockLogic> vbl = new Array<BlockLogic>(true, 128);
-	public final static Array<Entity> entities = new Array<Entity>(true, 512);
-	public final static Array<Particle> particles = new Array<Particle>(true, 256);
+	public final static Array<KeyListener> keys = new Array<KeyListener>();
+	public final static Array<KeyListener> keys2 = new Array<KeyListener>();
+	public final static Array<Particle> particles = new Array<Particle>();
 	public final static Rectangle genrec = new Rectangle();
 	public final static Rectangle rect = new Rectangle();
 	public final static Rectangle recta = new Rectangle();

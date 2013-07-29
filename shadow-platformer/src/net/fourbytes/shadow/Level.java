@@ -164,10 +164,9 @@ public class Level {
 		//}
 		
 		int particle = 0;
-		Array<Entity> entities = ll.entities;
 		Array<Particle> particles = Garbage.particles;
 		particles.clear();
-		for (Entity entity : entities) {
+		for (Entity entity : ll.entities) {
 			if (entity == null) continue;
 			if (entity instanceof Particle) {
 				if (!((Particle)entity).isStatic) {
@@ -187,9 +186,7 @@ public class Level {
 		timeday.tick();
 		
 		if (Shadow.level == this) {
-			Garbage.cursors.clear();
-			Garbage.cursors.addAll(cursors);
-			for (Cursor c : Garbage.cursors) {
+			for (Cursor c : cursors) {
 				c.tick();
 			}
 			c.tick();

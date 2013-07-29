@@ -74,9 +74,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				bglevel.tick();
 			} else {
 				bglevel.c.tick();
-				Garbage.cursors.clear();
-				Garbage.cursors.addAll(bglevel.cursors);
-				for (Cursor c : Garbage.cursors) {
+				for (Cursor c : bglevel.cursors) {
 					c.tick();
 				}
 			}

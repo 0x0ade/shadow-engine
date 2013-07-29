@@ -118,9 +118,7 @@ public abstract class Mob extends Entity {
 				for (int y = -1; y <= 0; y++) {
 					Array<Block> blocks = layer.get(Coord.get((int)(pos.x + x), (int)(pos.y + y)));
 					if (blocks != null) {
-						Garbage.blocks.clear();
-						Garbage.blocks.addAll(blocks);
-						for (Block b : Garbage.blocks) {
+						for (Block b : blocks) {
 							if (b == null) continue;
 							if (!b.solid) continue;
 							
@@ -153,9 +151,7 @@ public abstract class Mob extends Entity {
 					for (int y = -JUMPHAI-1; y <= -2; y++) {
 						Array<Block> blocks = layer.get(Coord.get(pos.x + x, pos.y + y));
 						if (blocks != null) {
-							Garbage.blocks.clear();
-							Garbage.blocks.addAll(blocks);
-							for (Block b : Garbage.blocks) {
+							for (Block b : blocks) {
 								if (b == null) continue;
 								if (!b.solid) continue;
 								//b.highlight();
