@@ -134,9 +134,11 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	@Override
 	public void dispose() {
 		Gdx.input.setInputProcessor(null);
-		if (Shadow.isAndroid) {
+		if (Shadow.isAndroid && !Shadow.isOuya) {
 			System.exit(0);
 		}
+		//TODO: save data
+		//TODO: cleanup resources
 	}
 
 	@Override
