@@ -7,6 +7,7 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.gdxutils.ShortMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -28,7 +29,7 @@ import com.badlogic.gdx.utils.IntMap.Entry;
 
 public class Level {
 	
-	public IntMap<Layer> layers = new IntMap<Layer>();
+	public ShortMap<Layer> layers = new ShortMap<Layer>();
 	public Layer mainLayer = new Layer(this);
 	public LightSystem lights = new BasicLightSystem(this);
 	public TimeDaySystem timeday = new TimeDaySystem(this);
