@@ -108,12 +108,12 @@ public class Images {
 	}
 	
 	public static void addImage(String savename, String loadname) {
-		addImage(savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
+		addImage(savename, loadname, TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest);
 	}
 	
 	public static void addImage(String savename, String loadname, TextureFilter minFilter, TextureFilter magFilter) {
 		try {
-			Texture t = new Texture(Gdx.files.internal(loadname));
+			Texture t = new Texture(Gdx.files.internal(loadname), true);
 			t.setFilter(minFilter, magFilter);
 			addTexture(savename, t);
 			Image i = new Image(t);
@@ -125,7 +125,7 @@ public class Images {
 	}
 
 	public static void addImageByMod(AMod mod, String savename, String loadname) {
-		addImageByMod(mod, savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
+		addImageByMod(mod, savename, loadname, TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest);
 	}
 	
 	public static void addImageByMod(AMod mod, String savename, String loadname, TextureFilter minFilter, TextureFilter magFilter) {
