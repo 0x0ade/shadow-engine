@@ -73,10 +73,10 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			if (!bgpaused) {
 				bglevel.tick();
 			} else {
-				bglevel.c.tick();
-				for (Cursor c : bglevel.cursors) {
-					c.tick();
-				}
+				//bglevel.c.tick();
+				//for (Cursor c : bglevel.cursors) {
+				//	c.tick();
+				//}
 			}
 			if (bglevel.player != null) {
 				player.canInteract = lastInteract;

@@ -159,8 +159,12 @@ public class Input {
 							listeners.removeValue(kl, true);
 						}
 					} else {
-						MenuLevel ml = (MenuLevel) sl;
-						if (l != ml.bglevel) {
+						if (sl instanceof MenuLevel) {
+							MenuLevel ml = (MenuLevel) sl;
+							if (l != ml.bglevel) {
+								listeners.removeValue(kl, true);
+							}
+						} else {
 							listeners.removeValue(kl, true);
 						}
 					}

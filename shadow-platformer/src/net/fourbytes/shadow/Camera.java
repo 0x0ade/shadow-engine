@@ -267,7 +267,8 @@ public class Camera implements Input.KeyListener {
 			if (block.rendertop) continue;
 			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
 			if (camrec.overlaps(objrec) && level) {
-				block.preRender();
+				//block.preRender();
+				block.tmpimg.setPosition(block.tmpimg.getX()-0.125f, block.tmpimg.getY()-0.125f);
 				if (!block.blending) {
 					Shadow.spriteBatch.disableBlending();
 				}
@@ -295,7 +296,8 @@ public class Camera implements Input.KeyListener {
 			if (entity == null) continue;
 			objrec.set(entity.pos.x + entity.renderoffs.x, entity.pos.y + entity.renderoffs.y, entity.rec.width + entity.renderoffs.width, entity.rec.height + entity.renderoffs.height);
 			if (camrec.overlaps(objrec) && level) {
-				entity.preRender();
+				//entity.preRender();
+				entity.tmpimg.setPosition(entity.tmpimg.getX()-0.125f, entity.tmpimg.getY()-0.125f);
 				if (!entity.blending) {
 					Shadow.spriteBatch.disableBlending();
 				}
@@ -324,7 +326,8 @@ public class Camera implements Input.KeyListener {
 			if (!block.rendertop) continue;
 			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
 			if (camrec.overlaps(objrec) && level) {
-				block.preRender();
+				//block.preRender();
+				block.tmpimg.setPosition(block.tmpimg.getX()-0.125f, block.tmpimg.getY()-0.125f);
 				if (!block.blending) {
 					Shadow.spriteBatch.disableBlending();
 				}

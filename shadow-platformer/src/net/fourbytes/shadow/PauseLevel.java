@@ -26,7 +26,11 @@ public class PauseLevel extends TitleLevel {
 			}}));
 		
 		items.addAll(this.items);
-		items.removeIndex(2);
+		for (MenuItem item : this.items) {
+			if (item.text.toLowerCase().startsWith("start ")) {
+				items.removeValue(item, true);
+			}
+		}
 		this.items = items;
 		
 		hasvoid = false;

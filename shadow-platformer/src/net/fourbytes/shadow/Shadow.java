@@ -308,6 +308,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		ModLoader.preTick();
 		controllerHelper.tick();
 		Input.tick();
+		Level tmplvl = level;
 		if (level != null) {
 			level.tick();
 		}
