@@ -46,8 +46,7 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 	
 	@Override
 	public TextureRegion getTexture() {
-		Sprite sheet = new Sprite(Images.getTexture("block_dissolve"));
-		TextureRegion[][] regs = sheet.split(16, 16);
+		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("block_dissolve"), 16, 16);
 		TextureRegion reg = null;
 		reg = regs[0][0];
 		return reg;

@@ -4,6 +4,7 @@ import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Images;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class BlockLava extends BlockFluid {
@@ -12,13 +13,13 @@ public class BlockLava extends BlockFluid {
 	}
 	
 	@Override
-	public TextureRegion getTexture0() {
-		return new TextureRegion(Images.getTexture("block_lava"));
+	public Texture getTexture0() {
+		return Images.getTexture("block_lava");
 	}
 	
 	@Override
-	public TextureRegion getTexture1() {
-		return new TextureRegion(Images.getTexture("block_lava_top"));
+	public Texture getTexture1() {
+		return Images.getTexture("block_lava_top");
 	}
 	
 	@Override

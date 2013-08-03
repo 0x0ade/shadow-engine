@@ -240,7 +240,7 @@ public class Camera implements Input.KeyListener {
 				block.preRender();
 				Image img = block.tmpimg;
 				origc.set(img.getColor());
-				img.setColor(0f, 0f, 0f, origc.a*0.5f);
+				img.setColor(0f, 0f, 0f, block.alpha*origc.a*0.5f);
 				//img.setColor(0f, 0f, 0f, 0.5f);
 				img.setPosition(img.getX()+0.125f, img.getY()+0.125f);
 				img.draw(Shadow.spriteBatch, 1f);
@@ -254,7 +254,7 @@ public class Camera implements Input.KeyListener {
 				entity.preRender();
 				Image img = entity.tmpimg;
 				origc.set(img.getColor());
-				img.setColor(0f, 0f, 0f, origc.a*0.5f);
+				img.setColor(0f, 0f, 0f, entity.alpha*origc.a*0.5f);
 				//img.setColor(0f, 0f, 0f, 0.5f);
 				img.setPosition(img.getX()+0.125f, img.getY()+0.125f);
 				img.draw(Shadow.spriteBatch, 1f);

@@ -69,8 +69,7 @@ public class BlockSpring extends BlockType {
 	
 	@Override
 	public TextureRegion getTexture() {
-		Sprite sheet = new Sprite(Images.getTexture("block_spring"));
-		TextureRegion[][] regs = sheet.split(16, 32);
+		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("block_spring"), 16, 32);
 		TextureRegion reg = null;
 		reg = regs[0][frame];
 		return reg;

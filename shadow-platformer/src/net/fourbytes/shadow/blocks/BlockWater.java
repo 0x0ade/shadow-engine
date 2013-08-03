@@ -2,6 +2,7 @@ package net.fourbytes.shadow.blocks;
 
 import net.fourbytes.shadow.Images;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class BlockWater extends BlockFluid {
@@ -20,13 +21,13 @@ public class BlockWater extends BlockFluid {
 	}
 	
 	@Override
-	public TextureRegion getTexture0() {
-		return new TextureRegion(Images.getTexture("block_water"));
+	public Texture getTexture0() {
+		return Images.getTexture("block_water");
 	}
 	
 	@Override
-	public TextureRegion getTexture1() {
-		return new TextureRegion(Images.getTexture("block_water_top"));
+	public Texture getTexture1() {
+		return Images.getTexture("block_water_top");
 	}
 	
 	

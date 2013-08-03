@@ -12,6 +12,7 @@ import net.fourbytes.shadow.Input;
 import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -42,7 +43,6 @@ public abstract class BlockFluid extends BlockType {
 	public void tick() {
 		if (subframe == -1) {
 			subframe++;
-			imgupdate = true;
 		}
 		
 		block.interactive = true;
@@ -55,7 +55,7 @@ public abstract class BlockFluid extends BlockType {
 		if (subframe > 24) {
 			frame++;
 			subframe = 0;
-			if (source != null) {
+			if (source != null && conor) {
 				if (!source.block.layer.blocks.contains(source.block, true)) {
 					height-=3;
 					if (source.block.pos.y < block.pos.y) {
@@ -71,6 +71,7 @@ public abstract class BlockFluid extends BlockType {
 		if (frame >= 4) {
 			frame = 0;
 			block.pixdur = rand.nextInt(20)+20;
+			imgupdate = true;
 		}
 		
 		topblock = true;
@@ -101,10 +102,12 @@ public abstract class BlockFluid extends BlockType {
 			for (Block b : al) {
 				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
 					onground = false;
+					imgupdate = true;
 					break;
 				}
 				if (b.solid) {
 					onground = true;
+					imgupdate = true;
 					break;
 				}
 				//if (!free) break;
@@ -193,11 +196,10 @@ public abstract class BlockFluid extends BlockType {
 	@Override
 	public TextureRegion getTexture() {
 		int height = this.height;
-		if (height <= 0) height = 1;
-		if (height > 16) height = 16;
+		//if (height <= 0) height = 1;
+		//if (height > 16) height = 16;
 		if (!topblock && height == 16) {
-			Sprite sheet = new Sprite(getTexture0());
-			TextureRegion[][] regs = sheet.split(16, height);
+			TextureRegion[][] regs = TextureRegion.split(getTexture0(), 16, height);
 			TextureRegion reg = null;
 			if (regs.length > 0) {
 				reg = regs[0][0];
@@ -206,8 +208,7 @@ public abstract class BlockFluid extends BlockType {
 				return new TextureRegion(Images.getTexture("white"));
 			}
 		} else {
-			Sprite sheet = new Sprite(getTexture1());
-			TextureRegion[][] regs = sheet.split(16, height);
+			TextureRegion[][] regs = TextureRegion.split(getTexture1(), 16, height);
 			TextureRegion reg = null;
 			if (regs.length > 0) {
 				reg = regs[0][frame];
@@ -218,8 +219,8 @@ public abstract class BlockFluid extends BlockType {
 		}
 	}
 
-	public abstract TextureRegion getTexture0();
-	public abstract TextureRegion getTexture1();
+	public abstract Texture getTexture0();
+	public abstract Texture getTexture1();
 	
 	@Override
 	public void preRender() {
