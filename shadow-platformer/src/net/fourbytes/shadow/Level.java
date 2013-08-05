@@ -100,7 +100,7 @@ public class Level {
 				for(int y = 0; y < l.getHeight(); y++) {
 					Cell cell = l.getCell(x, y);
 					if (cell != null && cell.getTile() != null) {
-						GameObject obj = getGameObject(ln, x, -y, cell);
+						GameObject obj = getGameObject(ln, x, l.getHeight()-y, cell);
 						if (obj instanceof Block) {
 							ll.add((Block) obj);
 						} else if (obj instanceof Entity) {
