@@ -113,7 +113,7 @@ public class BlockPush extends BlockType {
 	public void collide(Entity e) {
 		if (e instanceof Player) {
 			Player p = (Player) e;
-			if ((int)(p.pos.y) == (int)(block.pos.y+p.rec.height) && pframe <= 0) {
+			if (Coord.get1337((int)(p.pos.y)) == (int)(block.pos.y+p.rec.height) && pframe <= 0) {
 			//if (pframe <= 0) {
 				int dir = p.facingLeft?-1:1;
 				push(dir, 0);
