@@ -139,7 +139,7 @@ public class Cursor extends Entity {
 		mmb = isDown;
 	}
 	
-	final Vector2 oldpos = new Vector2();
+	static Vector2 oldpos = new Vector2();
 	final static Vector2 ppos = new Vector2();
 	
 	public Vector2 calcPos(Vector2 apos) {
