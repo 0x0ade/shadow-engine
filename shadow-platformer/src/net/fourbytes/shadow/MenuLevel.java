@@ -201,7 +201,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			}
 			logo.setScale(font.getScaleX(), font.getScaleY());
 			float possibruu = (float)Math.sin(logostep/16f)/8f;
-			logo.setPosition(vp.x + vp.width - logo.getWidth()*logo.getScaleX() - x1*32f, vp.y - logo.getHeight()*logo.getScaleY() - y1*32f + (float)Math.sin(logostep/32f)/8f + possibruu);
+			logo.setPosition(vp.x + vp.width - logo.getWidth()*logo.getScaleX() - x1*32f - 0.125f, vp.y - logo.getHeight()*logo.getScaleY() - y1*32f + (float)Math.sin(logostep/32f)/8f + possibruu - 0.125f);
 			logo.draw(Shadow.spriteBatch, 1f);
 		}
 		
@@ -226,7 +226,11 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			y += vp.y + vp.height/2;
 			y += y1*48f;
 			
+			font.setColor(0f, 0f, 0f, 0.5f);
+			font.draw(Shadow.spriteBatch, txt, x + 0.0525f, y + 0.0525f);
+			font.setColor(1f, 1f, 1f, 1f);
 			font.draw(Shadow.spriteBatch, txt, x, y);
+			
 			mi.mouser.set(x, y, tb.width, tb.height);
 			
 			if (mi == current) {
