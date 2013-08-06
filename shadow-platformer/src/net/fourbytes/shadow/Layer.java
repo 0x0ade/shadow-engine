@@ -34,7 +34,7 @@ public class Layer {
 	protected IntMap<Array<Block>> rowmap = new IntMap<Array<Block>>(256);
 	protected LongMap<Array<Block>> blockmap = new LongMap<Array<Block>>(1024);
 	
-	public Color tint = new Color(1f, 1f, 1f, 1f);
+	public final Color tint = new Color(1f, 1f, 1f, 1f);
 	
 	public static BlockMapSystem bms = BlockMapSystem.coordinate;
 	protected BlockMapSystem lastbms;

@@ -28,7 +28,7 @@ public class Camera implements Input.KeyListener {
 	
 	public Background bg;
 	public OrthographicCamera cam;
-	public BitmapFont fpsFont = Fonts.light_normal;
+	public static BitmapFont fpsFont = Fonts.light_normal;
 	
 	public Camera() {
 		this.cam = new OrthographicCamera(Shadow.vieww, -Shadow.viewh);

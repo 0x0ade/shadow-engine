@@ -21,10 +21,10 @@ public class BasicLightSystem extends LightSystem {
 		setLight((GameObject) e, ll);
 	}
 	
-	protected Color sun = new Color(1f, 1f, 1f, 1f);
-	protected Color dark = new Color(1f, 1f, 1f, 1f);
-	protected Color emit = new Color(1f, 1f, 1f, 1f);
-	protected Color tmpc = new Color(1f, 1f, 1f, 1f);
+	protected final static Color sun = new Color(1f, 1f, 1f, 1f);
+	protected final static Color dark = new Color(1f, 1f, 1f, 1f);
+	protected final static Color emit = new Color(1f, 1f, 1f, 1f);
+	protected final static Color tmpc = new Color(1f, 1f, 1f, 1f);
 	
 	
 	public void setLight(GameObject go, Layer ll) {

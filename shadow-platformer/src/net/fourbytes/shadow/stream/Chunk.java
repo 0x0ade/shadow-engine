@@ -30,8 +30,8 @@ public class Chunk extends Data {
 		this.y = y;
 	}
 	
-	public static Rectangle tmpcb = new Rectangle();
-	public static Rectangle tmpeb = new Rectangle();
+	public final static Rectangle tmpcb = new Rectangle();
+	public final static Rectangle tmpeb = new Rectangle();
 	
 	public static Chunk create(int x, int y, Level level) {
 		Chunk chunk = new Chunk(x, y);

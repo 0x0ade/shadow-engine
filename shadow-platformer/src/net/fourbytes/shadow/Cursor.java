@@ -139,13 +139,10 @@ public class Cursor extends Entity {
 		mmb = isDown;
 	}
 	
-	Vector2 oldpos;
-	Vector2 ppos = new Vector2();
+	final Vector2 oldpos = new Vector2();
+	final static Vector2 ppos = new Vector2();
 	
 	public Vector2 calcPos(Vector2 apos) {
-		if (oldpos == null) {
-			oldpos = new Vector2();
-		}
 		oldpos.set(apos);
 		Vector2 pos = ppos;
 		pos.set(apos);

@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class Images {
-	private static ObjectMap<String, Image> images = new ObjectMap<String, Image>();
-	private static ObjectMap<String, Texture> textures = new ObjectMap<String, Texture>();
+	private final static ObjectMap<String, Image> images = new ObjectMap<String, Image>();
+	private final static ObjectMap<String, Texture> textures = new ObjectMap<String, Texture>();
 	
 	public static void addImage(String savename, Image i) {
 		images.put(savename, i);

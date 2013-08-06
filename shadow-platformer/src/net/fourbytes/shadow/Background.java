@@ -75,10 +75,10 @@ public class Background {
 	
 	static Image white;
 	
-	static Color cc1 = new Color();
-	static Color cc2 = new Color();
-	static Rectangle vp = new Rectangle();
-	static Rectangle tvp = new Rectangle();
+	final static Color cc1 = new Color();
+	final static Color cc2 = new Color();
+	final static Rectangle vp = new Rectangle();
+	final static Rectangle tvp = new Rectangle();
 	
 	public void render() {
 		Shadow.spriteBatch.disableBlending();

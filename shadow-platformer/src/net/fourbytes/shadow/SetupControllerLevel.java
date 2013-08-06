@@ -14,6 +14,7 @@ public class SetupControllerLevel extends MenuLevel {
 	
 	public SetupControllerLevel(final MenuLevel parent) {
 		super(parent);
+		showtitle = false;
 		
 		Input.pause.listeners.add(this);
 		

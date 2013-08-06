@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class Sounds {
-	private static ObjectMap<String, Sound> sounds = new ObjectMap<String, Sound>();
+	private final static ObjectMap<String, Sound> sounds = new ObjectMap<String, Sound>();
 	
 	public static void addSound(String savename, Sound s) {
 		sounds.put(savename, s);
