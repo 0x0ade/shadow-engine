@@ -235,8 +235,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			
 			if (mi == current) {
 				if (image == null) {
-					Sprite sheet = new Sprite(Images.getTexture("player"));
-					TextureRegion[][] regs = sheet.split(16, 16);
+					TextureRegion[][] regs = TextureRegion.split(Images.getTexture("player"), 16, 16);
 					TextureRegion reg = null;
 					reg = regs[1][0];
 					image = new Image(reg);
@@ -249,7 +248,11 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				}
 				
 				image.setScale(font.getScaleX()*zoomscale, font.getScaleY()*zoomscale);
-				image.setPosition(x - 16f*image.getScaleX()*1.5f, (y+step) - 16f*image.getScaleY() - 3f/16f);
+				image.setPosition(x - 16f*image.getScaleX()*1.5f + 0.0825f, (y+step) - 16f*image.getScaleY() - 3f/16f + 0.0825f);
+				image.setColor(0f, 0f, 0f, 0.5f);
+				image.draw(Shadow.spriteBatch, 1f);
+				image.setPosition(image.getX() - 0.0825f, image.getY() - 0.0825f);
+				image.setColor(1f, 1f, 1f, 1f);
 				image.draw(Shadow.spriteBatch, 1f);
 			}
 			
