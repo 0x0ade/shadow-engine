@@ -227,7 +227,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			y += y1*48f;
 			
 			font.setColor(0f, 0f, 0f, 0.5f);
-			font.draw(Shadow.spriteBatch, txt, x + 0.0525f, y + 0.0525f);
+			font.draw(Shadow.spriteBatch, txt, x + 0.0825f, y + 0.0825f);
 			font.setColor(1f, 1f, 1f, 1f);
 			font.draw(Shadow.spriteBatch, txt, x, y);
 			
