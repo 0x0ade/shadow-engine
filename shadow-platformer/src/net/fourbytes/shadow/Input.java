@@ -250,6 +250,7 @@ public class Input {
 		
 		//up.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
 		jump.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
+		up.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
 		down.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-2, 1, 1);
 		left.disprec = new Rectangle(1, Shadow.touchh-2, 1, 1);
 		right.disprec = new Rectangle(3, Shadow.touchh-2, 1, 1);
