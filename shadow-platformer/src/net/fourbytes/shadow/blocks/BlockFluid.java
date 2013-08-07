@@ -80,6 +80,7 @@ public abstract class BlockFluid extends BlockType {
 			for (Block b : al) {
 				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
 					height = 16;
+					imgupdate = true;
 				}
 				topblock = false;
 				break;
@@ -131,7 +132,7 @@ public abstract class BlockFluid extends BlockType {
 		boolean free = true;
 		
 		if (height <= 3) {
-			return false;
+			return !hupdate;
 		}
 		
 		if (conor) {
@@ -151,11 +152,13 @@ public abstract class BlockFluid extends BlockType {
 					if (isSameType(((TypeBlock)b).type)) {
 						if (hupdate) {
 							((BlockFluid)((TypeBlock)b).type).height = height;
+							b.imgupdate = true;
 							((BlockFluid)((TypeBlock)b).type).source = this;
 						} else {
 							BlockFluid fluid = ((BlockFluid)((TypeBlock)b).type);
 							if (fluid.height < height) {
 								fluid.height = height;
+								fluid.block.imgupdate = true;
 								fluid.source = this;
 							}
 						}
@@ -226,10 +229,12 @@ public abstract class BlockFluid extends BlockType {
 	public void preRender() {
 		block.tmpimg = block.getImage();
 		if (block.tmpimg != null) {
-			block.tmpimg.setScaleY(-1f);
+			block.tmpimg.setScaleY(-1f * (height/16f));
 			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-			block.tmpimg.setPosition(block.pos.x, block.pos.y + 1);
-			block.tmpimg.setSize(block.rec.width, 1*(height*(1f/16f)));
+			block.tmpimg.setPosition(block.pos.x, block.pos.y + 1f);
+			//block.tmpimg.setSize(block.rec.width, 1f*(height*(1f/16f)));
+			//block.tmpimg.setSize(block.rec.width, block.rec.height);
+			block.tmpimg.setSize(block.rec.width, 1f);
 		} else {
 			System.out.println("I: null; S: "+toString());
 		}
