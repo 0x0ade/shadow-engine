@@ -244,7 +244,12 @@ public class Input {
 	}
 	
 	public static void resize() {
-		cam = new OrthographicCamera(Shadow.touchw, -Shadow.touchh);
+		if (cam == null) {
+			cam = new OrthographicCamera(Shadow.touchw, -Shadow.touchh);
+		} else {
+			cam.viewportWidth = Shadow.touchw;
+			cam.viewportHeight = -Shadow.touchh;
+		}
 		cam.position.set(Shadow.touchw/2, Shadow.touchh/2, 0);
 		cam.update();
 		

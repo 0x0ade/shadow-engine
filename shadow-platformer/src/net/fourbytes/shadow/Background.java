@@ -151,11 +151,8 @@ public class Background {
 	}
 
 	public static Background getDefault() {
-		//Background bg = Background.getShade(new Color(0.2f, 0.5f, 0.7f, 1f), new Color(0f, 0.3f, 0.5f, 1f));
-		Background bg = Background.getShade(new Color(0f, 0.125f, 0.3f, 1f));
-		bg.starsAlpha = 1f;
-		bg.starsScrollX = 0f;
-		bg.starsScrollY = 0.01f;
+		//Background bg = Background.getShade(new Color(0f, 0.125f, 0.3f, 1f));
+		Background bg = Background.getShade(new Color(0.2f, 0.5f, 0.7f, 1f), new Color(0f, 0.125f, 0.3f, 1f));
 		return bg;
 	}
 
