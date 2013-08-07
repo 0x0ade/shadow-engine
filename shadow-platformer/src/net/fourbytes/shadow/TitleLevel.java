@@ -25,7 +25,9 @@ public class TitleLevel extends MenuLevel {
 			Gdx.app.exit();
 			}}));
 		
-		Shadow.cam.bg = Background.getDefault();
+		if (getClass().equals(TitleLevel.class)) {
+			Shadow.cam.bg = Background.getDefault();
+		}
 		
 		ready = true;
 	}
