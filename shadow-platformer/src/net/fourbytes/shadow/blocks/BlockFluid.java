@@ -116,8 +116,8 @@ public abstract class BlockFluid extends BlockType {
 		}
 		
 		if (pframe <= 0 && height > 4 && onground) {
-			boolean free1 = update(-1f, 0f, height-2, false);
-			boolean free2 = update(1f, 0f, height-2, false);
+			boolean free1 = update(-1f, 0f, height-1, false);
+			boolean free2 = update(1f, 0f, height-1, false);
 			if (free1 && free2) {
 				pframe = 20;
 			}
@@ -135,9 +135,9 @@ public abstract class BlockFluid extends BlockType {
 			return !hupdate;
 		}
 		
-		if (conor) {
+		/*if (conor) {
 			height++;
-		}
+		}*/
 		
 		Array<Block> al = block.layer.get(Coord.get(block.pos.x+xo, block.pos.y+yo));
 		if (al != null) {
