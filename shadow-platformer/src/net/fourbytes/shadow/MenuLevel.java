@@ -52,7 +52,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		if (parent != null) {
 			this.bglevel = parent.bglevel;
 		}
-		Input.listeners.add(this);
+		Input.keylisteners.add(this);
 		
 		System.gc();
 	}

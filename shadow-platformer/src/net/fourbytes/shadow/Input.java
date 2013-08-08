@@ -83,7 +83,7 @@ public class Input {
 		
 		public void down() {
 			//System.out.println("N: "+name+"; M: D; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
-			for (KeyListener l : listeners) {
+			for (KeyListener l : keylisteners) {
 				if (l instanceof Level && ((Level)l) != Shadow.level) {
 					continue;
 				}
@@ -96,7 +96,7 @@ public class Input {
 		
 		public void up() {
 			//System.out.println("N: "+name+"; M: U; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
-			for (KeyListener l : listeners) {
+			for (KeyListener l : keylisteners) {
 				if (l instanceof Level && ((Level)l) != Shadow.level) {
 					continue;
 				}
@@ -159,7 +159,7 @@ public class Input {
 	
 	public static ObjectMap<Integer, TouchPoint> touches = new ObjectMap<Integer, TouchPoint>();
 	
-	public static Array<KeyListener> listeners = new Array<KeyListener>();
+	public static Array<KeyListener> keylisteners = new Array<KeyListener>();
 	
 	public static void setUp() {
 		for (Key k : all) {
@@ -197,9 +197,9 @@ public class Input {
 			k.tick();
 		}
 		
-		for (KeyListener kl : listeners) {
+		for (KeyListener kl : keylisteners) {
 			if (kl == null) {
-				listeners.removeValue(kl, true);
+				keylisteners.removeValue(kl, true);
 				continue;
 			}
 			
@@ -216,16 +216,16 @@ public class Input {
 				if (l instanceof MenuLevel) {
 					MenuLevel ml = (MenuLevel) l;
 					if (ml != sl) {
-						listeners.removeValue(kl, true);
+						keylisteners.removeValue(kl, true);
 					}
 				} else {
 					if (sl instanceof MenuLevel) {
 						MenuLevel ml = (MenuLevel) sl;
 						if (l != ml.bglevel) {
-							listeners.removeValue(kl, true);
+							keylisteners.removeValue(kl, true);
 						}
 					} else {
-						listeners.removeValue(kl, true);
+						keylisteners.removeValue(kl, true);
 					}
 				}
 			}
@@ -239,13 +239,13 @@ public class Input {
 			if (go instanceof Entity) {
 				Entity e = (Entity) go;
 				if (e.layer == null || !e.layer.entities.contains(e, true) || clevel != e.layer.level) {
-					listeners.removeValue(kl, true);
+					keylisteners.removeValue(kl, true);
 				}
 			}
 			if (go instanceof Block) {
 				Block b = (Block) go;
 				if (b.layer == null || !b.layer.blocks.contains(b, true) || clevel != b.layer.level) {
-					listeners.removeValue(kl, true);
+					keylisteners.removeValue(kl, true);
 				}
 			}
 		}

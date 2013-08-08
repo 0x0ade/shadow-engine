@@ -44,7 +44,7 @@ public class Player extends Entity implements Input.KeyListener {
 	
 	public Player(Vector2 position, Layer layer) {
 		super(position, layer);
-		Input.listeners.add(this);
+		Input.keylisteners.add(this);
 		spawnpos = new Vector2(position);
 		setSize(1f, 1f);
 	}
