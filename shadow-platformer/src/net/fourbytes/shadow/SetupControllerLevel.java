@@ -16,7 +16,7 @@ public class SetupControllerLevel extends MenuLevel {
 		super(parent);
 		showtitle = false;
 		
-		Input.pause.listeners.add(this);
+		Input.listeners.add(this);
 		
 		items.add(getMenuItemFor(Input.up));
 		items.add(getMenuItemFor(Input.down));

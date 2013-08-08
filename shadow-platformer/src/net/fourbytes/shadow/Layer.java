@@ -38,7 +38,7 @@ public class Layer {
 	
 	public static BlockMapSystem bms = BlockMapSystem.coordinate;
 	protected BlockMapSystem lastbms;
-	public static float round = 4f;
+	public static float round = 2f;
 	
 	public Layer(Level level) {
 		this.level = level;

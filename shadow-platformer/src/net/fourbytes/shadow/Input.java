@@ -66,9 +66,6 @@ public class Input {
 		public int[] keyid;
 		Rectangle disprec;
 		Rectangle rec;
-		public Array<KeyListener> listeners = new Array<KeyListener>();
-		public Array<KeyListener> tmp;
-		public Array<KeyListener> tmp2;
 		int pointer = -1;
 		int triggerer = 0;
 		
@@ -82,16 +79,11 @@ public class Input {
 			this.rec = new Rectangle(rec);
 			this.disprec = new Rectangle(rec);
 			all.add(this);
-			
-			tmp = Garbage.keys;
-			tmp2 = Garbage.keys2;
 		}
 		
 		public void down() {
 			//System.out.println("N: "+name+"; M: D; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
-			tmp.clear();
-			tmp.addAll(listeners);
-			for (KeyListener l : tmp) {
+			for (KeyListener l : listeners) {
 				if (l instanceof Level && ((Level)l) != Shadow.level) {
 					continue;
 				}
@@ -104,9 +96,7 @@ public class Input {
 		
 		public void up() {
 			//System.out.println("N: "+name+"; M: U; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
-			tmp.clear();
-			tmp.addAll(listeners);
-			for (KeyListener l : tmp) {
+			for (KeyListener l : listeners) {
 				if (l instanceof Level && ((Level)l) != Shadow.level) {
 					continue;
 				}
@@ -128,69 +118,8 @@ public class Input {
 			
 			if (wasPressed()) up();
 			if (wasReleased()) down();
-			
-			tmp.clear();
-			tmp2.clear();
-			tmp.addAll(listeners);
-			for (KeyListener kl : tmp) {
-				if (tmp2.contains(kl, true)) {
-					continue;
-				}
-				tmp2.add(kl);
-				
-				if (kl == null) {
-					listeners.removeValue(kl, true);
-					continue;
-				}
-				
-				check(kl);
-			}
 		}
 		
-		public void check(KeyListener kl) {
-			if (kl instanceof Level) {
-				Level l = (Level) kl;
-				Level sl = Shadow.level;
-				
-				if (!(sl instanceof MenuLevel)) {
-					if (l instanceof MenuLevel) {
-						MenuLevel ml = (MenuLevel) l;
-						if (ml != sl) {
-							listeners.removeValue(kl, true);
-						}
-					} else {
-						if (sl instanceof MenuLevel) {
-							MenuLevel ml = (MenuLevel) sl;
-							if (l != ml.bglevel) {
-								listeners.removeValue(kl, true);
-							}
-						} else {
-							listeners.removeValue(kl, true);
-						}
-					}
-				}
-			}
-			if (kl instanceof GameObject) {
-				GameObject go = (GameObject) kl;
-				Level clevel = Shadow.level;
-				if (clevel instanceof MenuLevel) {
-					clevel = ((MenuLevel)clevel).bglevel;
-				}
-				if (go instanceof Entity) {
-					Entity e = (Entity) go;
-					if (e.layer == null || !e.layer.entities.contains(e, true) || clevel != e.layer.level) {
-						listeners.removeValue(kl, true);
-					}
-				}
-				if (go instanceof Block) {
-					Block b = (Block) go;
-					if (b.layer == null || !b.layer.blocks.contains(b, true) || clevel != b.layer.level) {
-						listeners.removeValue(kl, true);
-					}
-				}
-			}
-		}
-
 		public void render() {
 			ShapeType type = Shadow.shapeRenderer.getCurrentType();
 			Shadow.shapeRenderer.end();
@@ -230,6 +159,8 @@ public class Input {
 	
 	public static ObjectMap<Integer, TouchPoint> touches = new ObjectMap<Integer, TouchPoint>();
 	
+	public static Array<KeyListener> listeners = new Array<KeyListener>();
+	
 	public static void setUp() {
 		for (Key k : all) {
 			if (k.rec.x < 0) {
@@ -264,6 +195,59 @@ public class Input {
 	public static void tick() {
 		for (Key k :all) {
 			k.tick();
+		}
+		
+		for (KeyListener kl : listeners) {
+			if (kl == null) {
+				listeners.removeValue(kl, true);
+				continue;
+			}
+			
+			check(kl);
+		}
+	}
+	
+	public static void check(KeyListener kl) {
+		if (kl instanceof Level) {
+			Level l = (Level) kl;
+			Level sl = Shadow.level;
+			
+			if (!(sl instanceof MenuLevel)) {
+				if (l instanceof MenuLevel) {
+					MenuLevel ml = (MenuLevel) l;
+					if (ml != sl) {
+						listeners.removeValue(kl, true);
+					}
+				} else {
+					if (sl instanceof MenuLevel) {
+						MenuLevel ml = (MenuLevel) sl;
+						if (l != ml.bglevel) {
+							listeners.removeValue(kl, true);
+						}
+					} else {
+						listeners.removeValue(kl, true);
+					}
+				}
+			}
+		}
+		if (kl instanceof GameObject) {
+			GameObject go = (GameObject) kl;
+			Level clevel = Shadow.level;
+			if (clevel instanceof MenuLevel) {
+				clevel = ((MenuLevel)clevel).bglevel;
+			}
+			if (go instanceof Entity) {
+				Entity e = (Entity) go;
+				if (e.layer == null || !e.layer.entities.contains(e, true) || clevel != e.layer.level) {
+					listeners.removeValue(kl, true);
+				}
+			}
+			if (go instanceof Block) {
+				Block b = (Block) go;
+				if (b.layer == null || !b.layer.blocks.contains(b, true) || clevel != b.layer.level) {
+					listeners.removeValue(kl, true);
+				}
+			}
 		}
 	}
 	

@@ -124,9 +124,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		controllerHelper = new ControllerHelper();
 		Controllers.addListener(controllerHelper);
 		Input.setUp();
-		for (Key k : Input.all) {
-			k.listeners.add(this);
-		}
+		Input.listeners.add(this);
 		
 		cam = new Camera();
 	}
