@@ -55,6 +55,18 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static Camera cam;
 	public static float dispw = 1f;
 	public static float disph = 1f;
+	/**
+	 * 0x00 = Fully fixed (Are there any uses for this one?) <br>
+	 * 0x01 = Fixed height (Mobile devices, some tearing) <br>
+	 * 0x02 = Fixed width (PC and Ouya, most tested) <br>
+	 * Other: Fully dynamic (There are really NO uses for this, right? Right?)
+	 */
+	//TODO move magic numbers to class or enum
+ 	public static byte viewfixdir = 0x00;
+	/**
+	 * View Fixed Factor
+	 */
+	public static float viewff = 32f;
 	public static float vieww = 1f;
 	public static float viewh = 1f;
 	public static float touchw = 1f;
@@ -119,8 +131,27 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		
 		dispw = Gdx.graphics.getWidth();
 		disph = Gdx.graphics.getHeight();
-		viewh = 15f;
-		vieww = viewh*dispw/disph;
+		
+		if (!isAndroid || isOuya) {
+			viewfixdir = 0x02;
+		} else {
+			viewfixdir = 0x01;
+		}
+		
+		//Alternate values for view: vieww = 12.5f; viewh = 15f;
+		switch (viewfixdir) {
+		case 0x01:
+			vieww = dispw/viewff;
+			break;
+		case 0x02:
+			viewh = disph/viewff;
+			break;
+		default:
+			vieww = dispw/viewff;
+			viewh = disph/viewff;
+			break;
+		}
+		
 		touchh = 7f;
 		touchw = touchh*dispw/disph;
 		
@@ -131,6 +162,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		Input.keylisteners.add(this);
 		
 		cam = new Camera();
+		resize();
 	}
 
 	@Override
@@ -355,7 +387,22 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		if (Gdx.graphics != null) {
 			dispw = Gdx.graphics.getWidth();
 			disph = Gdx.graphics.getHeight();
-			vieww = viewh*dispw/disph;
+			
+			switch (viewfixdir) {
+			case 0x00:
+				vieww = dispw/viewff;
+				viewh = disph/viewff;
+				break;
+			case 0x01:
+				viewh = vieww*disph/dispw;
+				break;
+			case 0x02:
+				vieww = viewh*dispw/disph;
+				break;
+			default:
+				break;
+			}
+			
 			touchw = touchh*dispw/disph;
 			cam.resize();
 			Input.resize();
