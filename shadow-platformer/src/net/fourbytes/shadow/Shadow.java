@@ -51,7 +51,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static IStream server;
 	public static FrameBuffer fb;
 	public static SpriteBatch fbBatch;
-	public static boolean useFB = false;//TODO Enable FB only when necessary
+	public static boolean useFB = true;//TODO Disable FB only when necessary
 	public static Camera cam;
 	public static float dispw = 1f;
 	public static float disph = 1f;
@@ -59,7 +59,8 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static float viewh = 1f;
 	public static float touchw = 1f;
 	public static float touchh = 1f;
-	public static ShaderProgram shader;
+	public static ShaderProgram shaderSprites;
+	public static ShaderProgram shaderBuffer;
 	public static ShapeRenderer shapeRenderer;
 	public static SpriteBatch spriteBatch;
 	public static int frames = 0;
@@ -152,15 +153,22 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		
 		tick();
 		
+		if (shaderSprites != null) {
+			shaderSprites.begin();
+			shaderSprites.setUniformf("resolution", dispw, disph);
+			shaderSprites.end();
+		}
+		
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		if (useFB) {
+			if (shaderBuffer != null) {
+				shaderBuffer.begin();
+				shaderBuffer.setUniformf("resolution", dispw, disph);
+				shaderBuffer.end();
+			}
+			
 			fb.begin();
-		}
-		if (shader != null) {
-			shader.begin();
-			shader.setUniformf("resolution", dispw, disph);
-			shader.end();
 		}
 		spriteBatch.setColor(1f, 1f, 1f, 1f);
 		//Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
@@ -217,32 +225,47 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			fb = new FrameBuffer(Format.RGB565, (int) dispw, (int) disph, false); //TODO Decide if 565 or 4444
 			shapeRenderer = new ShapeRenderer();
 			
-			String shaderDesktop = "shaders/vignette";
-			String shaderAndroid = "shaders/basic";
-			String shaderOuya = "shaders/vignette";
-			String shaderLoad = isOuya?shaderOuya:isAndroid?shaderAndroid:shaderDesktop;
+			String shaderSpritesDesktop = "shaders/basic";
+			String shaderSpritesAndroid = "shaders/basic";
+			String shaderSpritesOuya = "shaders/basic";
+			String shaderSpritesLoad = isOuya?shaderSpritesOuya:isAndroid?shaderSpritesAndroid:shaderSpritesDesktop;
+			
+			String shaderBufferDesktop = "shaders/vignette";
+			String shaderBufferAndroid = "shaders/basic";
+			String shaderBufferOuya = "shaders/vignette";
+			String shaderBufferLoad = isOuya?shaderBufferOuya:isAndroid?shaderBufferAndroid:shaderBufferDesktop;
 			
 			try {
-				//TODO Change / update / fix / complete GLSL shaders
-				final String VERTEX = Gdx.files.internal(shaderLoad+".vert").readString();
-				final String FRAGMENT = Gdx.files.internal(shaderLoad+".frag").readString();
-				
 				ShaderProgram.pedantic = false;
 				
-				shader = new ShaderProgram(VERTEX, FRAGMENT);
+				//TODO Change / update / fix / complete GLSL shaders
+				final String vertexSprites = Gdx.files.internal(shaderSpritesLoad+".vert").readString();
+				final String fragmentSprites = Gdx.files.internal(shaderSpritesLoad+".frag").readString();
 				
-				if (shader.getLog().length()!=0) {
-					System.err.println(shader.getLog());
+				shaderSprites = new ShaderProgram(vertexSprites, fragmentSprites);
+				
+				if (shaderSprites.getLog().length()!=0) {
+					System.err.println(shaderSprites.getLog());
 				}
 				
-				spriteBatch = new SpriteBatch(2048, shader);
-				spriteBatch.setShader(shader);
+				final String vertexBuffer = Gdx.files.internal(shaderBufferLoad+".vert").readString();
+				final String fragmentBuffer = Gdx.files.internal(shaderBufferLoad+".frag").readString();
+				
+				shaderBuffer = new ShaderProgram(vertexBuffer, fragmentBuffer);
+				
+				if (shaderBuffer.getLog().length()!=0) {
+					System.err.println(shaderBuffer.getLog());
+				}
+				
 			} catch (Exception e) {
 				e.printStackTrace();
-				spriteBatch = new SpriteBatch(2048);
 			}
 			
+			spriteBatch = new SpriteBatch(2048);
 			fbBatch = new SpriteBatch(2);
+			
+			spriteBatch.setShader(shaderSprites);
+			fbBatch.setShader(shaderBuffer);
 			
 			Images.loadBasic();
 			
