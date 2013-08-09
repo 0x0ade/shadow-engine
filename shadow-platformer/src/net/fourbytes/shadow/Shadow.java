@@ -315,10 +315,10 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			level.tick();
 		}
 		if (server != null) {
-			server.update();
+			server.tick();
 		}
 		if (client != null) {
-			client.update();
+			client.tick();
 		}
 		ModLoader.postTick();
 	}
