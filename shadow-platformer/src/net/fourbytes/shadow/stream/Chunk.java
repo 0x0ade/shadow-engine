@@ -14,7 +14,7 @@ import net.fourbytes.shadow.Level;
  */
 public class Chunk extends Data {
 	
-	public static final int size = 15;
+	public static int size = 15;
 	
 	public int x;
 	public int y;
@@ -33,6 +33,13 @@ public class Chunk extends Data {
 	public final static Rectangle tmpcb = new Rectangle();
 	public final static Rectangle tmpeb = new Rectangle();
 	
+	/**
+	 * Creates and returns an chunk to send thru {@link Stream}s.
+	 * @param x Initial x position
+	 * @param y Initial y position
+	 * @param level Level to get the chunk from
+	 * @return Chunk containing all game objects in area of (x, y) to (x+size, y+size)
+	 */
 	public static Chunk create(int x, int y, Level level) {
 		Chunk chunk = new Chunk(x, y);
 		tmpcb.set(x, y, size, size);

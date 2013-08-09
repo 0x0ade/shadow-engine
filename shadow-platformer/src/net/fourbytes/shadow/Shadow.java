@@ -18,6 +18,7 @@ import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.mod.ModLoader;
+import net.fourbytes.shadow.stream.IStream;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -45,6 +46,12 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	
 	public static Random rand = new Random();
 	public static Level level;
+	public static ControllerHelper controllerHelper;
+	public static IStream client;
+	public static IStream server;
+	public static FrameBuffer fb;
+	public static SpriteBatch fbBatch;
+	public static boolean useFB = false;//TODO Enable FB only when necessary
 	public static Camera cam;
 	public static float dispw = 1f;
 	public static float disph = 1f;
@@ -53,11 +60,8 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static float touchw = 1f;
 	public static float touchh = 1f;
 	public static ShaderProgram shader;
-	public static FrameBuffer fb;
-	public static boolean useFB = false;//TODO Enable FB only when necessary
 	public static ShapeRenderer shapeRenderer;
 	public static SpriteBatch spriteBatch;
-	public static SpriteBatch fbBatch;
 	public static int frames = 0;
 	public static long lastmicro = 0;
 	public static int fps = 0;
@@ -70,7 +74,6 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static int loadstate = 0;
 	public static int loadtick = 0;
 	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6}};
-	public static ControllerHelper controllerHelper;
 	
 	public Shadow() {
 		super();
@@ -275,6 +278,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			}
 			if (loadtick == loadticks[0][4]) {
 				if (!isAndroid) {
+					//TODO Set up streams
 				}
 			}
 			if (loadtick == loadticks[0][5]) {
@@ -309,6 +313,12 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		Level tmplvl = level;
 		if (level != null) {
 			level.tick();
+		}
+		if (server != null) {
+			server.update();
+		}
+		if (client != null) {
+			client.update();
 		}
 		ModLoader.postTick();
 	}
