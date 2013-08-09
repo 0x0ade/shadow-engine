@@ -11,7 +11,12 @@ public class GameObjectData extends Data {
 	
 	public GameObjectData() {
 	}
-
+	
+	/**
+	 * Converts an {@link GameObject} to it's {@link GameObjectData}.
+	 * @param go {@link GameObject} to convert
+	 * @return {@link Data} to send thru streams.
+	 */
 	public static GameObjectData pack(GameObject go) {
 		// TODO Auto-generated method stub
 		return null;
