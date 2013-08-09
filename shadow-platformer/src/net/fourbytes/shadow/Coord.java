@@ -11,7 +11,7 @@ public class Coord {
 	}
 	
 	public static long get(float x, float y) {
-		return get(get7R011(x), get7R011(y));
+		return get((int) x, (int) y);
 	}
 	
 	public static int[] getXY(long l) {
@@ -32,17 +32,9 @@ public class Coord {
 	 */
 	public static int get1337(int x) {
 		if (x > 0) {//TODO Check if >= 0 needed.
-			//x++;
+			x++;
 		}
 		return x;
-	}
-	
-	/**
-	 * 7R0113D F1X F7W.<br>
-	 * Don't get irritated by the upper line. It's no hax.
-	 */
-	public static int get7R011(float x) {
-		return (x>0)?((int)Math.ceil(x)):((int)Math.floor(x)); //TODO Check if >= 0 needed.
 	}
 	
 }
