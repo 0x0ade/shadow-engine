@@ -1,8 +1,0 @@
-java.lang.ClassCastException: net.fourbytes.shadow.MemoryTestLevel cannot be cast to net.fourbytes.shadow.MenuLevel
-	at net.fourbytes.shadow.Input$Key.check(Input.java:162)
-	at net.fourbytes.shadow.Input$Key.tick(Input.java:146)
-	at net.fourbytes.shadow.Input.tick(Input.java:256)
-	at net.fourbytes.shadow.Shadow.tick(Shadow.java:310)
-	at net.fourbytes.shadow.Shadow.render(Shadow.java:152)
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:214)
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:112)

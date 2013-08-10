@@ -1,7 +1,0 @@
-java.lang.NullPointerException
-	at net.fourbytes.shadow.Camera.renderLayer(Camera.java:243)
-	at net.fourbytes.shadow.Camera.renderLevel(Camera.java:191)
-	at net.fourbytes.shadow.Camera.render(Camera.java:158)
-	at net.fourbytes.shadow.Shadow.render(Shadow.java:168)
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:214)
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:112)
