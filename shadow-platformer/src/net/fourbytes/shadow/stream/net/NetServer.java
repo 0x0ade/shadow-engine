@@ -18,7 +18,7 @@ public class NetServer extends NetStream implements IStreamServer {
 	}
 
 	@Override
-	public void receive() {
+	public void receive(Object o) {
 		// TODO Auto-generated method stub
 		
 	}

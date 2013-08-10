@@ -23,7 +23,7 @@ public class FileSystemStream implements IStream, IStreamClient, IStreamServer {
 	}
 
 	@Override
-	public void receive() {
+	public void receive(Object o) {
 		// TODO Auto-generated method stub
 		
 	}

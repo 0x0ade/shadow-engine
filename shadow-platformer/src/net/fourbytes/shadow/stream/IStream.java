@@ -20,7 +20,8 @@ public interface IStream {
 	
 	/**
 	 * Called internally when an object was received.
+	 * @param o Object to send.
 	 */
-	public void receive();
+	public void receive(Object o);
 	
 }
