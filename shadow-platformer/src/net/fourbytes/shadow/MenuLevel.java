@@ -291,9 +291,14 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			step += (oindex - index)*0.75f;
 		}
 		if (key == Input.enter) {
-			Runnable action = current.action;
-			if (action != null) {
-				action.run();
+			if (current == null) {
+				current = items.get(0);
+			}
+			if (current != null) {
+				Runnable action = current.action;
+				if (action != null) {
+					action.run();
+				}
 			}
 		}
 	}

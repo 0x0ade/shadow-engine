@@ -85,25 +85,25 @@ public class Background {
 		if (white == null) {
 			white = new Image(Images.getTexture("white"));
 		}
-		float barh = 64f/(Shadow.vieww/Shadow.viewh); //In pixur
+		float barh = 2f;
 		
 		vp.set(Shadow.cam.camrec);
 		
-		white.setSize(barh, barh);
-		white.setScale(Shadow.vieww*barh, -Shadow.viewh/Shadow.disph);
+		white.setSize(1f, -1f);
+		white.setScale(Shadow.vieww * Shadow.cam.cam.zoom, barh * Shadow.cam.cam.zoom);
 		white.setColor(c1);
 		
 		float i = 0;
-		float imax = vp.height/barh;
+		float imax = vp.height / -(barh / Shadow.cam.cam.zoom) - (2f*barh / Shadow.cam.cam.zoom);
 		
-		for (float y = vp.y + vp.height - white.getScaleY()*barh; y >= vp.y; y += white.getScaleY()*barh) {
+		for (float y = vp.y + vp.height; y > vp.y; y -= barh * Shadow.cam.cam.zoom) {
 			white.setPosition(vp.x, y);
 			
 			cc1.set(c1);
 			cc2.set(c2);
 			
 			cc1.mul(i/imax);
-			cc2.mul(1f-i/imax);
+			cc2.mul(1f - i/imax);
 			white.setColor(cc1);
 			white.getColor().add(cc2);
 			
