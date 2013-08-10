@@ -125,7 +125,7 @@ public class Images {
 	}
 
 	public static void addImageByMod(AMod mod, String savename, String loadname) {
-		addImageByMod(mod, savename, loadname, TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest);
+		addImageByMod(mod, savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
 	}
 	
 	public static void addImageByMod(AMod mod, String savename, String loadname, TextureFilter minFilter, TextureFilter magFilter) {
