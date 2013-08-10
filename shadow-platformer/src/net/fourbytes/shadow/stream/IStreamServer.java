@@ -1,8 +1,8 @@
 package net.fourbytes.shadow.stream;
 
 /**
- * This interface is an general server interface extending {@link IStreamNet}.
+ * This interface is an general server interface.
  */
-public interface IStreamServer extends IStreamNet {
+public interface IStreamServer {
 	
 }

@@ -12,10 +12,4 @@ public class FileSystemStream implements IStream, IStreamClient, IStreamServer {
 		
 	}
 	
-	@Override
-	public void update() {
-		// TODO Auto-generated method stub
-		
-	}
-	
 }
