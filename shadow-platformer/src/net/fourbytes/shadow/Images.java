@@ -108,7 +108,7 @@ public class Images {
 	}
 	
 	public static void addImage(String savename, String loadname) {
-		addImage(savename, loadname, TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest);
+		addImage(savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
 	}
 	
 	public static void addImage(String savename, String loadname, TextureFilter minFilter, TextureFilter magFilter) {
