@@ -59,13 +59,15 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static float dispw = 1f;
 	public static float disph = 1f;
 	/**
-	 * 0x00 = Fully fixed (Are there any uses for this one?) <br>
+	 * 0x00 = Fully dynamic (Useless, ugly, ...) <br>
 	 * 0x01 = Fixed height (Mobile devices, some tearing) <br>
 	 * 0x02 = Fixed width (PC and Ouya, most tested) <br>
-	 * Other: Fully dynamic (There are really NO uses for this, right? Right?)
+	 * 0x03 = Fully fixed (Resizing doesn't scale) <br>
+	 * 0x04 = Automatic scaling (Does what it says) <br>
+	 * Other: Gliatch.
 	 */
 	//TODO move magic numbers to class or enum
- 	public static byte viewfixdir = 0x00;
+ 	public static byte viewmode = 0x00;
 	/**
 	 * View Fixed Factor
 	 */
@@ -136,13 +138,16 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		disph = Gdx.graphics.getHeight();
 		
 		if (!isAndroid || isOuya) {
-			viewfixdir = 0x02;
+			viewmode = 0x02;
 		} else {
-			viewfixdir = 0x01;
+			viewmode = 0x01;
 		}
 		
 		//Alternate values for view: vieww = 12.5f; viewh = 15f;
-		switch (viewfixdir) {
+		switch (viewmode) {
+		case 0x00:
+			vieww = dispw/viewff;
+			viewh = disph/viewff;
 		case 0x01:
 			vieww = dispw/viewff;
 			break;
@@ -150,8 +155,6 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			viewh = disph/viewff;
 			break;
 		default:
-			vieww = dispw/viewff;
-			viewh = disph/viewff;
 			break;
 		}
 		
@@ -391,16 +394,27 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			dispw = Gdx.graphics.getWidth();
 			disph = Gdx.graphics.getHeight();
 			
-			switch (viewfixdir) {
+			switch (viewmode) {
 			case 0x00:
-				vieww = dispw/viewff;
-				viewh = disph/viewff;
 				break;
 			case 0x01:
 				viewh = vieww*disph/dispw;
 				break;
 			case 0x02:
 				vieww = viewh*dispw/disph;
+				break;
+			case 0x03:
+				vieww = dispw/viewff;
+				viewh = disph/viewff;
+				break;
+			case 0x04:
+				//TODO
+				vieww = dispw/viewff;
+				viewh = disph/viewff;
+				if (dispw/viewff >= 21.75f && disph/viewff >= 18f) {
+					vieww = vieww/1.5f;
+					viewh = viewh/1.5f;
+				}
 				break;
 			default:
 				break;
