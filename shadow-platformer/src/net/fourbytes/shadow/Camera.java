@@ -1,5 +1,6 @@
 package net.fourbytes.shadow;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -13,6 +14,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -351,6 +353,45 @@ public class Camera implements Input.KeyListener {
 				Shadow.shapeRenderer.rect(objrec.x, objrec.y, objrec.width, objrec.height);
 			}
 		}
+	}
+	
+	/**
+	 * Get a part of the screen as {@link Pixmap}.
+	 * @param x x position
+	 * @param y y position
+	 * @param w width
+	 * @param h height
+	 * @param flipY true (recommended) if the returned {@link Pixmap} should be flipped on it's Y axis
+	 * @return The {@link Pixmap} containing the pixel data of the screen part
+	 */
+	public static Pixmap getScreenshot(int x, int y, int w, int h, boolean flipY) {
+		Gdx.gl.glPixelStorei(GL10.GL_PACK_ALIGNMENT, 1);
+		
+		int channels = 3; //TODO Separate parameter?
+		Format format = channels==4?Format.RGBA8888:Format.RGB888;
+		
+		Pixmap pixmap = new Pixmap(w, h, format);
+		byte[] lines = new byte[w * h * channels];
+		
+		ByteBuffer pixels = pixmap.getPixels();
+		Gdx.gl.glReadPixels(x, y, w, h, channels==4?GL10.GL_RGBA:GL10.GL_RGB, GL10.GL_UNSIGNED_BYTE, pixels);
+		
+		if (flipY) {
+			final int numBytesPerLine = w * channels;
+			
+			for (int i = 0; i < h; i++) {
+				pixels.position((h - i - 1) * numBytesPerLine);
+				pixels.get(lines, i * numBytesPerLine, numBytesPerLine);
+			}
+			
+			pixels.clear();
+			pixels.put(lines);
+    	} else {
+    		pixels.clear();
+    		pixels.get(lines);
+    	}
+		
+		return pixmap;
 	}
 	
 }

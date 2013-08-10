@@ -30,9 +30,12 @@ import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.controllers.mappings.Ouya;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -51,7 +54,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static IStream server;
 	public static FrameBuffer fb;
 	public static SpriteBatch fbBatch;
-	public static boolean useFB = true;//TODO Disable FB only when necessary
+	public static boolean useFB = true; //Disable FB only when necessary
 	public static Camera cam;
 	public static float dispw = 1f;
 	public static float disph = 1f;
@@ -104,7 +107,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 					String rawpath = Shadow.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 					path = URLDecoder.decode(rawpath, "UTF-8");
 				} catch (Exception e1) {
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
 				
 				try {
@@ -254,7 +257,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		}
 		if (loadstate == 0) {
 			//Gdx.graphics.setVSync(true);
-			fb = new FrameBuffer(Format.RGB565, (int) dispw, (int) disph, false); //TODO Decide if 565 or 4444
+			fb = new FrameBuffer(Format.RGB565, (int) dispw, (int) disph, false); //TODO Decide if RGB565 or RGBA4444 or anything other
 			shapeRenderer = new ShapeRenderer();
 			
 			String shaderSpritesDesktop = "shaders/basic";
@@ -590,6 +593,39 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 					level = ml.bglevel;
 				}
 			} 
+		}
+		if (key == Input.screenshot) {
+			Pixmap pixmap = Camera.getScreenshot(0, 0, (int)dispw, (int)disph, false);
+			
+			try {
+				FileHandle fh = null;
+				
+				if (Shadow.isAndroid) {
+					fh = Gdx.files.external("shadowenginetest").child("screenshots");
+					fh.mkdirs();
+					fh = fh.child("screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
+				} else {
+					String path = "";
+					String rawpath = Shadow.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+					path = URLDecoder.decode(rawpath, "UTF-8");
+					
+					File dir = new File(path).getParentFile();
+					dir.mkdirs();
+					File file = new File(dir, "screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
+					file.createNewFile();
+					fh = Gdx.files.absolute(file.getAbsolutePath());
+					
+					//fh = Gdx.files.local("screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
+				}
+				
+				fh.parent().mkdirs();
+				
+				PixmapIO.writePNG(fh, pixmap);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			pixmap.dispose();
 		}
 	}
 

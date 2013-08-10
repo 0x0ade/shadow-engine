@@ -154,6 +154,8 @@ public class Input {
 	public static Key pause = new Key("Pause", new int[] {Keys.ESCAPE}, new Rectangle(-1, -1, -1, -1));
 	public static Key enter = new Key("Confirm", new int[] {Keys.ENTER}, new Rectangle(-1, -1, -1, -1));
 	
+	public static Key screenshot = new Key("Screenshot", new int[] {Keys.F12}, new Rectangle(-1, -1, -1, -1));
+	
 	public static Key androidBack = new Key("Back", new int[] {Keys.BACK}, new Rectangle(-1, -1, -1, -1));
 	public static Key androidMenu = new Key("Menu", new int[] {Keys.MENU}, new Rectangle(-1, -1, -1, -1));
 	
