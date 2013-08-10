@@ -20,6 +20,20 @@ public abstract class NetStream implements IStream {
 	}
 	
 	/**
+	 * Queues the given object or sends directly when possible.
+	 * @param o Object to send
+	 */
+	public final void send(Object o) {
+		//TODO Add object to queue
+		
+	}
+	
+	/**
+	 * Called internally when sending object. Subclasses should override this instead of {@link #send()}.
+	 */
+	public abstract void send0(Object o);
+	
+	/**
 	 * update() is client / server dependant as it forwards the update call to the underlying implementation.
 	 */
 	public abstract void update();

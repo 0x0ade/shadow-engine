@@ -12,4 +12,15 @@ public interface IStream {
 	 */
 	public void tick();
 	
+	/**
+	 * Sends an object thru the stream.
+	 * @param o Object to send.
+	 */
+	public void send(Object o);
+	
+	/**
+	 * Called internally when an object was received.
+	 */
+	public void receive();
+	
 }

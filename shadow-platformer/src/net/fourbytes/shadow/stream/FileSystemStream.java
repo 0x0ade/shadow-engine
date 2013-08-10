@@ -11,5 +11,17 @@ public class FileSystemStream implements IStream, IStreamClient, IStreamServer {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void send(Object o) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void receive() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
