@@ -1,0 +1,5 @@
+java.util.NoSuchElementException: 3
+	at com.badlogic.gdx.utils.Array$ArrayIterator.next(Array.java:461)
+	at net.fourbytes.shadow.MenuLevel.tick(MenuLevel.java:119)
+	at net.fourbytes.shadow.Shadow.tick(Shadow.java:400)
+	at net.fourbytes.shadow.Shadow$2.run(Shadow.java:185)
