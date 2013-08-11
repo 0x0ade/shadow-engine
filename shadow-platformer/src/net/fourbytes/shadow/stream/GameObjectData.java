@@ -35,7 +35,9 @@ public abstract class GameObjectData<T extends GameObject> extends Data {
 			}
 		}
 		
-		if (god != null) { //Well... it will never happen, right?
+		if (god == null) { //Well... it will never happen, right?
+			System.err.println("No GameObjectData for GameObject "+go);
+		} else {
 			god.pack(go);
 		}
 		
