@@ -78,7 +78,6 @@ public class Images {
 		addImage("block_lab1", "data/levels/tiles/lab1.png");
 		addImage("block_lab2", "data/levels/tiles/lab2.png");
 		addImage("block_sign_bg", "data/levels/tiles/sign_bg.png");
-		addImage("block_finish", "data/levels/tiles/finish.png");
 		addImage("block_ladder", "data/levels/tiles/ladder.png");
 		addImage("block_point", "data/levels/tiles/point.png");
 		addImage("block_push", "data/levels/tiles/pushblock.png");
@@ -86,12 +85,6 @@ public class Images {
 		addImage("block_vast_dirt", "data/levels/tiles/vast_dirt.png");
 		addImage("block_vast_grass", "data/levels/tiles/vast_grass.png");
 		addImage("block_stone", "data/levels/tiles/stone.png");
-		addImage("block_ore_bronze", "data/levels/tiles/ore_bronze.png");
-		addImage("block_ore_coal", "data/levels/tiles/ore_coal.png");
-		addImage("block_ore_gold", "data/levels/tiles/ore_gold.png");
-		addImage("block_ore_oreo", "data/levels/tiles/ore_oreo.png");
-		addImage("block_ore_silver", "data/levels/tiles/ore_silver.png");
-		addImage("block_ore_uranium", "data/levels/tiles/ore_uranium.png");
 		addImage("block_water", "data/levels/tiles/water.png");
 		addImage("block_water_top", "data/levels/tiles/water_top.png");
 		addImage("block_lava", "data/levels/tiles/lava.png");
