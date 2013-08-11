@@ -47,7 +47,7 @@ public class Chunk extends Data {
 		for (Entity e : level.mainLayer.entities) {
 			tmpeb.set(e.pos.x, e.pos.y, e.rec.width, e.rec.height);
 			if (tmpeb.overlaps(tmpcb)) {
-				chunk.objects.add(GameObjectData.pack(e));
+				chunk.objects.add(GameObjectData.autopack(e));
 			}
 		}
 		
@@ -58,7 +58,7 @@ public class Chunk extends Data {
 					for (Block b : blocks) {
 						tmpeb.set(b.pos.x, b.pos.y, b.rec.width, b.rec.height);
 						if (tmpeb.overlaps(tmpcb)) {
-							chunk.objects.add(GameObjectData.pack(b));
+							chunk.objects.add(GameObjectData.autopack(b));
 						}
 					}
 				}
