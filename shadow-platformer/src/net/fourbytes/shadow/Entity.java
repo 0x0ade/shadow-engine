@@ -14,12 +14,12 @@ public abstract class Entity extends GameObject {
 	
 	public Vector2 movement = new Vector2(0, 0);
 	public boolean facingLeft = true;
-	float slowdown = 0.8f;
-	Vector2 oldpos;
-	float objgravity = 1f;
+	public float slowdown = 0.8f;
+	public Vector2 oldpos;
+	public float objgravity = 1f;
 	
-	float MAXHEALTH = 1f;
-	float health = 1f;
+	public float MAXHEALTH = 1f;
+	public float health = 1f;
 	
 	public Entity(Vector2 position, Layer layer) {
 		super(position, layer);

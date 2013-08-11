@@ -16,6 +16,8 @@ import net.fourbytes.shadow.TypeBlock;
  */
 public abstract class GameObjectData<T extends GameObject> extends Data {
 	
+	public String clazz;
+	
 	public float alpha = 1f;
 	public int layer;
 	public Vector2 pos = new Vector2(0, 0);
@@ -69,6 +71,8 @@ public abstract class GameObjectData<T extends GameObject> extends Data {
 	 * @return {@link Data} to send thru streams.
 	 */
 	public final void pack(T go){
+		clazz = go.getClass().getName();
+		
 		alpha = go.alpha;
 		layer = 0; //TODO Get layer
 		pos.set(go.pos);
