@@ -96,7 +96,7 @@ public class Background {
 		float i = 0;
 		float imax = vp.height / -(barh / Shadow.cam.cam.zoom) - (2f*barh / Shadow.cam.cam.zoom);
 		
-		for (float y = vp.y + vp.height; y > vp.y; y -= barh * Shadow.cam.cam.zoom) {
+		for (float y = vp.y + vp.height; y > vp.y; y -= white.getScaleY()) {
 			white.setPosition(vp.x, y);
 			
 			cc1.set(c1);
@@ -126,8 +126,8 @@ public class Background {
 				s.color.a = starsAlpha*s.alpha;
 				white.setColor(s.color);
 				white.setPosition(s.vpp.x-((s.vpp.x-vp.x)/s.depth)+s.spp.x, s.vpp.y-((s.vpp.y-vp.y)/s.depth)+s.spp.y);
-				white.setSize(1f, 1f);
-				white.setScale(-Shadow.viewh/Shadow.disph * s.scale);
+				white.setSize(1f, -1f);
+				white.setScale(s.scale);
 				white.draw(Shadow.spriteBatch, 1f);
 			}
 		} else {
@@ -151,7 +151,11 @@ public class Background {
 	}
 
 	public static Background getDefault() {
-		//Background bg = Background.getShade(new Color(0f, 0.125f, 0.3f, 1f));
+		/*
+		Background bg = Background.getShade(new Color(0f, 0.125f, 0.3f, 1f));
+		bg.starsAlpha = 1f;
+		bg.starsScrollY = 0.01f;
+		*/
 		Background bg = Background.getShade(new Color(0.2f, 0.5f, 0.7f, 1f), new Color(0f, 0.125f, 0.3f, 1f));
 		return bg;
 	}
