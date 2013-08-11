@@ -13,9 +13,9 @@ public class EntityData extends GameObjectData<Entity> {
 	}
 
 	@Override
-	public GameObjectData<Entity> pack(Entity go) {
+	public void pack0(Entity go) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override

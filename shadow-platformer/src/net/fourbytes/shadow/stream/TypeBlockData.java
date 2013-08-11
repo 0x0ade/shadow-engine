@@ -15,9 +15,9 @@ public class TypeBlockData extends GameObjectData<TypeBlock> {
 	}
 
 	@Override
-	public GameObjectData<TypeBlock> pack(TypeBlock go) {
+	public void pack0(TypeBlock go) {
 		// TODO Auto-generated method stub
-		return null;
+		
 	}
 
 	@Override
