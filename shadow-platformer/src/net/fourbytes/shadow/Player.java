@@ -29,9 +29,8 @@ public class Player extends Entity implements Input.KeyListener {
 	
 	public int POINTS = 0;
 	
-	static final float SPEED = 0.1f;
+	public static final float SPEED = 0.1f;
 	public static final float JUMPH = 0.4f;
-	public boolean facingLeft = true;
 	public boolean standing = true;
 	int subframe = 0;
 	public int frame = 0;
