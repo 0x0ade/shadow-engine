@@ -65,8 +65,6 @@ public class Images {
 		addImage("moon", "data/moon.png");
 		addImage("void", "data/void.png");
 		
-		addImage("treefull", "data/levels/tiles/treefull.png");
-		
 		//BLOCKS
 		addImage("block_test", "data/levels/tiles/test.png");
 		addImage("block_dirt", "data/levels/tiles/dirt.png");
