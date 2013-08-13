@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.gdxutils.ByteMap;
 import net.fourbytes.shadow.gdxutils.ShortMap;
+import net.fourbytes.shadow.map.ShadowMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -118,25 +119,13 @@ public class Level {
 		GameObject obj = null;
 		String type = (String) cell.getTile().getProperties().get("type");
 		String subtype = (String) cell.getTile().getProperties().get("subtype");
-		if ("block".equals(type)) {
-			//System.out.println("tid: "+tid);
-			Block block = BlockType.getInstance(subtype, x, y, layers.get(ln));
-			block.subtype = subtype;
-			if ("false".equals((String)map.getLayers().get(ln).getProperties().get("solid"))) {
-				block.solid = false;
-			}
-			obj = block;
-		} else if ("entity".equals(type)) {
-			if ("Player".equals(subtype)) {
-				Entity ent = new Player(new Vector2(x, y), layers.get(ln));
-				player = (Player) ent;
-				obj = ent;
-			}
-		} else {
-			if (tid != 0) {
-				throw new IllegalStateException("unknown type "+type+" for block id "+tid);
-			}
+		
+		obj = ShadowMap.convert(this, x, y, ln, tid, type, subtype);
+		
+		if (obj instanceof Player) {
+			player = (Player) obj;
 		}
+		
 		return obj;
 	}
 	
