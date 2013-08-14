@@ -10,6 +10,8 @@ import net.fourbytes.shadow.stream.Data;
  */
 public class MapObject extends Data {
 	
+	public float x;
+	public float y;
 	public String type;
 	public String subtype;
 	public int layer;

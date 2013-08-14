@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.LongMap;
 import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.GameObject;
+import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Level;
 import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.blocks.BlockType;
@@ -34,7 +35,7 @@ public class ShadowMap {
 	 * @param subtype Subtype parameter ("Player" or "BlockDissolve.1")
 	 * @return {@link GameObject} "loaded" from map.
 	 */
-	public static GameObject convert(Level level, int x, int y, int ln, int tid, String type, String subtype) {
+	public static GameObject convert(int x, int y, Layer layer, int tid, String type, String subtype) {
 		GameObject obj = null;
 		if (type == null || type.isEmpty()) {
 			if (subtype.toLowerCase().startsWith("block")) {
@@ -45,12 +46,12 @@ public class ShadowMap {
 		}
 		if ("block".equals(type)) {
 			//System.out.println("tid: "+tid);
-			Block block = BlockType.getInstance(subtype, x, y, level.layers.get(ln));
+			Block block = BlockType.getInstance(subtype, x, y, layer);
 			block.subtype = subtype;
 			obj = block;
 		} else if ("entity".equals(type)) {
 			if ("Player".equals(subtype)) {
-				Entity ent = new Player(new Vector2(x, y), level.layers.get(ln));
+				Entity ent = new Player(new Vector2(x, y), layer);
 				obj = ent;
 			}
 		} else {
@@ -76,12 +77,21 @@ public class ShadowMap {
 	/**
 	 * Creates an {@link GameObject} out of an {@link MapObject} . 
 	 * @param mo {@link MapObject} to convert
+	 * @param level Level to allocate the GameObject to.
 	 * @return {@link GameObject} representing an closest-possible, 
 	 * thru-stream-sendable replica of the original {@link GameObject}.
 	 */
-	public static GameObject convert(MapObject mo) {
-		GameObject go = null;
-		// TODO Auto-generated method stub
+	public static GameObject convert(MapObject mo, Level level) {
+		Layer layer = null;
+		if (level != null) {
+			layer = level.layers.get(mo.layer);
+		}
+		int tid = 0;
+		GameObject go = convert((int) mo.x, (int)mo.y, layer, tid, mo.type, mo.subtype);
+		
+		//TODO Replace fields
+		//TODO Replace fields in BlockType when TypeBlock
+		
 		return go;
 	}
 	

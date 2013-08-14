@@ -120,7 +120,7 @@ public class Level {
 		String type = (String) cell.getTile().getProperties().get("type");
 		String subtype = (String) cell.getTile().getProperties().get("subtype");
 		
-		obj = ShadowMap.convert(this, x, y, ln, tid, type, subtype);
+		obj = ShadowMap.convert(x, y, layers.get(ln), tid, type, subtype);
 		
 		if (obj instanceof Player) {
 			player = (Player) obj;
