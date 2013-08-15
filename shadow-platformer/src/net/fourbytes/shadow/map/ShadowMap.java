@@ -3,6 +3,7 @@ package net.fourbytes.shadow.map;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.LongMap;
+import com.badlogic.gdx.utils.ObjectMap.Entry;
 
 import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Entity;
@@ -10,6 +11,7 @@ import net.fourbytes.shadow.GameObject;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Level;
 import net.fourbytes.shadow.Player;
+import net.fourbytes.shadow.TypeBlock;
 import net.fourbytes.shadow.blocks.BlockType;
 
 /**
@@ -89,8 +91,18 @@ public class ShadowMap {
 		int tid = 0;
 		GameObject go = convert((int) mo.x, (int)mo.y, layer, tid, mo.type, mo.subtype);
 		
-		//TODO Replace fields
-		//TODO Replace fields in BlockType when TypeBlock
+		Object o = go;
+		if (o instanceof TypeBlock) {
+			o = ((TypeBlock)o).type;
+		}
+		
+		for (Entry<String, Object> entry : mo.args.entries()) {
+			try {
+				o.getClass().getField(entry.key).set(o, entry.value);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		return go;
 	}
