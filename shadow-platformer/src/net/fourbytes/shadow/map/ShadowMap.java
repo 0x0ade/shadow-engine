@@ -71,8 +71,23 @@ public class ShadowMap {
 	 * to create another {@link GameObject} <b> representing an SIMILAR (!)</b> {@link GameObject} to the original.
 	 */
 	public static MapObject convert(GameObject go) {
-		MapObject mo = null;
-		// TODO Auto-generated method stub
+		MapObject mo = new MapObject();
+		
+		if (go instanceof Block) {
+			mo.type = "block";
+		} else if (go instanceof Entity) {
+			mo.type = "entity";
+		}
+		
+		if (go instanceof Block) {
+			mo.subtype = ((Block)go).subtype;
+		}
+		if (mo.subtype == null || mo.subtype.isEmpty()) {
+			mo.subtype = go.getClass().getSimpleName();
+		}
+		
+		//TODO Decide whether convert fields or not
+		
 		return mo;
 	}
 	
