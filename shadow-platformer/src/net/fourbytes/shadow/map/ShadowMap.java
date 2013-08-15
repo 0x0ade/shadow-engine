@@ -2,10 +2,12 @@ package net.fourbytes.shadow.map;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.LongMap;
-import com.badlogic.gdx.utils.ObjectMap.Entry;
+import com.badlogic.gdx.utils.ObjectMap;
 
 import net.fourbytes.shadow.Block;
+import net.fourbytes.shadow.Coord;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.GameObject;
 import net.fourbytes.shadow.Layer;
@@ -13,6 +15,7 @@ import net.fourbytes.shadow.Level;
 import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
 import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.gdxutils.ByteMap;
 
 /**
  * An ShadowMap is an specially saved map. It mostly differs from the TilED maps by saving an "snapshot" of 
@@ -111,7 +114,7 @@ public class ShadowMap {
 			o = ((TypeBlock)o).type;
 		}
 		
-		for (Entry<String, Object> entry : mo.args.entries()) {
+		for (ObjectMap.Entry<String, Object> entry : mo.args.entries()) {
 			try {
 				o.getClass().getField(entry.key).set(o, entry.value);
 			} catch (Exception e) {
@@ -138,7 +141,28 @@ public class ShadowMap {
 	 * @param level Level to fill.
 	 */
 	public void fillLevel(Level level) {
-		//TODO Stub
+		for (Chunk chunk : chunks.values()) {
+			convert(chunk, level, true);
+		}
+	}
+	
+	/**
+	 * Converts the content of temporarily loaded chunk, binding it (<b>NOT</a> adding it when add == false) to an level.
+	 * @param chunk Chunk to convert.
+	 * @param level Level to fill.
+	 * @param add Add the result of conversion to level?
+	 * @return Result of conversion.
+	 */
+	public Array<GameObject> convert(Chunk chunk, Level level, boolean add) {
+		Array<GameObject> gos = new Array<GameObject>();
+		for (MapObject mo : chunk.objects) {
+			GameObject go = convert(mo, level);
+			if (add) {
+				go.layer.add(go);
+			}
+			gos.add(go);
+		}
+		return gos;
 	}
 	
 	/**
@@ -148,8 +172,20 @@ public class ShadowMap {
 	 * {@link GameObject}s of the level.
 	 */
 	public static ShadowMap createFrom(Level level) {
-		ShadowMap map = null;
-		//TODO Stub
+		ShadowMap map = new ShadowMap();
+		for (ByteMap.Entry<Layer> layerentry: level.layers.entries()) {
+			for (GameObject go : layerentry.value.blocks) {
+				MapObject mo = convert(go);
+				Chunk chunk = map.chunks.get(Coord.get((int)mo.x / Chunk.size, (int)mo.y / Chunk.size));
+				if (chunk == null) {
+					chunk = new Chunk();
+					chunk.x = (int)mo.x / Chunk.size;
+					chunk.y = (int)mo.y / Chunk.size;
+					map.chunks.put(Coord.get((int)mo.x / Chunk.size, (int)mo.y / Chunk.size), chunk);
+				}
+				chunk.objects.add(mo);
+			}
+		}
 		return map;
 	}
 	
