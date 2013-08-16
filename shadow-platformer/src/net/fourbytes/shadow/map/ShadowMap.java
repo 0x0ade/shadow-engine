@@ -95,10 +95,9 @@ public class ShadowMap {
 			mo.type = "entity";
 		}
 		
-		if (go instanceof Block) {
+		if (go instanceof TypeBlock) {
 			mo.subtype = ((Block)go).subtype;
-		}
-		if (mo.subtype == null || mo.subtype.isEmpty()) {
+		} else if (mo.subtype == null || mo.subtype.isEmpty()) {
 			mo.subtype = go.getClass().getSimpleName();
 		}
 		
@@ -187,7 +186,7 @@ public class ShadowMap {
 		Array<GameObject> gos = new Array<GameObject>();
 		for (MapObject mo : chunk.objects) {
 			GameObject go = convert(mo, level);
-			if (add) {
+			if (go != null && add) {
 				go.layer.add(go);
 				if (level != null) {
 					if (go instanceof Player) {
@@ -238,7 +237,6 @@ public class ShadowMap {
 	public void save(FileHandle file) {
 		try {
 			String json = Garbage.json.toJson(this);
-			System.out.println(json);
 			OutputStream fos = file.write(false);
 			GZIPOutputStream gos = new GZIPOutputStream(fos);
 			gos.write(json.getBytes("UTF-8"));

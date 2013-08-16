@@ -79,6 +79,7 @@ public abstract class BlockType {
 			BlockType instance = (BlockType) c.getConstructor(argtypes).newInstance(args);
 			instance.subtype = bsubtype;
 			Block block = new TypeBlock(new Vector2(x, y), layer, instance);
+			block.subtype = subtype;
 			return block;
 		} catch (Throwable t) {
 			String imgname = subtype.toLowerCase();
