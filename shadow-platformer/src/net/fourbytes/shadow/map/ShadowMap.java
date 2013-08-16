@@ -151,7 +151,9 @@ public class ShadowMap {
 			}
 		}
 		int tid = 0;
-		GameObject go = convert((int) mo.x, (int)mo.y, layer, tid, mo.type, mo.subtype);
+		GameObject go = convert((int)mo.x, (int)mo.y, layer, tid, mo.type, mo.subtype);
+		go.pos.x = mo.x;
+		go.pos.y = mo.y;
 		
 		Object o = go;
 		if (o instanceof TypeBlock) {
