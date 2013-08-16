@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.Vector;
 
+import net.fourbytes.shadow.map.Saveable;
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
@@ -27,6 +28,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Player extends Entity implements Input.KeyListener {
 	
+	@Saveable
 	public int POINTS = 0;
 	
 	public static final float SPEED = 0.1f;
@@ -35,8 +37,11 @@ public class Player extends Entity implements Input.KeyListener {
 	int subframe = 0;
 	public int frame = 0;
 	int hframe = 0;
+	@Saveable
 	public int canJump = 0;
+	@Saveable
 	public int maxJump = 2;
+	@Saveable
 	public Vector2 spawnpos;
 	
 	public boolean canInteract = true;

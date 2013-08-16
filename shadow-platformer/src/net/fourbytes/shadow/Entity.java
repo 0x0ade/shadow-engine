@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
+import net.fourbytes.shadow.map.Saveable;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -12,13 +14,17 @@ import com.badlogic.gdx.utils.Array;
 
 public abstract class Entity extends GameObject {
 	
+	@Saveable
 	public Vector2 movement = new Vector2(0, 0);
+	@Saveable
 	public boolean facingLeft = true;
 	public float slowdown = 0.8f;
 	public Vector2 oldpos;
 	public float objgravity = 1f;
 	
+	@Saveable
 	public float MAXHEALTH = 1f;
+	@Saveable
 	public float health = 1f;
 	
 	public Entity(Vector2 position, Layer layer) {

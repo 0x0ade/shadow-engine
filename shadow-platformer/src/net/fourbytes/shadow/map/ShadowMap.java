@@ -121,14 +121,7 @@ public class ShadowMap {
 		
 		Field[] fields = go.getClass().getFields();
 		for (Field field : fields) {
-			Annotation[] annotations = field.getAnnotations();
-			Saveable saveable = null;
-			for (Annotation annotation : annotations) {
-				if (annotation instanceof Saveable) {
-					saveable = (Saveable) annotation;
-					break;
-				}
-			}
+			Saveable saveable = field.getAnnotation(Saveable.class);
 			if (saveable != null) {
 				try {
 					mo.args.put(field.getName(), field.get(go));

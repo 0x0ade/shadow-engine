@@ -2,6 +2,8 @@ package net.fourbytes.shadow;
 
 import java.util.Vector;
 
+import net.fourbytes.shadow.map.Saveable;
+
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -12,7 +14,6 @@ public abstract class Mob extends Entity {
 	public float SPEED = 0.065f;
 	public float JUMPH = 0.25f;
 	public int JUMPHAI = 1;
-	public boolean facingLeft = true;
 	public boolean standing = false;
 	int subframe = 0;
 	public int frame = 0;
@@ -21,6 +22,7 @@ public abstract class Mob extends Entity {
 	public int animSpeedInAir = 4;
 	public int canJump = 0;
 	public int maxJump = 1;
+	@Saveable
 	public Vector2 spawnpos;
 	public boolean invertedImage = false;
 	
