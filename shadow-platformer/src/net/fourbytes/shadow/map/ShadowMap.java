@@ -5,6 +5,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -22,6 +24,7 @@ import net.fourbytes.shadow.GameObject;
 import net.fourbytes.shadow.Garbage;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Level;
+import net.fourbytes.shadow.Mob;
 import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
 import net.fourbytes.shadow.blocks.BlockType;
@@ -68,6 +71,14 @@ public class ShadowMap {
 			if ("Player".equals(subtype)) {
 				Entity ent = new Player(new Vector2(x, y), layer);
 				obj = ent;
+			} else if (subtype.startsWith("Mob")) {
+				try {
+					Class clazz = ShadowMap.class.getClassLoader().loadClass("net.fourbytes.shadow."+subtype);
+					Mob mob = (Mob) clazz.getConstructor(Vector2.class, Layer.class).newInstance(new Vector2(x, y), layer);
+					obj = mob;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		} else {
 			if (tid != 0) {
@@ -108,7 +119,24 @@ public class ShadowMap {
 			}
 		}
 		
-		//TODO Decide whether convert fields or not
+		Field[] fields = go.getClass().getFields();
+		for (Field field : fields) {
+			Annotation[] annotations = field.getAnnotations();
+			Saveable saveable = null;
+			for (Annotation annotation : annotations) {
+				if (annotation instanceof Saveable) {
+					saveable = (Saveable) annotation;
+					break;
+				}
+			}
+			if (saveable != null) {
+				try {
+					mo.args.put(field.getName(), field.get(go));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 		
 		return mo;
 	}
