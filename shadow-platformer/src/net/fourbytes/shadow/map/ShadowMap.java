@@ -115,6 +115,9 @@ public class ShadowMap {
 		Layer layer = null;
 		if (level != null) {
 			layer = level.layers.get(mo.layer);
+			if (layer == null) {
+				level.fillLayer(mo.layer);
+			}
 		}
 		int tid = 0;
 		GameObject go = convert((int) mo.x, (int)mo.y, layer, tid, mo.type, mo.subtype);
