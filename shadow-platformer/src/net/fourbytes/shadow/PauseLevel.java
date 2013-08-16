@@ -6,6 +6,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 
 import net.fourbytes.shadow.Input.Key;
+import net.fourbytes.shadow.map.Chunk;
+import net.fourbytes.shadow.map.MapObject;
 import net.fourbytes.shadow.map.ShadowMap;
 
 public class PauseLevel extends TitleLevel {
@@ -30,15 +32,20 @@ public class PauseLevel extends TitleLevel {
 			}}));
 		items.add(new MenuItem(this, "Load", new Runnable(){public void run(){
 			//TODO
-			ShadowMap map = ShadowMap.loadFile(Gdx.files.local("TROLL.smf"));
 			for (Layer layer : bglevel.layers.values()) {
-				for (Block b : layer.blocks) {
-					layer.remove(b);
+				while (layer.blocks.size > 0) {
+					for (Block b : layer.blocks) {
+						layer.remove(b);
+					}
 				}
-				for (Entity e : layer.entities) {
-					layer.remove(e);
+				while (layer.entities.size > 0) {
+					for (Entity e : layer.entities) {
+						layer.remove(e);
+					}
 				}
 			}
+			
+			ShadowMap map = ShadowMap.loadFile(Gdx.files.local("TROLL.smf"));
 			map.fillLevel(bglevel);
 			Shadow.level = bglevel;
 			}}));

@@ -78,13 +78,16 @@ public class ShadowMap {
 	}
 	
 	/**
-	 * Creates an {@link MapObject} out of an {@link GameObject} . 
+	 * Creates an {@link MapObject} out of an {@link GameObject}.
 	 * @param go {@link GameObject} to convert
 	 * @return {@link MapObject} that can be converted back 
 	 * to create another {@link GameObject} <b> representing an SIMILAR (!)</b> {@link GameObject} to the original.
 	 */
 	public static MapObject convert(GameObject go) {
 		MapObject mo = new MapObject();
+		
+		mo.x = go.pos.x;
+		mo.y = go.pos.y;
 		
 		if (go instanceof Block) {
 			mo.type = "block";
@@ -97,6 +100,12 @@ public class ShadowMap {
 		}
 		if (mo.subtype == null || mo.subtype.isEmpty()) {
 			mo.subtype = go.getClass().getSimpleName();
+		}
+		
+		for (ByteMap.Entry<Layer> entry : go.layer.level.layers.entries()) {
+			if (entry.value == go.layer) {
+				mo.layer = entry.key;
+			}
 		}
 		
 		//TODO Decide whether convert fields or not
@@ -117,6 +126,7 @@ public class ShadowMap {
 			layer = level.layers.get(mo.layer);
 			if (layer == null) {
 				level.fillLayer(mo.layer);
+				layer = level.layers.get(mo.layer);
 			}
 		}
 		int tid = 0;
@@ -194,18 +204,25 @@ public class ShadowMap {
 		ShadowMap map = new ShadowMap();
 		for (ByteMap.Entry<Layer> layerentry: level.layers.entries()) {
 			for (GameObject go : layerentry.value.blocks) {
-				MapObject mo = convert(go);
-				Chunk chunk = map.chunks.get(Coord.get((int)mo.x / Chunk.size, (int)mo.y / Chunk.size));
-				if (chunk == null) {
-					chunk = new Chunk();
-					chunk.x = (int)mo.x / Chunk.size;
-					chunk.y = (int)mo.y / Chunk.size;
-					map.chunks.put(Coord.get((int)mo.x / Chunk.size, (int)mo.y / Chunk.size), chunk);
-				}
-				chunk.objects.add(mo);
+				add0(map, go);
+			}
+			for (GameObject go : layerentry.value.entities) {
+				add0(map, go);
 			}
 		}
 		return map;
+	}
+	
+	protected static void add0(ShadowMap map, GameObject go) {
+		MapObject mo = convert(go);
+		Chunk chunk = map.chunks.get(Coord.get((int)(mo.x / Chunk.size), (int)(mo.y / Chunk.size)));
+		if (chunk == null) {
+			chunk = new Chunk();
+			chunk.x = (int)(mo.x / Chunk.size);
+			chunk.y = (int)(mo.y / Chunk.size);
+			map.chunks.put(Coord.get((int)(mo.x / Chunk.size), (int)(mo.y / Chunk.size)), chunk);
+		}
+		chunk.objects.add(mo);
 	}
 	
 	/**

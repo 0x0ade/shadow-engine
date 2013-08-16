@@ -15,6 +15,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ObjectIntMap;
 import com.badlogic.gdx.utils.ObjectMap;
 
 public class Input {
@@ -209,6 +210,8 @@ public class Input {
 		}
 	}
 	
+	public static ObjectIntMap<KeyListener> timemap = new ObjectIntMap<KeyListener>();
+	
 	public static void check(KeyListener kl) {
 		if (kl instanceof Level) {
 			Level l = (Level) kl;
@@ -218,16 +221,16 @@ public class Input {
 				if (l instanceof MenuLevel) {
 					MenuLevel ml = (MenuLevel) l;
 					if (ml != sl) {
-						keylisteners.removeValue(kl, true);
+						remove(kl);
 					}
 				} else {
 					if (sl instanceof MenuLevel) {
 						MenuLevel ml = (MenuLevel) sl;
 						if (l != ml.bglevel) {
-							keylisteners.removeValue(kl, true);
+							remove(kl);
 						}
 					} else {
-						keylisteners.removeValue(kl, true);
+						remove(kl);
 					}
 				}
 			}
@@ -241,15 +244,25 @@ public class Input {
 			if (go instanceof Entity) {
 				Entity e = (Entity) go;
 				if (e.layer == null || !e.layer.entities.contains(e, true) || clevel != e.layer.level) {
-					keylisteners.removeValue(kl, true);
+					remove(kl);
 				}
 			}
 			if (go instanceof Block) {
 				Block b = (Block) go;
 				if (b.layer == null || !b.layer.blocks.contains(b, true) || clevel != b.layer.level) {
-					keylisteners.removeValue(kl, true);
+					remove(kl);
 				}
 			}
+		}
+	}
+	
+	private static void remove(KeyListener kl) {
+		if (!timemap.containsKey(kl)) {
+			timemap.put(kl, 0);
+		} else if (timemap.get(kl, 0) >= 25) {
+			keylisteners.removeValue(kl, true);
+		} else {
+			timemap.put(kl, timemap.get(kl, 0)+1);
 		}
 	}
 	

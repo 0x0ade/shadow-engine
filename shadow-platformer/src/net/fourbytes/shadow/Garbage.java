@@ -15,8 +15,6 @@ public final class Garbage {
 	private Garbage() {
 	}
 	
-	public final static Array<KeyListener> keys = new Array<KeyListener>();
-	public final static Array<KeyListener> keys2 = new Array<KeyListener>();
 	public final static Array<Particle> particles = new Array<Particle>();
 	public final static Rectangle genrec = new Rectangle();
 	public final static Rectangle rect = new Rectangle();

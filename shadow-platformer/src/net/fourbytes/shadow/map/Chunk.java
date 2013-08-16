@@ -15,7 +15,7 @@ import net.fourbytes.shadow.stream.Data;
  */
 public class Chunk extends Data {
 	
-	public static int size = 15;
+	public static float size = 15;
 	
 	public int x;
 	public int y;
