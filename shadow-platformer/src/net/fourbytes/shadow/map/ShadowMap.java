@@ -1,7 +1,11 @@
 package net.fourbytes.shadow.map;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -134,11 +138,17 @@ public class ShadowMap {
 	/**
 	 * Temporarily loads an ShadowMap into memory. Doesn't create an level.
 	 * @param file File to load map from.
-	 * @return ShadowMap containing {@link Chunk}s containing {@link MapObject}s NOT {@link GameObject}s.
+	 * @return ShadowMap containing {@link Chunk}s containing {@link MapObject}s NOT {@link GameObject}s, or null when failed.
 	 */
 	public static ShadowMap loadFile(FileHandle file) {
 		ShadowMap map = null;
-		//TODO Stub
+		try {
+			InputStream fis = file.read();
+			GZIPInputStream gis = new GZIPInputStream(fis);
+			map = Garbage.json.fromJson(ShadowMap.class, gis);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		return map;
 	}
 	
