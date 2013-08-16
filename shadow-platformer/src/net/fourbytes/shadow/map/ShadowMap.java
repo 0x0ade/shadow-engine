@@ -166,7 +166,7 @@ public class ShadowMap {
 	}
 	
 	/**
-	 * Converts the content of temporarily loaded chunk, binding it (<b>NOT</a> adding it when add == false) to an level.
+	 * Converts the content of temporarily loaded chunk, binding it (<b>NOT</b> adding it when add == false) to an level.
 	 * @param chunk Chunk to convert.
 	 * @param level Level to fill.
 	 * @param add Add the result of conversion to level?
