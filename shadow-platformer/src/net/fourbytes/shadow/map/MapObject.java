@@ -15,7 +15,7 @@ public class MapObject extends Data {
 	public String type;
 	public String subtype;
 	public int layer;
-	public ObjectMap<String, Object> args;
+	public ObjectMap<String, Object> args = new ObjectMap<String, Object>();
 	
 	public MapObject() {
 	}
@@ -24,7 +24,9 @@ public class MapObject extends Data {
 		this.type = type;
 		this.subtype = subtype;
 		this.layer = layer;
-		this.args = args;
+		if (args != null) {
+			this.args.putAll(args);
+		}
 	}
 
 }
