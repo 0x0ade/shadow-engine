@@ -1,8 +1,13 @@
 package net.fourbytes.shadow.map;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.zip.GZIPOutputStream;
+
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -10,6 +15,7 @@ import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Coord;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.GameObject;
+import net.fourbytes.shadow.Garbage;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Level;
 import net.fourbytes.shadow.Player;
@@ -194,7 +200,16 @@ public class ShadowMap {
 	 * @param file File to save the ShadowMap to.
 	 */
 	public void save(FileHandle file) {
-		//TODO Stub
+		try {
+			String json = Garbage.json.toJson(this);
+			System.out.println(json);
+			OutputStream fos = file.write(false);
+			GZIPOutputStream gos = new GZIPOutputStream(fos);
+			gos.write(json.getBytes("UTF-8"));
+			gos.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

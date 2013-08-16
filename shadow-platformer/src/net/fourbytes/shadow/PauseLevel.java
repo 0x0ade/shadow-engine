@@ -21,6 +21,12 @@ public class PauseLevel extends TitleLevel {
 		items.add(new MenuItem(this, "Continue", new Runnable(){public void run(){
 			Shadow.level = bglevel;
 			}}));
+		items.add(new MenuItem(this, "Save", new Runnable(){public void run(){
+			//TODO
+			}}));
+		items.add(new MenuItem(this, "Load", new Runnable(){public void run(){
+			//TODO
+			}}));
 		items.add(new MenuItem(this, "Main Menu", new Runnable(){public void run(){
 			Shadow.level = new TitleLevel();
 			}}));
