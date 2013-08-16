@@ -259,7 +259,7 @@ public class Input {
 	private static void remove(KeyListener kl) {
 		if (!timemap.containsKey(kl)) {
 			timemap.put(kl, 0);
-		} else if (timemap.get(kl, 0) >= 25) {
+		} else if (timemap.get(kl, 0) >= 4) {
 			keylisteners.removeValue(kl, true);
 		} else {
 			timemap.put(kl, timemap.get(kl, 0)+1);

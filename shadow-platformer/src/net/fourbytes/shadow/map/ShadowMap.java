@@ -105,6 +105,7 @@ public class ShadowMap {
 		for (ByteMap.Entry<Layer> entry : go.layer.level.layers.entries()) {
 			if (entry.value == go.layer) {
 				mo.layer = entry.key;
+				break;
 			}
 		}
 		
@@ -188,6 +189,11 @@ public class ShadowMap {
 			GameObject go = convert(mo, level);
 			if (add) {
 				go.layer.add(go);
+				if (level != null) {
+					if (go instanceof Player) {
+						level.player = (Player) go;
+					}
+				}
 			}
 			gos.add(go);
 		}
@@ -202,11 +208,11 @@ public class ShadowMap {
 	 */
 	public static ShadowMap createFrom(Level level) {
 		ShadowMap map = new ShadowMap();
-		for (ByteMap.Entry<Layer> layerentry: level.layers.entries()) {
-			for (GameObject go : layerentry.value.blocks) {
+		for (Layer layer: level.layers.values()) {
+			for (GameObject go : layer.blocks) {
 				add0(map, go);
 			}
-			for (GameObject go : layerentry.value.entities) {
+			for (GameObject go : layer.entities) {
 				add0(map, go);
 			}
 		}
