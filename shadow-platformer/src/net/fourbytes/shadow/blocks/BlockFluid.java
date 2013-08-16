@@ -75,7 +75,24 @@ public abstract class BlockFluid extends BlockType {
 		}
 		
 		topblock = true;
-		Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y-1));
+		
+		Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y));
+		if (al != null) {
+			for (Block b : al) {
+				if (b == block) {
+					continue;
+				}
+				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
+					continue;
+				}
+				if (b.solid) {
+					block.layer.remove(block);
+					return;
+				}
+			}
+		}
+		
+		al = block.layer.get(Coord.get(block.pos.x, block.pos.y-1));
 		if (al != null) {
 			for (Block b : al) {
 				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
@@ -153,13 +170,17 @@ public abstract class BlockFluid extends BlockType {
 						if (hupdate) {
 							((BlockFluid)((TypeBlock)b).type).height = height;
 							b.imgupdate = true;
-							((BlockFluid)((TypeBlock)b).type).source = this;
+							if (((BlockFluid)((TypeBlock)b).type).source != null) {
+								((BlockFluid)((TypeBlock)b).type).source = this;
+							}
 						} else {
 							BlockFluid fluid = ((BlockFluid)((TypeBlock)b).type);
 							if (fluid.height < height) {
 								fluid.height = height;
 								fluid.block.imgupdate = true;
-								fluid.source = this;
+								if (fluid.source != null) {
+									fluid.source = this;
+								}
 							}
 						}
 						free = false;
