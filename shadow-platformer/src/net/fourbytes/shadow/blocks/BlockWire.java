@@ -36,6 +36,8 @@ public class BlockWire extends BlockType implements BlockLogic {
 	public void tick() {
 		block.interactive = true;
 		block.solid = false;
+		block.passSunlight = false;
+		block.alpha = 0f;
 		
 		if (send == -6) {
 			for (Layer l : block.layer.level.layers.values()) {
@@ -68,9 +70,9 @@ public class BlockWire extends BlockType implements BlockLogic {
 	
 	@Override
 	public void render() {
-		if (send < 0) {
+		/*if (send < 0) {
 			super.render();
-		}
+		}*/
 	}
 
 	@Override

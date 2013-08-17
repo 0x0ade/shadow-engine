@@ -44,6 +44,7 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 		} else {
 			block.solid = triggered;
 		}
+		block.passSunlight = !block.solid;
 		block.alpha = block.solid?1f:0f;
 	}
 	

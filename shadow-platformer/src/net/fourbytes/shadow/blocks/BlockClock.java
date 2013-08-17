@@ -41,6 +41,7 @@ public class BlockClock extends BlockType implements BlockLogic {
 		block.interactive = true;
 		block.solid = false;
 		block.alpha = 0f;
+		block.passSunlight = false;
 		timer++;
 		if (timer >= totime*factor) {
 			timer = 0;
