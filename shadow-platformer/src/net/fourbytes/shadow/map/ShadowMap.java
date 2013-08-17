@@ -119,12 +119,17 @@ public class ShadowMap {
 			}
 		}
 		
-		Field[] fields = go.getClass().getFields();
+		Object o = go;
+		if (go instanceof TypeBlock) {
+			o = ((TypeBlock)go).type;
+		}
+		
+		Field[] fields = o.getClass().getFields();
 		for (Field field : fields) {
 			Saveable saveable = field.getAnnotation(Saveable.class);
 			if (saveable != null) {
 				try {
-					mo.args.put(field.getName(), field.get(go));
+					mo.args.put(field.getName(), field.get(o));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
