@@ -116,7 +116,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 					e1.printStackTrace();
 				}
 				
-				dir = Gdx.files.absolute(path);
+				dir = Gdx.files.absolute(path).parent();
 			}
 			dir.mkdirs();
 			return dir;
