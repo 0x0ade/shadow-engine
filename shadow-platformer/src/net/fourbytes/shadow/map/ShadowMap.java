@@ -38,6 +38,7 @@ import net.fourbytes.shadow.gdxutils.ByteMap;
 public class ShadowMap {
 	
 	public LongMap<Chunk> chunks = new LongMap<Chunk>();
+	public long playerchunk;
 	
 	public ShadowMap() {
 	}
@@ -256,12 +257,16 @@ public class ShadowMap {
 	
 	protected static void add0(ShadowMap map, GameObject go) {
 		MapObject mo = convert(go);
-		Chunk chunk = map.chunks.get(Coord.get((int)(mo.x / Chunk.size), (int)(mo.y / Chunk.size)));
+		long c = Coord.get((int)(mo.x / Chunk.size), (int)(mo.y / Chunk.size));
+		Chunk chunk = map.chunks.get(c);
 		if (chunk == null) {
 			chunk = new Chunk();
 			chunk.x = (int)(mo.x / Chunk.size);
 			chunk.y = (int)(mo.y / Chunk.size);
-			map.chunks.put(Coord.get((int)(mo.x / Chunk.size), (int)(mo.y / Chunk.size)), chunk);
+			map.chunks.put(c, chunk);
+		}
+		if (go instanceof Player) {
+			map.playerchunk = c;
 		}
 		chunk.objects.add(mo);
 	}
