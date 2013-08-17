@@ -56,8 +56,12 @@ public class BlockPush extends BlockType {
 			if (al != null) {
 				for (Block b : al) {
 					if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
-						free = false;
-						break;
+						if (((BlockFluid)((TypeBlock)b).type).height > 12) {
+							free = false;
+							break;
+						} else {
+							continue;
+						}
 					}
 					if (!b.solid) continue;
 					free = false;

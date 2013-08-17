@@ -40,6 +40,7 @@ public class NetClient extends NetStream implements IStreamClient {
 				//TODO
 			}
 		});
+		client.start();
 	}
 	
 	@Override

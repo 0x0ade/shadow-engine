@@ -45,6 +45,7 @@ public class NetServer extends NetStream implements IStreamServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		server.start();
 	}
 	
 	@Override

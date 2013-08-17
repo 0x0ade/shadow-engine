@@ -19,6 +19,8 @@ import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.mod.ModLoader;
 import net.fourbytes.shadow.stream.IStream;
+import net.fourbytes.shadow.stream.net.NetClient;
+import net.fourbytes.shadow.stream.net.NetServer;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -50,8 +52,6 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static Random rand = new Random();
 	public static Level level;
 	public static ControllerHelper controllerHelper;
-	public static IStream client;
-	public static IStream server;
 	public static FrameBuffer fb;
 	public static SpriteBatch fbBatch;
 	public static boolean useFB = true; //Disable FB only when necessary
@@ -92,6 +92,9 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static int loadstate = 0;
 	public static int loadtick = 0;
 	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6}};
+	
+	public static IStream client;
+	public static IStream server;
 	
 	public Shadow() {
 		super();
@@ -355,6 +358,8 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			if (loadtick == loadticks[0][4]) {
 				if (!isAndroid) {
 					//TODO Set up streams
+					client = new NetClient();
+					server = new NetServer();
 				}
 			}
 			if (loadtick == loadticks[0][5]) {
