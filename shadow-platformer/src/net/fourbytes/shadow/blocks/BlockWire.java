@@ -12,6 +12,7 @@ import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
+import net.fourbytes.shadow.map.Saveable;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -23,7 +24,9 @@ import com.badlogic.gdx.utils.Array;
 
 public class BlockWire extends BlockType implements BlockLogic {
 	
+	@Saveable
 	boolean triggered = false;
+	@Saveable
 	int send = 0;
 	
 	public BlockWire() {

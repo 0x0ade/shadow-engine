@@ -15,6 +15,7 @@ import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.Sounds;
 import net.fourbytes.shadow.TypeBlock;
 import net.fourbytes.shadow.blocks.BlockType.LogicType;
+import net.fourbytes.shadow.map.Saveable;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -26,7 +27,9 @@ import com.badlogic.gdx.utils.Array;
 
 public class BlockButton extends BlockType implements BlockLogic {
 	
+	@Saveable
 	boolean triggered = false;
+	@Saveable
 	int mode = 0;
 	
 	public BlockButton() {

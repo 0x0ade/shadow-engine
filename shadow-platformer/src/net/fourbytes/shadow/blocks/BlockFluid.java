@@ -11,6 +11,7 @@ import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Input;
 import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
+import net.fourbytes.shadow.map.Saveable;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -21,7 +22,7 @@ import com.badlogic.gdx.utils.Array;
 public abstract class BlockFluid extends BlockType {
 	
 	/*Conor-ian water system. Powered by Conor's redstone brain!*/
-	static boolean conor = true;
+	public static boolean conor = true;
 	public BlockFluid source;
 	
 	int subframe = -1;
@@ -30,6 +31,7 @@ public abstract class BlockFluid extends BlockType {
 	int gframe = 24;
 	int pframe = 20;
 	
+	@Saveable
 	public int height = 16;
 	
 	boolean topblock = true;

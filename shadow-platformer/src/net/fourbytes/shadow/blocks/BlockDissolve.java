@@ -13,6 +13,7 @@ import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.Sounds;
 import net.fourbytes.shadow.TypeBlock;
+import net.fourbytes.shadow.map.Saveable;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class BlockDissolve extends BlockType implements BlockLogic {
 	
+	@Saveable
 	boolean triggered = false;
 	boolean inverted = false;
 	
