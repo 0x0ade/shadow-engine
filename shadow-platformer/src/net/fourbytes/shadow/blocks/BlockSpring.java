@@ -46,9 +46,11 @@ public class BlockSpring extends BlockType {
 			first = false;
 			
 			BlockSpringTop instance = new BlockSpringTop();
+			instance.subtype = "BlockSpringTop";
 			instance.block_spring = block;
 			instance.type_spring = this;
 			Block topblock = new TypeBlock(new Vector2(block.pos.x, block.pos.y-1f), block.layer, instance);
+			topblock.subtype = instance.subtype;
 			block.layer.add(topblock);
 		}
 		block.renderoffs.set(new Rectangle(0f, 0f, 0f, 1f));

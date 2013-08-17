@@ -1,0 +1,13 @@
+java.lang.IllegalArgumentException: texture cannot be null.
+	at com.badlogic.gdx.graphics.g2d.TextureRegion.<init>(TextureRegion.java:37)
+	at net.fourbytes.shadow.blocks.BlockImage.getTexture(BlockImage.java:24)
+	at net.fourbytes.shadow.blocks.BlockType.getImage(BlockType.java:108)
+	at net.fourbytes.shadow.TypeBlock.getImage(TypeBlock.java:23)
+	at net.fourbytes.shadow.blocks.BlockType.preRender(BlockType.java:131)
+	at net.fourbytes.shadow.TypeBlock.preRender(TypeBlock.java:44)
+	at net.fourbytes.shadow.Camera.renderLayer(Camera.java:242)
+	at net.fourbytes.shadow.Camera.renderLevel(Camera.java:192)
+	at net.fourbytes.shadow.Camera.render(Camera.java:160)
+	at net.fourbytes.shadow.Shadow.render(Shadow.java:215)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:214)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:112)
