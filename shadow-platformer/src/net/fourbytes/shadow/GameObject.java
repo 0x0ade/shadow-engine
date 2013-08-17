@@ -113,10 +113,10 @@ public abstract class GameObject {
 	public void preRender() {
 		tmpimg = getImage();
 		if (tmpimg != null) {
-			tmpimg.setScaleY(-1f);
 			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
 			tmpimg.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y);
 			tmpimg.setSize(rec.width + renderoffs.width, rec.height + renderoffs.height);
+			tmpimg.setScaleY(-1f);
 			renderCalc();
 		} else {
 			System.out.println("I: null; S: "+toString());

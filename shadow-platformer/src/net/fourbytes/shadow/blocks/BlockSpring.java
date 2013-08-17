@@ -33,6 +33,8 @@ public class BlockSpring extends BlockType {
 	
 	@Override 
 	public void tick() {
+		block.renderoffs.set(0f, 0f, 0f, 1f);
+		
 		Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y-1));
 		first = true;
 		if (al != null) {
@@ -53,7 +55,6 @@ public class BlockSpring extends BlockType {
 			topblock.subtype = instance.subtype;
 			block.layer.add(topblock);
 		}
-		block.renderoffs.set(new Rectangle(0f, 0f, 0f, 1f));
 		if (doanim) {
 			subframe++;
 			if (subframe > 8) {

@@ -229,6 +229,9 @@ public class ShadowMap {
 		}
 		level.ftick = true;
 		level.tickid = 0;
+		level.tick();
+		level.ftick = true;
+		level.tickid = 0;
 		return gos;
 	}
 	

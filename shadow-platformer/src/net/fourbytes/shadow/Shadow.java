@@ -156,6 +156,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		} else {
 			viewmode = 0x01;
 		}
+		viewmode = 0x04;
 		
 		//Alternate values for view: vieww = 12.5f; viewh = 15f;
 		switch (viewmode) {
@@ -426,8 +427,13 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 				vieww = dispw/viewff;
 				viewh = disph/viewff;
 				if (dispw/viewff >= 21.75f && disph/viewff >= 18f) {
-					vieww = vieww/1.5f;
-					viewh = viewh/1.5f;
+					if (!isAndroid) {//Unknown if looks better on Ouya
+						vieww = vieww/1.5f;
+						viewh = viewh/1.5f;
+					} else {
+						vieww = vieww/2f;
+						viewh = viewh/2f;
+					}
 				}
 				break;
 			default:
