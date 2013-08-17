@@ -100,9 +100,12 @@ public abstract class BlockFluid extends BlockType {
 				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
 					height = 16;
 					imgupdate = true;
+					topblock = false;
 				}
-				topblock = false;
-				break;
+				if (b.solid) {
+					topblock = false;
+					break;
+				}
 			}
 		}
 		
