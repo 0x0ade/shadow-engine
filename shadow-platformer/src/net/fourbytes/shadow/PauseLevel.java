@@ -27,7 +27,7 @@ public class PauseLevel extends TitleLevel {
 		items.add(new MenuItem(this, "Save", new Runnable(){public void run(){
 			//TODO
 			ShadowMap map = ShadowMap.createFrom(bglevel);
-			map.save(Gdx.files.local("TROLL.smf"));
+			map.save(Shadow.getDir("saves").child("map.smf"));
 			Shadow.level = bglevel;
 			}}));
 		items.add(new MenuItem(this, "Load", new Runnable(){public void run(){
@@ -45,7 +45,7 @@ public class PauseLevel extends TitleLevel {
 				}
 			}
 			
-			ShadowMap map = ShadowMap.loadFile(Gdx.files.local("TROLL.smf"));
+			ShadowMap map = ShadowMap.loadFile(Shadow.getDir("saves").child("map.smf"));
 			map.fillLevel(bglevel);
 			Shadow.level = bglevel;
 			}}));

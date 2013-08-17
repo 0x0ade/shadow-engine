@@ -60,8 +60,8 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static float disph = 1f;
 	/**
 	 * 0x00 = Fully dynamic (Useless, ugly, ...) <br>
-	 * 0x01 = Fixed height (Mobile devices, some tearing) <br>
-	 * 0x02 = Fixed width (PC and Ouya, most tested) <br>
+	 * 0x01 = Fixed height (Mobile devices, small screens) <br>
+	 * 0x02 = Fixed width (PC and Ouya, larger resolutions) <br>
 	 * 0x03 = Fully fixed (Resizing doesn't scale) <br>
 	 * 0x04 = Automatic scaling (Does what it says) <br>
 	 * Other: Gliatch.
@@ -97,13 +97,17 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		super();
 	}
 	
-	@Override
-	public void create() {
-		Gdx.input.setCatchBackKey(true);
-		Gdx.input.setCatchMenuKey(true);
-		UncaughtExceptionHandler eh = new UncaughtExceptionHandler() {
-			@Override
-			public void uncaughtException(Thread t, Throwable e) {
+	public static FileHandle dir;
+	public static FileHandle getDir(String subdir) {
+		if (isAndroid) {
+			if (dir == null) {
+				dir = Gdx.files.external("shadowenginetest");
+			}
+			FileHandle child = dir.child(subdir);
+			child.mkdirs();
+			return child;
+		} else {
+			if (dir == null) {
 				String path = "";
 				try {
 					String rawpath = Shadow.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -112,12 +116,22 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 					e1.printStackTrace();
 				}
 				
+				dir = Gdx.files.absolute(path);
+			}
+			dir.mkdirs();
+			return dir;
+		}
+	}
+	
+	@Override
+	public void create() {
+		Gdx.input.setCatchBackKey(true);
+		Gdx.input.setCatchMenuKey(true);
+		UncaughtExceptionHandler eh = new UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
 				try {
-					File dir = new File(path).getParentFile();
-					if (Shadow.isAndroid) {
-						dir = Gdx.files.external("shadowenginetest").child("logs").file();
-					}
-					dir.mkdirs();
+					File dir = getDir("logs").file();
 					File logfile = new File(dir, "log_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".txt");
 					logfile.createNewFile();
 					PrintStream fos = new PrintStream(logfile);
@@ -613,25 +627,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			
 			try {
 				FileHandle fh = null;
-				
-				if (Shadow.isAndroid) {
-					fh = Gdx.files.external("shadowenginetest").child("screenshots");
-					fh.mkdirs();
-					fh = fh.child("screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
-				} else {
-					String path = "";
-					String rawpath = Shadow.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-					path = URLDecoder.decode(rawpath, "UTF-8");
-					
-					File dir = new File(path).getParentFile();
-					dir.mkdirs();
-					File file = new File(dir, "screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
-					file.createNewFile();
-					fh = Gdx.files.absolute(file.getAbsolutePath());
-					
-					//fh = Gdx.files.local("screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
-				}
-				
+				fh = getDir("screenshots").child("screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
 				fh.parent().mkdirs();
 				
 				PixmapIO.writePNG(fh, pixmap);
