@@ -224,6 +224,8 @@ public class ShadowMap {
 			}
 			gos.add(go);
 		}
+		level.ftick = true;
+		level.tickid = 0;
 		return gos;
 	}
 	

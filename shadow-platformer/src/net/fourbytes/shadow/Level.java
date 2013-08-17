@@ -129,8 +129,8 @@ public class Level {
 		return obj;
 	}
 	
-	boolean ftick = true;
-	int tickid = 0;
+	public boolean ftick = true;
+	public int tickid = 0;
 	public void tick() {
 		tickid++;
 		if (tickid >= 20000) {
