@@ -8,7 +8,7 @@ public interface IStream {
 	
 	/**
 	 * This method sends {@link Data} in queue (if any) and 
-	 * updates the underlying client / server implementation (if any).
+	 * handles messages received (if any).
 	 */
 	public void tick();
 	
