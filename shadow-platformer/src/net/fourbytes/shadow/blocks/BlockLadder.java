@@ -26,7 +26,7 @@ public class BlockLadder extends BlockType {
 	
 	@Override
 	public TextureRegion getTexture() {
-		return new TextureRegion(Images.getTexture("block_ladder"));
+		return Images.getTextureRegion("block_ladder");
 	}
 	
 	@Override

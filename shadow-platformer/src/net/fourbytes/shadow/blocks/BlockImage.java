@@ -21,7 +21,7 @@ public class BlockImage extends BlockType {
 	
 	@Override
 	public TextureRegion getTexture() {
-		return new TextureRegion(Images.getTexture(attr[0]));
+		return Images.getTextureRegion(attr[0]);
 	}
 	
 }

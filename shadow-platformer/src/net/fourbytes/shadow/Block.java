@@ -26,7 +26,7 @@ public class Block extends GameObject {
 	
 	@Override
 	public TextureRegion getTexture() {
-		return new TextureRegion(Images.getTexture("block_test"));
+		return Images.getTextureRegion("block_test");
 	}
 
 	@Override

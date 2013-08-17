@@ -20,7 +20,7 @@ public class BlockLab extends BlockType {
 
 	@Override
 	public TextureRegion getTexture() {
-		return new TextureRegion(Images.getTexture("block_lab"+type));
+		return Images.getTextureRegion("block_lab"+type);
 	}
 	
 }

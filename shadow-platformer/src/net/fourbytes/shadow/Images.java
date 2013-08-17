@@ -13,6 +13,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 public class Images {
 	private final static ObjectMap<String, Image> images = new ObjectMap<String, Image>();
 	private final static ObjectMap<String, Texture> textures = new ObjectMap<String, Texture>();
+	private final static ObjectMap<String, TextureRegion> textureregs = new ObjectMap<String, TextureRegion>();
 	
 	public static void addImage(String savename, Image i) {
 		images.put(savename, i);
@@ -38,6 +40,14 @@ public class Images {
 	
 	public static Texture getTexture(String savename) {
 		return textures.get(savename);
+	}
+	
+	public static void addTextureRegion(String savename, TextureRegion reg) {
+		textureregs.put(savename, reg);
+	}
+	
+	public static TextureRegion getTextureRegion(String savename) {
+		return textureregs.get(savename);
 	}
 	
 	/**
@@ -107,6 +117,7 @@ public class Images {
 			Texture t = new Texture(Gdx.files.internal(loadname), true);
 			t.setFilter(minFilter, magFilter);
 			addTexture(savename, t);
+			addTextureRegion(savename, new TextureRegion(t));
 			Image i = new Image(t);
 			addImage(savename, i);
 		} catch (Throwable t) {
@@ -136,6 +147,7 @@ public class Images {
 			Texture t = new Texture(pixmap);
 			t.setFilter(minFilter, magFilter);
 			addTexture(savename, t);
+			addTextureRegion(savename, new TextureRegion(t));
 			Image i = new Image(t);
 			addImage(savename, i);
 		} catch (Throwable t) {
