@@ -23,7 +23,8 @@ public abstract class BlockFluid extends BlockType {
 	
 	/*Conor-ian water system. Powered by Conor's redstone brain!*/
 	public static boolean conor = true;
-	public BlockFluid source;
+	@Saveable
+	public Vector2 sourcepos;
 	
 	int subframe = -1;
 	int frame = 0;
@@ -57,10 +58,10 @@ public abstract class BlockFluid extends BlockType {
 		if (subframe > 24) {
 			frame++;
 			subframe = 0;
-			if (source != null && conor) {
-				if (!source.block.layer.blocks.contains(source.block, true)) {
+			if (sourcepos != null && conor) {
+				if (hasThisFluid(sourcepos)) {
 					height-=3;
-					if (source.block.pos.y < block.pos.y) {
+					if (sourcepos.y < block.pos.y) {
 						height-=3;
 					}
 				}
@@ -76,9 +77,7 @@ public abstract class BlockFluid extends BlockType {
 			imgupdate = true;
 		}
 		
-		topblock = true;
-		
-		Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y));
+		Array<Block> al = block.layer.get(Coord.get((int) block.pos.x, block.pos.y));
 		if (al != null) {
 			for (Block b : al) {
 				if (b == block) {
@@ -94,6 +93,7 @@ public abstract class BlockFluid extends BlockType {
 			}
 		}
 		
+		topblock = true;
 		al = block.layer.get(Coord.get(block.pos.x, block.pos.y-1));
 		if (al != null) {
 			for (Block b : al) {
@@ -147,6 +147,19 @@ public abstract class BlockFluid extends BlockType {
 		block.colloffs.height = -block.colloffs.y;
 	}
 	
+	public boolean hasThisFluid(Vector2 pos) {
+		Class clazz = getClass();
+		Array<Block> al = block.layer.get(Coord.get((int) pos.x, Coord.get1337((int) pos.y))); //TODO Check if 1337 needed for x or not
+		if (al != null) {
+			for (Block b : al) {
+				if (b != null && b instanceof TypeBlock && clazz == ((TypeBlock)b).type.getClass()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public boolean update(float xo, float yo, int height, boolean hupdate) {
 		boolean free = true;
 		
@@ -172,16 +185,16 @@ public abstract class BlockFluid extends BlockType {
 						if (hupdate) {
 							((BlockFluid)((TypeBlock)b).type).height = height;
 							b.imgupdate = true;
-							if (((BlockFluid)((TypeBlock)b).type).source != null) {
-								((BlockFluid)((TypeBlock)b).type).source = this;
+							if (((BlockFluid)((TypeBlock)b).type).sourcepos != null) {
+								((BlockFluid)((TypeBlock)b).type).sourcepos.set(block.pos);
 							}
 						} else {
 							BlockFluid fluid = ((BlockFluid)((TypeBlock)b).type);
 							if (fluid.height < height) {
 								fluid.height = height;
 								fluid.block.imgupdate = true;
-								if (fluid.source != null) {
-									fluid.source = this;
+								if (fluid.sourcepos != null) {
+									fluid.sourcepos = block.pos;
 								}
 							}
 						}
@@ -215,7 +228,7 @@ public abstract class BlockFluid extends BlockType {
 		b.solid = false;
 		BlockFluid type = (BlockFluid) b.type;
 		type.height = height;
-		type.source = this;
+		type.sourcepos = new Vector2(block.pos);
 		return b;
 	}
 	

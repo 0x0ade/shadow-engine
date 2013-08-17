@@ -40,6 +40,7 @@ public class BlockClock extends BlockType implements BlockLogic {
 	public void tick() {
 		block.interactive = true;
 		block.solid = false;
+		block.alpha = 0f;
 		timer++;
 		if (timer >= totime*factor) {
 			timer = 0;

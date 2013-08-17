@@ -44,6 +44,7 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 		} else {
 			block.solid = triggered;
 		}
+		block.alpha = block.solid?1f:0f;
 	}
 	
 	@Override
@@ -83,9 +84,7 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 	
 	@Override
 	public void render() {
-		if (block.solid) {
-			super.render();
-		}
+		super.render();
 	}
 	
 }
