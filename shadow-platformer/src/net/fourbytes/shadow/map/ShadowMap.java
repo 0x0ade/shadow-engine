@@ -157,6 +157,9 @@ public class ShadowMap {
 		}
 		int tid = 0;
 		GameObject go = convert((int)mo.x, (int)mo.y, layer, tid, mo.type, mo.subtype);
+		if (go == null) {
+			return null;
+		}
 		go.pos.x = mo.x;
 		go.pos.y = mo.y;
 		
