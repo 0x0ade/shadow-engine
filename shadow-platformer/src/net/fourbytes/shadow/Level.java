@@ -33,7 +33,7 @@ public class Level {
 	
 	public ByteMap<Layer> layers = new ByteMap<Layer>(16);
 	public Layer mainLayer = new Layer(this);
-	public LightSystem lights = new BasicLightSystem(this);
+	public LightSystem lights = new LightSystem(this);
 	public TimeDaySystem timeday = new TimeDaySystem(this);
 	public Color globalLight = new Color(1f, 1f, 1f, 1f);
 	public Player player;
