@@ -102,6 +102,11 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		super();
 	}
 	
+	/**
+	 * Creates an purely random sequence of bytes, stored as hexadecimal strings. <br> 
+	 * It's avoiding Java's randomness by executing an GET request to random.org's servers.
+	 * @return Random sequence of bytes as hexadecimal string from random.org
+	 */
 	private static String getNewClientID() {
 		try {
 			return HTTPClient.execute("http://www.random.org/cgi-bin/randbyte?nbytes=256&format=h", "GET", "", "");
