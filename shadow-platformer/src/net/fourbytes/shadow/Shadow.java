@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.URLDecoder;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -103,17 +104,19 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	}
 	
 	/**
-	 * Creates an purely random sequence of bytes, stored as hexadecimal strings. <br> 
-	 * It's avoiding Java's randomness by executing an GET request to random.org's servers.
-	 * @return Random sequence of bytes as hexadecimal string from random.org
+	 * Creates an random client identifier. <br> 
+	 * It's using SecureRandom instead of the default Random.
+	 * @return Random client identifier.
 	 */
 	private static String getNewClientID() {
-		try {
-			return HTTPClient.execute("http://www.random.org/cgi-bin/randbyte?nbytes=256&format=h", "GET", "", "");
-		} catch (IOException e) {
-			e.printStackTrace();
-			return "";
+		SecureRandom random = new SecureRandom();
+		byte[] bytes = new byte[512];
+		random.nextBytes(bytes);
+		String str = "";
+		for (int i = 0; i < bytes.length; i++) {
+			str += Integer.toHexString(bytes[i]);
 		}
+		return str;
 	}
 
 	public static FileHandle dir;
