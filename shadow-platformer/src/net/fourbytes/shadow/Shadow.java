@@ -114,8 +114,9 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		random.nextBytes(bytes);
 		String str = "";
 		for (int i = 0; i < bytes.length; i++) {
-			str += Integer.toHexString(bytes[i]);
+			str += Integer.toHexString(bytes[i] & 0xFF);
 		}
+		System.out.println(str);
 		return str;
 	}
 
