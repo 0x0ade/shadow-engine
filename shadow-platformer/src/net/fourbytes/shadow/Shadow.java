@@ -1,9 +1,11 @@
 package net.fourbytes.shadow;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.net.URLDecoder;
 import java.security.SecureRandom;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Random;
+import java.util.zip.GZIPOutputStream;
 
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.KeyListener;
@@ -95,7 +98,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static int loadtick = 0;
 	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6}};
 	
-	public final static String clientID = getNewClientID();
+	public static String clientID = getSecureRandomBytes(512);
 	public static NetStream client;
 	public static NetStream server;
 	
@@ -104,19 +107,20 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	}
 	
 	/**
-	 * Creates an random client identifier. <br> 
-	 * It's using SecureRandom instead of the default Random.
+	 * Creates an string containing an given amount of random hexadecimal bytes. <br> 
+	 * It's using SecureRandom instead of Java's default Random.
+	 * @param amount Amount of random bytes
 	 * @return Random client identifier.
 	 */
-	private static String getNewClientID() {
+	public static String getSecureRandomBytes(int amount) {
 		SecureRandom random = new SecureRandom();
-		byte[] bytes = new byte[512];
+		byte[] bytes = new byte[amount];
 		random.nextBytes(bytes);
+		
 		String str = "";
 		for (int i = 0; i < bytes.length; i++) {
 			str += Integer.toHexString(bytes[i] & 0xFF);
 		}
-		System.out.println(str);
 		return str;
 	}
 
