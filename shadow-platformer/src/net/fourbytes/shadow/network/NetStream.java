@@ -2,11 +2,13 @@ package net.fourbytes.shadow.network;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryonet.EndPoint;
 
 /**
  * This class is the standard networking class supporting queuing {@link Data} to send and 
  * to handle received data when {@link #tick()}ing. <br> 
- * All network servers and clients should extend this class. 
+ * It's using KryoNet as underlying implementation.
  */
 public abstract class NetStream {
 	
@@ -74,4 +76,13 @@ public abstract class NetStream {
 	 * This method forwards the data got to the sever / client to be handled.
 	 */
 	public abstract void handle(Object obj, Object target);
+	
+	/**
+	 * Registers the EndPoint (Server, Client). Should be called after creating it.
+	 * @param ep EndPoint / Server / Client / ... to register
+	 */
+	public void register(EndPoint ep) {
+		Kryo kryo = ep.getKryo();
+		kryo.setRegistrationRequired(false);
+	}
 }

@@ -10,7 +10,7 @@ import com.esotericsoftware.kryonet.Server;
 /**
  * This class is the standard server class for networking. It is using KryoNet as underlying implementation.
  */
-public class NetServer extends NetKryoStream {
+public class NetServer extends NetStream {
 	
 	public Server server;
 	

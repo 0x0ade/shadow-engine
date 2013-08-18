@@ -18,6 +18,7 @@ import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.mod.ModLoader;
+import net.fourbytes.shadow.network.HTTPClient;
 import net.fourbytes.shadow.network.NetClient;
 import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
@@ -47,7 +48,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Json;
 
-public class Shadow implements ApplicationListener, InputProcessor, KeyListener {
+public final class Shadow implements ApplicationListener, InputProcessor, KeyListener {
 	
 	public static Random rand = new Random();
 	public static Level level;
@@ -93,6 +94,7 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static int loadtick = 0;
 	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6}};
 	
+	public final static String clientID = getNewClientID();
 	public static NetStream client;
 	public static NetStream server;
 	
@@ -100,6 +102,15 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 		super();
 	}
 	
+	private static String getNewClientID() {
+		try {
+			return HTTPClient.execute("http://www.random.org/cgi-bin/randbyte?nbytes=256&format=h", "GET", "", "");
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "";
+		}
+	}
+
 	public static FileHandle dir;
 	public static FileHandle getDir(String subdir) {
 		if (isAndroid) {
