@@ -92,11 +92,11 @@ public class Sounds {
 		return vol;
 	}
 
-	public static float calcPitch(float a, float b) {
-		float c = a;
-		float d = (float)Math.random()*b;
-		d -= b/2f;
-		c += d;
-		return c;
+	public static float calcPitch(float base, float radius) {
+		float result = base;
+		float diff = (float)Math.random()*(radius/2f);
+		diff -= radius/2f;
+		result += diff;
+		return result;
 	}
 }
