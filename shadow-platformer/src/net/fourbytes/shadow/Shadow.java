@@ -18,9 +18,9 @@ import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.mod.ModLoader;
-import net.fourbytes.shadow.stream.IStream;
-import net.fourbytes.shadow.stream.net.NetClient;
-import net.fourbytes.shadow.stream.net.NetServer;
+import net.fourbytes.shadow.network.NetClient;
+import net.fourbytes.shadow.network.NetServer;
+import net.fourbytes.shadow.network.NetStream;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
@@ -93,8 +93,8 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 	public static int loadtick = 0;
 	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6}};
 	
-	public static IStream client;
-	public static IStream server;
+	public static NetStream client;
+	public static NetStream server;
 	
 	public Shadow() {
 		super();

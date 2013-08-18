@@ -7,7 +7,7 @@ import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Coord;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Level;
-import net.fourbytes.shadow.stream.Data;
+import net.fourbytes.shadow.network.Data;
 
 /**
  *	A chunk contains an area of {@link GameObject}s beginning at the given position with given size from a given map. 

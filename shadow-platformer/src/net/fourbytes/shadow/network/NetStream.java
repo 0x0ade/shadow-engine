@@ -1,17 +1,14 @@
-package net.fourbytes.shadow.stream.net;
+package net.fourbytes.shadow.network;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 
-import net.fourbytes.shadow.stream.Data;
-import net.fourbytes.shadow.stream.IStream;
-
 /**
- * This class is the standard networking class implementing {@link IStream} to support queuing {@link Data} to send and 
- * to link to the {@link #update()} method when {@link #tick()}ing. <br> 
- * All network servers and classes should extend this class. 
+ * This class is the standard networking class supporting queuing {@link Data} to send and 
+ * to handle received data when {@link #tick()}ing. <br> 
+ * All network servers and clients should extend this class. 
  */
-public abstract class NetStream implements IStream {
+public abstract class NetStream {
 	
 	public static int port = 1157; //TODO Find better port.
 	public static int bufferObject = 4096;
@@ -25,7 +22,6 @@ public abstract class NetStream implements IStream {
 	public NetStream() {
 	}
 	
-	@Override
 	public void tick() {
 		int i = 0;
 		for (Entry e : queueSend) {
@@ -46,7 +42,6 @@ public abstract class NetStream implements IStream {
 	 * @param o Object to send
 	 * @see IStream#send(Object)
 	 */
-	@Override
 	public final void send(Object o) {
 		send(o, null, false);
 	}
@@ -79,12 +74,4 @@ public abstract class NetStream implements IStream {
 	 * This method forwards the data got to the sever / client to be handled.
 	 */
 	public abstract void handle(Object obj, Object target);
-	
-	/**
-	 * Does nothing as received objects are queued and afterwards handled in the main thread.
-	 * @param o
-	 */
-	@Override
-	public void receive(Object o) {
-	}
 }

@@ -2,7 +2,7 @@ package net.fourbytes.shadow.map;
 
 import com.badlogic.gdx.utils.ObjectMap;
 
-import net.fourbytes.shadow.stream.Data;
+import net.fourbytes.shadow.network.Data;
 
 /**
  * A MapObject contains needed data to create a "fresh" object (as when loading an .tmx) and / or 
