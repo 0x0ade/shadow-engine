@@ -106,6 +106,9 @@ public class Shadow implements ApplicationListener, InputProcessor, KeyListener 
 			if (dir == null) {
 				dir = Gdx.files.external("shadowenginetest");
 			}
+			if (subdir == null || subdir.isEmpty()) {
+				return dir;
+			}
 			FileHandle child = dir.child(subdir);
 			child.mkdirs();
 			return child;
