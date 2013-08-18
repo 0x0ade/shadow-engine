@@ -94,8 +94,8 @@ public class Sounds {
 
 	public static float calcPitch(float a, float b) {
 		float c = a;
-		float d = (float)Math.random()*(b*2f);
-		d -= d/2f;
+		float d = (float)Math.random()*b;
+		d -= b/2f;
 		c += d;
 		return c;
 	}
