@@ -84,7 +84,7 @@ public class LightSystem {
 				float tmpradsq = MathHelper.distsq(cx, cy, x, y);
 				if (tmpradsq<=rsq) {
 					float tmprad = (float) Math.sqrt(tmpradsq);
-					float f = 1f/rsq;
+					float f = 1f-tmpradsq/rsq;
 					//Coord cc = Garbage.coorda;
 					Array<Block> al = ll.get(Coord.get(x, y));
 					int bs = 0;
