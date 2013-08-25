@@ -28,10 +28,17 @@ public class Images {
 	}
 	
 	public static Image getImage(String savename, boolean newInstance) {
+		Image image = null;
 		if (newInstance) {
-			return new Image(textures.get(savename));
+			image = new Image(getTexture(savename));
+		} else {
+			image = images.get(savename);
+			if (image == null) {
+				autoaddImage(savename);
+				image = images.get(savename);
+			}
 		}
-		return images.get(savename);
+		return image;
 	}
 	
 	public static void addTexture(String savename, Texture t) {
@@ -39,7 +46,12 @@ public class Images {
 	}
 	
 	public static Texture getTexture(String savename) {
-		return textures.get(savename);
+		Texture texture = textures.get(savename);
+		if (texture == null) {
+			autoaddImage(savename);
+			texture = textures.get(savename);
+		}
+		return texture;
 	}
 	
 	public static void addTextureRegion(String savename, TextureRegion reg) {
@@ -47,7 +59,12 @@ public class Images {
 	}
 	
 	public static TextureRegion getTextureRegion(String savename) {
-		return textureregs.get(savename);
+		TextureRegion texturereg = textureregs.get(savename);
+		if (texturereg == null) {
+			autoaddImage(savename);
+			texturereg = textureregs.get(savename);
+		}
+		return texturereg;
 	}
 	
 	/**
@@ -76,36 +93,25 @@ public class Images {
 		addImage("void", "data/void.png");
 		
 		//BLOCKS
-		addImage("block_test", "data/levels/tiles/test.png");
-		addImage("block_dirt", "data/levels/tiles/dirt.png");
-		addImage("block_grass", "data/levels/tiles/grass.png");
-		addImage("block_wood", "data/levels/tiles/wood.png");
-		addImage("block_brick", "data/levels/tiles/brick.png");
-		addImage("block_brick_grey", "data/levels/tiles/brick_grey.png");
-		addImage("block_glass", "data/levels/tiles/glass.png");
-		addImage("block_lab1", "data/levels/tiles/lab1.png");
-		addImage("block_lab2", "data/levels/tiles/lab2.png");
-		addImage("block_sign_bg", "data/levels/tiles/sign_bg.png");
-		addImage("block_ladder", "data/levels/tiles/ladder.png");
-		addImage("block_point", "data/levels/tiles/point.png");
-		addImage("block_push", "data/levels/tiles/pushblock.png");
-		addImage("block_spring", "data/levels/tiles/spring.png");
-		addImage("block_vast_dirt", "data/levels/tiles/vast_dirt.png");
-		addImage("block_vast_grass", "data/levels/tiles/vast_grass.png");
-		addImage("block_stone", "data/levels/tiles/stone.png");
-		addImage("block_water", "data/levels/tiles/water.png");
-		addImage("block_water_top", "data/levels/tiles/water_top.png");
-		addImage("block_lava", "data/levels/tiles/lava.png");
-		addImage("block_lava_top", "data/levels/tiles/lava_top.png");
-		addImage("block_obsidian", "data/levels/tiles/obsidian.png");
-		addImage("block_wire", "data/levels/tiles/wire.png");
-		addImage("block_button", "data/levels/tiles/button.png");
-		addImage("block_dissolve", "data/levels/tiles/dissolve.png");
-		addImage("block_clock", "data/levels/tiles/clock.png");
-		addImage("block_invisible", "data/levels/tiles/invisible.png");
+		//... get added dynamically.
 		
 		//ENTITIES
 		addImage("player", "data/player.png");
+	}
+	
+	public static void autoaddImage(String name) {
+		String loadname = name;
+		if (name.startsWith("block_")) {
+			loadname = name.substring(6);
+			loadname = "data/levels/tiles/" + loadname;
+		} else {
+			loadname = "data/" + loadname;
+		}
+		if (Gdx.files.internal(loadname+".png").exists()) {
+			addImage(name, loadname+".png", TextureFilter.Nearest, TextureFilter.Nearest);
+		} else if (Gdx.files.internal(loadname+"block.png").exists()) {
+			addImage(name, loadname+"block.png", TextureFilter.Nearest, TextureFilter.Nearest);
+		}
 	}
 	
 	public static void addImage(String savename, String loadname) {

@@ -28,7 +28,12 @@ public class Sounds {
 	}
 	
 	public static Sound getSound(String savename) {
-		return sounds.get(savename);
+		Sound sound = sounds.get(savename);
+		if (sound == null) {
+			autoaddSound(savename);
+			sounds.get(savename);
+		}
+		return sound;
 	}
 	
 	public static void loadSounds() {
@@ -37,6 +42,10 @@ public class Sounds {
 		addSound("jump");
 		addSound("point");
 		addSound("button_ingame");
+	}
+	
+	public static void autoaddSound(String name) {
+		addSound(name, "data/sounds/"+name+".wav");
 	}
 	
 	public static void addSound(String name) {
