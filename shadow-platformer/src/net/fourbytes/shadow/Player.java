@@ -31,7 +31,7 @@ public class Player extends Entity implements Input.KeyListener {
 	@Saveable
 	public int POINTS = 0;
 	
-	public static final float SPEED = 0.125f;
+	public static final float SPEED = 0.1f;
 	public static final float JUMPH = 0.4f;
 	public boolean standing = true;
 	int subframe = 0;
