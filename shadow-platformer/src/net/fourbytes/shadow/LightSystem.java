@@ -18,6 +18,7 @@ public class LightSystem {
 	public int etick = 0;
 	public int btick = 0;
 	
+	protected static Rectangle viewport = new Rectangle();
 	protected static Rectangle objrec = new Rectangle();
 	
 	public LightSystem(Level level) {
@@ -37,6 +38,13 @@ public class LightSystem {
 		
 		etick++;
 		btick++;
+		
+		viewport.set(Shadow.cam.camrec);
+		float f = 5f;
+		viewport.x -= f;
+		viewport.y -= f;
+		viewport.width += f*2;
+		viewport.height += f*2;
 	}
 	
 	public void setLight(Block b, Layer ll) {
@@ -55,6 +63,13 @@ public class LightSystem {
 	public void setLight(GameObject go, Layer ll) {
 		if ((go instanceof Block && !canBlock) || (go instanceof Entity && !canEntity)) {
 			return;
+		}
+		
+		if (inview) {
+			objrec.set(go.pos.x, go.pos.y, go.rec.width, go.rec.height);
+			if (!viewport.overlaps(objrec)) {
+				return;
+			}
 		}
 		
 		//go.lightTint.set(0f, 0f, 0f, 1f);
