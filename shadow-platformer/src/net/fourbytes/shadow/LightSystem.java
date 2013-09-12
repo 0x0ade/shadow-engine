@@ -47,14 +47,6 @@ public class LightSystem {
 		viewport.height += f*2;
 	}
 	
-	public void setLight(Block b, Layer ll) {
-		setLight((GameObject) b, ll);
-	}
-
-	public void setLight(Entity e, Layer ll) {
-		setLight((GameObject) e, ll);
-	}
-	
 	protected final static Color sun = new Color(1f, 1f, 1f, 1f);
 	protected final static Color dark = new Color(1f, 1f, 1f, 1f);
 	protected final static Color emit = new Color(1f, 1f, 1f, 1f);
