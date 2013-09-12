@@ -18,7 +18,7 @@ public abstract class Entity extends GameObject {
 	public Vector2 movement = new Vector2(0, 0);
 	@Saveable
 	public boolean facingLeft = true;
-	public float slowdown = 0.8f;
+	public float slowdown = 0.7f;
 	public Vector2 oldpos;
 	public float objgravity = 1f;
 	
