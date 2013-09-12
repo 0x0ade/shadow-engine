@@ -104,7 +104,7 @@ public class Sounds {
 	public static float calcPitch(float base, float radius) {
 		float result = base;
 		float diff = (float)Math.random()*(radius/2f);
-		diff -= radius/2f;
+		diff -= radius/4f;
 		result += diff;
 		return result;
 	}
