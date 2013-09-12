@@ -242,8 +242,8 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			shaderSprites.end();
 		}
 		
-		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		//Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
+		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		if (useFB) {
 			if (shaderBuffer != null) {
 				shaderBuffer.begin();
