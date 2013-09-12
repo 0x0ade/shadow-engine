@@ -80,6 +80,7 @@ public abstract class GameObject {
 	public abstract TextureRegion getTexture();
 	
 	public void tick() {
+		layer.level.lights.setLight(this, layer.level.mainLayer);
 	}
 	
 	private boolean disposedLayer = false;

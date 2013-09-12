@@ -11,8 +11,10 @@ public class LightSystem {
 	
 	public Level level;
 	public static boolean inview = true;
-	public static int espeed = 10;
-	public static int bspeed = 5;
+	public int espeed = 10;
+	public int bspeed = 5;
+	public boolean canEntity = false;
+	public boolean canBlock = false;
 	public int etick = 0;
 	public int btick = 0;
 	
@@ -23,37 +25,16 @@ public class LightSystem {
 	}
 	
 	public void tick() {
-		if (Shadow.isAndroid) {
-			return; //FIXME PERFORMANCE
-		}
-		boolean canEntity = etick > espeed;
+		canEntity = etick >= espeed;
+		canBlock = btick >= bspeed;
+		
 		if (canEntity) {
 			etick = 0;
 		}
-		boolean canBlock = btick > bspeed;
 		if (canBlock) {
 			btick = 0;
 		}
-		Layer ll = level.mainLayer;
-		if (canBlock) {
-			for (Block block : ll.blocks) {
-				if (block == null) continue;
-				objrec.set(block.pos.x-2f, block.pos.y-2f, block.rec.width+4f, block.rec.height+4f);
-				if (inview && Shadow.cam.camrec.overlaps(objrec)) {
-					setLight(block, level.mainLayer);
-				}
-			}
-		}
 		
-		if (canEntity) {
-			for (Entity entity : ll.entities) {
-				if (entity == null) continue;
-				objrec.set(entity.pos.x-4f, entity.pos.y-4f, entity.rec.width+8f, entity.rec.height+8f);
-				if (inview && Shadow.cam.camrec.overlaps(objrec)) {
-					setLight(entity, level.mainLayer);
-				}
-			}
-		}
 		etick++;
 		btick++;
 	}
@@ -72,9 +53,12 @@ public class LightSystem {
 	protected final static Color tmpc = new Color(1f, 1f, 1f, 1f);
 	
 	public void setLight(GameObject go, Layer ll) {
+		if ((go instanceof Block && !canBlock) || (go instanceof Entity && !canEntity)) {
+			return;
+		}
+		
 		//go.lightTint.set(0f, 0f, 0f, 1f);
 		go.lightTint.set(ll.level.globalLight).mul(0.2f, 0.2f, 0.2f, 1f);
-		//Coord c = Garbage.coord;
 		int cx = (int)go.pos.x;
 		int cy = (int)go.pos.y;
 		float r = 4;
@@ -85,7 +69,6 @@ public class LightSystem {
 				if (tmpradsq<=rsq) {
 					float tmprad = (float) Math.sqrt(tmpradsq);
 					float f = 1f/rsq;
-					//Coord cc = Garbage.coorda;
 					Array<Block> al = ll.get(Coord.get(x, y));
 					int bs = 0;
 					int es = 0;

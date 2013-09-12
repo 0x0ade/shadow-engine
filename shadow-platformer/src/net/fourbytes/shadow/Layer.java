@@ -40,6 +40,9 @@ public class Layer {
 	protected BlockMapSystem lastbms;
 	public static float round = 2f;
 	
+	protected int tget = 0;
+	protected Array[] tgets = new Array[8];
+	
 	public Layer(Level level) {
 		this.level = level;
 	}
@@ -114,7 +117,7 @@ public class Layer {
 			blockmap.put(c, v);
 		}
 		*/
-		Array<Block> v = new Array<Block>(4);
+		Array<Block> v = tget0();
 		if (vv != null) {
 			for (Block b : vv) {
 				if (cx == (int)b.pos.x && cy == (int)b.pos.y) {
@@ -188,6 +191,21 @@ public class Layer {
 		case none:
 			break;
 		}
+	}
+	
+	protected Array<Block> tget0() {
+		if (tgets[0] == null) {
+			for (int i = 0; i < tgets.length; i++) {
+				tgets[i] = new Array<Block>(4);
+			}
+		}
+		Array<Block> tgot = tgets[tget];
+		tgot.clear();
+		tget++;
+		if (tget >= tgets.length) {
+			tget = 0;
+		}
+		return tgot;
 	}
 	
 	protected void updateSystem0() {
