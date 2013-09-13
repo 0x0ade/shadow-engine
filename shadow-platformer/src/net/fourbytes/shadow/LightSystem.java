@@ -143,6 +143,9 @@ public class LightSystem {
 					//Unfournately it does NOT cast light to entities so entities use the secondary lighting method.
 					if (go.light.a > 0f && al != null && al.size != 0) {
 						for (Block bb : al) {
+							if (bb.light.a > 0f) {
+								continue;
+							}
 							emit.set(go.light);
 							bb.lightTint.add(emit.mul((1f-tmpradsq/rsq)*go.light.a));
 						}
