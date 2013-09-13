@@ -12,6 +12,7 @@ public class TimeDaySystem {
 	public Level level;
 	//delta in seconds!
 	public static float fullday = 60f * 5f; //36000 ticks is 20 minutes at 30 FPS
+	//public static float fullday = 8f;
 	public static float day = 0;
 	public float delta = fullday/2f - fullday/5f;
 	

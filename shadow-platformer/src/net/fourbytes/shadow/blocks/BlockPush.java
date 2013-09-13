@@ -36,6 +36,7 @@ public class BlockPush extends BlockType {
 	@Override 
 	public void tick() {
 		block.interactive = true;
+		block.light.set(0.25f, 0.5f, 0.75f, 1f);
 		
 		gframe--;
 		if (gframe <= 0) {
