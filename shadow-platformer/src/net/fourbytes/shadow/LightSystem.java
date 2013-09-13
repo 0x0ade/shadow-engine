@@ -142,6 +142,7 @@ public class LightSystem {
 					//If go is entity it uses it to cast it's light to blocks. 
 					//Unfournately it does NOT cast light to entities so entities use the secondary lighting method.
 					if (go.light.a > 0f && al != null && al.size != 0) {
+						go.lightTint.set(go.light);
 						for (Block bb : al) {
 							if (bb.light.a > 0f) {
 								continue;
