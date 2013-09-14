@@ -14,8 +14,8 @@ public class TimeDaySystem {
 	public static float fullday = 60f * 10f; //36000 ticks is 20 minutes at 30 FPS
 	//public static float fullday = 8f;
 	public static float day = 0;
-	//public float delta = fullday/2f - fullday/5f;
-	public float delta = 0f;
+	public float delta = fullday/2f - fullday/7f;
+	//public float delta = 0f;
 	
 	public static Array<Color> colors = new Array<Color>();
 	public static Array<Color> colorsbg = new Array<Color>();
