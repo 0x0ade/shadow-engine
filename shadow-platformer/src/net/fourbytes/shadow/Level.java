@@ -138,6 +138,13 @@ public class Level {
 		}
 		Layer ll = mainLayer;
 		
+		if (lights != null) {
+			lights.tick();
+		}
+		if (timeday != null) {
+			timeday.tick();
+		}
+		
 		//TODO find perfect FPS
 		//TODO decide
 		//if (ll.blocks.size <= 25000) {
@@ -171,13 +178,6 @@ public class Level {
 				}
 			}
 			entity.tick();
-		}
-		
-		if (lights != null) {
-			lights.tick();
-		}
-		if (timeday != null) {
-			timeday.tick();
 		}
 		
 		if (Shadow.level == this) {

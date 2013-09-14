@@ -14,6 +14,7 @@ public class LightSystem {
 	public int speed = 10;
 	public boolean canUpdate = false;
 	public int tick = 0;
+	public boolean clearLight = false;
 	
 	protected static Rectangle viewport = new Rectangle();
 	protected static Rectangle objrec = new Rectangle();
@@ -26,13 +27,23 @@ public class LightSystem {
 		canUpdate = tick >= speed;
 		
 		if (canUpdate) {
+			clearLight = true;
+			for (Entity e : level.mainLayer.entities) {
+				setLight(e, level.mainLayer);
+			}
+			
+			for (Block b : level.mainLayer.blocks) {
+				setLight(b, level.mainLayer);
+			}
+			clearLight = false;
+			
 			tick = 0;
 		}
 		
 		tick++;
 		
 		viewport.set(Shadow.cam.camrec);
-		float f = 5f;
+		float f = 15f;
 		viewport.x -= f;
 		viewport.y -= f;
 		viewport.width += f*2;
@@ -60,15 +71,13 @@ public class LightSystem {
 			}
 		}
 		
+		if (clearLight) {
+			go.lightTint.set(ll.level.globalLight).mul(0.15f, 0.15f, 0.15f, 1f);
+			return;
+		}
+		
 		boolean primaryLight = !(go instanceof Entity);
 		boolean secondaryLight = go.light.a == 0 || go instanceof Entity;
-		
-		if (go.clearLight) {
-			go.lightTint.set(ll.level.globalLight).mul(0.15f, 0.15f, 0.15f, 1f);
-			//go.lightTint.set(0.1f, 0.1f, 0.1f, 1f);
-			
-			go.clearLight = false;
-		}
 		
 		int cx = (int)go.pos.x;
 		int cy = (int)go.pos.y;
@@ -84,10 +93,15 @@ public class LightSystem {
 				float tmpradsq = MathHelper.distsq(cx, cy, x, y);
 				if (tmpradsq <= rsq) {
 					float tmprad = (float) Math.sqrt(tmpradsq);
-					float f = 1f/rsq;
 					Array<Block> al = ll.get(Coord.get(x, y));
 					if (secondaryLight && tmpradsq <= rpsq) {
-						float fp = 1f/rpsq;
+						float fsun = (1f/rpsq)*avgsun*0.6275f;
+						float fdark = 1f/rpsq;
+						float femit = 1f/rp;
+						if (!primaryLight) {
+							//If not affected by primaryLight make light strength be dependent to the distance.
+							femit= 1f-tmpradsq/rpsq;
+						}
 						//Passive lighting - X checks for light source and adapts to it.
 						//If go is entity it uses it to adapt to light as active lighting can't light entities.
 						//If go is block AND go.color.a is 0 this is used to check for sun.
@@ -128,12 +142,12 @@ public class LightSystem {
 							ps = 0;
 						}
 						if (es != 0 && !primaryLight) {
-							go.lightTint.add(emit.mul(1f/es).mul(fp));
+							go.lightTint.add(emit.mul(1f/es).mul(femit));
 						}
 						if (bs == 0) {
-							go.lightTint.add(sun.mul(1f/ps).mul((fp*avgsun)*0.6275f));
+							go.lightTint.add(sun.mul(1f/ps).mul(fsun));
 						} else {
-							go.lightTint.add(dark.mul(1f/bs).mul(fp));
+							go.lightTint.add(dark.mul(1f/bs).mul(fdark));
 						}
 					}
 					//Sidenote: No, I didn't forget the if-check. Entities cast light but don't get lighted by blocks via primaryLight.
@@ -157,7 +171,6 @@ public class LightSystem {
 		
 		go.lightTint.a = 1f;
 		go.cantint = true;
-		go.clearLight = true;
 	}
 	
 }

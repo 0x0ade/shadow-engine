@@ -38,7 +38,6 @@ public abstract class GameObject {
 	public boolean passSunlight = false;
 	public Color tintSunlight = new Color(1f, 1f, 1f, 1f);
 	public Color tintDarklight = new Color(0f, 0f, 0f, 1f);
-	public boolean clearLight = true;
 	public float highlighted = 0f;
 	
 	public GameObject(Vector2 pos, Layer layer) {
