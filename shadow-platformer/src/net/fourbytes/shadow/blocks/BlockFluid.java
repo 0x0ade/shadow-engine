@@ -77,14 +77,15 @@ public abstract class BlockFluid extends BlockType {
 			imgupdate = true;
 		}
 		
-		Array<Block> al = block.layer.get(Coord.get((int) block.pos.x, block.pos.y));
+		Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y));
 		if (al != null) {
 			for (Block b : al) {
 				if (b == block) {
 					continue;
 				}
 				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
-					continue;
+					block.layer.remove(block);
+					return;
 				}
 				if (b.solid) {
 					block.layer.remove(block);
