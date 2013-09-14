@@ -11,10 +11,10 @@ public class TimeDaySystem {
 
 	public Level level;
 	//delta in seconds!
-	public static float fullday = 60f * 10f; //36000 ticks is 20 minutes at 30 FPS
-	//public static float fullday = 8f;
+	public static float fullday = 60f * 10f;
+	//public static float fullday = 14f;
 	public static float day = 0;
-	public float delta = fullday/2f - fullday/6f;
+	public float delta = fullday/2f - fullday/14f;
 	//public float delta = 0f;
 	
 	public static Array<Color> colors = new Array<Color>();
@@ -23,14 +23,16 @@ public class TimeDaySystem {
 		colors.add(new Color(0.125f, 0.25f, 0.5f, 1f));
 		colors.add(new Color(0.125f, 0.25f, 0.5f, 1f));
 		colors.add(new Color(0.125f, 0.25f, 0.5f, 1f));
-		colors.add(new Color(0.6f, 0.5f, 0.25f, 1f));
+		colors.add(new Color(0.7f, 0.6f, 0.4f, 1f)); 
+		colors.add(new Color(1f, 1f, 1f, 1f));
 		colors.add(new Color(1f, 1f, 1f, 1f));
 		colors.add(new Color(0.7f, 0.6f, 0.3f, 1f));
 		
 		colorsbg.add(new Color(0f, 0.125f, 0.3f, 1f));
 		colorsbg.add(new Color(0f, 0.125f, 0.3f, 1f));
 		colorsbg.add(new Color(0f, 0.125f, 0.3f, 1f));
-		colorsbg.add(new Color(0.6f, 0.5f, 0.25f, 1f));
+		colorsbg.add(new Color(0.7f, 0.6f, 0.3f, 1f)); 
+		colorsbg.add(new Color(0.2f, 0.5f, 0.7f, 1f));
 		colorsbg.add(new Color(0.2f, 0.5f, 0.7f, 1f));
 		colorsbg.add(new Color(0.7f, 0.6f, 0.3f, 1f));
 	}
