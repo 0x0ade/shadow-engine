@@ -51,7 +51,7 @@ public class LightSystem {
 		tick++;
 		
 		viewport.set(Shadow.cam.camrec);
-		float f = 10f;
+		float f = 15f;
 		viewport.x -= f;
 		viewport.y -= f;
 		viewport.width += f*2;
@@ -72,20 +72,20 @@ public class LightSystem {
 			return;
 		}
 		
-		boolean primaryLight = !(go instanceof Entity);
-		boolean secondaryLight = go.light.a == 0 || go instanceof Entity;
+		if (inview) {
+			objrec.set(go.pos.x, go.pos.y, go.rec.width, go.rec.height);
+			if (!viewport.overlaps(objrec)) {
+				return;
+			}
+		}
 		
 		if (clearLight) {
 			go.lightTint.set(ll.level.globalLight).mul(0.15f, 0.15f, 0.15f, 1f);
 			return;
 		}
 		
-		if (inview && !secondaryLight) {
-			objrec.set(go.pos.x, go.pos.y, go.rec.width, go.rec.height);
-			if (!viewport.overlaps(objrec)) {
-				return;
-			}
-		}
+		boolean primaryLight = !(go instanceof Entity);
+		boolean secondaryLight = go.light.a == 0 || go instanceof Entity;
 		
 		int cx = (int)go.pos.x;
 		int cy = (int)go.pos.y;
