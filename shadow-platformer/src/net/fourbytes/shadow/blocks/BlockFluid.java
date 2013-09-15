@@ -149,6 +149,7 @@ public abstract class BlockFluid extends BlockType {
 		block.rec.height = height/16f;
 		block.colloffs.y = (16-height)/16f;
 		block.colloffs.height = -block.colloffs.y;
+		block.renderoffs.y = 1f - 1f * (height/16f);
 	}
 	
 	public boolean hasThisFluid(Vector2 pos) {
@@ -269,12 +270,12 @@ public abstract class BlockFluid extends BlockType {
 	public void preRender() {
 		block.tmpimg = block.getImage();
 		if (block.tmpimg != null) {
-			block.tmpimg.setScaleY(-1f * (height/16f));
 			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
 			block.tmpimg.setPosition(block.pos.x, block.pos.y + 1f);
 			//block.tmpimg.setSize(block.rec.width, 1f*(height*(1f/16f)));
 			//block.tmpimg.setSize(block.rec.width, block.rec.height);
 			block.tmpimg.setSize(block.rec.width, 1f);
+			block.tmpimg.setScaleY(-1f * (height/16f));
 		} else {
 			System.out.println("I: null; S: "+toString());
 		}

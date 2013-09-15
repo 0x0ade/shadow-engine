@@ -130,6 +130,8 @@ public abstract class BlockType {
 	public void preRender() {
 		block.tmpimg = block.getImage();
 		if (block.tmpimg != null) {
+			block.tmpimg.setPosition(block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y);
+			block.tmpimg.setSize(block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
 			block.tmpimg.setScaleY(-1f);
 			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
 		} else {
