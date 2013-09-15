@@ -51,7 +51,7 @@ public class BlockTorch extends BlockType {
 			for (Block bb : al) {
 				if (bb.solid) {
 					wall = 1;
-					block.renderoffs.width = -block.rec.width*2f;
+					block.renderoffs.width = -2f;
 					block.renderoffs.x = 1f;
 					break;
 				}

@@ -33,7 +33,7 @@ public class BlockSpring extends BlockType {
 	
 	@Override 
 	public void tick() {
-		block.renderoffs.set(0f, 0f, 0f, 1f);
+		block.renderoffs.height = -1f;
 		
 		Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y-1));
 		first = true;
