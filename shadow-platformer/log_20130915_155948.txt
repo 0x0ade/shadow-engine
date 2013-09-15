@@ -1,0 +1,8 @@
+java.lang.NullPointerException
+	at net.fourbytes.shadow.Cursor.lmb(Cursor.java:112)
+	at net.fourbytes.shadow.Cursor.tick(Cursor.java:63)
+	at net.fourbytes.shadow.Level.tick(Level.java:187)
+	at net.fourbytes.shadow.Shadow.tick(Shadow.java:423)
+	at net.fourbytes.shadow.Shadow.render(Shadow.java:237)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:207)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:114)

@@ -37,13 +37,21 @@ public class LightSystem {
 			}
 			clearLight = false;
 			
+			for (Entity e : level.mainLayer.entities) {
+				setLight(e, level.mainLayer);
+			}
+			
+			for (Block b : level.mainLayer.blocks) {
+				setLight(b, level.mainLayer);
+			}
+			
 			tick = 0;
 		}
 		
 		tick++;
 		
 		viewport.set(Shadow.cam.camrec);
-		float f = 15f;
+		float f = 10f;
 		viewport.x -= f;
 		viewport.y -= f;
 		viewport.width += f*2;
@@ -64,20 +72,20 @@ public class LightSystem {
 			return;
 		}
 		
-		if (inview) {
-			objrec.set(go.pos.x, go.pos.y, go.rec.width, go.rec.height);
-			if (!viewport.overlaps(objrec)) {
-				return;
-			}
-		}
+		boolean primaryLight = !(go instanceof Entity);
+		boolean secondaryLight = go.light.a == 0 || go instanceof Entity;
 		
 		if (clearLight) {
 			go.lightTint.set(ll.level.globalLight).mul(0.15f, 0.15f, 0.15f, 1f);
 			return;
 		}
 		
-		boolean primaryLight = !(go instanceof Entity);
-		boolean secondaryLight = go.light.a == 0 || go instanceof Entity;
+		if (inview && !secondaryLight) {
+			objrec.set(go.pos.x, go.pos.y, go.rec.width, go.rec.height);
+			if (!viewport.overlaps(objrec)) {
+				return;
+			}
+		}
 		
 		int cx = (int)go.pos.x;
 		int cy = (int)go.pos.y;

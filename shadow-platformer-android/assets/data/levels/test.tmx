@@ -247,6 +247,14 @@
    </properties>
   </tile>
  </tileset>
+ <tileset firstgid="41" name="torch" tilewidth="16" tileheight="16">
+  <image source="tiles/torch.png" width="32" height="64"/>
+  <tile id="0">
+   <properties>
+    <property name="subtype" value="BlockTorch"/>
+   </properties>
+  </tile>
+ </tileset>
  <layer name="layer-3" width="100" height="60" opacity="0.76">
   <properties>
    <property name="solid" value="false"/>
@@ -273,7 +281,7 @@
  </layer>
  <layer name="layer0" width="100" height="60" opacity="0.93">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+2ay27CMBBFTWlhVcKyi3bRVf//DyurWJ2aefmRkNr3SCPhEEN0T7CdhBAAAAAAAAAAAIA2Xh59AAJXow22ZVYfh0cfgMCMPg6k9sZsPpKH19Du5Br65zWTj4NSNZxu1ZOZfESemfJAfwsnpjjeK45vRh9aW4JzYDmBD5saHzHrc7jP/8xsp2zp4yC8HoXjraTsz8y23An1cVUqZPtp7Rw6B37eas/rx8ixsp5IceOT5ST50NYRtE/8zrfwex5cbu1Ltp+1Jum9bumFlC1XJ2M7JXfCtSP09+Fx8kSONbaX8ONiCfz5UOLjUXgd0AwC834I9x5ytPkkUuODHt9CSlpDWD62xDPOcHlrlF5PcE44HxHPmOWt9D2aj62R8rUyXwNt/sgpdaKtJaT5fI9s7cW73tV8cGuDfDvnAg5san1ITjxzOZDRrgdb5hG4qMNzfa75kK5v4KKOUh+SE84FKMd7/8o7ZsFFG6X3E7VrRrhop+b+bgQu1qHWRwQe+tPio0d/8Bf42BfwsS96+ZDuY7fQ+/P+A718cM9vUoZfhWU9lxiZnuOV5sTjxXpONwO95w/pWWc+7kguZvWQWGM+t/4H4H1mOpqLD1ISkg9PX62/5cSqEfFkeiFV2jeyho9R0TKlHpZw76TVR8ST+wweLs5asvL2y0tj1t9BQsp6zbKw5vSRyM9TLqtHukh41lsjoGXP7VOScy8XiVnmD8tHvt3Ku/SzvUjZj+qDzhvcPoF5v+Scb3GRkP6rOZKPiJWplmNJzq0+ZqI2K2QMAAAAAAAAAO18A/3ky9TAXQAA
+   H4sIAAAAAAAAA+2aS4/aMBRGzTCF1RCWXbSLWVX8/z/YsQart+a+/EgI9nekK5EQQ/SdxHYeIQAAAAAAAAAAAG38ePYOCFyNZbAts/o4PHsHBGb0cSC1N2bzkTx8hHYn19A/r5l8HJSq4XSvnszk4/ZV70zdHG3puXBiiuNXxT7O5CNC809+PHAOLCfwYZPn7/ERsz6Hx/zPzHrKlj4OwudRON5Lyv7MrMudUB9XpUK2nbacQ8fAz3vtef4YOVbWGymuf7KcJB/aPIK2if/5M/w7Di735Uu2nTUn6T1v6YWULVcnYz0ld8ItR+j54XHyRvY1Li/h28US+OOhxMcWcPMirwOaQWC+D+HRQ442nkRqfND9W0hJcwjLx5Z4+hkub43S6wnOCecj4umzvJX+R/OxNVK+VuZroI0fOaVOtLmENJ7vka29eOe7mg9ubpCv51zAgU2tD8mJZywHMtr1YMs4Ahd1eK7PNR/S9Q1c1FHqQ3LCuQDleO9fefssuGij9H6ids0IF+3U3N+NwMU61PqIwEN/Wnz0aA/+Bz72BXzsi14+pPvYLfT+vVeglw/u+U3K8E9hWc8lRqZnf6U58XixntPNQO/xQ3rWmfc7kotZPSTWGM+t9wC8z0xHc/GblITkw9NWa285sWpEPJleSJW2jazhY1S0TKmHJTw6afURsXK/hTk8XJy1ZOVtl5fGrOdBQsp6zbKwxvSRyI9TLqtnukh45lsjoGXPbVOScy8XiZZ3AF8Jy0e+3sq79Le9SNmP6oOOG9w2gfm+5JhvcZGQ3tUcyUfEylTLsSTnVh8zUZsVMgYAAAAAAACAdv4C9UCevMBdAAA=
   </data>
  </layer>
  <layer name="layer1" width="100" height="60" opacity="0.79">

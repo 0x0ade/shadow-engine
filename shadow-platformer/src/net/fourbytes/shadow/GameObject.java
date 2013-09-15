@@ -80,7 +80,7 @@ public abstract class GameObject {
 	public abstract TextureRegion getTexture();
 	
 	public void tick() {
-		layer.level.lights.setLight(this, layer.level.mainLayer);
+		//layer.level.lights.setLight(this, layer.level.mainLayer); //TODO Fix active light sources only active in-view...
 	}
 	
 	private boolean disposedLayer = false;
@@ -115,8 +115,8 @@ public abstract class GameObject {
 		tmpimg = getImage();
 		if (tmpimg != null) {
 			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-			tmpimg.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y);
-			tmpimg.setSize(rec.width + renderoffs.width, rec.height + renderoffs.height);
+			//tmpimg.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y);
+			//tmpimg.setSize(rec.width + renderoffs.width, rec.height + renderoffs.height);
 			tmpimg.setScaleY(-1f);
 			renderCalc();
 		} else {

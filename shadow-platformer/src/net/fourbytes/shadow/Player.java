@@ -156,8 +156,8 @@ public class Player extends Entity implements Input.KeyListener {
 	}
 	
 	@Override
-	public void hurt(Entity e, float damage) {
-		super.hurt(e, damage);
+	public void hurt(GameObject go, float damage) {
+		super.hurt(go, damage);
 		hframe = 0;
 	}
 	

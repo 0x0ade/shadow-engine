@@ -173,7 +173,11 @@ public abstract class Entity extends GameObject {
 		super.render();
 	}
 	
-	public void hurt(Entity e, float damage) {
+	public void hurt(GameObject go, float damage) {
 		health -= damage;
+	}
+	
+	public void hit(GameObject go) {
+		movement.set(((pos.x + rec.width/2f) - (go.pos.x + go.rec.width/2f)) * 1.25f, ((pos.y + rec.height/2f) - (go.pos.y + go.rec.height/2f)) * 0.625f);
 	}
 }

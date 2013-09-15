@@ -31,7 +31,7 @@ public class Sounds {
 		Sound sound = sounds.get(savename);
 		if (sound == null) {
 			autoaddSound(savename);
-			sounds.get(savename);
+			sound = sounds.get(savename);
 		}
 		return sound;
 	}

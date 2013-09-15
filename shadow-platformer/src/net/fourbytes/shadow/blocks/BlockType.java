@@ -132,16 +132,18 @@ public abstract class BlockType {
 		if (block.tmpimg != null) {
 			block.tmpimg.setScaleY(-1f);
 			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-			block.tmpimg.setPosition(block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y);
-			block.tmpimg.setSize(block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
 		} else {
 			System.out.println("I: null; S: "+toString());
 		}
 	}
 	
+	public static Color tmpc = new Color();
+	
 	public void render() {
 		if (block.tmpimg != null) {
-			block.tmpimg.draw(Shadow.spriteBatch, block.alpha);
+			Shadow.spriteBatch.setColor(tmpc.set(block.tmpimg.getColor()).mul(1f, 1f, 1f, block.alpha));
+			block.tmpimg.getDrawable().draw(Shadow.spriteBatch, block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y, 
+					block.rec.width + block.renderoffs.width, -block.rec.height + block.renderoffs.height);
 		} else {
 			//System.out.println("I: null; S: "+toString());
 		}
