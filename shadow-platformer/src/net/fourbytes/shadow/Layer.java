@@ -41,7 +41,7 @@ public class Layer {
 	public static float round = 2f;
 	
 	protected int tget = 0;
-	protected Array[] tgets = new Array[8];
+	protected Array[] tgets = new Array[16];
 	
 	public Layer(Level level) {
 		this.level = level;
