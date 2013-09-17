@@ -101,8 +101,6 @@ public class LightSystem {
 					float fdark = 1f/rsq;
 					float femit= 1f-tmpradsq/rsq;
 					//Passive lighting - X checks for light source and adapts to it.
-					//If go is entity it uses it to adapt to light as active lighting can't light entities.
-					//If go is block AND go.color.a is 0 this is used to check for sun.
 					int bs = 0;
 					int es = 0;
 					int ps = 0;
