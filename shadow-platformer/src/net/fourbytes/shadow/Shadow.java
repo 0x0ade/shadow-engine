@@ -57,9 +57,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static Random rand = new Random();
 	public static Level level;
 	public static ControllerHelper controllerHelper;
-	public static FrameBuffer fb;
-	public static SpriteBatch fbBatch;
-	public static boolean useFB = true; //Disable FB only when necessary
 	public static Camera cam;
 	public static float dispw = 1f;
 	public static float disph = 1f;
@@ -81,8 +78,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static float viewh = 1f;
 	public static float touchw = 1f;
 	public static float touchh = 1f;
-	public static ShaderProgram shaderSprites;
-	public static ShaderProgram shaderBuffer;
+	public static ShaderProgram shader;
 	public static ShapeRenderer shapeRenderer;
 	public static SpriteBatch spriteBatch;
 	public static int frames = 0;
@@ -236,23 +232,14 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		
 		tick();
 		
-		if (shaderSprites != null) {
-			shaderSprites.begin();
-			shaderSprites.setUniformf("resolution", dispw, disph);
-			shaderSprites.end();
+		if (shader != null) {
+			shader.begin();
+			shader.setUniformf("resolution", dispw, disph);
+			shader.end();
 		}
 		
 		//Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		if (useFB) {
-			if (shaderBuffer != null) {
-				shaderBuffer.begin();
-				shaderBuffer.setUniformf("resolution", dispw, disph);
-				shaderBuffer.end();
-			}
-			
-			fb.begin();
-		}
 		spriteBatch.setColor(1f, 1f, 1f, 1f);
 		//Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
@@ -265,17 +252,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		}
 		Input.render();
 		ModLoader.postRender();
-		if (useFB) {
-			fb.end();
-			fbBatch.setProjectionMatrix(cam.cam.combined);
-			fbBatch.begin();
-			fbBatch.disableBlending();
-			Rectangle vp = cam.camrec;
-			Texture tex = fb.getColorBufferTexture();
-			tex.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-			fbBatch.draw(tex, vp.x, vp.y, vp.width, vp.height);
-			fbBatch.end();
-		}
 		
 		long time = System.currentTimeMillis();
 		
@@ -305,39 +281,24 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		}
 		if (loadstate == 0) {
 			//Gdx.graphics.setVSync(true);
-			fb = new FrameBuffer(Format.RGB565, (int) dispw, (int) disph, false); //TODO Decide if RGB565 or RGBA4444 or anything other
 			shapeRenderer = new ShapeRenderer();
 			
-			String shaderSpritesDesktop = "shaders/basic";
-			String shaderSpritesAndroid = "shaders/basic";
-			String shaderSpritesOuya = "shaders/basic";
-			String shaderSpritesLoad = isOuya?shaderSpritesOuya:isAndroid?shaderSpritesAndroid:shaderSpritesDesktop;
-			
-			String shaderBufferDesktop = "shaders/vignette";
-			String shaderBufferAndroid = "shaders/basic";
-			String shaderBufferOuya = "shaders/vignette";
-			String shaderBufferLoad = isOuya?shaderBufferOuya:isAndroid?shaderBufferAndroid:shaderBufferDesktop;
+			String shaderDesktop = "shaders/vignette";
+			String shaderAndroid = "shaders/basic";
+			String shaderOuya = "shaders/vignette";
+			String shaderLoad = isOuya?shaderOuya:isAndroid?shaderAndroid:shaderDesktop;
 			
 			try {
 				ShaderProgram.pedantic = false;
 				
 				//TODO Change / update / fix / complete GLSL shaders
-				final String vertexSprites = Gdx.files.internal(shaderSpritesLoad+".vert").readString();
-				final String fragmentSprites = Gdx.files.internal(shaderSpritesLoad+".frag").readString();
+				final String vertex = Gdx.files.internal(shaderLoad+".vert").readString();
+				final String fragment = Gdx.files.internal(shaderLoad+".frag").readString();
 				
-				shaderSprites = new ShaderProgram(vertexSprites, fragmentSprites);
+				shader = new ShaderProgram(vertex, fragment);
 				
-				if (shaderSprites.getLog().length()!=0) {
-					System.err.println(shaderSprites.getLog());
-				}
-				
-				final String vertexBuffer = Gdx.files.internal(shaderBufferLoad+".vert").readString();
-				final String fragmentBuffer = Gdx.files.internal(shaderBufferLoad+".frag").readString();
-				
-				shaderBuffer = new ShaderProgram(vertexBuffer, fragmentBuffer);
-				
-				if (shaderBuffer.getLog().length()!=0) {
-					System.err.println(shaderBuffer.getLog());
+				if (shader.getLog().length()!=0) {
+					System.err.println(shader.getLog());
 				}
 				
 			} catch (Exception e) {
@@ -345,10 +306,8 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			}
 			
 			spriteBatch = new SpriteBatch(2048);
-			fbBatch = new SpriteBatch(2);
 			
-			spriteBatch.setShader(shaderSprites);
-			fbBatch.setShader(shaderBuffer);
+			spriteBatch.setShader(shader);
 			
 			Images.loadBasic();
 			
@@ -471,10 +430,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			cam.resize();
 			Input.resize();
 			
-			if (fb != null) {
-				fb.dispose();
-				fb = new FrameBuffer(fb.getColorBufferTexture().getTextureData().getFormat(), (int) dispw, (int) disph, false);
-			}
 		}
 	}
 
