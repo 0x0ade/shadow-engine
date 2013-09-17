@@ -84,15 +84,10 @@ public class LightSystem {
 			return;
 		}
 		
-		boolean primaryLight = !(go instanceof Entity);
-		boolean secondaryLight = go.light.a == 0 || go instanceof Entity;
-		
 		int cx = (int)go.pos.x;
 		int cy = (int)go.pos.y;
 		float r = 6.5f;
 		float rsq = MathHelper.sq(r);
-		float rp = 4f;
-		float rpsq = MathHelper.sq(rp);
 		
 		float avgsun = (ll.level.globalLight.r + ll.level.globalLight.g + ll.level.globalLight.a) / 3f;
 		
@@ -102,76 +97,55 @@ public class LightSystem {
 				if (tmpradsq <= rsq) {
 					float tmprad = (float) Math.sqrt(tmpradsq);
 					Array<Block> al = ll.get(Coord.get(x, y));
-					if (secondaryLight && tmpradsq <= rpsq) {
-						float fsun = (1f/rpsq)*avgsun*0.6275f;
-						float fdark = 1f/rpsq;
-						float femit = 1f/rp;
-						if (!primaryLight) {
-							//If not affected by primaryLight make light strength be dependent to the distance.
-							femit= 1f-tmpradsq/rpsq;
-						}
-						//Passive lighting - X checks for light source and adapts to it.
-						//If go is entity it uses it to adapt to light as active lighting can't light entities.
-						//If go is block AND go.color.a is 0 this is used to check for sun.
-						int bs = 0;
-						int es = 0;
-						int ps = 0;
-						//sun.set(1f, 1f, 1f, 1f);
-						sun.set(ll.level.globalLight);
-						dark.set(0f, 0f, 0f, 1f);
-						emit.set(1f, 1f, 1f, 1f);
-						if (al != null && al.size != 0) {
-							for (Block bb : al) {
-								if (bb.light.a > 0f) {
-									es++;
-									if (es == 1) {
-										emit.set(bb.light);
-									} else {
-										emit.add(bb.light);
-									}
-								}
-								if (bb.passSunlight) {
-									ps++;
-									if (ps == 1) {
-										sun.set(tmpc.set(ll.level.globalLight).mul(bb.tintSunlight));
-									} else {
-										sun.add(tmpc.set(ll.level.globalLight).mul(bb.tintSunlight));
-									}
-								} else {
-									bs++;
-									if (bs == 1) {
-										dark.set(bb.tintDarklight);
-									} else {
-										dark.add(bb.tintDarklight);
-									}
-								}
-							}
-						} else {
-							ps = 0;
-						}
-						if (es != 0 && !primaryLight) {
-							go.lightTint.add(emit.mul(1f/es).mul(femit));
-						}
-						if (bs == 0) {
-							go.lightTint.add(sun.mul(1f/ps).mul(fsun));
-						} else {
-							go.lightTint.add(dark.mul(1f/bs).mul(fdark));
-						}
-					}
-					//Sidenote: No, I didn't forget the if-check. Entities cast light but don't get lighted by blocks via primaryLight.
-					//Active lighting - Light source casts light to blocks around itself, strength of light being dependent of the radius.
-					//If go is block it uses it as primary lighting, casting it's light to other blocks.
-					//If go is entity it uses it to cast it's light to blocks. 
-					//Unfournately it does NOT cast light to entities so entities use the secondary lighting method.
-					if (go.light.a > 0f && al != null && al.size != 0) {
-						go.lightTint.set(1f, 1f, 1f, 1f);
+					float fsun = (1f/rsq)*avgsun*0.6275f;
+					float fdark = 1f/rsq;
+					float femit= 1f-tmpradsq/rsq;
+					//Passive lighting - X checks for light source and adapts to it.
+					//If go is entity it uses it to adapt to light as active lighting can't light entities.
+					//If go is block AND go.color.a is 0 this is used to check for sun.
+					int bs = 0;
+					int es = 0;
+					int ps = 0;
+					//sun.set(1f, 1f, 1f, 1f);
+					sun.set(ll.level.globalLight);
+					dark.set(0f, 0f, 0f, 1f);
+					emit.set(1f, 1f, 1f, 1f);
+					if (al != null && al.size != 0) {
 						for (Block bb : al) {
 							if (bb.light.a > 0f) {
-								continue;
+								es++;
+								if (es == 1) {
+									emit.set(bb.light);
+								} else {
+									emit.add(bb.light);
+								}
 							}
-							emit.set(go.light);
-							bb.lightTint.add(emit.mul((1f-tmpradsq/rsq)*go.light.a));
+							if (bb.passSunlight) {
+								ps++;
+								if (ps == 1) {
+									sun.set(tmpc.set(ll.level.globalLight).mul(bb.tintSunlight));
+								} else {
+									sun.add(tmpc.set(ll.level.globalLight).mul(bb.tintSunlight));
+								}
+							} else {
+								bs++;
+								if (bs == 1) {
+									dark.set(bb.tintDarklight);
+								} else {
+									dark.add(bb.tintDarklight);
+								}
+							}
 						}
+					} else {
+						ps = 0;
+					}
+					if (es != 0) {
+						go.lightTint.add(emit.mul(1f).mul(femit));
+					}
+					if (bs == 0) {
+						go.lightTint.add(sun.mul(1f/ps).mul(fsun));
+					} else {
+						go.lightTint.add(dark.mul(1f/bs).mul(fdark));
 					}
 				}
 			}

@@ -14,8 +14,8 @@ public class TimeDaySystem {
 	public static float fullday = 60f * 10f;
 	//public static float fullday = 14f;
 	public static float day = 0;
-	public float delta = fullday/2f - fullday/14f;
-	//public float delta = 0f;
+	//public float delta = fullday/2f - fullday/14f;
+	public float delta = 0f;
 	
 	public static Array<Color> colors = new Array<Color>();
 	public static Array<Color> colorsbg = new Array<Color>();
