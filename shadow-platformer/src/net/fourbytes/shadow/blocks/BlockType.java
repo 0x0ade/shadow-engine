@@ -151,4 +151,7 @@ public abstract class BlockType {
 		}
 	}
 	
+	public void renderTop() {
+	}
+	
 }

@@ -266,7 +266,7 @@ public class Camera implements Input.KeyListener {
 		
 		for (Block block : l.blocks) {
 			if (block == null) continue;
-			if (block.rendertop) continue;
+			if (block.rendertop == 0x01) continue;
 			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
 			if (camrec.overlaps(objrec) && level) {
 				//block.preRender();
@@ -325,7 +325,7 @@ public class Camera implements Input.KeyListener {
 		}
 		for (Block block : l.blocks) {
 			if (block == null) continue;
-			if (!block.rendertop) continue;
+			if (block.rendertop == 0x00) continue;
 			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
 			if (camrec.overlaps(objrec) && level) {
 				//block.preRender();
@@ -333,7 +333,7 @@ public class Camera implements Input.KeyListener {
 				if (!block.blending) {
 					Shadow.spriteBatch.disableBlending();
 				}
-				block.render();
+				block.renderTop();
 				if (!block.blending) {
 					Shadow.spriteBatch.enableBlending();
 				}

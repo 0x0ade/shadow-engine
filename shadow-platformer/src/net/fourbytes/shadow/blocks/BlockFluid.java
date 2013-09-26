@@ -51,7 +51,7 @@ public abstract class BlockFluid extends BlockType {
 		block.interactive = true;
 		block.solid = false;
 		block.alpha = 0.75f;
-		block.rendertop = true;
+		block.rendertop = 0x01;
 		
 		subframe += rand.nextInt(6);
 		block.solid = false;
@@ -279,6 +279,15 @@ public abstract class BlockFluid extends BlockType {
 		} else {
 			System.out.println("I: null; S: "+toString());
 		}
+	}
+	
+	@Override
+	public void render() {
+	}
+	
+	@Override
+	public void renderTop() {
+		super.render();
 	}
 	
 	boolean isSameType(Object o) {

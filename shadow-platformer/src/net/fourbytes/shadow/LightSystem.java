@@ -35,6 +35,7 @@ public class LightSystem {
 			for (Block b : level.mainLayer.blocks) {
 				setLight(b, level.mainLayer);
 			}
+			
 			clearLight = false;
 			
 			for (Entity e : level.mainLayer.entities) {

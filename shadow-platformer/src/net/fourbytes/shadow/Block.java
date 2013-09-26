@@ -17,7 +17,10 @@ public class Block extends GameObject {
 	
 	public String subtype = "";
 	public boolean interactive = false;
-	public boolean rendertop = false;
+	/**
+	 * 0x00 = normal only, 0x01 = rendertop only, anything other = both
+	 */
+	public byte rendertop = 0x00;
 	public Rectangle colloffs = new Rectangle(0, 0, 0, 0);
 	
 	public Block(Vector2 pos, Layer layer) {
@@ -35,5 +38,8 @@ public class Block extends GameObject {
 	}
 	
 	public void collide(Entity e) {
+	}
+	
+	public void renderTop() {
 	}
 }

@@ -163,6 +163,7 @@ public class Input {
 	public static ObjectMap<Integer, TouchPoint> touches = new ObjectMap<Integer, TouchPoint>();
 	
 	public static Array<KeyListener> keylisteners = new Array<KeyListener>();
+	static Array<KeyListener> tmpkeylisteners = new Array<KeyListener>();
 	
 	public static void setUp() {
 		for (Key k : all) {
@@ -200,7 +201,10 @@ public class Input {
 			k.tick();
 		}
 		
-		for (KeyListener kl : keylisteners) {
+		tmpkeylisteners.clear();
+		tmpkeylisteners.addAll(keylisteners);
+		
+		for (KeyListener kl : tmpkeylisteners) {
 			if (kl == null) {
 				keylisteners.removeValue(kl, true);
 				continue;

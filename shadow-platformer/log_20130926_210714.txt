@@ -1,0 +1,9 @@
+java.lang.ArrayIndexOutOfBoundsException: 1
+	at net.fourbytes.shadow.blocks.BlockGrassTop.preRender(BlockGrassTop.java:88)
+	at net.fourbytes.shadow.TypeBlock.preRender(TypeBlock.java:44)
+	at net.fourbytes.shadow.Camera.renderLayer(Camera.java:242)
+	at net.fourbytes.shadow.Camera.renderLevel(Camera.java:192)
+	at net.fourbytes.shadow.Camera.render(Camera.java:160)
+	at net.fourbytes.shadow.Shadow.render(Shadow.java:247)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:207)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:114)

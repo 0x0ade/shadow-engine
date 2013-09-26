@@ -52,4 +52,9 @@ public class TypeBlock extends Block {
 		type.render();
 	}
 	
+	@Override
+	public void renderTop() {
+		type.renderTop();
+	}
+	
 }
