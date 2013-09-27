@@ -13,13 +13,13 @@ import com.badlogic.gdx.utils.IntArray;
 public class BlockGrassTop extends BlockType {
 	
 	public int[] order = {0, -2, -2};
-	public int[] offsets = {0, 0, 0};
-	public float[] factors = {1f, 1.125f, 1.4f};
-	public float[] speed1 = {0, 0, 0};
-	public float[] speed2 = {0, 0, 0};
-	public float[] height = {0, 0, 0};
-	Image[] imgcache = {null, null, null};
-	Sprite[] spritecache = {null, null, null};
+	public int[] offsets = {0, 0, 0, 0, 0, 0};
+	public float[] factors = {0, 0, 0, 0, 0, 0};
+	public float[] speed1 = {0, 0, 0, 0, 0, 0};
+	public float[] speed2 = {0, 0, 0, 0, 0, 0};
+	public float[] height = {0, 0, 0, 0, 0, 0};
+	Image[] imgcache;
+	Sprite[] spritecache;
 	
 	public int frame = 0;
 	
@@ -29,13 +29,15 @@ public class BlockGrassTop extends BlockType {
 		frame = Shadow.rand.nextInt(1000);
 		for (int i = 0; i < offsets.length; i++) {
 			offsets[i] = Shadow.rand.nextInt(400);
-			speed1[i] = 10f+Shadow.rand.nextInt(20);
-			speed2[i] = 20f+Shadow.rand.nextInt(10);
+			factors[i] = 1f - ((float)Shadow.rand.nextInt(100))/300f;
+			speed1[i] = 10f+Shadow.rand.nextInt(10);
+			speed2[i] = 20f+Shadow.rand.nextInt(20);
 			height[i] = 1f + ((float)Shadow.rand.nextInt(100))/450f;
-			if (i > 0) {
+			
+			if (i < order.length && i > 0) {
 				int orderi = -1;
 				while (orderi == -1) {
-					orderi = Shadow.rand.nextInt(order.length);
+					orderi = Shadow.rand.nextInt(offsets.length);
 					for (int x : order) {
 						if (orderi == x) {
 							orderi = -1;
@@ -63,11 +65,15 @@ public class BlockGrassTop extends BlockType {
 		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("block_grasstop"), 16, 16);
 		TextureRegion reg = null;
 		reg = regs[0][i];
+		if (imgcache == null || spritecache == null) {
+			imgcache = new Image[regs[0].length];
+			spritecache = new Sprite[regs[0].length];
+		}
 		return reg;
 	}
 	
 	public Image getImage(int i) {
-		if (imgcache[i] == null) {
+		if (imgcache == null || imgcache[i] == null) {
 			Image img = new Image(getTexture(i));
 			imgcache[i] = img;
 		}
@@ -75,7 +81,7 @@ public class BlockGrassTop extends BlockType {
 	}
 	
 	public Sprite getSprite(int i) {
-		if (spritecache[i] == null) {
+		if (spritecache == null || spritecache[i] == null) {
 			Sprite sprite = new Sprite(getTexture(i));
 			spritecache[i] = sprite;
 		}
@@ -92,7 +98,6 @@ public class BlockGrassTop extends BlockType {
 	
 	@Override
 	public void preRender() {
-		//TODO
 		block.tmpimg = getImage(0);
 		for (int i = 0; i < spritecache.length; i++) {
 			Image img = getImage(i);
@@ -107,8 +112,8 @@ public class BlockGrassTop extends BlockType {
 			sprite.setSize(block.rec.width + block.renderoffs.width, -(block.rec.height + block.renderoffs.height) * height[i]);
 			
 			int offsetframe = frame + offsets[i];
-			float offs = (float)Math.sin(offsetframe/speed1[i])/8f + ((float)Math.cos(offsetframe/speed2[i])/8f);
-			offs *= 1.2f;
+			float offs = (float)Math.sin(offsetframe/(1.3f*speed1[i]))/8f + ((float)Math.cos(offsetframe/(1.2f*speed2[i]))/8f);
+			offs *= 1.15f;
 			offs *= factors[i];
 			float[] verts = sprite.getVertices();
 			float x2 = sprite.getX();
@@ -122,7 +127,7 @@ public class BlockGrassTop extends BlockType {
 	
 	@Override
 	public void render() {
-		for (int i = 0; i < spritecache.length-2; i++) {
+		for (int i = 0; i < order.length-2; i++) {
 			Sprite sprite = spritecache[order[i]];
 			
 			sprite.draw(Shadow.spriteBatch);
@@ -131,7 +136,7 @@ public class BlockGrassTop extends BlockType {
 	
 	@Override
 	public void renderTop() {
-		for (int i = spritecache.length-2; i < spritecache.length; i++) {
+		for (int i = order.length-2; i < order.length; i++) {
 			Sprite sprite = spritecache[order[i]];
 			
 			sprite.draw(Shadow.spriteBatch);

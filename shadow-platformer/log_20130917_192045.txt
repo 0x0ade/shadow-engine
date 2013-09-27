@@ -1,9 +1,0 @@
-com.badlogic.gdx.utils.GdxRuntimeException: #iterator() cannot be used nested.
-	at com.badlogic.gdx.utils.Array$ArrayIterator.next(Array.java:466)
-	at net.fourbytes.shadow.Entity.tick(Entity.java:79)
-	at net.fourbytes.shadow.Player.tick(Player.java:110)
-	at net.fourbytes.shadow.Level.tick(Level.java:180)
-	at net.fourbytes.shadow.Shadow.tick(Shadow.java:423)
-	at net.fourbytes.shadow.Shadow.render(Shadow.java:237)
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:207)
-	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:114)
