@@ -238,11 +238,9 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			shader.end();
 		}
 		
-		//Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
-		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		spriteBatch.setColor(1f, 1f, 1f, 1f);
-		//Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
-		//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		ModLoader.preRender();
 		cam.render();
 		if (level != null && (level instanceof MenuLevel)) {
