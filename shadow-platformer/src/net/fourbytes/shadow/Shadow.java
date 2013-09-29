@@ -55,8 +55,10 @@ import com.badlogic.gdx.utils.Json;
 public final class Shadow implements ApplicationListener, InputProcessor, KeyListener {
 	
 	public static Random rand = new Random();
+	
 	public static Level level;
 	public static ControllerHelper controllerHelper;
+	
 	public static Camera cam;
 	public static float dispw = 1f;
 	public static float disph = 1f;
@@ -81,15 +83,18 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static ShaderProgram shader;
 	public static ShapeRenderer shapeRenderer;
 	public static SpriteBatch spriteBatch;
+	
 	public static int frames = 0;
-	public static long lastmicro = 0;
+	public static long lastfmicro = 0;
 	public static int fps = 0;
 	public static int eframes = 0;
-	public static long elastmicro = 0;
+	public static long elastfmicro = 0;
 	public static int efps = 0;
+	
 	public static boolean isAndroid = false;
 	public static boolean isOuya = false;
 	public static boolean gdxpaused = false;
+	
 	public static int loadstate = 0;
 	public static int loadtick = 0;
 	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6}};
@@ -255,20 +260,20 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		
 		frames++;
 		eframes++;
-		if (lastmicro == 0) {
-			lastmicro = time;
+		if (lastfmicro == 0) {
+			lastfmicro = time;
 		}
-		if (elastmicro == 0) {
-			elastmicro = time;
+		if (elastfmicro == 0) {
+			elastfmicro = time;
 		}
 		
-		if (time - lastmicro >= 1000) {
-			lastmicro = time;
+		if (time - lastfmicro >= 1000) {
+			lastfmicro = time;
 			fps = frames;
 			frames = 0;
 		}
-		if (time - elastmicro >= 100) {
-			elastmicro = time;
+		if (time - elastfmicro >= 100) {
+			elastfmicro = time;
 			efps = eframes*10;
 			eframes = 0;
 		}

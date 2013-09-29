@@ -65,6 +65,7 @@ public class Level {
 			TmxMapLoader tml = new TmxMapLoader();
 			map = tml.load("data/levels/"+name+".tmx");
 			initTilED();
+			ready = true;
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -74,7 +75,7 @@ public class Level {
 		
 		System.gc();
 		
-		ready = true;
+		//ready = true;
 	}
 	
 	public void fillLayer(int key) {
