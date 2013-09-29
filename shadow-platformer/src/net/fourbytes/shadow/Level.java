@@ -75,7 +75,7 @@ public class Level {
 		
 		System.gc();
 		
-		//ready = true;
+		ready = true;
 	}
 	
 	public void fillLayer(int key) {
