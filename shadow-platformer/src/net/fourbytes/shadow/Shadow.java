@@ -412,10 +412,9 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 				viewh = disph/viewff;
 				break;
 			case 0x04:
-				//TODO
 				vieww = dispw/viewff;
 				viewh = disph/viewff;
-				if (dispw/viewff >= 21.75f && disph/viewff >= 18f) {
+				if (isAndroid || (dispw/viewff >= 21.75f && disph/viewff >= 18f)) {
 					vieww = vieww/1.5f;
 					viewh = viewh/1.5f;
 				}
