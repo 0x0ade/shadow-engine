@@ -7,6 +7,9 @@ import java.util.Vector;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.entities.Cursor;
+import net.fourbytes.shadow.entities.Particle;
+import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.gdxutils.ByteMap;
 import net.fourbytes.shadow.gdxutils.ShortMap;
 import net.fourbytes.shadow.map.ShadowMap;

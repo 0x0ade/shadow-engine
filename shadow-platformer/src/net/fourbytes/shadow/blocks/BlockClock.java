@@ -10,9 +10,9 @@ import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Garbage;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
 import net.fourbytes.shadow.blocks.BlockType.LogicType;
+import net.fourbytes.shadow.entities.Player;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;

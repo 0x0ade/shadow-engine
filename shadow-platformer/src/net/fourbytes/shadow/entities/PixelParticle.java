@@ -1,7 +1,9 @@
-package net.fourbytes.shadow;
+package net.fourbytes.shadow.entities;
 
 import java.util.Random;
 
+import net.fourbytes.shadow.Images;
+import net.fourbytes.shadow.Layer;
 import aurelienribon.bodyeditor.BodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;

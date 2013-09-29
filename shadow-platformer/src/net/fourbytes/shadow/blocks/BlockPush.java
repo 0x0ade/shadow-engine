@@ -9,9 +9,9 @@ import net.fourbytes.shadow.Coord;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Garbage;
 import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Mob;
-import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
+import net.fourbytes.shadow.entities.Mob;
+import net.fourbytes.shadow.entities.Player;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Sprite;

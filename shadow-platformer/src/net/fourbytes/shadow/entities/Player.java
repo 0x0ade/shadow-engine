@@ -1,9 +1,19 @@
-package net.fourbytes.shadow;
+package net.fourbytes.shadow.entities;
 
 import java.util.ArrayList;
 import java.util.Map.Entry;
 import java.util.Vector;
 
+import net.fourbytes.shadow.Entity;
+import net.fourbytes.shadow.Fonts;
+import net.fourbytes.shadow.GameObject;
+import net.fourbytes.shadow.Images;
+import net.fourbytes.shadow.Input;
+import net.fourbytes.shadow.Layer;
+import net.fourbytes.shadow.Shadow;
+import net.fourbytes.shadow.Sounds;
+import net.fourbytes.shadow.Input.Key;
+import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.map.Saveable;
 import aurelienribon.bodyeditor.BodyEditorLoader;
 

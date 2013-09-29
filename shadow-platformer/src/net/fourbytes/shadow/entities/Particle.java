@@ -1,6 +1,9 @@
-package net.fourbytes.shadow;
+package net.fourbytes.shadow.entities;
 
 import java.util.ArrayList;
+
+import net.fourbytes.shadow.Entity;
+import net.fourbytes.shadow.Layer;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;

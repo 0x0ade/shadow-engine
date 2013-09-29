@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
+import net.fourbytes.shadow.entities.Mob;
+import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -96,10 +98,10 @@ public abstract class Entity extends GameObject {
 		movement.x *= 1f-slowdown;
 	}
 	
-	Rectangle tmper = new Rectangle();
-	Rectangle or = new Rectangle();
+	protected Rectangle tmper = new Rectangle();
+	protected Rectangle or = new Rectangle();
 	
-	Rectangle calcCollide() {
+	protected Rectangle calcCollide() {
 		float rad = (rec.width + rec.height)/2;
 		rad *= 0.05f;
 		tmper.set(pos.x + rad, pos.y + rad, rec.width - rad*2, rec.height - rad*2);

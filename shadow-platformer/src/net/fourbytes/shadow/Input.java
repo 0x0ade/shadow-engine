@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
+import net.fourbytes.shadow.entities.Cursor;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
@@ -25,10 +26,10 @@ public class Input {
 			KeyInput, 
 			Cursor;
 		}
-		TouchMode touchmode;
-		int id = -1;
-		int button = -1;
-		Vector2 pos = new Vector2(-1f, -1f);
+		public TouchMode touchmode;
+		public int id = -1;
+		public int button = -1;
+		public Vector2 pos = new Vector2(-1f, -1f);
 		public TouchPoint(int x, int y, int id, int button, TouchMode touchmode) {
 			this.id = id;
 			this.button = button;

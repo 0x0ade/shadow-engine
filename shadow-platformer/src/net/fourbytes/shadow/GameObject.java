@@ -7,6 +7,7 @@ import java.util.Vector;
 
 import net.fourbytes.shadow.blocks.BlockFluid;
 import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.entities.PixelParticle;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;

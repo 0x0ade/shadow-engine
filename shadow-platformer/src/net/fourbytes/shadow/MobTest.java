@@ -1,5 +1,7 @@
 package net.fourbytes.shadow;
 
+import net.fourbytes.shadow.entities.Mob;
+
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;

@@ -1,7 +1,13 @@
-package net.fourbytes.shadow;
+package net.fourbytes.shadow.entities;
 
 import java.util.Vector;
 
+import net.fourbytes.shadow.Block;
+import net.fourbytes.shadow.Coord;
+import net.fourbytes.shadow.Entity;
+import net.fourbytes.shadow.Layer;
+import net.fourbytes.shadow.MathHelper;
+import net.fourbytes.shadow.Sounds;
 import net.fourbytes.shadow.map.Saveable;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

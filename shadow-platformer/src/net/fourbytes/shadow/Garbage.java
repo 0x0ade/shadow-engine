@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.blocks.BlockLogic;
+import net.fourbytes.shadow.entities.Particle;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;

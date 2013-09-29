@@ -1,8 +1,15 @@
-package net.fourbytes.shadow;
+package net.fourbytes.shadow.entities;
 
 import java.util.ArrayList;
 import java.util.Vector;
 
+import net.fourbytes.shadow.Block;
+import net.fourbytes.shadow.Entity;
+import net.fourbytes.shadow.Images;
+import net.fourbytes.shadow.Input;
+import net.fourbytes.shadow.Layer;
+import net.fourbytes.shadow.MobTest;
+import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
@@ -19,8 +26,8 @@ import com.badlogic.gdx.utils.Array;
 
 public class Cursor extends Entity {
 	
-	int id = -1;
-	boolean render = false;
+	public int id = -1;
+	public boolean render = false;
 	Texture tex;
 	Image img;
 	Color color;

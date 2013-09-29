@@ -24,10 +24,10 @@ import net.fourbytes.shadow.GameObject;
 import net.fourbytes.shadow.Garbage;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Level;
-import net.fourbytes.shadow.Mob;
-import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
 import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.entities.Mob;
+import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.gdxutils.ByteMap;
 
 /**

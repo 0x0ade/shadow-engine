@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import net.fourbytes.shadow.Input.Key;
+import net.fourbytes.shadow.entities.Cursor;
+import net.fourbytes.shadow.entities.Player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

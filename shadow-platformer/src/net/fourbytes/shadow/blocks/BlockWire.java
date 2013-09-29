@@ -10,8 +10,8 @@ import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Garbage;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.Player;
 import net.fourbytes.shadow.TypeBlock;
+import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
 
 import com.badlogic.gdx.graphics.Color;

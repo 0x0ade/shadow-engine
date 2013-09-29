@@ -5,7 +5,7 @@ import java.util.Random;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Input;
-import net.fourbytes.shadow.Player;
+import net.fourbytes.shadow.entities.Player;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
