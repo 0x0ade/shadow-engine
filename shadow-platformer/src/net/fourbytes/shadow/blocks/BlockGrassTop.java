@@ -62,7 +62,7 @@ public class BlockGrassTop extends BlockType {
 	}
 	
 	public TextureRegion getTexture(int i) {
-		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("block_grasstop"), 16, 16);
+		TextureRegion[][] regs = Images.split("block_grasstop", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[0][i];
 		if (imgcache == null || spritecache == null) {

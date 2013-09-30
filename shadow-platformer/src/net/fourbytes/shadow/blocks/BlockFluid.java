@@ -243,28 +243,28 @@ public abstract class BlockFluid extends BlockType {
 		//if (height <= 0) height = 1;
 		//if (height > 16) height = 16;
 		if (!topblock && height == 16) {
-			TextureRegion[][] regs = TextureRegion.split(getTexture0(), 16, height);
+			TextureRegion[][] regs = Images.split(getTexture0(), 16, height);
 			TextureRegion reg = null;
 			if (regs.length > 0) {
 				reg = regs[0][0];
 				return reg;
 			} else {
-				return new TextureRegion(Images.getTexture("white"));
+				return Images.getTextureRegion("white");
 			}
 		} else {
-			TextureRegion[][] regs = TextureRegion.split(getTexture1(), 16, height);
+			TextureRegion[][] regs = Images.split(getTexture1(), 16, height);
 			TextureRegion reg = null;
 			if (regs.length > 0) {
 				reg = regs[0][frame];
 				return reg;
 			} else {
-				return new TextureRegion(Images.getTexture("white"));
+				return Images.getTextureRegion("white");
 			}
 		}
 	}
 
-	public abstract Texture getTexture0();
-	public abstract Texture getTexture1();
+	public abstract TextureRegion getTexture0();
+	public abstract TextureRegion getTexture1();
 	
 	@Override
 	public void preRender() {

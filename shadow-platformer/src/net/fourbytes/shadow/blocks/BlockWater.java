@@ -21,13 +21,13 @@ public class BlockWater extends BlockFluid {
 	}
 	
 	@Override
-	public Texture getTexture0() {
-		return Images.getTexture("block_water");
+	public TextureRegion getTexture0() {
+		return Images.getTextureRegion("block_water");
 	}
 	
 	@Override
-	public Texture getTexture1() {
-		return Images.getTexture("block_water_top");
+	public TextureRegion getTexture1() {
+		return Images.getTextureRegion("block_water_top");
 	}
 	
 	

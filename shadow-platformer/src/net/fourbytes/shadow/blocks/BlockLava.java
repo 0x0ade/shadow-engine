@@ -13,13 +13,13 @@ public class BlockLava extends BlockFluid {
 	}
 	
 	@Override
-	public Texture getTexture0() {
-		return Images.getTexture("block_lava");
+	public TextureRegion getTexture0() {
+		return Images.getTextureRegion("block_lava");
 	}
 	
 	@Override
-	public Texture getTexture1() {
-		return Images.getTexture("block_lava_top");
+	public TextureRegion getTexture1() {
+		return Images.getTextureRegion("block_lava_top");
 	}
 	
 	@Override

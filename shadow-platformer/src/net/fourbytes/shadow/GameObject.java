@@ -176,7 +176,6 @@ public abstract class GameObject {
 		
 		//pixfac = 2; //DEBUG LINE, COMMENT WHOLE LINE OUT IF NOT DEBUGGING!
 		
-		Image img = getImage();
 		TextureRegion texreg = getTexture();
 		Texture tex = texreg.getTexture();
 		TextureData texdata = tex.getTextureData();

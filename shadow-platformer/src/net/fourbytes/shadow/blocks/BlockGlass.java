@@ -20,7 +20,7 @@ public class BlockGlass extends BlockType {
 
 	@Override
 	public TextureRegion getTexture() {
-		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("block_glass"), 16, 16);
+		TextureRegion[][] regs = Images.split("block_glass", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[0][type-1];
 		return reg;

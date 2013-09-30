@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
+import com.badlogic.gdx.graphics.g2d.PixmapPacker;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
@@ -25,9 +27,10 @@ public class Images {
 	private final static ObjectMap<String, Texture> textures = new ObjectMap<String, Texture>();
 	private final static ObjectMap<String, TextureRegion> textureregs = new ObjectMap<String, TextureRegion>();
 	
-	public static boolean mapTiles = true;
-	public final static Array<String> tilemapList = new Array<String>();
-	public static Texture tilemap;
+	public static boolean packTiles = true;
+	public static PixmapPacker packer;
+	public static TextureAtlas atlas;
+	public static Array<String> atlasList = new Array<String>();
 	
 	public static void addImage(String savename, Image i) {
 		images.put(savename, i);
@@ -139,14 +142,14 @@ public class Images {
 	}
 	
 	public static void addImageToAtlas(String savename, String loadname) {
-		if (!mapTiles) {
+		if (!packTiles) {
 			addImage(savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
 			return;
 		}
 		
-		if (tilemap == null) {
-			tilemap = new Texture(16*8, 16*8, Format.RGBA8888);
-			tilemap.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+		if (packer == null) {
+			packer = new PixmapPacker(16*16, 16*16, Format.RGBA8888, 2, true);
+			atlas = packer.generateTextureAtlas(TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest, true);
 		}
 		
 		Pixmap pm = new Pixmap(Gdx.files.internal(loadname));
@@ -155,43 +158,17 @@ public class Images {
 		t.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
 		addTexture(savename, t);
 		
-		boolean fallback = false;
+		packer.pack(savename, pm);
+		packer.updateTextureAtlas(atlas, TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest, true);
 		
-		if (t.getWidth() != 16 || t.getHeight() != 16) {
-			System.err.println("Texture has non-tileset-conform size! Falling back...");
-			fallback = true;
-		}
-		
-		int regX = tilemapList.size;
-		int regY = 0;
-		while (!fallback && regX >= tilemap.getWidth()/16) {
-			regY++;
-			regX--;
-		}
-		if (regY >= tilemap.getHeight()/16) {
-			System.err.println("Dynamic texture atlas too small! Falling back...");
-			fallback = true;
-		}
-		
-		if (fallback) {
-			System.err.println("Falling back for texture "+savename);
-			TextureRegion region = new TextureRegion(t);
-			addTextureRegion(savename, region);
-			Image i = new Image(region);
-			addImage(savename, i);
-			
-			pm.dispose();
-			return;
-		}
-		
-		tilemap.draw(pm, regX*16, regY*16);
-		TextureRegion region = new TextureRegion(tilemap, regX*16, regY*16, 16, 16);
+		TextureRegion region = atlas.findRegion(savename);
+		//region = new TextureRegion((Texture)atlas.getTextures().toArray()[0], 0f, 0f, 1f, 1f);
 		addTextureRegion(savename, region);
 		Image i = new Image(region);
 		addImage(savename, i);
-		tilemapList.add(savename);
+		atlasList.add(savename);
 		
-		pm.dispose();
+		//pm.dispose(); //Commented out to access the pixmap even after loading it - duh.
 	}
 
 	public static void addImageByMod(AMod mod, String savename, String loadname) {
@@ -222,5 +199,36 @@ public class Images {
 			System.err.println("Loading failed (from mod): SN: "+savename);
 			t.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Splits an texture region into... umm... guess it.
+	 */
+	public static TextureRegion[][] split(String savename, int w, int h) {
+		return split(getTextureRegion(savename), w, h);
+	}
+	
+	/**
+	 * Splits an texture region into... umm... guess it.
+	 */
+	public static TextureRegion[][] split(TextureRegion reg, int w, int h) {
+		Texture tex = reg.getTexture();
+		
+		TextureRegion[][] regs = new TextureRegion[reg.getRegionHeight()/h][];
+		int xx = 0;
+		int yy = 0;
+		
+		for (int y = reg.getRegionY(); y < reg.getRegionY() + reg.getRegionHeight(); y += h) {
+			regs[yy] = new TextureRegion[reg.getRegionWidth()/w];
+			for (int x = reg.getRegionX(); x < reg.getRegionX() + reg.getRegionWidth(); x += w) {
+				TextureRegion subreg = new TextureRegion(tex, x, y, w, h);
+				regs[yy][xx] = subreg;
+				xx++;
+			}
+			xx = 0;
+			yy++;
+		}
+		
+		return regs;
 	}
 }

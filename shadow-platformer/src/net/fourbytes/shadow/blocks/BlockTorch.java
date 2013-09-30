@@ -71,7 +71,7 @@ public class BlockTorch extends BlockType {
 	
 	@Override
 	public TextureRegion getTexture() {
-		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("block_torch"), 16, 16);
+		TextureRegion[][] regs = Images.split("block_torch", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[frame][wall==0?0:1];
 		return reg;

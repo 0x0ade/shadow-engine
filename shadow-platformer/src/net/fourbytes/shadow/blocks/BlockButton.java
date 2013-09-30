@@ -48,7 +48,7 @@ public class BlockButton extends BlockType implements BlockLogic {
 	
 	@Override
 	public TextureRegion getTexture() {
-		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("block_button"), 16, 16);
+		TextureRegion[][] regs = Images.split("block_button", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[0][triggered?1:0];
 		return reg;
