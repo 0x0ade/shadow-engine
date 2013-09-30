@@ -11,10 +11,12 @@ import net.fourbytes.shadow.mod.AMod;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -23,6 +25,10 @@ public class Images {
 	private final static ObjectMap<String, Texture> textures = new ObjectMap<String, Texture>();
 	private final static ObjectMap<String, TextureRegion> textureregs = new ObjectMap<String, TextureRegion>();
 	
+	public static boolean mapTiles = true;
+	public final static Array<String> tilemapList = new Array<String>();
+	public static Texture tilemap;
+	
 	public static void addImage(String savename, Image i) {
 		images.put(savename, i);
 	}
@@ -30,7 +36,7 @@ public class Images {
 	public static Image getImage(String savename, boolean newInstance) {
 		Image image = null;
 		if (newInstance) {
-			image = new Image(getTexture(savename));
+			image = new Image(getTextureRegion(savename));
 		} else {
 			image = images.get(savename);
 			if (image == null) {
@@ -108,9 +114,9 @@ public class Images {
 			loadname = "data/" + loadname;
 		}
 		if (Gdx.files.internal(loadname+".png").exists()) {
-			addImage(name, loadname+".png", TextureFilter.Nearest, TextureFilter.Nearest);
+			addImageToAtlas(name, loadname+".png");
 		} else if (Gdx.files.internal(loadname+"block.png").exists()) {
-			addImage(name, loadname+"block.png", TextureFilter.Nearest, TextureFilter.Nearest);
+			addImageToAtlas(name, loadname+"block.png");
 		}
 	}
 	
@@ -130,6 +136,62 @@ public class Images {
 			System.err.println("Loading failed: SN: "+savename+"; LN: "+loadname);
 			t.printStackTrace();
 		}
+	}
+	
+	public static void addImageToAtlas(String savename, String loadname) {
+		if (!mapTiles) {
+			addImage(savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
+			return;
+		}
+		
+		if (tilemap == null) {
+			tilemap = new Texture(16*8, 16*8, Format.RGBA8888);
+			tilemap.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+		}
+		
+		Pixmap pm = new Pixmap(Gdx.files.internal(loadname));
+		
+		Texture t = new Texture(pm);
+		t.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
+		addTexture(savename, t);
+		
+		boolean fallback = false;
+		
+		if (t.getWidth() != 16 || t.getHeight() != 16) {
+			System.err.println("Texture has non-tileset-conform size! Falling back...");
+			fallback = true;
+		}
+		
+		int regX = tilemapList.size;
+		int regY = 0;
+		while (!fallback && regX >= tilemap.getWidth()/16) {
+			regY++;
+			regX--;
+		}
+		if (regY >= tilemap.getHeight()/16) {
+			System.err.println("Dynamic texture atlas too small! Falling back...");
+			fallback = true;
+		}
+		
+		if (fallback) {
+			System.err.println("Falling back for texture "+savename);
+			TextureRegion region = new TextureRegion(t);
+			addTextureRegion(savename, region);
+			Image i = new Image(region);
+			addImage(savename, i);
+			
+			pm.dispose();
+			return;
+		}
+		
+		tilemap.draw(pm, regX*16, regY*16);
+		TextureRegion region = new TextureRegion(tilemap, regX*16, regY*16, 16, 16);
+		addTextureRegion(savename, region);
+		Image i = new Image(region);
+		addImage(savename, i);
+		tilemapList.add(savename);
+		
+		pm.dispose();
 	}
 
 	public static void addImageByMod(AMod mod, String savename, String loadname) {

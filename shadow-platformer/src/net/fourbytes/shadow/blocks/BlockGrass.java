@@ -28,7 +28,7 @@ public class BlockGrass extends BlockType {
 	}
 	
 	public void tick() {
-		super.tick();
+		block.blending = false;
 		if (!checkedGrassTop && hasGrassTop == 0) {
 			checkedGrassTop = true;
 			

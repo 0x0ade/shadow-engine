@@ -308,9 +308,11 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 				e.printStackTrace();
 			}
 			
-			spriteBatch = new SpriteBatch(2048);
+			spriteBatch = new SpriteBatch(4096);
 			
-			spriteBatch.setShader(shader);
+			if (shader != null) {
+				spriteBatch.setShader(shader);
+			}
 			
 			Images.loadBasic();
 			

@@ -180,7 +180,9 @@ public abstract class GameObject {
 		TextureRegion texreg = getTexture();
 		Texture tex = texreg.getTexture();
 		TextureData texdata = tex.getTextureData();
-		texdata.prepare();
+		if (!texdata.isPrepared()) {
+			texdata.prepare();
+		}
 		Pixmap pixmap = texdata.consumePixmap();
 		
 		int tx = texreg.getRegionX();
@@ -215,8 +217,9 @@ public abstract class GameObject {
 				layer.add(pp);
 			}
 		}
-		pixmap.dispose();
-		texdata.disposePixmap();
+		if (texdata.disposePixmap()) {
+			pixmap.dispose();
+		}
 	}
 	
 	public GameObject duplicate() {

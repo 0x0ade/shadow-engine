@@ -23,4 +23,8 @@ public class BlockLab extends BlockType {
 		return Images.getTextureRegion("block_lab"+type);
 	}
 	
+	public void tick() {
+		block.blending = false;
+	}
+	
 }

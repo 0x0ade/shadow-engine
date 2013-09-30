@@ -187,6 +187,8 @@ public class Camera implements Input.KeyListener {
 		
 		Shadow.shapeRenderer.end();
 		Shadow.spriteBatch.end();
+		//System.out.println("max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
+		//System.out.println("render calls: "+Shadow.spriteBatch.renderCalls);
 	}
 	
 	public void renderLevel(Level level) {
