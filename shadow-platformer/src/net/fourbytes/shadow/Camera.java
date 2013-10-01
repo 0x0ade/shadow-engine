@@ -276,13 +276,12 @@ public class Camera implements Input.KeyListener {
 			if (camrec.overlaps(objrec) && level) {
 				//block.preRender();
 				block.tmpimg.setPosition(block.tmpimg.getX()-0.125f, block.tmpimg.getY()-0.125f);
-				if (!block.blending) {
+				if (block.blending) {
+					Shadow.spriteBatch.enableBlending();
+				} else {
 					Shadow.spriteBatch.disableBlending();
 				}
 				block.render();
-				if (!block.blending) {
-					Shadow.spriteBatch.enableBlending();
-				}
 				if (block.highlighted > 0f) {
 					if (white == null) {
 						white = Images.getImage("white");
@@ -299,6 +298,7 @@ public class Camera implements Input.KeyListener {
 				}
 			}
 		}
+		Shadow.spriteBatch.enableBlending();
 		for (Entity entity : l.entities) {
 			if (entity == null) continue;
 			objrec.set(entity.pos.x + entity.renderoffs.x, entity.pos.y + entity.renderoffs.y, entity.rec.width + entity.renderoffs.width, entity.rec.height + entity.renderoffs.height);
@@ -335,13 +335,12 @@ public class Camera implements Input.KeyListener {
 			if (camrec.overlaps(objrec) && level) {
 				//block.preRender();
 				block.tmpimg.setPosition(block.tmpimg.getX()-0.125f, block.tmpimg.getY()-0.125f);
-				if (!block.blending) {
+				if (block.blending) {
+					Shadow.spriteBatch.enableBlending();
+				} else {
 					Shadow.spriteBatch.disableBlending();
 				}
 				block.renderTop();
-				if (!block.blending) {
-					Shadow.spriteBatch.enableBlending();
-				}
 			}
 			if (block.highlighted > 0f) {
 				if (white == null) {
@@ -358,6 +357,7 @@ public class Camera implements Input.KeyListener {
 				Shadow.shapeRenderer.rect(objrec.x, objrec.y, objrec.width, objrec.height);
 			}
 		}
+		Shadow.spriteBatch.enableBlending();
 	}
 	
 	/**
