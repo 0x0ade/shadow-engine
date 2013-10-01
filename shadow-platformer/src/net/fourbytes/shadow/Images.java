@@ -26,7 +26,6 @@ public class Images {
 	private final static ObjectMap<String, Image> images = new ObjectMap<String, Image>();
 	private final static ObjectMap<String, TextureRegion> textureregs = new ObjectMap<String, TextureRegion>();
 	
-	public static boolean packTiles = true;
 	public static PixmapPacker packer;
 	public static TextureAtlas atlas;
 	public static Array<String> atlasList = new Array<String>();
@@ -35,16 +34,11 @@ public class Images {
 		images.put(savename, i);
 	}
 	
-	public static Image getImage(String savename, boolean newInstance) {
-		Image image = null;
-		if (newInstance) {
-			image = new Image(getTextureRegion(savename));
-		} else {
+	public static Image getImage(String savename) {
+		Image image = images.get(savename);
+		if (image == null) {
+			autoaddImage(savename);
 			image = images.get(savename);
-			if (image == null) {
-				autoaddImage(savename);
-				image = images.get(savename);
-			}
 		}
 		return image;
 	}

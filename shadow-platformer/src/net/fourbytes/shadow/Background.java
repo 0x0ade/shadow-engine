@@ -83,7 +83,7 @@ public class Background {
 	public void render() {
 		Shadow.spriteBatch.disableBlending();
 		if (white == null) {
-			white = Images.getImage("white", true);
+			white = Images.getImage("white");
 		}
 		float barh = 2f;
 		

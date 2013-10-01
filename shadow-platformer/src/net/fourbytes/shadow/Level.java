@@ -261,24 +261,24 @@ public class Level {
 			
 			Image white = bgwhite;
 			if (white == null) {
-				white = Images.getImage("white", true);
+				white = Images.getImage("white");
 			}
-			white.setScaleY(-1f);
 			
 			white.setColor(0f, 0f, 0f, alpha);
 			white.setPosition(xx1, yy1);
-			white.setSize(bgw, bgh);
+			white.setSize(1f, -1f);
+			white.setScale(bgw, bgh);
 			white.draw(Shadow.spriteBatch, 1f);
 			
 			white = fgwhite;
 			if (white == null) {
-				white = Images.getImage("white", true);
+				white = Images.getImage("white");
 			}
-			white.setScaleY(-1f);
 			
 			white.setColor(1f-1f*(player.health/player.MAXHEALTH), 1f*(player.health/player.MAXHEALTH), 0.2f, alpha);
 			white.setPosition(xx2, yy2);
-			white.setSize(fgw, fgh);
+			white.setSize(1f, -1f);
+			white.setScale(fgw, fgh);
 			white.draw(Shadow.spriteBatch, 1f);
 			
 			if (pointblock == null) {

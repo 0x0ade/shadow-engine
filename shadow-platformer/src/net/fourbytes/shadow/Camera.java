@@ -99,7 +99,7 @@ public class Camera implements Input.KeyListener {
 			Shadow.spriteBatch.disableBlending();
 			bg.render();
 			Shadow.spriteBatch.enableBlending();
-			Image logo = Images.getImage("logo", false);
+			Image logo = Images.getImage("logo");
 			logo.setScale(Shadow.vieww/Shadow.dispw * cam.zoom, -Shadow.viewh/Shadow.disph * cam.zoom);
 			logo.setPosition(0f - (logo.getScaleX()*logo.getWidth())/2f, 0f - (logo.getScaleY()*logo.getHeight())/2f);
 			logo.draw(Shadow.spriteBatch, 1f);
@@ -198,7 +198,7 @@ public class Camera implements Input.KeyListener {
 		}
 		if (this.level) {
 			if (level.hasvoid) {
-				Image levoid = Images.getImage("void", false);
+				Image levoid = Images.getImage("void");
 				objrec.set(camrec.x, level.tiledh - 2, 1024, 1);
 				levoid.setScaleY(-1f);
 				//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
@@ -211,7 +211,7 @@ public class Camera implements Input.KeyListener {
 					fy = camrec.y;
 				}
 				objrec.set(camrec.x, fy, 128, 128);
-				Image lewhite = Images.getImage("white", false);
+				Image lewhite = Images.getImage("white");
 				lewhite.setColor(0f, 0f, 0f, 1f);
 				lewhite.setPosition(objrec.x, objrec.y);
 				lewhite.setSize(objrec.width, objrec.height + objrec.height);
@@ -285,11 +285,11 @@ public class Camera implements Input.KeyListener {
 				}
 				if (block.highlighted > 0f) {
 					if (white == null) {
-						white = Images.getImage("white", true);
+						white = Images.getImage("white");
 					}
 					white.setColor(1f, 1f, 1f, block.highlighted/25f);
 					white.setPosition(objrec.x, objrec.y);
-					white.setSize(1f, 1f);
+					white.setSize(1f, -1f);
 					white.setScale(objrec.width, objrec.height);
 					white.draw(Shadow.spriteBatch, 1f);
 				}
@@ -314,11 +314,11 @@ public class Camera implements Input.KeyListener {
 				}
 				if (entity.highlighted > 0f) {
 					if (white == null) {
-						white = Images.getImage("white", true);
+						white = Images.getImage("white");
 					}
 					white.setColor(1f, 1f, 1f, entity.highlighted/25f);
 					white.setPosition(objrec.x, objrec.y);
-					white.setSize(1f, 1f);
+					white.setSize(1f, -1f);
 					white.setScale(objrec.width, objrec.height);
 					white.draw(Shadow.spriteBatch, 1f);
 				}
@@ -345,11 +345,11 @@ public class Camera implements Input.KeyListener {
 			}
 			if (block.highlighted > 0f) {
 				if (white == null) {
-					white = Images.getImage("white", true);
+					white = Images.getImage("white");
 				}
 				white.setColor(1f, 1f, 1f, block.highlighted/25f);
 				white.setPosition(objrec.x, objrec.y);
-				white.setSize(1f, 1f);
+				white.setSize(1f, -1f);
 				white.setScale(objrec.width, objrec.height);
 				white.draw(Shadow.spriteBatch, 1f);
 			}

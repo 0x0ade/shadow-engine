@@ -207,9 +207,9 @@ public class Player extends Entity implements Input.KeyListener {
 		
 		Image white = bgwhite;
 		if (white == null) {
-			white = Images.getImage("white", true);
+			white = Images.getImage("white");
 		}
-		white.setScaleY(-1f);
+		white.setScale(1f, -1f);
 		
 		white.setColor(0f, 0f, 0f, alpha);
 		white.setPosition(xx1 + renderoffs.x, yy1+ renderoffs.y);
@@ -218,9 +218,9 @@ public class Player extends Entity implements Input.KeyListener {
 		
 		white = fgwhite;
 		if (white == null) {
-			white = Images.getImage("white", true);
+			white = Images.getImage("white");
 		}
-		white.setScaleY(-1f);
+		white.setScale(1f, -1f);
 		
 		white.setColor(1f-1f*(health/MAXHEALTH), 1f*(health/MAXHEALTH), 0.2f, alpha);
 		white.setPosition(xx2 + renderoffs.x, yy2 + renderoffs.y);
