@@ -261,7 +261,7 @@ public class Level {
 			
 			Image white = bgwhite;
 			if (white == null) {
-				white = new Image(Images.getTexture("white"));
+				white = Images.getImage("white", true);
 			}
 			white.setScaleY(-1f);
 			
@@ -272,7 +272,7 @@ public class Level {
 			
 			white = fgwhite;
 			if (white == null) {
-				white = new Image(Images.getTexture("white"));
+				white = Images.getImage("white", true);
 			}
 			white.setScaleY(-1f);
 			

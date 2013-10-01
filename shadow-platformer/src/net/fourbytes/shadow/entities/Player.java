@@ -139,7 +139,7 @@ public class Player extends Entity implements Input.KeyListener {
 	
 	@Override
 	public TextureRegion getTexture() {
-		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("player"), 16, 16);
+		TextureRegion[][] regs = Images.split("player", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[facingLeft?0:1][frame];
 		return reg;
@@ -207,7 +207,7 @@ public class Player extends Entity implements Input.KeyListener {
 		
 		Image white = bgwhite;
 		if (white == null) {
-			white = new Image(Images.getTexture("white"));
+			white = Images.getImage("white", true);
 		}
 		white.setScaleY(-1f);
 		
@@ -218,7 +218,7 @@ public class Player extends Entity implements Input.KeyListener {
 		
 		white = fgwhite;
 		if (white == null) {
-			white = new Image(Images.getTexture("white"));
+			white = Images.getImage("white", true);
 		}
 		white.setScaleY(-1f);
 		

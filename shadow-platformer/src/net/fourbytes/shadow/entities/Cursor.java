@@ -28,8 +28,6 @@ public class Cursor extends Entity {
 	
 	public int id = -1;
 	public boolean render = false;
-	Texture tex;
-	Image img;
 	Color color;
 	
 	public Cursor(Vector2 position, Layer layer) {
@@ -40,19 +38,12 @@ public class Cursor extends Entity {
 		super(position, layer);
 		this.id = id;
 		solid = false;
-		tex = Images.getTexture("white");
 		color = new Color(1f, 1f, 1f, 0.5f);
-		updateTexture();
-	}
-	
-	@Override
-	public Image getImage() {
-		return img;
 	}
 	
 	@Override
 	public TextureRegion getTexture() {
-		return new TextureRegion(tex);
+		return Images.getTextureRegion("white");
 	}
 	
 	int button;
@@ -178,34 +169,13 @@ public class Cursor extends Entity {
 		return pos;
 	}
 	
-	/**
-	 * Call after updating color
-	 */
-	public void updateTexture() {
-		if (tex == null) {
-			updateImage();
-			return;
-		}
-		updateImage();
-	}
-	
-	/**
-	 * Call after updating texture, runs automatically after {@link #updateTexture()}!
-	 */
-	public void updateImage() {
-		if (tex == null) img = null;
-		img = new Image(tex);
-		img.setColor(color);
-	}
-	
 	@Override
 	public void preRender() {
-		tmpimg = img;
+		super.preRender();
 		tmpimg.setColor(color);
 		if (!render) {
 			tmpimg.setColor(new Color(1f, 1f, 1f, 0f));
 		}
-		super.preRender();
 	}
 	
 	@Override

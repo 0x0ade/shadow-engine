@@ -39,6 +39,7 @@ public abstract class Particle extends Entity {
 	
 	@Override
 	public void preRender() {
+		tmpimg = getImage();
 		if (tmpimg != null) {
 			Color c = tmpimg.getColor();
 			float af = 0.25f+(3f*(time/spawntime)/4f);

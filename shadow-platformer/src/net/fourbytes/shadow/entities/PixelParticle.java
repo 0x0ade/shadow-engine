@@ -23,16 +23,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class PixelParticle extends Particle {
 	
 	Random r = new Random();
-	Texture tex;
-	TextureRegion treg;
-	Image img;
 	Color color;
 	
 	public PixelParticle(Vector2 position, Layer layer, int time, float size, Color color) {
 		super(position, layer, time);
 		setSize(size, size);
 		this.color = color;
-		this.tex = Images.getTexture("white");
 		
 		if (time == 0) {
 			Random r = new Random();
@@ -44,8 +40,6 @@ public class PixelParticle extends Particle {
 		
 		fade = true;
 		objgravity = 0.5f*(8*size);
-		
-		updateTexture();
 	}
 	
 	/*
@@ -55,47 +49,10 @@ public class PixelParticle extends Particle {
 	*/
 	
 	@Override
-	public Image getImage() {
-		return img;
-	}
-	
-	@Override
 	public TextureRegion getTexture() {
-		return treg;
+		return Images.getTextureRegion("white");
 	}
 	
-	/**
-	 * Call after updating color
-	 */
-	public void updateTexture() {
-		if (tex == null) {
-			treg = null;
-			updateImage();
-			return;
-		}
-		/*
-		TextureData texdata = tex.getTextureData();
-		texdata.prepare();
-		Pixmap pixmap = texdata.consumePixmap();
-		pixmap.setColor(color);
-		pixmap.drawPixel(0, 0);
-		pixmap.drawPixel(1, 1);
-		pixmap.dispose();
-		texdata.disposePixmap();*/
-		treg = new TextureRegion(tex);
-		updateImage();
-	}
-	
-	/**
-	 * Call after updating texture, runs automatically after {@link #updateTexture()}!
-	 */
-	public void updateImage() {
-		if (tex == null) img = null;
-		img = new Image(tex);
-		img.setColor(color);
-		cantint = true;
-	}
-
 	@Override
 	public void tick() {
 		super.tick();
@@ -110,9 +67,7 @@ public class PixelParticle extends Particle {
 	
 	@Override
 	public void preRender() {
-		//tmpimg = new Image(tex);
-		tmpimg = img;
-		tmpimg.setColor(c.set(color).mul(cc.set(1f, 1f, 1f, time/spawntime)).mul(layer.tint));
 		super.preRender();
+		tmpimg.setColor(c.set(color).mul(cc.set(1f, 1f, 1f, time/spawntime)).mul(layer.tint));
 	}
 }

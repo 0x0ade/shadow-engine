@@ -17,7 +17,7 @@ public class MobTest extends Mob {
 
 	@Override
 	public TextureRegion getTexture() {
-		TextureRegion[][] regs = TextureRegion.split(Images.getTexture("player"), 16, 16);
+		TextureRegion[][] regs = Images.split("player", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[facingLeft?0:1][frame];
 		return reg;

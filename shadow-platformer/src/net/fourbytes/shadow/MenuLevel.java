@@ -173,7 +173,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		omitloop = false;
 		Rectangle vp = Shadow.cam.camrec;
 		if (dimmimg == null) {
-			dimmimg = new Image(Images.getTexture("white"));
+			dimmimg = Images.getImage("white", true);
 		}
 		//dimmimg.setBounds(vp.x, vp.y, vp.width, vp.height);
 		dimmimg.setBounds(vp.x, vp.y, 1f, 1f);
@@ -195,7 +195,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		
 		if (showtitle) {
 			if (logo == null) {
-				logo = new Image(Images.getTexture("logo"));
+				logo = Images.getImage("logo", true);
 			}
 			logo.setScale(font.getScaleX(), font.getScaleY());
 			float possibruu = (float)Math.sin(logostep/16f)/8f;
@@ -233,7 +233,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			
 			if (mi == current) {
 				if (image == null) {
-					TextureRegion[][] regs = TextureRegion.split(Images.getTexture("player"), 16, 16);
+					TextureRegion[][] regs = Images.split("player", 16, 16);
 					TextureRegion reg = null;
 					reg = regs[1][0];
 					image = new Image(reg);

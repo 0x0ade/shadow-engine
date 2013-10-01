@@ -50,7 +50,7 @@ public class BlockSpringTop extends BlockType {
 	
 	@Override
 	public TextureRegion getTexture() {
-		return new TextureRegion(Images.getTexture("white"));
+		return Images.getTextureRegion("white");
 	}
 	
 	@Override

@@ -187,9 +187,9 @@ public class Camera implements Input.KeyListener {
 		
 		Shadow.shapeRenderer.end();
 		Shadow.spriteBatch.end();
-		//System.out.println("max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
-		//System.out.println("render calls: "+Shadow.spriteBatch.renderCalls);
-		//Shadow.spriteBatch.maxSpritesInBatch = 0;
+		System.out.println("max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
+		System.out.println("render calls: "+Shadow.spriteBatch.renderCalls);
+		Shadow.spriteBatch.maxSpritesInBatch = 0;
 	}
 	
 	public void renderLevel(Level level) {
@@ -285,7 +285,7 @@ public class Camera implements Input.KeyListener {
 				}
 				if (block.highlighted > 0f) {
 					if (white == null) {
-						white = new Image(Images.getTexture("white"));
+						white = Images.getImage("white", true);
 					}
 					white.setColor(1f, 1f, 1f, block.highlighted/25f);
 					white.setPosition(objrec.x, objrec.y);
@@ -314,7 +314,7 @@ public class Camera implements Input.KeyListener {
 				}
 				if (entity.highlighted > 0f) {
 					if (white == null) {
-						white = new Image(Images.getTexture("white"));
+						white = Images.getImage("white", true);
 					}
 					white.setColor(1f, 1f, 1f, entity.highlighted/25f);
 					white.setPosition(objrec.x, objrec.y);
@@ -345,7 +345,7 @@ public class Camera implements Input.KeyListener {
 			}
 			if (block.highlighted > 0f) {
 				if (white == null) {
-					white = new Image(Images.getTexture("white"));
+					white = Images.getImage("white", true);
 				}
 				white.setColor(1f, 1f, 1f, block.highlighted/25f);
 				white.setPosition(objrec.x, objrec.y);

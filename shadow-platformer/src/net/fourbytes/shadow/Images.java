@@ -24,7 +24,6 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class Images {
 	private final static ObjectMap<String, Image> images = new ObjectMap<String, Image>();
-	private final static ObjectMap<String, Texture> textures = new ObjectMap<String, Texture>();
 	private final static ObjectMap<String, TextureRegion> textureregs = new ObjectMap<String, TextureRegion>();
 	
 	public static boolean packTiles = true;
@@ -50,19 +49,6 @@ public class Images {
 		return image;
 	}
 	
-	public static void addTexture(String savename, Texture t) {
-		textures.put(savename, t);
-	}
-	
-	public static Texture getTexture(String savename) {
-		Texture texture = textures.get(savename);
-		if (texture == null) {
-			autoaddImage(savename);
-			texture = textures.get(savename);
-		}
-		return texture;
-	}
-	
 	public static void addTextureRegion(String savename, TextureRegion reg) {
 		textureregs.put(savename, reg);
 	}
@@ -83,17 +69,11 @@ public class Images {
 		//ETC / UI
 		addImage("white", "data/white.png");
 		
-		addImage("logo", "data/logo.png", TextureFilter.Linear, TextureFilter.Linear); //Linear because of artifacts
-		
-		addImage("bg_blue", "data/bg_blue.png"/*, TextureFilter.Linear, TextureFilter.Linear*/);
-		
+		addImage("logo", "data/logo.png");
 	}
 	
 	public static void loadImages() {
 		//ETC / UI 
-		addImage("bg_polar", "data/bg_polar.png");
-		addImage("bg", "data/bg.png");
-		
 		addImage("cloud", "data/cloud.png");
 		addImage("cloud2", "data/cloud2.png");
 		addImage("cloud3", "data/cloud3.png");
@@ -117,65 +97,24 @@ public class Images {
 			loadname = "data/" + loadname;
 		}
 		if (Gdx.files.internal(loadname+".png").exists()) {
-			addImageToAtlas(name, loadname+".png");
+			addImage(name, loadname+".png");
 		} else if (Gdx.files.internal(loadname+"block.png").exists()) {
-			addImageToAtlas(name, loadname+"block.png");
+			addImage(name, loadname+"block.png");
 		}
 	}
 	
 	public static void addImage(String savename, String loadname) {
-		addImage(savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
-	}
-	
-	public static void addImage(String savename, String loadname, TextureFilter minFilter, TextureFilter magFilter) {
 		try {
-			Texture t = new Texture(Gdx.files.internal(loadname), true);
-			t.setFilter(minFilter, magFilter);
-			addTexture(savename, t);
-			addTextureRegion(savename, new TextureRegion(t));
-			Image i = new Image(t);
-			addImage(savename, i);
+			Pixmap pm = new Pixmap(Gdx.files.internal(loadname));
+			
+			packPixmap(pm, savename);
 		} catch (Throwable t) {
 			System.err.println("Loading failed: SN: "+savename+"; LN: "+loadname);
 			t.printStackTrace();
 		}
 	}
-	
-	public static void addImageToAtlas(String savename, String loadname) {
-		if (!packTiles) {
-			addImage(savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
-			return;
-		}
-		
-		if (packer == null) {
-			packer = new PixmapPacker(16*16, 16*16, Format.RGBA8888, 2, true);
-			atlas = packer.generateTextureAtlas(TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest, true);
-		}
-		
-		Pixmap pm = new Pixmap(Gdx.files.internal(loadname));
-		
-		Texture t = new Texture(pm);
-		t.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
-		addTexture(savename, t);
-		
-		packer.pack(savename, pm);
-		packer.updateTextureAtlas(atlas, TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest, true);
-		
-		TextureRegion region = atlas.findRegion(savename);
-		//region = new TextureRegion((Texture)atlas.getTextures().toArray()[0], 0f, 0f, 1f, 1f);
-		addTextureRegion(savename, region);
-		Image i = new Image(region);
-		addImage(savename, i);
-		atlasList.add(savename);
-		
-		//pm.dispose(); //Commented out to access the pixmap even after loading it - duh.
-	}
 
 	public static void addImageByMod(AMod mod, String savename, String loadname) {
-		addImageByMod(mod, savename, loadname, TextureFilter.Nearest, TextureFilter.Nearest);
-	}
-	
-	public static void addImageByMod(AMod mod, String savename, String loadname, TextureFilter minFilter, TextureFilter magFilter) {
 		try {
 			URL url = mod.getClass().getResource("/assets/"+loadname);
 			InputStream in = new BufferedInputStream(url.openStream());
@@ -189,16 +128,29 @@ public class Images {
 			in.close();
 			byte[] response = out.toByteArray();
 			Pixmap pixmap = new Pixmap(response, 0, response.length);
-			Texture t = new Texture(pixmap);
-			t.setFilter(minFilter, magFilter);
-			addTexture(savename, t);
-			addTextureRegion(savename, new TextureRegion(t));
-			Image i = new Image(t);
-			addImage(savename, i);
+			packPixmap(pixmap, savename);
 		} catch (Throwable t) {
 			System.err.println("Loading failed (from mod): SN: "+savename);
 			t.printStackTrace();
 		}
+	}
+	
+	private static void packPixmap(Pixmap pm, String savename) {
+		if (packer == null) {
+			packer = new PixmapPacker(1024, 1024, Format.RGBA8888, 2, true);
+			atlas = packer.generateTextureAtlas(TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest, true);
+		}
+		packer.pack(savename, pm);
+		packer.updateTextureAtlas(atlas, TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest, true);
+		
+		TextureRegion region = atlas.findRegion(savename);
+		//region = new TextureRegion((Texture)atlas.getTextures().toArray()[0], 0f, 0f, 1f, 1f);
+		addTextureRegion(savename, region);
+		Image i = new Image(region);
+		addImage(savename, i);
+		atlasList.add(savename);
+		
+		pm.dispose();
 	}
 	
 	/**
