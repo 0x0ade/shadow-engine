@@ -157,7 +157,7 @@ public class Camera implements Input.KeyListener {
 		Shadow.spriteBatch.setProjectionMatrix(cam.combined);
 
 		Shadow.spriteBatch.end();
-		/*//UNCOMMENT ONLY WHEN DEBUGGING RENDER STUFF.
+		//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
 		System.out.println("max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
 		System.out.println("render calls: "+Shadow.spriteBatch.renderCalls);
 		Shadow.spriteBatch.maxSpritesInBatch = 0;
@@ -173,6 +173,7 @@ public class Camera implements Input.KeyListener {
 		for (Layer ll : level.layers.values()) {
 			renderLayer(ll);
 		}
+
 		if (this.level) {
 			if (level.hasvoid) {
 				Image levoid = Images.getImage("void");
@@ -212,16 +213,19 @@ public class Camera implements Input.KeyListener {
 	protected static Rectangle objrec = new Rectangle();
 	protected static Color origc = new Color();
 	protected static Image white;
-	
+
 	public void renderLayer(Layer l) {
 		if (l == null) {
 			return;
 		}
 		
 		renderShadows(l);
-		
-		renderObjects(l, false);
-		renderObjects(l, true);
+
+		renderObjects(l, false, false);
+		renderObjects(l, false, true);
+
+		renderObjects(l, true, false);
+		renderObjects(l, true, true);
 		
 		Shadow.spriteBatch.enableBlending();
 	}
@@ -240,12 +244,16 @@ public class Camera implements Input.KeyListener {
 			img.draw(Shadow.spriteBatch, 1f);
 			
 			img.setColor(origc);
+			img.setPosition(img.getX()-0.125f, img.getY()-0.125f);
 		}
 	}
 	
-	private void renderObjects(Layer l, boolean fgonly) {
+	private void renderObjects(Layer l, boolean fgonly, boolean blending) {
 		for (GameObject go : l.inView) {
 			if (go == null) continue;
+			if (go.blending != blending) {
+				continue;
+			}
 			if (go instanceof Block) {
 				if (fgonly && ((Block)go).rendertop == 0x00) {
 					continue;
@@ -260,13 +268,12 @@ public class Camera implements Input.KeyListener {
 			
 			//go.preRender();
 			
-			go.tmpimg.setPosition(go.tmpimg.getX()-0.125f, go.tmpimg.getY()-0.125f);
 			if (go.blending) {
 				Shadow.spriteBatch.enableBlending();
 			} else {
 				Shadow.spriteBatch.disableBlending();
 			}
-			
+
 			if (go instanceof Block) {
 				if (fgonly) {
 					((Block)go).renderTop();

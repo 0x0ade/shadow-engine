@@ -1,5 +1,8 @@
 # Eclipse output folder #
-bin/
+bin
 
 # Mac OSX files #
 .DS_Store
+
+# IntelliJ folder #
+.idea
