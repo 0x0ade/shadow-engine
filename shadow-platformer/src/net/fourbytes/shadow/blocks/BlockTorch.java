@@ -32,13 +32,13 @@ public class BlockTorch extends BlockType {
 		}
 		if (frame >= 4) {
 			frame = 0;
-			block.pixdur = rand.nextInt(20) + 20;
+			block.pixdur = rand.nextInt(20)+20;
 		}
 
 		wall = 0;
 		block.renderoffs.width = 0f;
 		block.renderoffs.x = 0f;
-		Array<Block> al = block.layer.get(Coord.get(block.pos.x + 1f, block.pos.y));
+		Array<Block> al = block.layer.get(Coord.get(block.pos.x+1f, block.pos.y));
 		if (al != null && al.size != 0) {
 			for (Block bb : al) {
 				if (bb.solid) {
@@ -49,7 +49,7 @@ public class BlockTorch extends BlockType {
 				}
 			}
 		}
-		al = block.layer.get(Coord.get(block.pos.x - 1f, block.pos.y));
+		al = block.layer.get(Coord.get(block.pos.x-1f, block.pos.y));
 		if (al != null && al.size != 0) {
 			for (Block bb : al) {
 				if (bb.solid) {
@@ -65,7 +65,7 @@ public class BlockTorch extends BlockType {
 	public TextureRegion getTexture() {
 		TextureRegion[][] regs = Images.split("block_torch", 16, 16);
 		TextureRegion reg = null;
-		reg = regs[frame][wall == 0 ? 0 : 1];
+		reg = regs[frame][wall==0?0:1];
 		return reg;
 	}
 
