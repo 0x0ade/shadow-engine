@@ -1,24 +1,12 @@
 package net.fourbytes.shadow.entities;
 
-import java.util.Random;
-
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
-import aurelienribon.bodyeditor.BodyEditorLoader;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Filter;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import java.util.Random;
 
 public class PixelParticle extends Particle {
 	
@@ -41,12 +29,6 @@ public class PixelParticle extends Particle {
 		fade = true;
 		objgravity = 0.5f*(8*size);
 	}
-	
-	/*
-	@Override
-	public void tick() {
-	}
-	*/
 	
 	@Override
 	public TextureRegion getTexture() {

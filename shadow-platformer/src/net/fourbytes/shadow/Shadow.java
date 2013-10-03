@@ -1,56 +1,33 @@
 package net.fourbytes.shadow;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
-import java.lang.Thread.UncaughtExceptionHandler;
-import java.net.URLDecoder;
-import java.security.SecureRandom;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.Random;
-import java.util.zip.GZIPOutputStream;
-
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.controllers.Controllers;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import net.fourbytes.shadow.Input.Key;
+import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.Input.TouchPoint;
-import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.mod.ModLoader;
-import net.fourbytes.shadow.network.HTTPClient;
 import net.fourbytes.shadow.network.NetClient;
 import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.controllers.Controller;
-import com.badlogic.gdx.controllers.ControllerListener;
-import com.badlogic.gdx.controllers.Controllers;
-import com.badlogic.gdx.controllers.PovDirection;
-import com.badlogic.gdx.controllers.mappings.Ouya;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
-import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Json;
+import java.io.File;
+import java.io.PrintStream;
+import java.lang.Thread.UncaughtExceptionHandler;
+import java.net.URLDecoder;
+import java.security.SecureRandom;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Random;
 
 public final class Shadow implements ApplicationListener, InputProcessor, KeyListener {
 	
@@ -81,7 +58,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static float touchw = 1f;
 	public static float touchh = 1f;
 	public static ShaderProgram shader;
-	public static ShapeRenderer shapeRenderer;
 	public static SpriteBatch spriteBatch;
 	
 	public static int frames = 0;
@@ -247,13 +223,12 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		spriteBatch.setColor(1f, 1f, 1f, 1f);
 		ModLoader.preRender();
-		cam.render();
 		if (level != null && (level instanceof MenuLevel)) {
 			Input.isInMenu = true;
 		} else {
 			Input.isInMenu = false;
 		}
-		Input.render();
+		cam.render();
 		ModLoader.postRender();
 		
 		long time = System.currentTimeMillis();
@@ -284,8 +259,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		}
 		if (loadstate == 0) {
 			//Gdx.graphics.setVSync(true);
-			shapeRenderer = new ShapeRenderer();
-			
 			String shaderDesktop = "shaders/vignette";
 			String shaderAndroid = "shaders/basic";
 			String shaderOuya = "shaders/vignette";

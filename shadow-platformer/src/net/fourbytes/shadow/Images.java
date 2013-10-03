@@ -1,15 +1,6 @@
 package net.fourbytes.shadow;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.concurrent.ConcurrentHashMap;
-
-import net.fourbytes.shadow.mod.AMod;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,8 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.ObjectMap;
+import net.fourbytes.shadow.mod.AMod;
+import net.fourbytes.shadow.utils.MultiObject;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.net.URL;
 
 public class Images {
 	private final static ObjectMap<String, Image> images = new ObjectMap<String, Image>();
@@ -153,28 +150,51 @@ public class Images {
 	public static TextureRegion[][] split(String savename, int w, int h) {
 		return split(getTextureRegion(savename), w, h);
 	}
-	
+
+	private static ObjectMap<MultiObject, TextureRegion[][]> splitCache = new ObjectMap<MultiObject, TextureRegion[][]>();
+	private static MultiObject tmptrimo = new MultiObject(null, null, null);
+
 	/**
 	 * Splits an texture region into... umm... guess it.
 	 */
 	public static TextureRegion[][] split(TextureRegion reg, int w, int h) {
+		tmptrimo.set(reg, w, h);
+		if (splitCache.containsKey(tmptrimo)) {
+			return splitCache.get(tmptrimo);
+		}
+
 		Texture tex = reg.getTexture();
-		
-		TextureRegion[][] regs = new TextureRegion[reg.getRegionHeight()/h][];
+
+		int subregw = reg.getRegionWidth()/w;
+		int subregh = reg.getRegionHeight()/h;
+
+		subregw = Math.max(subregw, -subregw);
+		subregh = Math.max(subregh, -subregh);
+
+		TextureRegion[][] regs = new TextureRegion[subregh][];
 		int xx = 0;
 		int yy = 0;
-		
+
 		for (int y = reg.getRegionY(); y < reg.getRegionY() + reg.getRegionHeight(); y += h) {
-			regs[yy] = new TextureRegion[reg.getRegionWidth()/w];
+			regs[yy] = new TextureRegion[subregw];
 			for (int x = reg.getRegionX(); x < reg.getRegionX() + reg.getRegionWidth(); x += w) {
 				TextureRegion subreg = new TextureRegion(tex, x, y, w, h);
 				regs[yy][xx] = subreg;
 				xx++;
+				if (xx >= regs[yy].length) {
+					break;
+				}
 			}
 			xx = 0;
 			yy++;
+			if (yy >= regs.length) {
+				break;
+			}
 		}
-		
+
+		MultiObject mo = new MultiObject(reg, w, h);
+		splitCache.put(mo, regs);
+
 		return regs;
 	}
 }

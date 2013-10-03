@@ -1,20 +1,16 @@
 package net.fourbytes.shadow;
 
-import java.util.Vector;
-
-import net.fourbytes.shadow.Input.Key;
-import net.fourbytes.shadow.Input.KeyListener;
-import net.fourbytes.shadow.Input.TouchPoint;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import net.fourbytes.shadow.Input.Key;
+import net.fourbytes.shadow.Input.KeyListener;
+import net.fourbytes.shadow.Input.TouchPoint;
 
 public abstract class MenuLevel extends Level implements KeyListener {
 	
@@ -68,14 +64,9 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				lastInteract = player.canInteract;
 				player.canInteract = false;
 			}
-			if (!bgpaused) {
-				bglevel.tick();
-			} else {
-				//bglevel.c.tick();
-				//for (Cursor c : bglevel.cursors) {
-				//	c.tick();
-				//}
-			}
+			bglevel.paused = bgpaused;
+			bglevel.tick();
+			bglevel.paused = false;
 			if (bglevel.player != null) {
 				player.canInteract = lastInteract;
 			}

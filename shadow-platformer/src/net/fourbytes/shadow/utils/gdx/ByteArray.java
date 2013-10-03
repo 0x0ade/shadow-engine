@@ -1,4 +1,4 @@
-package net.fourbytes.shadow.gdxutils;
+package net.fourbytes.shadow.utils.gdx;
 
 
 import java.util.Arrays;

@@ -1,19 +1,9 @@
 package net.fourbytes.shadow;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ArrayMap;
 import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.LongMap;
-import com.badlogic.gdx.utils.ObjectMap;
 
 /**
  *	Placeholder for the layers in the levels. Processing happens in {@link Level}.
@@ -33,6 +23,8 @@ public class Layer {
 	//protected ObjectMap<Coord, Array<Block>> blockmap = new ObjectMap<Coord, Array<Block>>(1024, 0.95f);
 	protected IntMap<Array<Block>> rowmap = new IntMap<Array<Block>>(256);
 	protected LongMap<Array<Block>> blockmap = new LongMap<Array<Block>>(1024);
+	
+	public Array<GameObject> inView = new Array<GameObject>(); //TODO Implement wherever useful.
 	
 	public final Color tint = new Color(1f, 1f, 1f, 1f);
 	

@@ -1,11 +1,8 @@
 package net.fourbytes.shadow.map;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -13,7 +10,6 @@ import java.util.zip.GZIPOutputStream;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.ObjectMap;
 
@@ -28,7 +24,7 @@ import net.fourbytes.shadow.TypeBlock;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Mob;
 import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.gdxutils.ByteMap;
+import net.fourbytes.shadow.utils.gdx.ByteMap;
 
 /**
  * An ShadowMap is an specially saved map. It mostly differs from the TilED maps by saving an "snapshot" of 

@@ -1,23 +1,13 @@
 package net.fourbytes.shadow;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.concurrent.ConcurrentHashMap;
-
-import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
-import net.fourbytes.shadow.entities.Cursor;
-
 import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectIntMap;
 import com.badlogic.gdx.utils.ObjectMap;
+import net.fourbytes.shadow.entities.Cursor;
 
 public class Input {
 	
@@ -66,7 +56,8 @@ public class Input {
 
 		public String name;
 		public int[] keyid;
-		Rectangle disprec;
+		Rectangle drawrec;
+		Rectangle origrec;
 		Rectangle rec;
 		int pointer = -1;
 		int triggerer = 0;
@@ -78,8 +69,9 @@ public class Input {
 		public Key(String name, int[] keyid, Rectangle rec) {
 			this.name = name;
 			this.keyid = keyid;
+			this.origrec = new Rectangle(rec);
 			this.rec = new Rectangle(rec);
-			this.disprec = new Rectangle(rec);
+			this.drawrec = new Rectangle(rec);
 			all.add(this);
 		}
 		
@@ -112,28 +104,23 @@ public class Input {
 		public void tick() {
 			wasDown = isDown;
 			isDown = nextState;
-			
+
 			rec.width = Shadow.dispw/Shadow.touchw;
-			rec.x = disprec.x*Shadow.dispw/Shadow.touchw;
+			rec.x = origrec.x*Shadow.dispw/Shadow.touchw;
 			rec.height = Shadow.disph/Shadow.touchh;
-			rec.y = disprec.y*Shadow.disph/Shadow.touchh;
-			
+			rec.y = origrec.y*Shadow.disph/Shadow.touchh;
+
 			if (wasPressed()) up();
 			if (wasReleased()) down();
 		}
 		
 		public void render() {
-			ShapeType type = Shadow.shapeRenderer.getCurrentType();
-			Shadow.shapeRenderer.end();
-			Shadow.shapeRenderer.begin(ShapeType.Line);
 			if (isDown) {
-				Shadow.shapeRenderer.setColor(new Color(1, 0.5f, 0.5f, 1));
+				Shadow.spriteBatch.setColor(1f, 0.5f, 0.5f, 0.575f);
 			} else {
-				Shadow.shapeRenderer.setColor(new Color(1, 1, 1, 1));
+				Shadow.spriteBatch.setColor(1f, 1f, 1f, 0.575f);
 			}
-			Shadow.shapeRenderer.rect(disprec.x, disprec.y, 1f, 1f);
-			Shadow.shapeRenderer.end();
-			Shadow.shapeRenderer.begin(type);
+			Shadow.spriteBatch.draw(Images.getTextureRegion("white"), drawrec.x, drawrec.y, 1f, 1f);
 		}
 		
 		public boolean wasPressed() {
@@ -142,6 +129,13 @@ public class Input {
 		
 		public boolean wasReleased() {
 			return !wasDown && isDown;
+		}
+
+		public void setRect(float x, float y, float width, float height, boolean draw) {
+			origrec.set(x, y, width, height);
+			if (draw) {
+				drawrec.set(x, y, width, height);
+			}
 		}
 	}
 	
@@ -189,12 +183,11 @@ public class Input {
 		cam.position.set(Shadow.touchw/2, Shadow.touchh/2, 0);
 		cam.update();
 		
-		//up.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
-		jump.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
-		up.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-3, 1, 1);
-		down.disprec = new Rectangle(Shadow.touchw-2, Shadow.touchh-2, 1, 1);
-		left.disprec = new Rectangle(1, Shadow.touchh-2, 1, 1);
-		right.disprec = new Rectangle(3, Shadow.touchh-2, 1, 1);
+		jump.setRect(Shadow.touchw-2, Shadow.touchh-3, 1, 1, true);
+		up.setRect(Shadow.touchw-2, Shadow.touchh-3, 1, 1, false);
+		down.setRect(Shadow.touchw-2, Shadow.touchh-2, 1, 1, true);
+		left.setRect(1, Shadow.touchh-2, 1, 1, true);
+		right.setRect(3, Shadow.touchh-2, 1, 1, true);
 	}
 	
 	public static void tick() {
@@ -272,14 +265,11 @@ public class Input {
 	}
 	
 	public static void render() {
-		Shadow.shapeRenderer.setProjectionMatrix(cam.combined);
-		Shadow.shapeRenderer.begin(ShapeType.Line);
 		if (isAndroid && !isOuya && !isInMenu) {
 			for (Key k : all) {
 				k.render();
 			}
 		}
-		Shadow.shapeRenderer.end();
 	}
 	
 }

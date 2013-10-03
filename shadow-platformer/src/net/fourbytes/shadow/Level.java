@@ -1,36 +1,21 @@
 package net.fourbytes.shadow;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Vector;
-import java.util.concurrent.ConcurrentHashMap;
-
-import net.fourbytes.shadow.blocks.BlockType;
-import net.fourbytes.shadow.entities.Cursor;
-import net.fourbytes.shadow.entities.Particle;
-import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.gdxutils.ByteMap;
-import net.fourbytes.shadow.gdxutils.ShortMap;
-import net.fourbytes.shadow.map.ShadowMap;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.ArrayMap;
-import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.utils.IntMap.Entry;
+import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.entities.Cursor;
+import net.fourbytes.shadow.entities.Particle;
+import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.utils.gdx.ByteMap;
+import net.fourbytes.shadow.map.ShadowMap;
 
 public class Level {
 	
@@ -46,6 +31,7 @@ public class Level {
 	public float xgravity = 0.0f;
 	
 	public static int maxParticles = 512;
+	public static float inviewf = 5f;
 	
 	//Abstract constructor, can be used for non-gameplay levels (menus).
 	public Level() {
@@ -56,9 +42,11 @@ public class Level {
 	public int tiledw = -1;
 	public int tiledh = -1;
 	public String nextlvl;
-	
+
 	public boolean hasvoid = true;
 	public boolean ready = false;
+
+	public boolean paused = false;
 	
 	public Level(final String name) {
 		try {
@@ -140,60 +128,61 @@ public class Level {
 		if (tickid >= 20000) {
 			tickid = 10000;
 		}
-		Layer ll = mainLayer;
 		
-		if (lights != null) {
-			lights.tick();
-		}
-		if (timeday != null) {
-			timeday.tick();
+		mainLayer.inView.clear();
+		for (Layer ll : layers.values()) {
+			ll.inView.clear();
 		}
 		
-		//TODO find perfect FPS
-		//TODO decide
-		//if (ll.blocks.size <= 25000) {
-		tickTiles(ll.blocks);
-		//} else {
-			/*Rectangle vp = Shadow.cam.camrec;
-			for (float y = vp.y-25f; y <= vp.y+vp.height+25f; y++) {
-				for (float x = vp.x-25f; x <= vp.x+vp.width+25f; x++) {
-					Array<Block> blocks = ll.blockmap.get(Coord.get(x, y));
-					if (blocks != null) {
-						tickTiles(blocks);
-					}
-				}
-			}*/
-		//}
+		tickTiles(mainLayer.blocks);
 		
 		int particle = 0;
 		Array<Particle> particles = Garbage.particles;
 		particles.clear();
-		for (Entity entity : ll.entities) {
+		for (Entity entity : mainLayer.entities) {
 			if (entity == null) continue;
 			if (entity instanceof Particle) {
 				if (!((Particle)entity).isStatic) {
 					particles.add((Particle)entity);
 					if (particle >= maxParticles) {
-						ll.remove(particles.get(0));
+						mainLayer.remove(particles.get(0));
 						particles.removeIndex(0);
 						continue;
 					}
 					particle++;
 				}
 			}
-			entity.tick();
+
+			objrec.set(entity.pos.x-inviewf, entity.pos.y-inviewf, entity.rec.width+inviewf*2f, entity.rec.height+inviewf*2f);
+			if (Shadow.cam.camrec.overlaps(objrec)) {
+				mainLayer.inView.add(entity);
+				entity.layer.inView.add(entity);
+			}
+
+			if (!paused){
+				entity.tick();
+			}
 		}
-		
-		if (Shadow.level == this) {
-			for (Cursor c : cursors) {
+
+		if (!paused) {
+			if (lights != null) {
+				lights.tick();
+			}
+			if (timeday != null) {
+				timeday.tick();
+			}
+
+			if (Shadow.level == this) {
+				for (Cursor c : cursors) {
+					c.tick();
+				}
 				c.tick();
-			}
-			c.tick();
-			if (pointblock != null) {
-				pointblock.tick();
+				if (pointblock != null) {
+					pointblock.tick();
+				}
 			}
 		}
-		
+
 		ftick = false;
 		
 		//System.out.println("Blocks: "+nblocks+"; Entities: "+nentities);
@@ -204,8 +193,14 @@ public class Level {
 	protected void tickTiles(Array<Block> blocks) {
 		for (Block block : blocks) {
 			if (block == null) continue;
-			objrec.set(block.pos.x-2f, block.pos.y-2f, block.rec.width+4f, block.rec.height+4f);
-			if (Shadow.cam.camrec.overlaps(objrec) || block.interactive || ftick) {
+			objrec.set(block.pos.x-inviewf, block.pos.y-inviewf, block.rec.width+inviewf*2f, block.rec.height+inviewf*2f);
+
+			if (Shadow.cam.camrec.overlaps(objrec)) {
+				mainLayer.inView.add(block);
+				block.layer.inView.add(block);
+			}
+
+			if ((Shadow.cam.camrec.overlaps(objrec) || block.interactive || ftick) && !paused) {
 				block.tick();
 			}
 		}

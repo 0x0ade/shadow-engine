@@ -1,32 +1,21 @@
 package net.fourbytes.shadow;
 
-import java.nio.ByteBuffer;
-import java.util.ArrayList;
-import java.util.Vector;
-
-import net.fourbytes.shadow.Input.Key;
-import net.fourbytes.shadow.entities.Cursor;
-import net.fourbytes.shadow.entities.Player;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.IntMap.Entry;
+import net.fourbytes.shadow.Input.Key;
+import net.fourbytes.shadow.entities.Cursor;
+import net.fourbytes.shadow.entities.Player;
+
+import java.nio.ByteBuffer;
 
 public class Camera implements Input.KeyListener {
 	
@@ -62,20 +51,13 @@ public class Camera implements Input.KeyListener {
 	}
 	
 	public void resize() {
-		float zoom = cam.zoom;
-		Vector3 pos = cam.position;
 		cam.viewportWidth = Shadow.vieww;
 		cam.viewportHeight = -Shadow.viewh;
-		cam.position.set(pos.x, pos.y, pos.z);
-		//cam.zoom = 2f;
-		//cam.zoom = -zoom; //Dunno why but the '-' speeds stuff up.
-		//oh wait, resize glitch :/
 		cam.update();
 	}
 	
 	protected Player player;
 	
-	public boolean debug = false;
 	public boolean level = true;
 	public boolean firsttick = true;
 	
@@ -103,20 +85,15 @@ public class Camera implements Input.KeyListener {
 			logo.setScale(Shadow.vieww/Shadow.dispw * cam.zoom, -Shadow.viewh/Shadow.disph * cam.zoom);
 			logo.setPosition(0f - (logo.getScaleX()*logo.getWidth())/2f, 0f - (logo.getScaleY()*logo.getHeight())/2f);
 			logo.draw(Shadow.spriteBatch, 1f);
-			Shadow.spriteBatch.end();
-			
+
 			if (Shadow.loadstate < 2) {
-				Shadow.shapeRenderer.setProjectionMatrix(cam.combined);
-				Shadow.shapeRenderer.begin(ShapeType.Line);
-				Shadow.shapeRenderer.setColor(1, 1, 1, 1);
-				Shadow.shapeRenderer.rect(-Shadow.vieww/2, Shadow.viewh/2+2, Shadow.vieww, 1);
-				Shadow.shapeRenderer.end();
-				Shadow.shapeRenderer.setProjectionMatrix(cam.combined);
-				Shadow.shapeRenderer.begin(ShapeType.Filled);
-				Shadow.shapeRenderer.setColor(1, 1, 1, 1);
-				Shadow.shapeRenderer.rect(-Shadow.vieww/2, Shadow.viewh/2+2, Shadow.vieww*Shadow.loadtick/Shadow.loadticks[0][Shadow.loadticks[0].length-1], 1);
-				Shadow.shapeRenderer.end();
+				Shadow.spriteBatch.setColor(0f, 0f, 0f, 1f);
+				Shadow.spriteBatch.draw(Images.getTextureRegion("white"), -Shadow.vieww / 2, Shadow.viewh / 2 + 2, Shadow.vieww, 1);
+				Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
+				Shadow.spriteBatch.draw(Images.getTextureRegion("white"), -Shadow.vieww / 2, Shadow.viewh / 2 + 2, Shadow.vieww * Shadow.loadtick / Shadow.loadticks[0][Shadow.loadticks[0].length - 1], 1);
 			}
+
+			Shadow.spriteBatch.end();
 			
 			return;
 		}
@@ -151,9 +128,6 @@ public class Camera implements Input.KeyListener {
 		Shadow.spriteBatch.setProjectionMatrix(cam.combined);
 		Shadow.spriteBatch.begin();
 		
-		Shadow.shapeRenderer.setProjectionMatrix(cam.combined);
-		Shadow.shapeRenderer.begin(ShapeType.Line);
-		
 		if (bg == null) {
 			bg = Background.getDefault();
 		}
@@ -175,17 +149,13 @@ public class Camera implements Input.KeyListener {
 			
 			fpsFont.draw(Shadow.spriteBatch, fps, cam.position.x + Shadow.vieww/2 - tb.width, cam.position.y - Shadow.viewh/2);
 		}
-		
-		if (debug) {
-			Rectangle rect = player.rec;
-			float x1 = player.pos.x;
-			float y1 = player.pos.y;
-			Shadow.shapeRenderer.setColor(0, 1, 0, 1);
-			Shadow.shapeRenderer.rect(x1, y1, rect.width, rect.height);
-			
-		}
-		
-		Shadow.shapeRenderer.end();
+
+		Shadow.spriteBatch.setProjectionMatrix(Input.cam.combined);
+
+		Input.render();
+
+		Shadow.spriteBatch.setProjectionMatrix(cam.combined);
+
 		Shadow.spriteBatch.end();
 		/*//UNCOMMENT ONLY WHEN DEBUGGING RENDER STUFF.
 		System.out.println("max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
@@ -196,6 +166,10 @@ public class Camera implements Input.KeyListener {
 	}
 	
 	public void renderLevel(Level level) {
+		if (!this.level) {
+			return;
+		}
+		
 		for (Layer ll : level.layers.values()) {
 			renderLayer(ll);
 		}
@@ -243,124 +217,77 @@ public class Camera implements Input.KeyListener {
 		if (l == null) {
 			return;
 		}
-		for (Block block : l.blocks) {
-			if (block == null) continue;
-			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
-			if (camrec.overlaps(objrec) && level) {
-				block.preRender();
-				Image img = block.tmpimg;
-				origc.set(img.getColor());
-				img.setColor(0f, 0f, 0f, block.alpha*origc.a*0.5f);
-				//img.setColor(0f, 0f, 0f, 0.5f);
-				img.setPosition(img.getX()+0.125f, img.getY()+0.125f);
-				img.draw(Shadow.spriteBatch, 1f);
-				img.setColor(origc);
-			}
-		}
-		for (Entity entity : l.entities) {
-			if (entity == null) continue;
-			objrec.set(entity.pos.x + entity.renderoffs.x, entity.pos.y + entity.renderoffs.y, entity.rec.width + entity.renderoffs.width, entity.rec.height + entity.renderoffs.height);
-			if (camrec.overlaps(objrec) && level) {
-				entity.preRender();
-				Image img = entity.tmpimg;
-				origc.set(img.getColor());
-				img.setColor(0f, 0f, 0f, entity.alpha*origc.a*0.5f);
-				//img.setColor(0f, 0f, 0f, 0.5f);
-				img.setPosition(img.getX()+0.125f, img.getY()+0.125f);
-				img.draw(Shadow.spriteBatch, 1f);
-				img.setColor(origc);
-			}
-		}
 		
-		for (Block block : l.blocks) {
-			if (block == null) continue;
-			if (block.rendertop == 0x01) continue;
-			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
-			if (camrec.overlaps(objrec) && level) {
-				//block.preRender();
-				block.tmpimg.setPosition(block.tmpimg.getX()-0.125f, block.tmpimg.getY()-0.125f);
-				if (block.blending) {
-					Shadow.spriteBatch.enableBlending();
-				} else {
-					Shadow.spriteBatch.disableBlending();
-				}
-				block.render();
-				if (block.highlighted > 0f) {
-					if (white == null) {
-						white = Images.getImage("white");
-					}
-					white.setColor(1f, 1f, 1f, block.highlighted/25f);
-					white.setPosition(objrec.x, objrec.y);
-					white.setSize(1f, -1f);
-					white.setScale(objrec.width, objrec.height);
-					white.draw(Shadow.spriteBatch, 1f);
-				}
-				if (debug) {
-					Shadow.shapeRenderer.setColor(1f, 1f, 0f, 1f);
-					Shadow.shapeRenderer.rect(objrec.x, objrec.y, objrec.width, objrec.height);
-				}
-			}
-		}
+		renderShadows(l);
+		
+		renderObjects(l, false);
+		renderObjects(l, true);
+		
 		Shadow.spriteBatch.enableBlending();
-		for (Entity entity : l.entities) {
-			if (entity == null) continue;
-			objrec.set(entity.pos.x + entity.renderoffs.x, entity.pos.y + entity.renderoffs.y, entity.rec.width + entity.renderoffs.width, entity.rec.height + entity.renderoffs.height);
-			if (camrec.overlaps(objrec) && level) {
-				//entity.preRender();
-				entity.tmpimg.setPosition(entity.tmpimg.getX()-0.125f, entity.tmpimg.getY()-0.125f);
-				if (!entity.blending) {
-					Shadow.spriteBatch.disableBlending();
-				}
-				entity.render();
-				if (!entity.blending) {
-					Shadow.spriteBatch.enableBlending();
-				}
-				if (entity.highlighted > 0f) {
-					if (white == null) {
-						white = Images.getImage("white");
-					}
-					white.setColor(1f, 1f, 1f, entity.highlighted/25f);
-					white.setPosition(objrec.x, objrec.y);
-					white.setSize(1f, -1f);
-					white.setScale(objrec.width, objrec.height);
-					white.draw(Shadow.spriteBatch, 1f);
-				}
-				if (debug) {
-					Shadow.shapeRenderer.setColor(1f, 1f, 0f, 1f);
-					Shadow.shapeRenderer.rect(objrec.x, objrec.y, objrec.width, objrec.height);
-				}
-			}
+	}
+	
+	private void renderShadows(Layer l) {
+		for (GameObject go : l.inView) {
+			if (go == null) continue;
+			go.preRender();
+			
+			Image img = go.tmpimg;
+			origc.set(img.getColor());
+			img.setColor(0f, 0f, 0f, go.alpha*origc.a*0.5f);
+			//img.setColor(0f, 0f, 0f, 0.5f);
+			img.setPosition(img.getX()+0.125f, img.getY()+0.125f);
+			
+			img.draw(Shadow.spriteBatch, 1f);
+			
+			img.setColor(origc);
 		}
-		for (Block block : l.blocks) {
-			if (block == null) continue;
-			if (block.rendertop == 0x00) continue;
-			objrec.set(block.pos.x + block.renderoffs.x, block.pos.y + block.renderoffs.y, block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
-			if (camrec.overlaps(objrec) && level) {
-				//block.preRender();
-				block.tmpimg.setPosition(block.tmpimg.getX()-0.125f, block.tmpimg.getY()-0.125f);
-				if (block.blending) {
-					Shadow.spriteBatch.enableBlending();
-				} else {
-					Shadow.spriteBatch.disableBlending();
+	}
+	
+	private void renderObjects(Layer l, boolean fgonly) {
+		for (GameObject go : l.inView) {
+			if (go == null) continue;
+			if (go instanceof Block) {
+				if (fgonly && ((Block)go).rendertop == 0x00) {
+					continue;
+				} else if (!fgonly && ((Block)go).rendertop == 0x01) {
+					continue;
 				}
-				block.renderTop();
+			} else {
+				if (fgonly) {
+					return;
+				}
 			}
-			if (block.highlighted > 0f) {
+			
+			//go.preRender();
+			
+			go.tmpimg.setPosition(go.tmpimg.getX()-0.125f, go.tmpimg.getY()-0.125f);
+			if (go.blending) {
+				Shadow.spriteBatch.enableBlending();
+			} else {
+				Shadow.spriteBatch.disableBlending();
+			}
+			
+			if (go instanceof Block) {
+				if (fgonly) {
+					((Block)go).renderTop();
+				} else {
+					go.render();
+				}
+			} else {
+				go.render();
+			}
+			
+			if (go.highlighted > 0f) {
 				if (white == null) {
 					white = Images.getImage("white");
 				}
-				white.setColor(1f, 1f, 1f, block.highlighted/25f);
+				white.setColor(1f, 1f, 1f, go.highlighted/25f);
 				white.setPosition(objrec.x, objrec.y);
 				white.setSize(1f, -1f);
 				white.setScale(objrec.width, objrec.height);
 				white.draw(Shadow.spriteBatch, 1f);
 			}
-			if (debug) {
-				Shadow.shapeRenderer.setColor(1, 0, 0, 1);
-				Shadow.shapeRenderer.rect(objrec.x, objrec.y, objrec.width, objrec.height);
-			}
 		}
-		Shadow.spriteBatch.enableBlending();
 	}
 	
 	/**

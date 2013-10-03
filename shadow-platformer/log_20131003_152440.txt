@@ -1,0 +1,7 @@
+java.lang.NullPointerException
+	at net.fourbytes.shadow.Input$Key.setRect(Input.java:134)
+	at net.fourbytes.shadow.Input.resize(Input.java:185)
+	at net.fourbytes.shadow.Input.setUp(Input.java:172)
+	at net.fourbytes.shadow.Shadow.create(Shadow.java:189)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication.mainLoop(LwjglApplication.java:136)
+	at com.badlogic.gdx.backends.lwjgl.LwjglApplication$1.run(LwjglApplication.java:114)

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inheritJdk="true">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="bodyeditor-loader.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/libs/bodyeditor-loader-sources.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/bodyeditor-loader-sources.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/bodyeditor-loader.jar!/"/>
+	</lib>
+	<lib name="gdx-audio.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/libs/gdx-audio-sources.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-audio-sources.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-audio.jar!/"/>
+	</lib>
+	<lib name="gdx-controllers.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/libs/gdx-controllers-sources.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-controllers-sources.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-controllers.jar!/"/>
+	</lib>
+	<lib name="gdx-freetype.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-freetype.jar!/"/>
+	</lib>
+	<lib name="gdx.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/libs/gdx-sources.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx.jar!/"/>
+	</lib>
+	<lib name="kryonet-2.18-all.jar" scope="COMPILE">
+		<srcroot url="jar://$MODULE_DIR$/libs/kryonet-source.jar!/"/>
+		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/kryonet-source.jar!/"/>
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/kryonet-2.18-all.jar!/"/>
+	</lib>
+</component>
