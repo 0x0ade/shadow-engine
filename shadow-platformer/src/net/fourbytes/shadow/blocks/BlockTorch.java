@@ -1,19 +1,11 @@
 package net.fourbytes.shadow.blocks;
 
-import java.util.Random;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Shadow;
-import net.fourbytes.shadow.Sounds;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
+import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.entities.Player;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
+import java.util.Random;
 
 public class BlockTorch extends BlockType {
 	
@@ -81,7 +73,7 @@ public class BlockTorch extends BlockType {
 	public void collide(Entity e) {
 		super.collide(e);
 		if (e instanceof Player) {
-			//Sounds.getSound("hurt").play(1f, Sounds.calcPitch(1f, 0.2f), 0f); //TODO Sound not found
+			Sounds.getSound("hurt").play(1f, Sounds.calcPitch(1f, 0.2f), 0f);
 			Player p = (Player) e;
 			p.hurt(block, 0.05f);
 			p.hit(block);

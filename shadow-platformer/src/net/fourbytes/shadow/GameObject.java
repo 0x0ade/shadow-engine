@@ -68,7 +68,6 @@ public abstract class GameObject {
 	public abstract TextureRegion getTexture();
 	
 	public void tick() {
-		//layer.level.lights.setLight(this, layer.level.mainLayer); //TODO Fix active light sources only active in-view...
 	}
 	
 	private boolean disposedLayer = false;

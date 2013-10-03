@@ -269,7 +269,6 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				dir = 0;
 			}
 			index += dir;
-			//TODO: Decide if wrap or not.
 			if (index < 0) {
 				index = 0;
 				//index = items.size()-1;
