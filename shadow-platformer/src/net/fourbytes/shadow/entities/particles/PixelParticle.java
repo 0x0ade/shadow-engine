@@ -1,17 +1,18 @@
-package net.fourbytes.shadow.entities;
+package net.fourbytes.shadow.entities.particles;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
+import net.fourbytes.shadow.Shadow;
+import net.fourbytes.shadow.entities.Particle;
 
 import java.util.Random;
 
 public class PixelParticle extends Particle {
 	
-	Random r = new Random();
-	Color color;
+	public Color color;
 	
 	public PixelParticle(Vector2 position, Layer layer, int time, float size, Color color) {
 		super(position, layer, time);
@@ -39,17 +40,14 @@ public class PixelParticle extends Particle {
 	public void tick() {
 		super.tick();
 		if (time == spawntime-1) {
-			movement.x = (r.nextFloat()-0.5f)*rec.width * 2;
-			movement.y = (r.nextFloat()-0.5f)*rec.height * 3;
+			movement.x = (Shadow.rand.nextFloat()-0.5f)*rec.width * 2f;
+			movement.y = (Shadow.rand.nextFloat()-0.5f)*rec.height * 3f;
 		}
 	}
-	
-	Color c = new Color();
-	Color cc = new Color();
 	
 	@Override
 	public void preRender() {
 		super.preRender();
-		tmpimg.setColor(c.set(color).mul(cc.set(1f, 1f, 1f, time/spawntime)).mul(layer.tint));
+		tmpimg.setColor(tmpc.set(color).mul(tmpcc.set(1f, 1f, 1f, time/spawntime)).mul(layer.tint));
 	}
 }

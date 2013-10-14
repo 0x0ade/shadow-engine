@@ -1,10 +1,7 @@
 package net.fourbytes.shadow.blocks;
 
-import net.fourbytes.shadow.Images;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import net.fourbytes.shadow.Images;
 
 public class BlockLab extends BlockType {
 	
@@ -18,13 +15,13 @@ public class BlockLab extends BlockType {
 	public BlockLab() {
 	}
 
+	public void tick() {
+		block.blending = false;
+	}
+
 	@Override
 	public TextureRegion getTexture() {
 		return Images.getTextureRegion("block_lab"+type);
 	}
-	
-	public void tick() {
-		block.blending = false;
-	}
-	
+
 }

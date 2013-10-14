@@ -9,8 +9,9 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.blocks.BlockType;
-import net.fourbytes.shadow.entities.PixelParticle;
+import net.fourbytes.shadow.entities.particles.PixelParticle;
 
 public abstract class GameObject {
 	
@@ -22,7 +23,6 @@ public abstract class GameObject {
 	public Rectangle renderoffs = new Rectangle(0, 0, 0, 0);
 	public boolean solid = true;
 	public Color light = new Color(1f, 1f, 1f, 0f);
-	public Color lightTint = new Color(1f, 1f, 1f, 1f);
 	public boolean passSunlight = false;
 	public Color tintSunlight = new Color(1f, 1f, 1f, 1f);
 	public Color tintDarklight = new Color(0f, 0f, 0f, 1f);
@@ -126,7 +126,6 @@ public abstract class GameObject {
 			}
 			tmpimg.setColor(baseColor);
 			tmpimg.getColor().mul(layer.tint);
-			tmpimg.getColor().mul(lightTint);
 		}
 	}
 	
@@ -154,7 +153,7 @@ public abstract class GameObject {
 	Color cc = new Color(0f, 0f, 0f, 0f);
 	Color ccc = new Color(0f, 0f, 0f, 0f);
 	
-	public void pixelify() {
+	public Array<PixelParticle> pixelify() {
 		int fac = pixfac * pixffac;
 		if (fac < 0) {
 			fac = 1;
@@ -178,7 +177,9 @@ public abstract class GameObject {
 		float h = rec.height;
 		float pixw = w/tw * fac;
 		float pixh = h/th * fac;
-		
+
+		Array<PixelParticle> particles = new Array<PixelParticle>();
+
 		for (int yy = ty; yy < ty+th; yy+=fac) {
 			for (int xx = tx; xx < tx+tw; xx+=fac) {
 				int rgba = pixmap.getPixel(xx, yy);
@@ -197,14 +198,18 @@ public abstract class GameObject {
 				//System.out.println("X: "+xx+"; Y: "+yy+"; RGBA: "+Integer.toHexString(rgba));
 				Color ccc = new Color(0f, 0f, 0f, 0f);
 				Color.rgba8888ToColor(ccc, rgba);
+				ccc.mul(tmpimg.getColor());
 				if (c.a < 0.0625f) continue;
 				PixelParticle pp = new PixelParticle(new Vector2(pos.x+((xx-tx)*pixw/fac)+renderoffs.x, pos.y+((yy-ty)*pixh/fac)+renderoffs.y), layer, 0, pixw, ccc);
 				layer.add(pp);
+				particles.add(pp);
 			}
 		}
 		if (texdata.disposePixmap()) {
 			pixmap.dispose();
 		}
+
+		return particles;
 	}
 	
 	public GameObject duplicate() {

@@ -1,19 +1,11 @@
 package net.fourbytes.shadow.entities;
 
-import java.util.Vector;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.MathHelper;
-import net.fourbytes.shadow.Sounds;
-import net.fourbytes.shadow.map.Saveable;
-
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import net.fourbytes.shadow.*;
+import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.utils.MathHelper;
 
 public abstract class Mob extends Entity {
 	

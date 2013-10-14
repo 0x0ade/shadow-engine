@@ -7,8 +7,9 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.Key.Triggerer;
@@ -19,6 +20,8 @@ import net.fourbytes.shadow.mod.ModLoader;
 import net.fourbytes.shadow.network.NetClient;
 import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
+import net.fourbytes.shadow.utils.ScreenshotUtil;
+import net.fourbytes.shadow.utils.ShaderHelper;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -78,7 +81,14 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static String clientID = getSecureRandomBytes(512);
 	public static NetStream client;
 	public static NetStream server;
-	
+
+	//TODO Bug the LibGDX devs about Pixmaps from offscreen FBOs being empty...
+	public static boolean useFB = true;
+	public static FrameBuffer frameBuffer;
+
+	public static boolean record = false;
+	public static String recordDirName;
+
 	public Shadow() {
 		super();
 	}
@@ -125,8 +135,9 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 				
 				dir = Gdx.files.absolute(path).parent();
 			}
-			dir.mkdirs();
-			return dir;
+			FileHandle child = dir.child(subdir);
+			child.mkdirs();
+			return child;
 		}
 	}
 	
@@ -212,13 +223,27 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		}
 		
 		tick();
-		
-		if (shader != null) {
-			shader.begin();
-			shader.setUniformf("resolution", dispw, disph);
-			shader.end();
+
+		/*
+		Sidenote: LightSystem.render() is rendering, yes,
+		but it's rendering to another FrameBuffer than the
+		default one and switching "back" while rendering
+		to another FBO (f.e. when  == true) glitches out.
+		 */
+		if (level != null) {
+			Level llevel = level;
+			while (llevel != null && llevel instanceof MenuLevel) {
+				llevel = ((MenuLevel)llevel).bglevel;
+			}
+			if (llevel != null && llevel.lights != null) {
+				llevel.lights.render();
+			}
 		}
-		
+
+		if (useFB) {
+			frameBuffer.begin();
+		}
+
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		spriteBatch.setColor(1f, 1f, 1f, 1f);
@@ -230,6 +255,23 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		}
 		cam.render();
 		ModLoader.postRender();
+
+		if (useFB) {
+			frameBuffer.end();
+
+			spriteBatch.disableBlending();
+			spriteBatch.setProjectionMatrix(cam.cam.combined);
+			spriteBatch.begin();
+			spriteBatch.setColor(1f, 1f, 1f, 1f);
+			spriteBatch.draw(frameBuffer.getColorBufferTexture(),
+							cam.camrec.x, cam.camrec.y, cam.camrec.width, cam.camrec.height);
+			spriteBatch.end();
+			spriteBatch.enableBlending();
+		}
+
+		if (record) {
+			ScreenshotUtil.pushFrame();
+		}
 		
 		long time = System.currentTimeMillis();
 		
@@ -259,24 +301,39 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		}
 		if (loadstate == 0) {
 			//Gdx.graphics.setVSync(true);
-			String shaderDesktop = "shaders/vignette";
-			String shaderAndroid = "shaders/basic";
-			String shaderOuya = "shaders/vignette";
-			String shaderLoad = isOuya?shaderOuya:isAndroid?shaderAndroid:shaderDesktop;
-			
+
 			try {
 				ShaderProgram.pedantic = false;
 				
 				//TODO Change / update / fix / complete GLSL shaders
-				final String vertex = Gdx.files.internal(shaderLoad+".vert").readString();
-				final String fragment = Gdx.files.internal(shaderLoad+".frag").readString();
+				String vertex = Gdx.files.internal("shaders/shader.vert").readString();
+				String fragment = Gdx.files.internal("shaders/shader.frag").readString();
+
+				vertex = ShaderHelper.setupShaderSource(vertex, "shaders/imports");
+				fragment = ShaderHelper.setupShaderSource(fragment, "shaders/imports");
 				
 				shader = new ShaderProgram(vertex, fragment);
 				
 				if (shader.getLog().length()!=0) {
-					System.err.println(shader.getLog());
+					System.err.println("--------SHADER ERROR--------");
+					System.err.print(shader.getLog());
+					System.err.println("--------SOURCES--------");
+					String[] lines;
+					System.err.println("--------VERTEX--------");
+					lines = vertex.split("\n");
+					for (int i = 0; i < lines.length; i++) {
+						System.err.println((i+1)+": "+lines[i]);
+					}
+					System.err.println("--------FRAGMENT--------");
+					lines = fragment.split("\n");
+					for (int i = 0; i < lines.length; i++) {
+						System.err.println((i+1)+": "+lines[i]);
+					}
+					System.err.println("--------END--------");
 				}
-				
+
+				ShaderHelper.addShader(shader);
+
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -291,29 +348,27 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			
 			loadstate = 1;
 			loadtick = 0;
-			
-			//Gdx.gl.glDisable(GL10.GL_ALPHA_TEST);
-			//Gdx.gl.glDisable(GL10.GL_TEXTURE_2D);
-			
+
 			//Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 			//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			
 			//cam.render();
 		} else if (loadstate == 1) {
 			if (loadtick == loadticks[0][0]) {
+				resize();
+			}
+			if (loadtick == loadticks[0][1]) {
 				//Fonts
 				Fonts.load();
 			}
-			if (loadtick == loadticks[0][1]) {
+			if (loadtick == loadticks[0][2]) {
 				//More images
 				Images.loadImages();
-			}
-			if (loadtick == loadticks[0][1]) {
 				//Sounds
 				Sounds.loadSounds();
 			}
 			if (loadtick == loadticks[0][3]) {
-				//Set up various smaller values, options or machine-dependent stuff.
+				//Set up various smaller values, options or machine-dependent / Android-only stuff.
 				if (isAndroid) {
 					GameObject.pixffac = 2;
 					Level.maxParticles = 128;
@@ -377,7 +432,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		if (Gdx.graphics != null) {
 			dispw = Gdx.graphics.getWidth();
 			disph = Gdx.graphics.getHeight();
-			
+
 			switch (viewmode) {
 			case 0x00:
 				break;
@@ -406,7 +461,24 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			touchw = touchh*dispw/disph;
 			cam.resize();
 			Input.resize();
-			
+
+			if (shader != null) {
+				shader.begin();
+				shader.setUniformf("resolution", dispw, disph);
+				shader.end();
+			}
+
+			if (frameBuffer != null) {
+				frameBuffer.dispose();
+			}
+			frameBuffer = new FrameBuffer(Pixmap.Format.RGB888, (int)dispw, (int)disph, true);
+			frameBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+			if (LightSystem.lightFB != null) {
+				LightSystem.lightFB.dispose();
+				LightSystem.lightFB = null;
+			}
+
 		}
 	}
 
@@ -588,19 +660,15 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			} 
 		}
 		if (key == Input.screenshot) {
-			Pixmap pixmap = Camera.getScreenshot(0, 0, (int)dispw, (int)disph, false);
-			
-			try {
-				FileHandle fh = null;
-				fh = getDir("screenshots").child("screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
-				fh.parent().mkdirs();
-				
-				PixmapIO.writePNG(fh, pixmap);
-			} catch (Exception e) {
-				e.printStackTrace();
+			ScreenshotUtil.saveScreen();
+		}
+		if (key == Input.record) {
+			record = !record;
+			if (record) {
+				recordDirName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+			} else {
+				ScreenshotUtil.pullRecord();
 			}
-			
-			pixmap.dispose();
 		}
 	}
 

@@ -1,14 +1,15 @@
 package net.fourbytes.shadow.blocks;
 
-import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Shadow;
-import net.fourbytes.shadow.map.Saveable;
-
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.IntArray;
+import net.fourbytes.shadow.Entity;
+import net.fourbytes.shadow.Images;
+import net.fourbytes.shadow.Shadow;
+import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.entities.particles.GrassParticle;
 
 public class BlockGrassTop extends BlockType {
 	
@@ -24,6 +25,8 @@ public class BlockGrassTop extends BlockType {
 	public int frame = 0;
 	
 	public float depth = 0;
+
+	public int collision = 0;
 	
 	public BlockGrassTop() {
 		frame = Shadow.rand.nextInt(1000);
@@ -79,7 +82,7 @@ public class BlockGrassTop extends BlockType {
 		}
 		return imgcache[i];
 	}
-	
+
 	public Sprite getSprite(int i) {
 		if (spritecache == null || spritecache[i] == null) {
 			Sprite sprite = new Sprite(getTexture(i));
@@ -87,13 +90,33 @@ public class BlockGrassTop extends BlockType {
 		}
 		return spritecache[i];
 	}
-	
+
+	@Override
 	public void tick() {
 		block.solid = false;
 		block.rendertop = 0x02;
 		
 		frame++;
+		collision--;
 		super.tick();
+	}
+
+	@Override
+	public void collide(Entity e) {
+		if (e instanceof Player) {
+			if (collision <= 0) {
+				for (int i = 0; i < 3 + Shadow.rand.nextInt(3); i++) {
+					Vector2 pos = new Vector2(block.pos);
+					pos.x += block.rec.width/2f;
+					pos.y += block.rec.height/2f;
+					pos.x -= Shadow.rand.nextFloat() - 0.5f;
+					pos.y -= 0.5f*Shadow.rand.nextFloat() - 0.25f;
+					GrassParticle go = new GrassParticle(pos, block.layer);
+					block.layer.add(go);
+				}
+			}
+			collision = 32;
+		}
 	}
 	
 	@Override
@@ -101,13 +124,15 @@ public class BlockGrassTop extends BlockType {
 		block.tmpimg = getImage(0);
 		for (int i = 0; i < spritecache.length; i++) {
 			Image img = getImage(i);
-			
+			if (cantint)
+
 			img.setPosition(block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y + depth);
 			img.setSize(block.rec.width + block.renderoffs.width, (block.rec.height + block.renderoffs.height) * height[i]);
 			img.setScaleY(-1f);
 			
 			Sprite sprite = getSprite(i);
-			
+
+			sprite.setColor(img.getColor());
 			sprite.setPosition(block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y + depth);
 			sprite.setSize(block.rec.width + block.renderoffs.width, -(block.rec.height + block.renderoffs.height) * height[i]);
 			
@@ -129,6 +154,7 @@ public class BlockGrassTop extends BlockType {
 	public void render() {
 		for (int i = 0; i < order.length-2; i++) {
 			Sprite sprite = spritecache[order[i]];
+			sprite.setColor(block.tmpimg.getColor());
 			
 			sprite.draw(Shadow.spriteBatch);
 		}
@@ -138,9 +164,10 @@ public class BlockGrassTop extends BlockType {
 	public void renderTop() {
 		for (int i = order.length-2; i < order.length; i++) {
 			Sprite sprite = spritecache[order[i]];
+			sprite.setColor(block.tmpimg.getColor());
 			
 			sprite.draw(Shadow.spriteBatch);
 		}
 	}
-	
+
 }

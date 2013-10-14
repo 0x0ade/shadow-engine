@@ -1,18 +1,11 @@
 package net.fourbytes.shadow;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Vector;
-
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.entities.Mob;
 import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
 
 public abstract class Entity extends GameObject {
 	
@@ -103,7 +96,7 @@ public abstract class Entity extends GameObject {
 	
 	protected Rectangle calcCollide() {
 		float rad = (rec.width + rec.height)/2;
-		rad *= 0.05f;
+		rad *= 0.0625f;
 		tmper.set(pos.x + rad, pos.y + rad, rec.width - rad*2, rec.height - rad*2);
 		return tmper;
 	}
@@ -120,7 +113,7 @@ public abstract class Entity extends GameObject {
 		}
 		
 		float tmpy = 0f;
-		
+
 		boolean collide = false;
 		
 		if (or.overlaps(er)) {
@@ -150,7 +143,7 @@ public abstract class Entity extends GameObject {
 				pos.x = oldpos.x;
 				movement.x = 0f;
 				pos.y += tmpy;
-				
+
 				er = calcCollide();
 			}
 			collide = true;
@@ -163,7 +156,11 @@ public abstract class Entity extends GameObject {
 		if (collide) {
 			//o.highlight();
 			o.collide(this);
+			collide(o);
 		}
+	}
+
+	public void collide(GameObject go) {
 	}
 	
 	public void renderHealth() {

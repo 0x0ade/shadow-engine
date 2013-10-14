@@ -18,6 +18,7 @@ public class Fonts {
 	
 	public static void load() {
 		TextureFilter tf = (Shadow.isAndroid)?(TextureFilter.Nearest):(TextureFilter.Linear);
+
 		FreeTypeFontGenerator gen_bold = new FreeTypeFontGenerator(Gdx.files.internal(path_bold));
 		bold_normal = gen_bold.generateFont(32);
 		bold_normal.getRegion().getTexture().setFilter(tf, tf);

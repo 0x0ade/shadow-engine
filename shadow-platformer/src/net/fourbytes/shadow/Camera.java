@@ -1,11 +1,7 @@
 package net.fourbytes.shadow;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.math.Rectangle;
@@ -14,20 +10,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Player;
-
-import java.nio.ByteBuffer;
+import net.fourbytes.shadow.utils.ShaderHelper;
 
 public class Camera implements Input.KeyListener {
 	
 	public Background bg;
 	public OrthographicCamera cam;
+
 	public static BitmapFont fpsFont = Fonts.light_normal;
-	
+
+	protected static Rectangle objrec = new Rectangle();
+	protected static Color origc = new Color();
+	protected static Image white;
+
+	protected Player player;
+
+	public boolean level = true;
+	public boolean firsttick = true;
+
+	public Rectangle camrec = new Rectangle(0, 0, 0, 0);
+
 	public Camera() {
 		this.cam = new OrthographicCamera(Shadow.vieww, -Shadow.viewh);
 		this.cam.position.set(0, 0, 0);
 		this.cam.update();
-		
+
 		//Input.debug1.listeners.add(this);
 		//Input.debug2.listeners.add(this);
 	}
@@ -55,13 +62,6 @@ public class Camera implements Input.KeyListener {
 		cam.viewportHeight = -Shadow.viewh;
 		cam.update();
 	}
-	
-	protected Player player;
-	
-	public boolean level = true;
-	public boolean firsttick = true;
-	
-	public Rectangle camrec = new Rectangle(0, 0, 0, 0);
 	
 	public void render() {
 		if (Shadow.level == null) {
@@ -150,6 +150,8 @@ public class Camera implements Input.KeyListener {
 			fpsFont.draw(Shadow.spriteBatch, fps, cam.position.x + Shadow.vieww/2 - tb.width, cam.position.y - Shadow.viewh/2);
 		}
 
+		Shadow.spriteBatch.flush();
+
 		Shadow.spriteBatch.setProjectionMatrix(Input.cam.combined);
 
 		Input.render();
@@ -157,62 +159,64 @@ public class Camera implements Input.KeyListener {
 		Shadow.spriteBatch.setProjectionMatrix(cam.combined);
 
 		Shadow.spriteBatch.end();
-		//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
+		/*//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
 		System.out.println("max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
 		System.out.println("render calls: "+Shadow.spriteBatch.renderCalls);
 		Shadow.spriteBatch.maxSpritesInBatch = 0;
 		/*
 		 */
 	}
-	
+
 	public void renderLevel(Level level) {
-		if (!this.level) {
-			return;
-		}
-		
+		Shadow.spriteBatch.flush();
+		ShaderHelper.set("light", 1);
+		level.lights.updateLightBounds();
+
 		for (Layer ll : level.layers.values()) {
 			renderLayer(ll);
 		}
 
+		Shadow.spriteBatch.flush();
+		ShaderHelper.set("light", 0);
+
 		if (this.level) {
-			if (level.hasvoid) {
-				Image levoid = Images.getImage("void");
-				objrec.set(camrec.x, level.tiledh - 2, 1024, 1);
-				levoid.setScaleY(-1f);
-				//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-				levoid.setPosition(objrec.x, objrec.y + objrec.height*2);
-				levoid.setSize(objrec.width, objrec.height + objrec.height);
-				levoid.draw(Shadow.spriteBatch, 1f);
-				
-				float fy = level.tiledh;
-				if (camrec.y > fy) {
-					fy = camrec.y;
-				}
-				objrec.set(camrec.x, fy, 128, 128);
-				Image lewhite = Images.getImage("white");
-				lewhite.setColor(0f, 0f, 0f, 1f);
-				lewhite.setPosition(objrec.x, objrec.y);
-				lewhite.setSize(objrec.width, objrec.height + objrec.height);
-				lewhite.draw(Shadow.spriteBatch, 1f);
-			}
-			
 			for (Cursor c : level.cursors) {
 				c.preRender();
 				c.render();
 			}
-			
+
 			if (level.c != null && !Input.isAndroid) {
 				level.c.preRender();
 				level.c.render();
 			}
-			
+
 			level.renderImpl();
 		}
+
+		if (level.hasvoid) {
+			Image levoid = Images.getImage("void");
+			objrec.set(camrec.x, level.tiledh - 2, 1024, 1);
+			levoid.setScaleY(-1f);
+			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
+			levoid.setPosition(objrec.x, objrec.y + objrec.height*2);
+			levoid.setSize(objrec.width, objrec.height + objrec.height);
+			levoid.draw(Shadow.spriteBatch, 1f);
+
+			Shadow.spriteBatch.disableBlending();
+			float fy = level.tiledh;
+			if (camrec.y > fy) {
+				fy = camrec.y;
+			}
+			objrec.set(camrec.x, fy, camrec.width, -camrec.height);
+			Image lewhite = Images.getImage("white");
+			lewhite.setColor(0f, 0f, 0f, 1f);
+			lewhite.setPosition(objrec.x, objrec.y);
+			lewhite.setSize(1f, 1f);
+			lewhite.setScale(objrec.width, objrec.height);
+			lewhite.draw(Shadow.spriteBatch, 1f);
+			Shadow.spriteBatch.enableBlending();
+		}
 	}
-	
-	protected static Rectangle objrec = new Rectangle();
-	protected static Color origc = new Color();
-	protected static Image white;
 
 	public void renderLayer(Layer l) {
 		if (l == null) {
@@ -265,7 +269,7 @@ public class Camera implements Input.KeyListener {
 					return;
 				}
 			}
-			
+
 			//go.preRender();
 			
 			if (go.blending) {
@@ -295,45 +299,6 @@ public class Camera implements Input.KeyListener {
 				white.draw(Shadow.spriteBatch, 1f);
 			}
 		}
-	}
-	
-	/**
-	 * Get a part of the screen as {@link Pixmap}.
-	 * @param x x position
-	 * @param y y position
-	 * @param w width
-	 * @param h height
-	 * @param flipY true (recommended) if the returned {@link Pixmap} should be flipped on it's Y axis
-	 * @return The {@link Pixmap} containing the pixel data of the screen part
-	 */
-	public static Pixmap getScreenshot(int x, int y, int w, int h, boolean flipY) {
-		Gdx.gl.glPixelStorei(GL10.GL_PACK_ALIGNMENT, 1);
-		
-		int channels = 3; //TODO Separate parameter?
-		Format format = channels==4?Format.RGBA8888:Format.RGB888;
-		
-		Pixmap pixmap = new Pixmap(w, h, format);
-		byte[] lines = new byte[w * h * channels];
-		
-		ByteBuffer pixels = pixmap.getPixels();
-		Gdx.gl.glReadPixels(x, y, w, h, channels==4?GL10.GL_RGBA:GL10.GL_RGB, GL10.GL_UNSIGNED_BYTE, pixels);
-		
-		if (flipY) {
-			final int numBytesPerLine = w * channels;
-			
-			for (int i = 0; i < h; i++) {
-				pixels.position((h - i - 1) * numBytesPerLine);
-				pixels.get(lines, i * numBytesPerLine, numBytesPerLine);
-			}
-			
-			pixels.clear();
-			pixels.put(lines);
-    	} else {
-    		pixels.clear();
-    		pixels.get(lines);
-    	}
-		
-		return pixmap;
 	}
 	
 }

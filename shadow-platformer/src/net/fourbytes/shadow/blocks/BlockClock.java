@@ -1,26 +1,8 @@
 package net.fourbytes.shadow.blocks;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Vector;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Garbage;
-import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.TypeBlock;
-import net.fourbytes.shadow.blocks.BlockType.LogicType;
-import net.fourbytes.shadow.entities.Player;
-
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import net.fourbytes.shadow.*;
 
 public class BlockClock extends BlockType implements BlockLogic {
 	
@@ -42,6 +24,7 @@ public class BlockClock extends BlockType implements BlockLogic {
 		block.solid = false;
 		block.alpha = 0f;
 		block.passSunlight = false;
+		block.blending = false;
 		timer++;
 		if (timer >= totime*factor) {
 			timer = 0;

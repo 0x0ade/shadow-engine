@@ -1,10 +1,7 @@
 package net.fourbytes.shadow.blocks;
 
-import net.fourbytes.shadow.Images;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import net.fourbytes.shadow.Images;
 
 public class BlockSignBG extends BlockType {
 	
@@ -16,6 +13,10 @@ public class BlockSignBG extends BlockType {
 	}
 	
 	public BlockSignBG() {
+	}
+
+	public void tick() {
+		block.blending = false;
 	}
 
 	@Override

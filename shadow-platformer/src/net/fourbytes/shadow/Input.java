@@ -77,7 +77,9 @@ public class Input {
 		
 		public void down() {
 			//System.out.println("N: "+name+"; M: D; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
-			for (KeyListener l : keylisteners) {
+			tmpkeylisteners.clear();
+			tmpkeylisteners.addAll(keylisteners);
+			for (KeyListener l : tmpkeylisteners) {
 				if (l instanceof Level && ((Level)l) != Shadow.level) {
 					continue;
 				}
@@ -90,7 +92,9 @@ public class Input {
 		
 		public void up() {
 			//System.out.println("N: "+name+"; M: U; X: "+rec.x+"; Y:"+rec.y+"; W: "+rec.width+"; H: "+rec.height);
-			for (KeyListener l : keylisteners) {
+			tmpkeylisteners.clear();
+			tmpkeylisteners.addAll(keylisteners);
+			for (KeyListener l : tmpkeylisteners) {
 				if (l instanceof Level && ((Level)l) != Shadow.level) {
 					continue;
 				}
@@ -151,6 +155,7 @@ public class Input {
 	public static Key enter = new Key("Confirm", new int[] {Keys.ENTER}, new Rectangle(-1, -1, -1, -1));
 	
 	public static Key screenshot = new Key("Screenshot", new int[] {Keys.F12}, new Rectangle(-1, -1, -1, -1));
+	public static Key record = new Key("Record", new int[] {Keys.F11}, new Rectangle(-1, -1, -1, -1));
 	
 	public static Key androidBack = new Key("Back", new int[] {Keys.BACK}, new Rectangle(-1, -1, -1, -1));
 	public static Key androidMenu = new Key("Menu", new int[] {Keys.MENU}, new Rectangle(-1, -1, -1, -1));

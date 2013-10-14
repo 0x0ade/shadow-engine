@@ -1,22 +1,17 @@
 package net.fourbytes.shadow.entities;
 
-import java.util.ArrayList;
-
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Layer;
 
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-
 public abstract class Particle extends Entity {
 	
-	float time = 0;
-	float spawntime = 0;
-	boolean fade = false;
+	public float time = 0;
+	public float spawntime = 0;
+	public boolean fade = false;
 	public static boolean isStatic = false;
-	
+
 	public Particle(Vector2 position, Layer layer, int time) {
 		super(position, layer);
 		this.time = time;
@@ -32,10 +27,14 @@ public abstract class Particle extends Entity {
 			layer.remove(this);
 			return;
 		}
-		time--;
+		if (time > 0) {
+			time--;
+		}
 	}
 	
-	float oa = -1f;
+	protected float oa = -1f;
+	protected Color tmpc = new Color();
+	protected Color tmpcc = new Color();
 	
 	@Override
 	public void preRender() {

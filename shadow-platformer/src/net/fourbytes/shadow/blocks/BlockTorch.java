@@ -1,11 +1,12 @@
 package net.fourbytes.shadow.blocks;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.entities.Player;
-
-import java.util.Random;
+import net.fourbytes.shadow.entities.particles.PixelParticle;
 
 public class BlockTorch extends BlockType {
 
@@ -17,22 +18,38 @@ public class BlockTorch extends BlockType {
 	public BlockTorch() {
 	}
 
-	public static Random rand = new Random();
-
 	@Override
 	public void tick() {
-		subframe += rand.nextInt(5);
+		subframe += Shadow.rand.nextInt(5);
+		if (block.solid) {
+			block.light.set(0.75f, 0.5f, 0.25f, 1f);
+		}
 		block.solid = false;
 		block.passSunlight = true;
-		block.light.set(0.75f, 0.5f, 0.25f, 1f);
 		if (subframe > 12) {
 			frame++;
 			subframe = 0;
 			imgupdate = true;
+			block.light.set(0.75f, 0.5f, 0.25f, 1f);
+			block.light.mul(1f-Shadow.rand.nextFloat()*0.2f);
+			block.light.a = 1f-Shadow.rand.nextFloat()*0.15f;
+
+			for (int i = 0; i < Shadow.rand.nextInt(6)-4; i++) {
+				Vector2 pos = new Vector2(block.pos);
+				pos.add(block.rec.width/2f, block.rec.height/2f);
+				pos.add(Shadow.rand.nextFloat()-0.5f, Shadow.rand.nextFloat()-0.5f);
+
+				Color color = new Color(block.light);
+				color.mul(1f-(Shadow.rand.nextFloat()/10f));
+
+				PixelParticle pp = new PixelParticle(pos, block.layer, 0, 0.0775f, color);
+				pp.objgravity *= 0.5f;
+				pp.layer.add(pp);
+			}
 		}
 		if (frame >= 4) {
 			frame = 0;
-			block.pixdur = rand.nextInt(20)+20;
+			block.pixdur = Shadow.rand.nextInt(20)+20;
 		}
 
 		wall = 0;

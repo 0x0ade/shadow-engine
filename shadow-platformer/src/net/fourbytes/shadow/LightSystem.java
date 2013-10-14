@@ -1,119 +1,119 @@
 package net.fourbytes.shadow;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Rectangle;
 
 public class LightSystem {
 	
     public Level level;
-  	public int speed = 10;
-	public boolean canUpdate = false;
+	public int speed = 2;
 	public int tick = 0;
+
+	public static int maxLights = 64;
+
+	protected final static Color tmpc = new Color(1f, 1f, 1f, 1f);
 
 	public LightSystem(Level level) {
 		this.level = level;
 	}
-	
-	public void tick() {
-		if (Shadow.isAndroid) {
-			//return;//TODO Fix performance - duh
-		}
-		
-		canUpdate = tick >= speed;
-		
-		if (canUpdate && level.tickid >= speed*2) {
-			for (GameObject go : level.mainLayer.inView) {
-				setLight(go, level.mainLayer, true);
-			}
-			
-			for (GameObject go : level.mainLayer.inView) {
-				setLight(go, level.mainLayer, false);
-			}
-			
-			tick = 0;
-		}
-		
-		tick++;
-	}
-	
-	protected final static Color sun = new Color(1f, 1f, 1f, 1f);
-	protected final static Color dark = new Color(1f, 1f, 1f, 1f);
-	protected final static Color emit = new Color(1f, 1f, 1f, 1f);
-	protected final static Color tmpc = new Color(1f, 1f, 1f, 1f);
 
-	public void setLight(GameObject go, Layer ll, boolean clearLight) {
-		if (clearLight) {
-			go.lightTint.set(ll.level.globalLight).mul(0.15f, 0.15f, 0.15f, 1f);
+	public void render() {
+		//TODO: Fix performance...
+
+		if (tick < speed-1) {
+			tick++;
 			return;
 		}
-		
-		int cx = (int)go.pos.x;
-		int cy = (int)go.pos.y;
-		float r = 6.5f;
-		float rsq = MathHelper.sq(r);
-		
-		float avgsun = (ll.level.globalLight.r + ll.level.globalLight.g + ll.level.globalLight.a) / 3f;
-		
-		for (float x = cx-r; x <= cx+r; x++) {
-			for (float y = cy-r; y <= cy+r; y++) {
-				float tmpradsq = MathHelper.distsq(cx, cy, x, y);
-				if (tmpradsq <= rsq) {
-					//float tmprad = (float) Math.sqrt(tmpradsq);
-					Array<Block> al = ll.get(Coord.get(x, y));
-					float fsun = (1f/rsq)*avgsun*0.6275f;
-					float fdark = 1f/rsq;
-					float femit= 1f-tmpradsq/rsq;
-					//Passive lighting - X checks for light source and adapts to it.
-					int bs = 0;
-					int es = 0;
-					int ps = 0;
-					//sun.set(1f, 1f, 1f, 1f);
-					sun.set(ll.level.globalLight);
-					dark.set(0f, 0f, 0f, 1f);
-					emit.set(1f, 1f, 1f, 1f);
-					if (al != null && al.size != 0) {
-						for (Block bb : al) {
-							if (bb.light.a > 0f) {
-								es++;
-								if (es == 1) {
-									emit.set(bb.light);
-								} else {
-									emit.add(bb.light);
-								}
-							}
-							if (bb.passSunlight) {
-								ps++;
-								if (ps == 1) {
-									sun.set(tmpc.set(ll.level.globalLight).mul(bb.tintSunlight));
-								} else {
-									sun.add(tmpc.set(ll.level.globalLight).mul(bb.tintSunlight));
-								}
-							} else {
-								bs++;
-								if (bs == 1) {
-									dark.set(bb.tintDarklight);
-								} else {
-									dark.add(bb.tintDarklight);
-								}
-							}
-						}
-					} else {
-						ps = 0;
-					}
-					if (es != 0) {
-						go.lightTint.add(emit.mul(1f).mul(femit));
-					}
-					if (bs == 0) {
-						go.lightTint.add(sun.mul(1f/ps).mul(fsun));
-					} else {
-						go.lightTint.add(dark.mul(1f/bs).mul(fdark));
-					}
+		tick = 0;
+
+		Rectangle vp = Shadow.cam.camrec;
+
+		TextureRegion light = Images.getTextureRegion("light");
+
+		SpriteBatch spriteBatch = Shadow.spriteBatch;
+		int src = Shadow.spriteBatch.getBlendSrcFunc();
+		int dst = Shadow.spriteBatch.getBlendDstFunc();
+		spriteBatch.setBlendFunction(GL10.GL_ONE, GL10.GL_ONE);
+		spriteBatch.setProjectionMatrix(Shadow.cam.cam.combined);
+		spriteBatch.begin();
+
+		FrameBuffer lightFB = getLightFramebuffer();
+		lightFB.begin();
+
+		Gdx.gl.glClearColor(level.globalLight.r, level.globalLight.g, level.globalLight.b, 1f);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+		int i = 0;
+		//SELFNOTE: it should be stable enough to draw a light for every object in view.
+		for (GameObject go : level.mainLayer.inView) {
+			if (go.tmpimg != null && go.light.a > 0f) {
+				i++;
+				tmpc.set(go.light);
+				tmpc.a = 1f;
+				spriteBatch.setColor(tmpc);
+
+				Garbage.rect.x = go.tmpimg.getX() + go.tmpimg.getWidth()/2f;
+				Garbage.rect.y = go.tmpimg.getY() - go.tmpimg.getHeight()/2f;
+				Garbage.rect.width = 5f*2f * go.light.a;
+				Garbage.rect.height = 5f*2f * go.light.a;
+				//Garbage.rect.width = 1f;
+				//Garbage.rect.height = 1f;
+				Garbage.rect.x -= Garbage.rect.width/2f;
+				Garbage.rect.y -= Garbage.rect.height/2f;
+
+				spriteBatch.draw(light, Garbage.rect.x, Garbage.rect.y, Garbage.rect.width, Garbage.rect.height);
+
+				if (i > maxLights) {
+					System.out.println("Amount of lights in viewport reached limit ("+maxLights+")");
+					System.out.println("Stopping drawing lights to lightmap...");
+					break;
 				}
 			}
 		}
-		
-		go.lightTint.a = 1f;
-		go.cantint = true;
+
+		spriteBatch.flush();
+		lightFB.end();
+
+		spriteBatch.end();
+		spriteBatch.setBlendFunction(src, dst);
 	}
-	
+
+	//Lightmap stuff
+
+	public static FrameBuffer lightFB;
+	public static Rectangle lightFBRect = new Rectangle();
+	public static float lightFBFactor = 0.5f;
+	public static int lightTexID = 1;
+
+	public final static FrameBuffer getLightFramebuffer() {
+		if (lightFB == null) {
+			updateLightBounds();
+
+			lightFB = new FrameBuffer(Pixmap.Format.RGB565, (int) lightFBRect.width, (int) lightFBRect.height, false);
+			lightFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+
+			lightFB.getColorBufferTexture().bind(lightTexID);
+			Shadow.shader.begin();
+			Shadow.shader.setUniformi("textureLight", lightTexID);
+			Shadow.shader.end();
+			Gdx.gl.glActiveTexture(GL10.GL_TEXTURE0);
+		}
+
+		return lightFB;
+	}
+
+	public final static void updateLightBounds() {
+		lightFBRect.x = 0f;
+		lightFBRect.y = 0f;
+		lightFBRect.width = Shadow.dispw*lightFBFactor;
+		lightFBRect.height = Shadow.disph*lightFBFactor;
+	}
+
 }

@@ -1,9 +1,5 @@
 package net.fourbytes.shadow;
 
-import net.fourbytes.shadow.Input.Key;
-import net.fourbytes.shadow.Input.Key.Triggerer;
-import net.fourbytes.shadow.MenuLevel.MenuItem;
-
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
@@ -13,6 +9,9 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
+import net.fourbytes.shadow.Input.Key;
+import net.fourbytes.shadow.Input.Key.Triggerer;
+import net.fourbytes.shadow.MenuLevel.MenuItem;
 
 public final class ControllerHelper implements ControllerListener {
 	
@@ -90,7 +89,7 @@ public final class ControllerHelper implements ControllerListener {
 		}
 	}
 	
-	public static float deadzone = 0.15f;
+	public static float deadzone = 0.25f;
 
 	public ObjectMap<Key, Array<ControllerInput>> mapping = new ObjectMap<Key, Array<ControllerInput>>();
 	public ObjectMap<Key, Array<ControllerInput>> tmpmap = new ObjectMap<Key, Array<ControllerInput>>();

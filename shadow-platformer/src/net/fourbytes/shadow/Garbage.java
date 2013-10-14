@@ -1,16 +1,10 @@
 package net.fourbytes.shadow;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
-import net.fourbytes.shadow.Input.KeyListener;
-import net.fourbytes.shadow.blocks.BlockLogic;
-import net.fourbytes.shadow.entities.Particle;
-
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
+import net.fourbytes.shadow.entities.Particle;
 
 public final class Garbage {
 	private Garbage() {
@@ -43,5 +37,5 @@ public final class Garbage {
 	public final static Vector2 vec2f = new Vector2();
 	
 	public final static Json json = new Json();
-	
+
 }

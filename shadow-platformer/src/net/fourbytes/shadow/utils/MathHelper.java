@@ -1,4 +1,4 @@
-package net.fourbytes.shadow;
+package net.fourbytes.shadow.utils;
 
 import com.badlogic.gdx.math.Rectangle;
 
@@ -17,5 +17,9 @@ public class MathHelper {
 
 	public static boolean overlaps(Rectangle or, Rectangle er) {
 		return or.x <= er.x + er.width && or.x + or.width >= er.x && or.y <= er.y + er.height && or.y + or.height >= er.y;
+	}
+
+	public static int pot(int x) {
+		return 1 << (32 - Integer.numberOfLeadingZeros(x-1));
 	}
 }

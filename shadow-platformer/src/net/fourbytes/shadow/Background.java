@@ -1,11 +1,8 @@
 package net.fourbytes.shadow;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 
@@ -23,7 +20,7 @@ public class Background {
 		float tick = 0;
 		
 		public Star() {
-			color = new Color(1f, 1f, 1f, 1f);
+			color = new Color(1f, 1f, 1f, 0f);
 			float ff = 5f;
 			color.sub(((float)Math.random())/ff, ((float)Math.random())/ff, ((float)Math.random())/ff, 0f);
 		}
@@ -31,13 +28,14 @@ public class Background {
 		public void tick() {
 			tick++;
 			if (tick < dur/2f) {
-				alpha = tick/(dur/1f);
+				alpha = tick/dur;
 			} else {
-				alpha = 1f-tick/(dur/1f);
+				alpha = 1f-tick/dur;
 			}
 			if (tick >= dur) {
 				tick = 0;
 				dur = 100f+(float)Math.random()*100f;
+				alpha = 0f;
 				vpp.x = vp.x;
 				vpp.y = vp.y;
 				spp.x = (float)(Math.random()*vp.width);
@@ -46,7 +44,7 @@ public class Background {
 				pos.y = vpp.y+spp.y;
 				scale = (float)(Math.random()/16f)+(1f/8f);
 				depth = 1.825f+(float)(Math.random()/2f);
-				color.set(1f, 1f, 1f, 1f);
+				color.set(1f, 1f, 1f, 0f);
 				float ff = 5f;
 				color.sub(((float)Math.random())/ff, ((float)Math.random())/ff, ((float)Math.random())/ff, 0f);
 			}

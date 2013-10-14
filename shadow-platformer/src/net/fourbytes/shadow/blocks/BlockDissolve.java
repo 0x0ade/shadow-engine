@@ -1,27 +1,12 @@
 package net.fourbytes.shadow.blocks;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Vector;
-
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Garbage;
 import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.Sounds;
-import net.fourbytes.shadow.TypeBlock;
-import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
-
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
 
 public class BlockDissolve extends BlockType implements BlockLogic {
 	
@@ -46,6 +31,7 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 		}
 		block.passSunlight = !block.solid;
 		block.alpha = block.solid?1f:0f;
+		block.blending = false;
 	}
 	
 	@Override
@@ -85,7 +71,9 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 	
 	@Override
 	public void render() {
-		super.render();
+		if (block.solid) {
+			super.render();
+		}
 	}
 	
 }

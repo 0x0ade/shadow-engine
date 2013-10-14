@@ -32,7 +32,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 	MenuItem current;
 	Level bglevel;
 	boolean bgpaused = true;
-	Color dimm = new Color(0f, 0f, 0f, 0.2f);
+	Color dimm = new Color(0f, 0f, 0f, 0.3f);
 	float stepspeed = 0.9f;
 	float step = 0f;
 	int logostep = 0;
@@ -49,6 +49,8 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			this.bglevel = parent.bglevel;
 		}
 		Input.keylisteners.add(this);
+
+		lights = null;
 		
 		System.gc();
 	}
@@ -157,9 +159,10 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		if (bglevel != null && !omitloop) {
 			omitloop = true;
 			bglevel.canRenderImpl = false;
+			Shadow.cam.level = false;
 			Shadow.cam.renderLevel(bglevel);
+			Shadow.cam.level = true;
 			bglevel.canRenderImpl = true;
-			//Shadow.cam.renderLevel(this);
 		}
 		omitloop = false;
 		Rectangle vp = Shadow.cam.camrec;
@@ -193,7 +196,18 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			logo.setPosition(vp.x + vp.width - logo.getWidth()*logo.getScaleX() - x1*32f - 0.125f, vp.y - logo.getHeight()*logo.getScaleY() - y1*32f + (float)Math.sin(logostep/32f)/8f + possibruu - 0.125f);
 			logo.draw(Shadow.spriteBatch, 1f);
 		}
-		
+
+		if (image != null) {
+			//Render the "cursor" in between of map / title and font for less render calls.
+			//Note: How does lowering the amount of render calls fix the ...
+			//... unstable maxSpritesInBatch but also raise it?
+			image.setColor(0f, 0f, 0f, 0.5f);
+			image.draw(Shadow.spriteBatch, 1f);
+			image.setPosition(image.getX() - 0.0825f, image.getY() - 0.0825f);
+			image.setColor(1f, 1f, 1f, 1f);
+			image.draw(Shadow.spriteBatch, 1f);
+		}
+
 		float maxw = 0;
 		for (MenuItem mi : items) {
 			String txt = mi.text;
@@ -238,11 +252,6 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				
 				image.setScale(font.getScaleX()*zoomscale, font.getScaleY()*zoomscale);
 				image.setPosition(x - 16f*image.getScaleX()*1.5f + 0.0825f, (y+step) - 16f*image.getScaleY() - 3f/16f + 0.0825f);
-				image.setColor(0f, 0f, 0f, 0.5f);
-				image.draw(Shadow.spriteBatch, 1f);
-				image.setPosition(image.getX() - 0.0825f, image.getY() - 0.0825f);
-				image.setColor(1f, 1f, 1f, 1f);
-				image.draw(Shadow.spriteBatch, 1f);
 			}
 			
 			i++;

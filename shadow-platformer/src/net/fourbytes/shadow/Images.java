@@ -59,12 +59,14 @@ public class Images {
 	public static void loadBasic() {
 		//ETC / UI
 		addImage("white", "data/white.png");
-		
+
 		addImage("logo", "data/logo.png");
 	}
 	
 	public static void loadImages() {
-		//ETC / UI 
+		//ETC / UI
+		addImage("light", "data/light.png");
+
 		addImage("cloud", "data/cloud.png");
 		addImage("cloud2", "data/cloud2.png");
 		addImage("cloud3", "data/cloud3.png");
@@ -110,7 +112,7 @@ public class Images {
 			URL url = mod.getClass().getResource("/assets/"+loadname);
 			InputStream in = new BufferedInputStream(url.openStream());
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			byte[] buf = new byte[1024];
+			byte[] buf = new byte[2048];
 			int n = 0;
 			while (-1 != (n = in.read(buf))) {
 				out.write(buf, 0, n);
@@ -129,10 +131,10 @@ public class Images {
 	private static void packPixmap(Pixmap pm, String savename) {
 		if (packer == null) {
 			packer = new PixmapPacker(1024, 1024, Format.RGBA8888, 2, true);
-			atlas = packer.generateTextureAtlas(TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest, true);
+			atlas = packer.generateTextureAtlas(TextureFilter.MipMapNearestNearest, TextureFilter.Nearest, true);
 		}
 		packer.pack(savename, pm);
-		packer.updateTextureAtlas(atlas, TextureFilter.MipMapNearestNearest, TextureFilter.MipMapNearestNearest, true);
+		packer.updateTextureAtlas(atlas, TextureFilter.MipMapNearestNearest, TextureFilter.Nearest, true);
 		
 		TextureRegion region = atlas.findRegion(savename);
 		//region = new TextureRegion((Texture)atlas.getTextures().toArray()[0], 0f, 0f, 1f, 1f);
@@ -162,6 +164,9 @@ public class Images {
 		if (splitCache.containsKey(tmptrimo)) {
 			return splitCache.get(tmptrimo);
 		}
+
+		w = Math.max(Math.max(w, -w), 1);
+		h = Math.max(Math.max(h, -h), 1);
 
 		Texture tex = reg.getTexture();
 

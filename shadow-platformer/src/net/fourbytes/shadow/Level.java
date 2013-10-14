@@ -14,8 +14,8 @@ import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Particle;
 import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.utils.gdx.ByteMap;
 import net.fourbytes.shadow.map.ShadowMap;
+import net.fourbytes.shadow.utils.gdx.ByteMap;
 
 public class Level {
 	
@@ -32,7 +32,7 @@ public class Level {
 	
 	public static int maxParticles = 512;
 	public static float inviewf = 5f;
-	
+
 	//Abstract constructor, can be used for non-gameplay levels (menus).
 	public Level() {
 		ready = true;
@@ -51,6 +51,7 @@ public class Level {
 	public Level(final String name) {
 		try {
 			TmxMapLoader tml = new TmxMapLoader();
+			//TODO Custom TmxMapLoader that loads TiledMaps without loading tileset images
 			map = tml.load("data/levels/"+name+".tmx");
 			initTilED();
 			ready = true;
@@ -73,6 +74,7 @@ public class Level {
 	}
 	
 	void initTilED() {
+		map.dispose();
 		//tiledw = map.width;
 		//tiledh = map.height;
 		nextlvl = (String) map.getProperties().get("nextlvl");
@@ -103,7 +105,6 @@ public class Level {
 				}
 			}
 		}
-		map.dispose();
 	}
 	
 	GameObject getGameObject(int ln, int x, int y, Cell cell) {
@@ -122,13 +123,10 @@ public class Level {
 	}
 	
 	public boolean ftick = true;
-	public int tickid = 0;
+	public long tickid = 0;
 	public void tick() {
 		tickid++;
-		if (tickid >= 20000) {
-			tickid = 10000;
-		}
-		
+
 		mainLayer.inView.clear();
 		for (Layer ll : layers.values()) {
 			ll.inView.clear();
@@ -165,9 +163,6 @@ public class Level {
 		}
 
 		if (!paused) {
-			if (lights != null) {
-				lights.tick();
-			}
 			if (timeday != null) {
 				timeday.tick();
 			}
@@ -239,7 +234,7 @@ public class Level {
 			img.draw(Shadow.spriteBatch, 0.9f);
 		}
 		*/
-		
+
 		if (player != null) {
 			//NEW: Health bar 
 			float alpha = 0.9f;
@@ -285,7 +280,7 @@ public class Level {
 			float xx4 = xx3 + 1.1f;
 			float yy3 = vp.y + bgh - 0.4f ;
 			float yy4 = yy3 + 0.5f;
-			
+
 			pointblock.pos.set(xx3, yy3);
 			pointblock.preRender();
 			pointblock.render();

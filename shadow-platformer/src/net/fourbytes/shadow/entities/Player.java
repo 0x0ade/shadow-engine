@@ -1,40 +1,11 @@
 package net.fourbytes.shadow.entities;
 
-import java.util.ArrayList;
-import java.util.Map.Entry;
-import java.util.Vector;
-
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Fonts;
-import net.fourbytes.shadow.GameObject;
-import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Input;
-import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.Shadow;
-import net.fourbytes.shadow.Sounds;
-import net.fourbytes.shadow.Input.Key;
-import net.fourbytes.shadow.Input.KeyListener;
-import net.fourbytes.shadow.map.Saveable;
-import aurelienribon.bodyeditor.BodyEditorLoader;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import net.fourbytes.shadow.*;
+import net.fourbytes.shadow.map.Saveable;
 
 public class Player extends Entity implements Input.KeyListener {
 	
@@ -61,6 +32,7 @@ public class Player extends Entity implements Input.KeyListener {
 		Input.keylisteners.add(this);
 		spawnpos = new Vector2(position);
 		setSize(1f, 1f);
+		//light.set(0.25f, 0.5f, 0.75f, 1f);
 	}
 	
 	@Override
@@ -152,7 +124,12 @@ public class Player extends Entity implements Input.KeyListener {
 			Sounds.getSound("jump").play(1f, Sounds.calcPitch(1f, 0.3f), 0f);
 			movement.add(0f, -movement.y - JUMPH);
 			canJump--;
-			//pixelify();
+			/*
+			for (PixelParticle pp : pixelify()) {
+				pp.light.set(pp.color);
+				pp.light.a = 0.0775f;
+			}
+			*/
 		}
 		
 		if (key == Input.down) {

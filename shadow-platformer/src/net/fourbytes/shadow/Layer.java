@@ -25,7 +25,7 @@ public class Layer {
 	protected LongMap<Array<Block>> blockmap = new LongMap<Array<Block>>(1024);
 	
 	public Array<GameObject> inView = new Array<GameObject>(); //TODO Implement wherever useful.
-	
+
 	public final Color tint = new Color(1f, 1f, 1f, 1f);
 	
 	public static BlockMapSystem bms = BlockMapSystem.coordinate;
