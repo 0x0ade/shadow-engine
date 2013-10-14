@@ -1,28 +1,12 @@
 package net.fourbytes.shadow.entities;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Input;
-import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.MobTest;
-import net.fourbytes.shadow.Shadow;
-import net.fourbytes.shadow.Input.Key;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.blocks.BlockType;
-
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
 
 public class Cursor extends Entity {
 	
@@ -174,7 +158,7 @@ public class Cursor extends Entity {
 		super.preRender();
 		tmpimg.setColor(color);
 		if (!render) {
-			tmpimg.setColor(new Color(1f, 1f, 1f, 0f));
+			tmpimg.setColor(1f, 1f, 1f, 0f);
 		}
 	}
 	

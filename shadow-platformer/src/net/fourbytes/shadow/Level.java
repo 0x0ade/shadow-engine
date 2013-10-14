@@ -1,5 +1,6 @@
 package net.fourbytes.shadow;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,6 +15,7 @@ import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Particle;
 import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.map.Saveable;
 import net.fourbytes.shadow.map.ShadowMap;
 import net.fourbytes.shadow.utils.gdx.ByteMap;
 
@@ -27,7 +29,9 @@ public class Level {
 	public Player player;
 	public Cursor c;
 	public Array<Cursor> cursors = new Array<Cursor>();
+	@Saveable
 	public float gravity = 0.02f;
+	@Saveable
 	public float xgravity = 0.0f;
 	
 	public static int maxParticles = 512;
@@ -38,32 +42,41 @@ public class Level {
 		ready = true;
 	}
 	
-	public TiledMap map;
+	@Saveable
 	public int tiledw = -1;
+	@Saveable
 	public int tiledh = -1;
+	@Saveable
 	public String nextlvl;
 
+	@Saveable
 	public boolean hasvoid = true;
 	public boolean ready = false;
 
 	public boolean paused = false;
 	
-	public Level(final String name) {
-		try {
-			TmxMapLoader tml = new TmxMapLoader();
-			//TODO Custom TmxMapLoader that loads TiledMaps without loading tileset images
-			map = tml.load("data/levels/"+name+".tmx");
-			initTilED();
-			ready = true;
-		} catch (Throwable t) {
-			t.printStackTrace();
+	public Level(String name) {
+		if (Gdx.files.internal("data/levels/"+name+".smf").exists()) {
+			ShadowMap map = ShadowMap.loadFile(Gdx.files.internal("data/levels/"+name+".smf"));
+			map.fillLevel(this);
+		} else if (Gdx.files.internal("data/levels/"+name+".tmx").exists()) {
+			try {
+				TmxMapLoader tml = new TmxMapLoader();
+				//TODO Custom TmxMapLoader that loads TiledMaps without loading tileset images
+				initTilED(tml.load("data/levels/"+name+".tmx"));
+				ready = true;
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
+		} else {
+			System.err.println("Map not found: "+name);
 		}
-		
+
 		fillLayer(0);
 		c = new Cursor(new Vector2(0f, 0f), layers.get(0));
-		
+
 		System.gc();
-		
+
 		ready = true;
 	}
 	
@@ -73,7 +86,7 @@ public class Level {
 		}
 	}
 	
-	void initTilED() {
+	public void initTilED(TiledMap map) {
 		map.dispose();
 		//tiledw = map.width;
 		//tiledh = map.height;
@@ -183,7 +196,7 @@ public class Level {
 		//System.out.println("Blocks: "+nblocks+"; Entities: "+nentities);
 	}
 	
-	Rectangle objrec = new Rectangle();
+	protected static Rectangle objrec = new Rectangle();
 	
 	protected void tickTiles(Array<Block> blocks) {
 		for (Block block : blocks) {
@@ -201,11 +214,11 @@ public class Level {
 		}
 	}
 	
-	boolean canRenderImpl = true;
-	static BitmapFont font = Fonts.light_normal;
-	Image bgwhite;
-	Image fgwhite;
-	Block pointblock;
+	public boolean canRenderImpl = true;
+	public static BitmapFont font = Fonts.light_normal;
+	protected static Image bgwhite;
+	protected static Image fgwhite;
+	protected Block pointblock;
 	
 	public void renderImpl() {
 		if (!canRenderImpl) return;
@@ -248,7 +261,7 @@ public class Level {
 			float xx2 = xx1 + 0.05f;
 			float yy1 = vp.y + bgh;
 			float yy2 = yy1 - 0.05f;
-			
+
 			Image white = bgwhite;
 			if (white == null) {
 				white = Images.getImage("white");
@@ -277,14 +290,14 @@ public class Level {
 			}
 			
 			float xx3 = vp.x;
-			float xx4 = xx3 + 1.1f;
-			float yy3 = vp.y + bgh - 0.4f ;
-			float yy4 = yy3 + 0.5f;
+			float xx4 = vp.x + 1.2f;
+			float yy3 = vp.y + bgh - 0.1f;
+			float yy4 = vp.y + bgh + 0.1f;
 
 			pointblock.pos.set(xx3, yy3);
 			pointblock.preRender();
 			pointblock.render();
-			
+
 			font.setScale(Shadow.vieww/Shadow.dispw, -Shadow.viewh/Shadow.disph);
 			
 			font.draw(Shadow.spriteBatch, "x"+player.POINTS, xx4, yy4);

@@ -1,1 +1,1 @@
-cp ./shadow-platformer-desktop/map.smf ./map.smf.gz; gunzip -df ./map.smf.gz
+cp ./shadow-platformer/saves/map.smf ./map.smf.gz; gunzip -df ./map.smf.gz

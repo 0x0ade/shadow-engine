@@ -2,15 +2,12 @@ package net.fourbytes.shadow.map;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Level;
+import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.network.Data;
+import net.fourbytes.shadow.network.NetStream;
 
 /**
- *	A chunk contains an area of {@link GameObject}s beginning at the given position with given size from a given map. 
+ *A chunk contains an area of {@link GameObject}s beginning at the given position with given size from a given map.
  * It's containing it's children as Data for saving space and avoiding infinite recursion / bi-directional references when serializing. 
  */
 public class Chunk extends Data {
@@ -35,7 +32,7 @@ public class Chunk extends Data {
 	public final static Rectangle tmpeb = new Rectangle();
 	
 	/**
-	 * Creates and returns an chunk to send thru {@link Stream}s.
+	 * Creates and returns an chunk to send thru {@link NetStream}s.
 	 * @param x Initial x position
 	 * @param y Initial y position
 	 * @param level Level to get the chunk from

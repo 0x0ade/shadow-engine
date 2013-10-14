@@ -28,7 +28,8 @@ public class Camera implements Input.KeyListener {
 	public boolean level = true;
 	public boolean firsttick = true;
 
-	public Rectangle camrec = new Rectangle(0, 0, 0, 0);
+	public Rectangle camrec = new Rectangle(0f, 0f, 0f, 0f);
+	public Vector2 offs = new Vector2(0f, 0f);
 
 	public Camera() {
 		this.cam = new OrthographicCamera(Shadow.vieww, -Shadow.viewh);
@@ -117,8 +118,9 @@ public class Camera implements Input.KeyListener {
 		cam.zoom += (1f+(Math.abs((player.movement.x/2f)+(player.movement.y/5f)))-cam.zoom)/5f;
 		cam.zoom = cam.zoom;*/
 		//cam.zoom = 1f;
-		cam.position.x+=(goalx-cam.position.x)/15f;
-		cam.position.y+=(goaly-cam.position.y)/20f;
+		cam.position.x += (goalx-cam.position.x)/15f;
+		cam.position.y += (goaly-cam.position.y)/20f;
+		offs.set(goalx - cam.position.x, goaly - cam.position.y);
 		cam.update();
 		
 		camrec.set(cam.position.x, cam.position.y, cam.viewportWidth*cam.zoom, -cam.viewportHeight*cam.zoom);
@@ -244,7 +246,7 @@ public class Camera implements Input.KeyListener {
 			img.setColor(0f, 0f, 0f, go.alpha*origc.a*0.5f);
 			//img.setColor(0f, 0f, 0f, 0.5f);
 			img.setPosition(img.getX()+0.125f, img.getY()+0.125f);
-			
+
 			img.draw(Shadow.spriteBatch, 1f);
 			
 			img.setColor(origc);

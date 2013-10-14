@@ -1,7 +1,5 @@
 package net.fourbytes.shadow;
 
-import net.fourbytes.shadow.Shadow;
-
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
@@ -12,7 +10,8 @@ public class Main {
 		cfg.useGL20 = true;
 		cfg.width = 600;
 		cfg.height = 480;
-		
+
+		Shadow.backend = new LWJGLBackend();
 		new LwjglApplication(new Shadow(), cfg);
 	}
 }

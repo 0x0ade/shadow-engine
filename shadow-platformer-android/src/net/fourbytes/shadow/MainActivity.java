@@ -5,9 +5,7 @@ import android.content.Context;
 import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.view.Display;
-
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.badlogic.gdx.controllers.mappings.Ouya;
@@ -46,7 +44,8 @@ public class MainActivity extends AndroidApplication {
         
         game = new Shadow();
         game.resize(height, width); //landscape mode!
-        
+
+		Shadow.backend = new AndroidBackend();
         initialize(game, cfg);
     }
 }

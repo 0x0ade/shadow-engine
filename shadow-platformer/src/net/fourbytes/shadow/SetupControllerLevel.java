@@ -1,10 +1,6 @@
 package net.fourbytes.shadow;
 
 import net.fourbytes.shadow.Input.Key;
-import net.fourbytes.shadow.MenuLevel.MenuItem;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.utils.Array;
 
 public class SetupControllerLevel extends MenuLevel {
 	
@@ -49,7 +45,7 @@ public class SetupControllerLevel extends MenuLevel {
 		if (Shadow.level != this) {
 			return;
 		}
-		if (key == Input.pause) {
+		if (key == Input.pause && Shadow.controllerHelper.assignKey != null) {
 			Shadow.controllerHelper.mapping.remove(Shadow.controllerHelper.assignKey);
 			if (Shadow.controllerHelper.assignKeyHelper != null) {
 				Shadow.controllerHelper.assignKeyHelper.text = Shadow.controllerHelper.assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(Shadow.controllerHelper.assignKey)+")";

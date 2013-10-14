@@ -16,10 +16,12 @@ import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
+import net.fourbytes.shadow.map.Converter;
 import net.fourbytes.shadow.mod.ModLoader;
 import net.fourbytes.shadow.network.NetClient;
 import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
+import net.fourbytes.shadow.utils.Backend;
 import net.fourbytes.shadow.utils.ScreenshotUtil;
 import net.fourbytes.shadow.utils.ShaderHelper;
 
@@ -33,7 +35,9 @@ import java.util.Calendar;
 import java.util.Random;
 
 public final class Shadow implements ApplicationListener, InputProcessor, KeyListener {
-	
+
+	public static Backend backend;
+
 	public static Random rand = new Random();
 	
 	public static Level level;
@@ -202,6 +206,8 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		
 		cam = new Camera();
 		resize();
+
+		backend.create();
 	}
 
 	@Override
@@ -375,7 +381,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 				}
 			}
 			if (loadtick == loadticks[0][4]) {
-				if (!isAndroid) {
+				if (!Converter.convertOnly && !isAndroid) {
 					//TODO Set up streams
 					client = new NetClient();
 					server = new NetServer();
@@ -399,7 +405,15 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			}
 			if (loadtick == loadticks[0][6]) {
 				//Jump into first level (TitleLevel).
-				level = new TitleLevel();
+				if (Converter.convertOnly) {
+					System.out.println("Starting internal converter...");
+
+					Converter.convertAll();
+
+					Gdx.app.exit();
+				} else {
+					level = new TitleLevel();
+				}
 				loadstate = 2;
 			}
 			loadtick++;
@@ -411,13 +425,13 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		controllerHelper.tick();
 		Input.tick();
 		Level tmplvl = level;
-		if (level != null) {
+		if (!Converter.convertOnly && level != null) {
 			level.tick();
 		}
-		if (server != null) {
+		if (!Converter.convertOnly && server != null) {
 			server.tick();
 		}
-		if (client != null) {
+		if (!Converter.convertOnly && client != null) {
 			client.tick();
 		}
 		ModLoader.postTick();

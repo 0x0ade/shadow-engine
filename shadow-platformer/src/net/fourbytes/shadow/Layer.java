@@ -20,21 +20,19 @@ public class Layer {
 	public Level level;
 	public Array<Block> blocks = new Array<Block>(true, 4096);
 	public Array<Entity> entities = new Array<Entity>(true, 512);
-	//protected ObjectMap<Coord, Array<Block>> blockmap = new ObjectMap<Coord, Array<Block>>(1024, 0.95f);
-	protected IntMap<Array<Block>> rowmap = new IntMap<Array<Block>>(256);
-	protected LongMap<Array<Block>> blockmap = new LongMap<Array<Block>>(1024);
-	
 	public Array<GameObject> inView = new Array<GameObject>(); //TODO Implement wherever useful.
 
-	public final Color tint = new Color(1f, 1f, 1f, 1f);
-	
+	protected IntMap<Array<Block>> rowmap = new IntMap<Array<Block>>(256);
+	protected LongMap<Array<Block>> blockmap = new LongMap<Array<Block>>(1024);
 	public static BlockMapSystem bms = BlockMapSystem.coordinate;
-	protected BlockMapSystem lastbms;
+	protected static BlockMapSystem lastbms;
 	public static float round = 2f;
 	
-	protected int tget = 0;
-	protected Array[] tgets = new Array[16];
-	
+	protected static int tget = 0;
+	protected static Array[] tgets = new Array[16];
+
+	public final Color tint = new Color(1f, 1f, 1f, 1f);
+
 	public Layer(Level level) {
 		this.level = level;
 	}

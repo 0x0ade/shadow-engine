@@ -22,4 +22,5 @@ public class MathHelper {
 	public static int pot(int x) {
 		return 1 << (32 - Integer.numberOfLeadingZeros(x-1));
 	}
+
 }

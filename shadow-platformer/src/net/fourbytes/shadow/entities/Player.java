@@ -1,6 +1,5 @@
 package net.fourbytes.shadow.entities;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -90,7 +89,7 @@ public class Player extends Entity implements Input.KeyListener {
 		}
 		
 		super.tick();
-		
+
 		if (this != layer.level.player) {
 			hframe = 0;
 		} else {
@@ -206,8 +205,6 @@ public class Player extends Entity implements Input.KeyListener {
 		
 	}
 	
-	BitmapFont font = Fonts.light_normal;
-
 	@Override
 	public void render() {
 		super.render();

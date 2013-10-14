@@ -12,12 +12,12 @@ public class Fonts {
 	
 	public static BitmapFont bold_normal;
 	public static BitmapFont bold_large;
-	
+
 	public static BitmapFont light_normal;
 	public static BitmapFont light_large;
-	
+
 	public static void load() {
-		TextureFilter tf = (Shadow.isAndroid)?(TextureFilter.Nearest):(TextureFilter.Linear);
+		TextureFilter tf = TextureFilter.Nearest;
 
 		FreeTypeFontGenerator gen_bold = new FreeTypeFontGenerator(Gdx.files.internal(path_bold));
 		bold_normal = gen_bold.generateFont(32);

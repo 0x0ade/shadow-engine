@@ -1,5 +1,16 @@
 package net.fourbytes.shadow.map;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.LongMap;
+import com.badlogic.gdx.utils.ObjectMap;
+import net.fourbytes.shadow.*;
+import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.entities.Mob;
+import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.utils.gdx.ByteMap;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -7,44 +18,45 @@ import java.lang.reflect.Field;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.LongMap;
-import com.badlogic.gdx.utils.ObjectMap;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.GameObject;
-import net.fourbytes.shadow.Garbage;
-import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.Level;
-import net.fourbytes.shadow.TypeBlock;
-import net.fourbytes.shadow.blocks.BlockType;
-import net.fourbytes.shadow.entities.Mob;
-import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.utils.gdx.ByteMap;
-
 /**
- * An ShadowMap is an specially saved map. It mostly differs from the TilED maps by saving an "snapshot" of 
- * the current state of the level into individual {@link Chunk}s instead of saving an "initial state" of 
- * the level into one general map. 
+ * <p>
+ * ShadowMap (SMF) is Shadow's own / native map format.
+ * </p>
+ * <p>
+ * It mostly differs from the TilED map format (TMX) by splitting it's contents into chunks, thus it's perfect
+ * when loading big maps on the fly or multiplayer. Also, it's using JSON instead of XML, is compressed via
+ * GZIP and avoids Base64 completely.
+ * </p>
+ * <p>
+ * Unfortunately it isn't perfect yet. Current goals are to make it be more lightweight and faster than TMX (both
+ * filesize and map loading overhead) but providing stability and no loss of information (while saving and in
+ * multiplayer).
+ * </p>
+ * <p>
+ * Still, one of it's main points against TMX is already available: Storing every tile as individual object.
+ * This allows setting parameters to tiles, but not in a manner of parameters that must be parsed by the loader but
+ * directly as PJOs (Plain Java Objects), thus blending more with the source code of the objects than with the limits
+ * of the map editor's parameter functions.
+ * </p>
+ * <p>
+ * And yes, the SMF format is STILL missing a map editor.
+ * </p>
  */
 public class ShadowMap {
-	
+
 	public LongMap<Chunk> chunks = new LongMap<Chunk>();
 	public long playerchunk;
+
+	public ObjectMap<String, Object> params = new ObjectMap<String, Object>();
 	
 	public ShadowMap() {
 	}
 	
 	/**
 	 * Creates an fresh, "initial state" {@link GameObject}.
-	 * @param level Level to create the {@link GameObject} in.
 	 * @param x X position,
 	 * @param y Y position
-	 * @param ln Layer number
+	 * @param layer The layer to create the GameObject in.
 	 * @param tid Tile ID (optional, use 0 by default)
 	 * @param type Type parameter ("block" or "entity") (optional)
 	 * @param subtype Subtype parameter ("Player" or "BlockDissolve.1")
@@ -198,20 +210,32 @@ public class ShadowMap {
 	 * @param level Level to fill.
 	 */
 	public void fillLevel(Level level) {
+		Class<? extends Level> clazz = level.getClass();
+		for (ObjectMap.Entry param : params.entries()) {
+			try {
+				Field field = clazz.getField((String)param.key);
+				field.set(level, param.value);
+			} catch (Exception e) {
+				System.err.println("Failed to bind property "+param.key+" to level!");
+				e.printStackTrace();
+			}
+		}
+
 		for (Chunk chunk : chunks.values()) {
 			convert(chunk, level, true);
 		}
 	}
-	
+
+	protected Array<GameObject> gos = new Array<GameObject>();
 	/**
 	 * Converts the content of temporarily loaded chunk, binding it (<b>NOT</b> adding it when add == false) to an level.
 	 * @param chunk Chunk to convert.
 	 * @param level Level to fill.
 	 * @param add Add the result of conversion to level?
-	 * @return Result of conversion.
+	 * @return Result of conversion. Note: The returned {@link Array} will be reused for further converts!
 	 */
 	public Array<GameObject> convert(Chunk chunk, Level level, boolean add) {
-		Array<GameObject> gos = new Array<GameObject>();
+		gos.clear();
 		for (MapObject mo : chunk.objects) {
 			GameObject go = convert(mo, level);
 			if (go != null && add) {
@@ -224,11 +248,13 @@ public class ShadowMap {
 			}
 			gos.add(go);
 		}
+		/*
 		level.ftick = true;
 		level.tickid = 0;
 		level.tick();
 		level.ftick = true;
 		level.tickid = 0;
+		*/
 		return gos;
 	}
 	
@@ -240,6 +266,19 @@ public class ShadowMap {
 	 */
 	public static ShadowMap createFrom(Level level) {
 		ShadowMap map = new ShadowMap();
+
+		Field[] fields = level.getClass().getFields();
+		for (Field field : fields) {
+			Saveable saveable = field.getAnnotation(Saveable.class);
+			if (saveable != null) {
+				try {
+					map.params.put(field.getName(), field.get(level));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+
 		for (Layer layer: level.layers.values()) {
 			for (GameObject go : layer.blocks) {
 				add0(map, go);

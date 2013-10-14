@@ -1,23 +1,13 @@
 package net.fourbytes.shadow.blocks;
 
-import java.util.Random;
-import java.util.Vector;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Garbage;
-import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Input;
-import net.fourbytes.shadow.TypeBlock;
-import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.map.Saveable;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import net.fourbytes.shadow.*;
+import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.map.Saveable;
+
+import java.util.Random;
 
 public abstract class BlockFluid extends BlockType {
 	
@@ -187,19 +177,21 @@ public abstract class BlockFluid extends BlockType {
 				}
 				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
 					if (isSameType(((TypeBlock)b).type)) {
-						if (hupdate) {
-							((BlockFluid)((TypeBlock)b).type).height = height;
-							b.imgupdate = true;
-							if (((BlockFluid)((TypeBlock)b).type).sourcepos != null) {
-								((BlockFluid)((TypeBlock)b).type).sourcepos.set(block.pos);
-							}
-						} else {
-							BlockFluid fluid = ((BlockFluid)((TypeBlock)b).type);
-							if (fluid.height < height) {
+						BlockFluid fluid = ((BlockFluid)((TypeBlock)b).type);
+						if (!block.pos.equals(b.pos)) {
+							if (hupdate) {
 								fluid.height = height;
-								fluid.block.imgupdate = true;
+								b.imgupdate = true;
 								if (fluid.sourcepos != null) {
-									fluid.sourcepos = block.pos;
+									fluid.sourcepos.set(block.pos);
+								}
+							} else {
+								if (fluid.height < height) {
+									fluid.height = height;
+									fluid.block.imgupdate = true;
+									if (fluid.sourcepos != null) {
+										fluid.sourcepos.set(block.pos);
+									}
 								}
 							}
 						}
