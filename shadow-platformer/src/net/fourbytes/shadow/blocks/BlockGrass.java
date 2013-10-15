@@ -1,15 +1,12 @@
 package net.fourbytes.shadow.blocks;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Coord;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.map.Saveable;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
 
 public class BlockGrass extends BlockType {
 	
@@ -19,7 +16,6 @@ public class BlockGrass extends BlockType {
 	public boolean checkedGrassTop = false;
 	
 	public BlockGrass() {
-		hasGrassTop = Shadow.rand.nextInt(3);
 	}
 	
 	@Override
@@ -29,6 +25,9 @@ public class BlockGrass extends BlockType {
 	
 	public void tick() {
 		block.blending = false;
+		if (hasGrassTop == -1) {
+			hasGrassTop = Shadow.rand.nextInt(3);
+		}
 		if (!checkedGrassTop && hasGrassTop == 0) {
 			checkedGrassTop = true;
 			
