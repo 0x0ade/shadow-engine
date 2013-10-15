@@ -11,12 +11,8 @@ public class TitleLevel extends MenuLevel {
 	public TitleLevel(MenuLevel parent) {
 		super(parent);
 		
-		items.add(new MenuItem(this, "Start Game (SMF TEST)", new Runnable(){public void run(){
-			Shadow.level = new Level("test");
-			Shadow.cam.firsttick = true;
-			}}));
 		items.add(new MenuItem(this, "Start Game", new Runnable(){public void run(){
-			Shadow.level = new Level("oldtest");
+			Shadow.level = new Level("test");
 			Shadow.cam.firsttick = true;
 		}}));
 		items.add(new MenuItem(this, "Setup Controller", new Runnable(){public void run(){
