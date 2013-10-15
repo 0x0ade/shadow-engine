@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="4a3d0e09-03f1-4129-864f-72280440ca43" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/converter.sh" />
+    <list default="true" id="4a3d0e09-03f1-4129-864f-72280440ca43" name="Default" comment="Mark some directories">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/shadow-platformer-android.eml" afterPath="$PROJECT_DIR$/shadow-platformer-android/shadow-platformer-android.eml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/shadow-platformer-desktop.eml" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/shadow-platformer-desktop.eml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/shadow-platformer.eml" afterPath="$PROJECT_DIR$/shadow-platformer/shadow-platformer.eml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="shadow.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381837386127" ignored="false" />
+    <file path="/Dummy.txt" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381837857121" ignored="false" />
     <file path="/fragment.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381676705194" ignored="false" />
     <file path="/Input.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1380807502912" ignored="false" />
     <file path="/Camera.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381834844300" ignored="false" />
@@ -93,10 +95,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Camera.java" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="Camera.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="281" column="16" selection-start="7978" selection-end="7978" vertical-scroll-proportion="0.0">
+            <state line="163" column="10" selection-start="4979" selection-end="4979" vertical-scroll-proportion="0.4262295">
               <folding />
             </state>
           </provider>
@@ -114,20 +116,11 @@
       <file leaf-file-name="TitleLevel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="25" column="50" selection-start="764" selection-end="764" vertical-scroll-proportion="0.0">
+            <state line="8" column="5" selection-start="145" selection-end="145" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="e#764#822#0" expanded="true" />
                 <element signature="e#820#821#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Fonts.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Fonts.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="8" column="4" selection-start="257" selection-end="257" vertical-scroll-proportion="0.19788918">
-              <folding />
             </state>
           </provider>
         </entry>
@@ -262,12 +255,12 @@
         <option value="$PROJECT_DIR$/shadow-platformer-android/assets/shaders/light.frag" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/LightSystem.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/ShaderHelper.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TimeDaySystem.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/ShadowMap.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Fonts.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java" />
       </list>
     </option>
   </component>
@@ -589,78 +582,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shadow" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shadow-platformer-desktop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shaders" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shadow" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shadow-platformer-desktop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shaders" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="imports" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shadow" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shadow-platformer-desktop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ubuntu" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shadow" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="shadow-platformer-desktop" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
@@ -694,6 +615,24 @@
       <module name="" />
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
       <option name="PROGRAM_PARAMETERS" />
+      <method />
+    </configuration>
+    <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
+      <module name="" />
+      <option name="TESTING_TYPE" value="0" />
+      <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
+      <option name="PREFERRED_AVD" value="" />
+      <option name="USE_COMMAND_LINE" value="true" />
+      <option name="COMMAND_LINE" value="" />
+      <option name="WIPE_USER_DATA" value="false" />
+      <option name="DISABLE_BOOT_ANIMATION" value="false" />
+      <option name="NETWORK_SPEED" value="full" />
+      <option name="NETWORK_LATENCY" value="none" />
+      <option name="CLEAR_LOGCAT" value="false" />
       <method />
     </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -885,7 +824,11 @@
       <created>1381837394068</created>
       <updated>1381837394068</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Missing file added: converter.sh&#10;Feel free to convert it to a Windoze Batch .bat file...">
+      <created>1381837472509</created>
+      <updated>1381837472509</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -910,7 +853,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-2" width="1366" height="770" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -926,7 +869,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.68488747" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.68488747" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.31511253" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -977,7 +920,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="IntelliJ, Y U blacklist random files from VCS?" />
+    <option name="LAST_COMMIT_MESSAGE" value="Missing file added: converter.sh&#10;Feel free to convert it to a Windoze Batch .bat file..." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1001,6 +944,7 @@
     <MESSAGE value="Changelog: &#10;- TMX to SMF converter &#10;- Platform dependent stuff &#10;- &quot;Flexible&quot; pause menu &#10;- Fixing weird font blurriness when in weird positions  (aka switch to TextureFilter.Nearest)&#10;- JavaDocs have import dependencies... o.O?!&#10;- other random stuff" />
     <MESSAGE value="Separated shaders, added info, fixed typos." />
     <MESSAGE value="IntelliJ, Y U blacklist random files from VCS?" />
+    <MESSAGE value="Missing file added: converter.sh&#10;Feel free to convert it to a Windoze Batch .bat file..." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1013,13 +957,6 @@
     <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPush.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="26" column="8" selection-start="546" selection-end="546" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="281" column="16" selection-start="7978" selection-end="7978" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
@@ -1103,16 +1040,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="50" selection-start="764" selection-end="764" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="e#764#822#0" expanded="true" />
-            <element signature="e#820#821#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shadow-platformer-android/assets/shaders/info">
       <provider selected="true" editor-type-id="text-editor">
         <state line="13" column="5" selection-start="452" selection-end="452" vertical-scroll-proportion="0.0">
@@ -1123,6 +1050,23 @@
     <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Fonts.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="8" column="4" selection-start="257" selection-end="257" vertical-scroll-proportion="0.19788918">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="5" selection-start="145" selection-end="145" vertical-scroll-proportion="0.0">
+          <folding>
+            <element signature="e#764#822#0" expanded="true" />
+            <element signature="e#820#821#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="163" column="10" selection-start="4979" selection-end="4979" vertical-scroll-proportion="0.4262295">
           <folding />
         </state>
       </provider>

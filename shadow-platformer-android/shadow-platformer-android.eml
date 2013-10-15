@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component jdk="Android 4.1.2 Platform" jdk_type="Android SDK">
 	<exclude-output/>
-	<contentEntry url="file://$MODULE_DIR$"/>
+	<contentEntry url="file://$MODULE_DIR$">
+		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
+		<excludeFolder url="file://$MODULE_DIR$/bin"/>
+	</contentEntry>
 	<lib name="gdx-backend-android.jar" scope="COMPILE">
 		<srcroot url="jar://$MODULE_DIR$/libs/gdx-backend-android-sources.jar!/"/>
 		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android-sources.jar!/"/>
