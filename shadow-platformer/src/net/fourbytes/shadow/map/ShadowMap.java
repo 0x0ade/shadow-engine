@@ -75,7 +75,9 @@ public class ShadowMap {
 			//System.out.println("tid: "+tid);
 			Block block = BlockType.getInstance(subtype, x, y, layer);
 			block.subtype = subtype;
-			obj = block;
+			if (block.getTexture() != null) {
+				obj = block;
+			}
 		} else if ("entity".equals(type)) {
 			if ("Player".equals(subtype)) {
 				Entity ent = new Player(new Vector2(x, y), layer);
