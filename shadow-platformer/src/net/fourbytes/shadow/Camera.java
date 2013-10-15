@@ -170,16 +170,18 @@ public class Camera implements Input.KeyListener {
 	}
 
 	public void renderLevel(Level level) {
-		Shadow.spriteBatch.flush();
-		ShaderHelper.set("light", 1);
-		level.lights.updateLightBounds();
+		if (!(level instanceof MenuLevel)) {
+			Shadow.spriteBatch.flush();
+			ShaderHelper.setCurrentShader("light");
+			level.lights.updateLightBounds();
 
-		for (Layer ll : level.layers.values()) {
-			renderLayer(ll);
+			for (Layer ll : level.layers.values()) {
+				renderLayer(ll);
+			}
+
+			Shadow.spriteBatch.flush();
+			ShaderHelper.resetCurrentShader();
 		}
-
-		Shadow.spriteBatch.flush();
-		ShaderHelper.set("light", 0);
 
 		if (this.level) {
 			for (Cursor c : level.cursors) {

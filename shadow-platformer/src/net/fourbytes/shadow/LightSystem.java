@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Rectangle;
+import net.fourbytes.shadow.utils.ShaderHelper;
 
 public class LightSystem {
 	
@@ -100,9 +101,9 @@ public class LightSystem {
 			lightFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
 			lightFB.getColorBufferTexture().bind(lightTexID);
-			Shadow.shader.begin();
-			Shadow.shader.setUniformi("textureLight", lightTexID);
-			Shadow.shader.end();
+			ShaderHelper.getShader("light").begin();
+			ShaderHelper.getShader("light").setUniformi("textureLight", lightTexID);
+			ShaderHelper.getShader("light").end();
 			Gdx.gl.glActiveTexture(GL10.GL_TEXTURE0);
 		}
 

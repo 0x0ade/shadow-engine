@@ -2,21 +2,49 @@ package net.fourbytes.shadow.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import net.fourbytes.shadow.Shadow;
 
 public final class ShaderHelper {
 	private ShaderHelper() {
 	}
 
-	private static Array<ShaderProgram> shaders = new Array<ShaderProgram>();
+	private static ObjectMap<String, ShaderProgram> shaders = new ObjectMap<String, ShaderProgram>();
 	private static ObjectMap<String, Object[]> defaults = new ObjectMap<String, Object[]>();
 	private static ObjectMap<String, Object[]> values = new ObjectMap<String, Object[]>();
 
+	private static ShaderProgram current;
+
+	public static ShaderProgram getCurrentShader() {
+		return current;
+	}
+
+	public static void resetCurrentShader() {
+		setCurrentShader("");
+	}
+
+	public static void setCurrentShader(String name) {
+		current = getShader(name);
+		Shadow.spriteBatch.setShader(current);
+		setAll();
+	}
+
+	public static ShaderProgram getDefaultShader() {
+		return getShader("");
+	}
+
+	public static ShaderProgram getShader(String name) {
+		return shaders.get(name);
+	}
+
 	public static void addShader(ShaderProgram shader) {
-		shaders.add(shader);
+		addShader(shader, "");
+	}
+
+	public static void addShader(ShaderProgram shader, String name) {
+		shaders.put(name, shader);
 		shader.begin();
-		for (ObjectMap.Entry entry : defaults.entries()) {
+		for (ObjectMap.Entry entry : values.entries()) {
 			set((String)entry.key, entry.value);
 		}
 		shader.end();
@@ -58,7 +86,7 @@ public final class ShaderHelper {
 				} else {
 					value = Boolean.parseBoolean((String)values[0]);
 				}
-				for (ShaderProgram shader : shaders) {
+				for (ShaderProgram shader : shaders.values()) {
 					shader.setUniformi(setting, value?1:0);
 				}
 				return;
@@ -72,7 +100,7 @@ public final class ShaderHelper {
 				} else {
 					value = Integer.parseInt((String)values[0]);
 				}
-				for (ShaderProgram shader : shaders) {
+				for (ShaderProgram shader : shaders.values()) {
 					shader.setUniformi(setting, value);
 				}
 				return;
@@ -86,7 +114,7 @@ public final class ShaderHelper {
 				} else {
 					value = Float.parseFloat((String)values[0]);
 				}
-				for (ShaderProgram shader : shaders) {
+				for (ShaderProgram shader : shaders.values()) {
 					shader.setUniformf(setting, value);
 				}
 				return;
@@ -111,7 +139,7 @@ public final class ShaderHelper {
 				} else {
 					value2 = Float.parseFloat((String)values[1]);
 				}
-				for (ShaderProgram shader : shaders) {
+				for (ShaderProgram shader : shaders.values()) {
 					shader.setUniformf(setting, value1, value2);
 				}
 				return;
@@ -142,7 +170,7 @@ public final class ShaderHelper {
 				} else {
 					value3 = Float.parseFloat((String)values[2]);
 				}
-				for (ShaderProgram shader : shaders) {
+				for (ShaderProgram shader : shaders.values()) {
 					shader.setUniformf(setting, value1, value2, value3);
 				}
 				return;
@@ -179,7 +207,7 @@ public final class ShaderHelper {
 				} else {
 					value4 = Float.parseFloat((String)values[3]);
 				}
-				for (ShaderProgram shader : shaders) {
+				for (ShaderProgram shader : shaders.values()) {
 					shader.setUniformf(setting, value1, value2, value3, value4);
 				}
 				return;
@@ -190,6 +218,12 @@ public final class ShaderHelper {
 		}
 
 		System.err.println("?: Can not set value of "+setting+": Unknown input type");
+	}
+
+	public static void setAll() {
+		for (ObjectMap.Entry entry : values.entries()) {
+			set((String)entry.key, entry.value);
+		}
 	}
 
 	public static void reset(String setting) {
@@ -213,10 +247,15 @@ public final class ShaderHelper {
 			String output = "";
 
 			if (input.startsWith("import ")) {
-
 				String importPath = input.substring(7, input.indexOf(';'));
 
 				String subshader = Gdx.files.internal(imports_root + "/" + importPath + ".glsl").readString();
+				output = loadImports(subshader, imports_root);
+
+			} else if (input.startsWith("copy ")) {
+				String importPath = input.substring(5, input.indexOf(';'));
+
+				String subshader = Gdx.files.internal(importPath).readString();
 				output = loadImports(subshader, imports_root);
 
 			} else {
@@ -281,4 +320,33 @@ public final class ShaderHelper {
 		return finalShader;
 	}
 
+	public static ShaderProgram loadShader(String path) {
+		String vertex = Gdx.files.internal(path+".vert").readString();
+		String fragment = Gdx.files.internal(path+".frag").readString();
+
+		vertex = ShaderHelper.setupShaderSource(vertex, "shaders/imports");
+		fragment = ShaderHelper.setupShaderSource(fragment, "shaders/imports");
+
+		ShaderProgram shader = new ShaderProgram(vertex, fragment);
+
+		if (shader.getLog().length()!=0) {
+			System.err.println("--------SHADER ERROR--------");
+			System.err.print(shader.getLog());
+			System.err.println("--------SOURCES--------");
+			String[] lines;
+			System.err.println("--------VERTEX--------");
+			lines = vertex.split("\n");
+			for (int i = 0; i < lines.length; i++) {
+				System.err.println((i+1)+": "+lines[i]);
+			}
+			System.err.println("--------FRAGMENT--------");
+			lines = fragment.split("\n");
+			for (int i = 0; i < lines.length; i++) {
+				System.err.println((i+1)+": "+lines[i]);
+			}
+			System.err.println("--------END--------");
+		}
+
+		return shader;
+	}
 }

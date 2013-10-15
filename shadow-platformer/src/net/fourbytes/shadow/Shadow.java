@@ -64,7 +64,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static float viewh = 1f;
 	public static float touchw = 1f;
 	public static float touchh = 1f;
-	public static ShaderProgram shader;
 	public static SpriteBatch spriteBatch;
 	
 	public static int frames = 0;
@@ -308,48 +307,21 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		if (loadstate == 0) {
 			//Gdx.graphics.setVSync(true);
 
-			try {
-				ShaderProgram.pedantic = false;
-				
-				//TODO Change / update / fix / complete GLSL shaders
-				String vertex = Gdx.files.internal("shaders/shader.vert").readString();
-				String fragment = Gdx.files.internal("shaders/shader.frag").readString();
+			Gdx.gl.glDisable(GL10.GL_ALPHA_TEST);
 
-				vertex = ShaderHelper.setupShaderSource(vertex, "shaders/imports");
-				fragment = ShaderHelper.setupShaderSource(fragment, "shaders/imports");
-				
-				shader = new ShaderProgram(vertex, fragment);
-				
-				if (shader.getLog().length()!=0) {
-					System.err.println("--------SHADER ERROR--------");
-					System.err.print(shader.getLog());
-					System.err.println("--------SOURCES--------");
-					String[] lines;
-					System.err.println("--------VERTEX--------");
-					lines = vertex.split("\n");
-					for (int i = 0; i < lines.length; i++) {
-						System.err.println((i+1)+": "+lines[i]);
-					}
-					System.err.println("--------FRAGMENT--------");
-					lines = fragment.split("\n");
-					for (int i = 0; i < lines.length; i++) {
-						System.err.println((i+1)+": "+lines[i]);
-					}
-					System.err.println("--------END--------");
-				}
+			ShaderProgram.pedantic = false;
 
-				ShaderHelper.addShader(shader);
+			//TODO Change / update / fix / complete GLSL shaders
+			ShaderProgram defaultShader = ShaderHelper.loadShader("shaders/default");
+			ShaderProgram lightShader = ShaderHelper.loadShader("shaders/light");
 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
+			ShaderHelper.addShader(defaultShader);
+			ShaderHelper.addShader(lightShader, "light");
+
 			spriteBatch = new SpriteBatch(4096);
 			
-			if (shader != null) {
-				spriteBatch.setShader(shader);
-			}
-			
+			ShaderHelper.resetCurrentShader();
+
 			Images.loadBasic();
 			
 			loadstate = 1;
@@ -476,11 +448,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			cam.resize();
 			Input.resize();
 
-			if (shader != null) {
-				shader.begin();
-				shader.setUniformf("resolution", dispw, disph);
-				shader.end();
-			}
+			ShaderHelper.set("resolution", dispw, disph);
 
 			if (frameBuffer != null) {
 				frameBuffer.dispose();

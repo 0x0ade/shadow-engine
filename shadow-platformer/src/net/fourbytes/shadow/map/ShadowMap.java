@@ -53,7 +53,7 @@ public class ShadowMap {
 	}
 	
 	/**
-	 * Creates an fresh, "initial state" {@link GameObject}.
+	 * Creates a fresh, "initial state" {@link GameObject}.
 	 * @param x X position,
 	 * @param y Y position
 	 * @param layer The layer to create the GameObject in.
@@ -98,10 +98,10 @@ public class ShadowMap {
 	}
 	
 	/**
-	 * Creates an {@link MapObject} out of an {@link GameObject}.
+	 * Creates a {@link MapObject} out of a {@link GameObject}.
 	 * @param go {@link GameObject} to convert
 	 * @return {@link MapObject} that can be converted back 
-	 * to create another {@link GameObject} <b> representing an SIMILAR (!)</b> {@link GameObject} to the original.
+	 * to create another {@link GameObject} <b> representing a SIMILAR (!)</b> {@link GameObject} to the original.
 	 */
 	public static MapObject convert(GameObject go) {
 		MapObject mo = new MapObject();
@@ -149,10 +149,10 @@ public class ShadowMap {
 	}
 	
 	/**
-	 * Creates an {@link GameObject} out of an {@link MapObject} . 
+	 * Creates a {@link GameObject} out of a {@link MapObject} .
 	 * @param mo {@link MapObject} to convert
 	 * @param level Level to allocate the GameObject to.
-	 * @return {@link GameObject} representing an closest-possible, 
+	 * @return {@link GameObject} representing a best-possible
 	 * thru-stream-sendable replica of the original {@link GameObject}.
 	 */
 	public static GameObject convert(MapObject mo, Level level) {
@@ -189,7 +189,7 @@ public class ShadowMap {
 	}
 	
 	/**
-	 * Temporarily loads an ShadowMap into memory. Doesn't create an level.
+	 * Temporarily loads a ShadowMap into memory. Doesn't create a level.
 	 * @param file File to load map from.
 	 * @return ShadowMap containing {@link Chunk}s containing {@link MapObject}s NOT {@link GameObject}s, or null when failed.
 	 */
@@ -206,7 +206,7 @@ public class ShadowMap {
 	}
 	
 	/**
-	 * Converts the temporarily loaded ShadowMap to an level.
+	 * Converts the temporarily loaded ShadowMap to a level.
 	 * @param level Level to fill.
 	 */
 	public void fillLevel(Level level) {
@@ -228,7 +228,7 @@ public class ShadowMap {
 
 	protected Array<GameObject> gos = new Array<GameObject>();
 	/**
-	 * Converts the content of temporarily loaded chunk, binding it (<b>NOT</b> adding it when add == false) to an level.
+	 * Converts the content of temporarily loaded chunk, binding it (<b>NOT</b> adding it when add == false) to a level.
 	 * @param chunk Chunk to convert.
 	 * @param level Level to fill.
 	 * @param add Add the result of conversion to level?
@@ -259,7 +259,7 @@ public class ShadowMap {
 	}
 	
 	/**
-	 * Creates an ShadowMap from an level to save afterwards.
+	 * Creates a ShadowMap from a level to save afterwards.
 	 * @param level Level to get data from.
 	 * @return ShadowMap containing {@link Chunk}s containing {@link MapObject}s converted from 
 	 * {@link GameObject}s of the level.
