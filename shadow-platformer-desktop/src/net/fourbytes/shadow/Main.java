@@ -2,6 +2,8 @@ package net.fourbytes.shadow;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import net.fourbytes.shadow.utils.backend.BackendHelper;
+import net.fourbytes.shadow.utils.backend.LWJGLBackend;
 
 public class Main {
 	public static void main(String[] args) {
@@ -11,7 +13,7 @@ public class Main {
 		cfg.width = 600;
 		cfg.height = 480;
 
-		Shadow.backend = new LWJGLBackend();
+		BackendHelper.backend = new LWJGLBackend();
 		new LwjglApplication(new Shadow(), cfg);
 	}
 }

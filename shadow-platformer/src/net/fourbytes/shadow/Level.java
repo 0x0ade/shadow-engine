@@ -52,8 +52,10 @@ public class Level {
 	@Saveable
 	public boolean hasvoid = true;
 	public boolean ready = false;
-
 	public boolean paused = false;
+	public boolean ftick = true;
+	public long tickid = 0;
+
 	
 	public Level(String name) {
 		if (Gdx.files.internal("data/levels/"+name+".smf").exists()) {
@@ -134,9 +136,7 @@ public class Level {
 		
 		return obj;
 	}
-	
-	public boolean ftick = true;
-	public long tickid = 0;
+
 	public void tick() {
 		tickid++;
 
@@ -144,12 +144,25 @@ public class Level {
 		for (Layer ll : layers.values()) {
 			ll.inView.clear();
 		}
-		
-		tickTiles(mainLayer.blocks);
+
+		for (Block block : mainLayer.blocks) {
+			if (block == null) continue;
+			objrec.set(block.pos.x-inviewf, block.pos.y-inviewf, block.rec.width+inviewf*2f, block.rec.height+inviewf*2f);
+
+			if (Shadow.cam.camrec.overlaps(objrec)) {
+				mainLayer.inView.add(block);
+				block.layer.inView.add(block);
+			}
+
+			if ((Shadow.cam.camrec.overlaps(objrec) || block.interactive || ftick) && !paused) {
+				block.tick();
+			}
+		}
 		
 		int particle = 0;
 		Array<Particle> particles = Garbage.particles;
 		particles.clear();
+
 		for (Entity entity : mainLayer.entities) {
 			if (entity == null) continue;
 			if (entity instanceof Particle) {
@@ -197,22 +210,6 @@ public class Level {
 	}
 	
 	protected static Rectangle objrec = new Rectangle();
-	
-	protected void tickTiles(Array<Block> blocks) {
-		for (Block block : blocks) {
-			if (block == null) continue;
-			objrec.set(block.pos.x-inviewf, block.pos.y-inviewf, block.rec.width+inviewf*2f, block.rec.height+inviewf*2f);
-
-			if (Shadow.cam.camrec.overlaps(objrec)) {
-				mainLayer.inView.add(block);
-				block.layer.inView.add(block);
-			}
-
-			if ((Shadow.cam.camrec.overlaps(objrec) || block.interactive || ftick) && !paused) {
-				block.tick();
-			}
-		}
-	}
 	
 	public boolean canRenderImpl = true;
 	public static BitmapFont font = Fonts.light_normal;

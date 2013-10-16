@@ -1,14 +1,11 @@
 package net.fourbytes.shadow.utils;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.utils.BufferUtils;
 import net.fourbytes.shadow.Shadow;
+import net.fourbytes.shadow.utils.backend.BackendHelper;
 
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -16,15 +13,25 @@ public final class ScreenshotUtil {
 	private ScreenshotUtil() {
 	}
 
-	public static byte[] getScreenData(int x, int y, int w, int h) {
-		//Gdx.gl.glPixelStorei(GL10.GL_PACK_ALIGNMENT, 1);
-		ByteBuffer pixels = BufferUtils.newByteBuffer(w * h * 3);
-		Gdx.gl.glReadPixels(x, y, w, h, GL10.GL_RGB, GL10.GL_UNSIGNED_BYTE, pixels);
-		int numBytes = w * h * 3;
-		byte[] data = new byte[numBytes];
-		pixels.clear();
-		pixels.get(data);
-		return data;
+	private static Pixmap[] pixmaps = new Pixmap[2];
+	private static int index = 0;
+
+	private static Pixmap getPixmap() {
+		int w = (int)Shadow.dispw;
+		int h = (int)Shadow.disph;
+		Pixmap pixmap = pixmaps[index];
+		if (pixmap == null || (pixmap.getWidth() != w || pixmap.getHeight() != h)) {
+			if (pixmap != null) {
+				pixmap.dispose();
+			}
+			pixmap = new Pixmap(w, h, Pixmap.Format.RGB888);
+			pixmaps[index] = pixmap;
+		}
+		index++;
+		if (index >= pixmaps.length) {
+			index = 0;
+		}
+		return pixmap;
 	}
 
 	public static void fillPixmap(Pixmap pixmap, byte[] data) {
@@ -52,19 +59,18 @@ public final class ScreenshotUtil {
 		final int w = (int)Shadow.dispw;
 		final int h = (int)Shadow.disph;
 
-		final byte[] data = getScreenData(0, 0, w, h);
+		final byte[] data = BackendHelper.glUtil.getScreenData(0, 0, w, h);
 
 		Thread thread = new Thread("Screenshot_"+Shadow.rand.nextInt(1024)) {
 			@Override
 			public void run() {
-				Pixmap pixmap = new Pixmap(w, h, Pixmap.Format.RGB888);
+				Pixmap pixmap = getPixmap();
 				fillPixmap(pixmap, data);
 
 				FileHandle fh = Shadow.getDir("screenshots").child("screen_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".png");
 				fh.parent().mkdirs();
 
 				PixmapIO.writePNG(fh, pixmap);
-				pixmap.dispose();
 			}
 		};
 		thread.start();
@@ -80,25 +86,23 @@ public final class ScreenshotUtil {
 			return;
 		}
 		tick = 0;
+		frame++;
 
 		final int w = (int)Shadow.dispw;
 		final int h = (int)Shadow.disph;
 
-		final byte[] data = getScreenData(0, 0, w, h);
+		final byte[] data = BackendHelper.glUtil.getScreenData(0, 0, w, h);
 
 		Thread thread = new Thread("Screenshot_"+Shadow.rand.nextInt(1024)) {
 			@Override
 			public void run() {
-				Pixmap pixmap = new Pixmap(w, h, Pixmap.Format.RGB888);
+				Pixmap pixmap = getPixmap();
 				fillPixmap(pixmap, data);
 
 				FileHandle fh = Shadow.getDir("gifs").child(Shadow.recordDirName).child("screen_"+frame+".png");
 				fh.parent().mkdirs();
 
 				PixmapIO.writePNG(fh, pixmap);
-				pixmap.dispose();
-
-				frame++;
 			}
 		};
 		thread.start();

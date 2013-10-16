@@ -42,7 +42,6 @@ public abstract class NetStream {
 	/**
 	 * Queues the given object to send later on.
 	 * @param o Object to send
-	 * @see IStream#send(Object)
 	 */
 	public final void send(Object o) {
 		send(o, null, false);
@@ -53,7 +52,6 @@ public abstract class NetStream {
 	 * @param o Object to send
 	 * @param target Target, for example an Connection in KryoNet
 	 * @param priority true whether to send now, false if the operation should be queued.
-	 * @see IStream#send(Object)
 	 */
 	public final void send(Object o, Object target, boolean priority) {
 		if (priority) {
@@ -68,9 +66,8 @@ public abstract class NetStream {
 	
 	/**
 	 * Called internally when sending object. Subclasses should override this instead of {@link #send(Object)}.
-	 * @see IStream#send(Object)
 	 */
-	public abstract void send0(Object o, Object target);
+	protected abstract void send0(Object o, Object target);
 	
 	/**
 	 * This method forwards the data got to the sever / client to be handled.
@@ -81,7 +78,7 @@ public abstract class NetStream {
 	 * Registers the EndPoint (Server, Client). Should be called after creating it.
 	 * @param ep EndPoint / Server / Client / ... to register
 	 */
-	public void register(EndPoint ep) {
+	public static final void register(EndPoint ep) {
 		Kryo kryo = ep.getKryo();
 		kryo.setRegistrationRequired(false);
 	}

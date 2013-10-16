@@ -1,6 +1,5 @@
 package net.fourbytes.shadow.entities;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
@@ -53,12 +52,10 @@ public abstract class Mob extends Entity {
 		if (!standing) {
 			if (facingLeft) {
 				movement.add(-SPEED, 0f);
-				imgupdate = true;
 				subframe++;
 			}
 			if (!facingLeft) {
 				movement.add(SPEED, 0f);
-				imgupdate = true;
 				subframe++;
 			}
 			//movement.add((float)Math.random()/12f-1f/24f, 0f);
@@ -109,7 +106,7 @@ public abstract class Mob extends Entity {
 			} else {
 				maxx = 2;
 			}
-			Rectangle er = calcCollide();
+			calcCollide();
 			er.x += minx;
 			er.width -= minx;
 			er.width += maxx;

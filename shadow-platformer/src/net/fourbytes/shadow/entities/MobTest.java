@@ -1,11 +1,9 @@
-package net.fourbytes.shadow;
+package net.fourbytes.shadow.entities;
 
-import net.fourbytes.shadow.entities.Mob;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import net.fourbytes.shadow.Images;
+import net.fourbytes.shadow.Layer;
 
 public class MobTest extends Mob {
 

@@ -21,9 +21,9 @@ import net.fourbytes.shadow.mod.ModLoader;
 import net.fourbytes.shadow.network.NetClient;
 import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
-import net.fourbytes.shadow.utils.Backend;
 import net.fourbytes.shadow.utils.ScreenshotUtil;
 import net.fourbytes.shadow.utils.ShaderHelper;
+import net.fourbytes.shadow.utils.backend.BackendHelper;
 
 import java.io.File;
 import java.io.PrintStream;
@@ -35,8 +35,6 @@ import java.util.Calendar;
 import java.util.Random;
 
 public final class Shadow implements ApplicationListener, InputProcessor, KeyListener {
-
-	public static Backend backend;
 
 	public static Random rand = new Random();
 	
@@ -206,7 +204,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		cam = new Camera();
 		resize();
 
-		backend.create();
+		BackendHelper.setUp();
 	}
 
 	@Override

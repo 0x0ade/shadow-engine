@@ -91,19 +91,23 @@ public abstract class Entity extends GameObject {
 		movement.x *= 1f-slowdown;
 	}
 	
-	protected Rectangle tmper = new Rectangle();
-	protected Rectangle or = new Rectangle();
+	protected static Rectangle er = new Rectangle();
+	protected static Rectangle or = new Rectangle();
 	
-	protected Rectangle calcCollide() {
-		float rad = (rec.width + rec.height)/2;
+	protected void calcCollide() {
+		er.set(pos.x, pos.y, rec.width, rec.height);
+		float rad = (er.width+er.height)/2f;
 		rad *= 0.0625f;
-		tmper.set(pos.x + rad, pos.y + rad, rec.width - rad*2, rec.height - rad*2);
-		return tmper;
+		er.set(er.x + rad, er.y + rad, er.width - rad*2, er.height - rad*2);
+		if ((er.width+er.height)/2f <= 0.0725f) {
+			er.set(er.x, er.y, er.width, er.height);
+		}
 	}
-	
+
 	public void collide(GameObject o, boolean canpass) {
-		Rectangle er = calcCollide();
+		calcCollide();
 		or.set(o.pos.x, o.pos.y, o.rec.width, o.rec.height);
+
 		if (o instanceof Block) {
 			Block b = (Block) o;
 			or.x += b.colloffs.x;
@@ -132,7 +136,7 @@ public abstract class Entity extends GameObject {
 				tmpy = movement.y;
 				movement.y = 0f;
 				
-				er = calcCollide();
+				calcCollide();
 			}
 			collide = true;
 		}
@@ -144,7 +148,7 @@ public abstract class Entity extends GameObject {
 				movement.x = 0f;
 				pos.y += tmpy;
 
-				er = calcCollide();
+				calcCollide();
 			}
 			collide = true;
 		}

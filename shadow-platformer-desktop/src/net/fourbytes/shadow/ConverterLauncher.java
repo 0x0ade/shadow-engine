@@ -6,6 +6,8 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.backends.lwjgl.LwjglFiles;
 import com.badlogic.gdx.files.FileHandle;
 import net.fourbytes.shadow.map.Converter;
+import net.fourbytes.shadow.utils.backend.BackendHelper;
+import net.fourbytes.shadow.utils.backend.LWJGLBackend;
 
 public class ConverterLauncher {
 	public static void main(String[] args) {
@@ -40,7 +42,7 @@ public class ConverterLauncher {
 		Converter.list.add(converter);
 		Converter.convertOnly = true;
 
-		Shadow.backend = new LWJGLBackend();
+		BackendHelper.backend = new LWJGLBackend();
 		new LwjglApplication(new Shadow(), cfg);
 	}
 }
