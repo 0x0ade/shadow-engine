@@ -200,7 +200,7 @@ public final class ControllerHelper implements ControllerListener {
 			//Sidenote: Third-Party bluetooth PS3 controllers should use the same button mapping as the original controller. 
 			//Otherwise, the PS3 itself would even have problems with the button IDs being different.
 			System.out.println("Automapping PS3 controller on Linux...");
-			//TODO
+			//TODO Update bindings
 			map(Input.up, new ControllerButton(controller, 4));
 			map(Input.down, new ControllerButton(controller, 6));
 			map(Input.left, new ControllerButton(controller, 7));
@@ -216,7 +216,7 @@ public final class ControllerHelper implements ControllerListener {
 		}
 		if (Ouya.ID.equals(controller.getName())) {
 			System.out.println("Automapping Ouya controller...");
-			//TODO
+			//TODO Update bindings
 			map(Input.up, new ControllerButton(controller, Ouya.BUTTON_DPAD_UP));
 			map(Input.down, new ControllerButton(controller, Ouya.BUTTON_DPAD_DOWN));
 			map(Input.left, new ControllerButton(controller, Ouya.BUTTON_DPAD_LEFT));
@@ -274,7 +274,6 @@ public final class ControllerHelper implements ControllerListener {
 
 	@Override
 	public boolean axisMoved(Controller controller, int axisCode, float value) {
-		//TODO
 		float pvalue = value;
 		boolean negative = false;
 		if (value < 0f) {
@@ -312,7 +311,7 @@ public final class ControllerHelper implements ControllerListener {
 	@Override
 	public boolean povMoved(Controller controller, int povCode,
 			PovDirection value) {
-		//TODO
+		//TODO Implement
 		//System.out.println("Moved pov "+povCode+" with current value "+value+" on controller "+controller);
 		return false;
 	}
@@ -320,7 +319,7 @@ public final class ControllerHelper implements ControllerListener {
 	@Override
 	public boolean xSliderMoved(Controller controller, int sliderCode,
 			boolean value) {
-		//TODO
+		//TODO Implement
 		//System.out.println("Moved X slider "+sliderCode+" with current value "+value+" on controller "+controller);
 		return false;
 	}
@@ -328,7 +327,7 @@ public final class ControllerHelper implements ControllerListener {
 	@Override
 	public boolean ySliderMoved(Controller controller, int sliderCode,
 			boolean value) {
-		//TODO
+		//TODO Implement
 		//System.out.println("Moved Y slider "+sliderCode+" with current value "+value+" on controller "+controller);
 		return false;
 	}
@@ -336,7 +335,7 @@ public final class ControllerHelper implements ControllerListener {
 	@Override
 	public boolean accelerometerMoved(Controller controller,
 			int accelerometerCode, Vector3 value) {
-		//TODO
+		//TODO Implement
 		//System.out.println("Moved accelerometer "+accelerometerCode+" with current value "+value+" on controller "+controller);
 		return false;
 	}

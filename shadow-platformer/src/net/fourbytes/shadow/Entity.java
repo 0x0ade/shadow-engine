@@ -84,7 +84,7 @@ public abstract class Entity extends GameObject {
 				if (e == null) continue;
 				if (e == this) continue;
 				if (!e.solid) collide(e, true);
-				else collide(e, true); //TODO: Examine some cool stuff about that one.
+				else collide(e, true);
 			}
 		}
 		

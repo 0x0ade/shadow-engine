@@ -46,7 +46,6 @@ public class RainParticle extends Particle {
 			layer.remove(this);
 			return;
 		}
-		//FIXME
 		for (int i = 0; i < 2; i++) {
 			RainParticle rp = new RainParticle(new Vector2(pos), layer, rec.width/2f, (Shadow.rand.nextFloat()-0.5f)/4f);
 			rp.pos.y -= 0.25f;

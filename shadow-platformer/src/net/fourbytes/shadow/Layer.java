@@ -57,6 +57,7 @@ public class Layer {
 		if (this != level.mainLayer) {
 			level.mainLayer.remove(go);
 		}
+		inView.removeValue(go, true);
 		if (go instanceof Block) {
 			blocks.removeValue((Block) go, true);
 			Array al = get0(Coord.get((int)(go.pos.x/round), (int)(go.pos.y/round)));

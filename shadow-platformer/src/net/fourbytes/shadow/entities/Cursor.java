@@ -7,12 +7,16 @@ import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.utils.gdx.ByteMap;
 
 public class Cursor extends Entity {
 	
 	public int id = -1;
 	public boolean render = false;
 	Color color;
+
+	public byte layerid = 0;
+	public byte playerln = Byte.MIN_VALUE;
 	
 	public Cursor(Vector2 position, Layer layer) {
 		this(position, layer, -1);
@@ -33,6 +37,21 @@ public class Cursor extends Entity {
 	int button;
 	
 	public void tick() {
+		if (playerln == Integer.MIN_VALUE) {
+			for (ByteMap.Entry entry : layer.level.layers.entries()) {
+				byte ln = entry.key;
+				Layer ll = (Layer) entry.value;
+
+				if (ll.entities.contains(layer.level.player, true)) {
+					playerln = ln;
+					break;
+				}
+			}
+		}
+
+		layer.level.fillLayer(playerln + layerid);
+		layer = layer.level.layers.get(playerln + layerid);
+
 		TouchPoint tp = Input.touches.get(id);
 		if (tp != null && tp.touchmode == TouchMode.Cursor) {
 			pos.set(calcPos(tp.pos));
@@ -91,7 +110,7 @@ public class Cursor extends Entity {
 	public void lmb(TouchPoint point, boolean isDown) {
 		downtick++;
 		if (isDown && (!lmb || downtick > 20)) {
-			Block b = BlockType.getInstance("BlockPush", pos.x, pos.y, layer.level.player.layer);
+			Block b = BlockType.getInstance("BlockPush", pos.x, pos.y, layer);
 			b.layer.add(b);
 		}
 		lmb = isDown;
@@ -100,13 +119,13 @@ public class Cursor extends Entity {
 	public void rmb(TouchPoint point, boolean isDown) {
 		downtick++;
 		if (isDown && (!rmb || downtick > 20)) {
-			/*Array<Block> blocks = layer.level.player.layer.get(Coord.get(pos.x, pos.y));
+			/*Array<Block> blocks = layer.get(Coord.get(pos.x, pos.y));
 			if (blocks != null) {
 				for (Block b : blocks) {
 					b.layer.remove(b);
 				}
 			}*/
-			Entity e = new MobTest(new Vector2(pos), layer.level.player.layer);
+			Entity e = new MobTest(new Vector2(pos), layer);
 			e.layer.add(e);
 		}
 		rmb = isDown;
@@ -115,7 +134,7 @@ public class Cursor extends Entity {
 	public void mmb(TouchPoint point, boolean isDown) {
 		downtick++;
 		if (isDown && (!mmb || downtick > 20)) {
-			Block b = BlockType.getInstance("BlockWater", pos.x, pos.y, layer.level.player.layer);
+			Block b = BlockType.getInstance("BlockWater", pos.x, pos.y, layer);
 			b.layer.add(b);
 		}
 		mmb = isDown;

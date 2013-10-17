@@ -26,8 +26,6 @@ public class LightSystem {
 	}
 
 	public void render() {
-		//TODO: Fix performance...
-
 		if (tick < speed-1) {
 			tick++;
 			return;
@@ -43,6 +41,7 @@ public class LightSystem {
 		int dst = Shadow.spriteBatch.getBlendDstFunc();
 		spriteBatch.setBlendFunction(GL10.GL_ONE, GL10.GL_ONE);
 		spriteBatch.setProjectionMatrix(Shadow.cam.cam.combined);
+		Shadow.spriteBatch.maxSpritesInBatch = 0;
 		spriteBatch.begin();
 
 		FrameBuffer lightFB = getLightFramebuffer();
@@ -84,6 +83,13 @@ public class LightSystem {
 
 		spriteBatch.end();
 		spriteBatch.setBlendFunction(src, dst);
+
+		/*//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
+		System.out.println("(LightSystem) max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
+		System.out.println("(LightSystem) render calls: "+Shadow.spriteBatch.renderCalls);
+		Shadow.spriteBatch.maxSpritesInBatch = 0;
+		/*
+		 */
 	}
 
 	//Lightmap stuff

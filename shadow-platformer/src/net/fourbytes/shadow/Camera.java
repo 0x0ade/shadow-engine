@@ -128,6 +128,7 @@ public class Camera implements Input.KeyListener {
 		camrec.y -= camrec.height/2;
 		
 		Shadow.spriteBatch.setProjectionMatrix(cam.combined);
+		Shadow.spriteBatch.maxSpritesInBatch = 0;
 		Shadow.spriteBatch.begin();
 		
 		if (bg == null) {
@@ -162,8 +163,8 @@ public class Camera implements Input.KeyListener {
 
 		Shadow.spriteBatch.end();
 		/*//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
-		System.out.println("max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
-		System.out.println("render calls: "+Shadow.spriteBatch.renderCalls);
+		System.out.println("(Camera) max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
+		System.out.println("(Camera) render calls: "+Shadow.spriteBatch.renderCalls);
 		Shadow.spriteBatch.maxSpritesInBatch = 0;
 		/*
 		 */
