@@ -23,6 +23,7 @@ import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
 import net.fourbytes.shadow.utils.ScreenshotUtil;
 import net.fourbytes.shadow.utils.ShaderHelper;
+import net.fourbytes.shadow.utils.ViewModes;
 import net.fourbytes.shadow.utils.backend.BackendHelper;
 
 import java.io.File;
@@ -44,16 +45,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static Camera cam;
 	public static float dispw = 1f;
 	public static float disph = 1f;
-	/**
-	 * 0x00 = Fully dynamic (Useless, ugly, ...) <br>
-	 * 0x01 = Fixed height (Mobile devices, small screens) <br>
-	 * 0x02 = Fixed width (PC and Ouya, larger resolutions) <br>
-	 * 0x03 = Fully fixed (Resizing doesn't scale) <br>
-	 * 0x04 = Automatic scaling (Does what it says) <br>
-	 * Other: Gliatch.
-	 */
-	//TODO move magic numbers to class or enum
- 	public static byte viewmode = 0x00;
+ 	public static byte viewmode = ViewModes.def;
 	/**
 	 * View Fixed Factor
 	 */
