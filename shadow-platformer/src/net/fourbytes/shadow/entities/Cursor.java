@@ -37,7 +37,7 @@ public class Cursor extends Entity {
 	int button;
 	
 	public void tick() {
-		if (playerln == Integer.MIN_VALUE) {
+		if (playerln == Byte.MIN_VALUE) {
 			for (ByteMap.Entry entry : layer.level.layers.entries()) {
 				byte ln = entry.key;
 				Layer ll = (Layer) entry.value;
