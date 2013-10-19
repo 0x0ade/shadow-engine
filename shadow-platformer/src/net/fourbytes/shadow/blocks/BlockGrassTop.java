@@ -53,34 +53,27 @@ public class BlockGrassTop extends BlockType {
 		}
 		depth = 0.075f + ((float)Shadow.rand.nextInt(100))/3000f;
 	}
-	
+
 	@Override
-	public TextureRegion getTexture() {
-		return getTexture(0);
-	}
-	
-	@Override
-	public Image getImage() {
-		return getImage(0);
-	}
-	
-	public TextureRegion getTexture(int i) {
+	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("block_grasstop", 16, 16);
 		TextureRegion reg = null;
-		reg = regs[0][i];
+		reg = regs[0][id];
 		if (imgcache == null || spritecache == null) {
 			imgcache = new Image[regs[0].length];
 			spritecache = new Sprite[regs[0].length];
 		}
 		return reg;
 	}
-	
-	public Image getImage(int i) {
-		if (imgcache == null || imgcache[i] == null) {
-			Image img = new Image(getTexture(i));
-			imgcache[i] = img;
+
+	@Override
+	public Image getImage(int id) {
+		if (imgcache == null || imgcache[id] == null) {
+			Image img = new Image(getTexture(id));
+			block.images.put(id, img);
+			imgcache[id] = img;
 		}
-		return imgcache[i];
+		return imgcache[id];
 	}
 
 	public Sprite getSprite(int i) {
@@ -95,6 +88,7 @@ public class BlockGrassTop extends BlockType {
 	public void tick() {
 		block.solid = false;
 		block.rendertop = 0x02;
+		block.imgIDs = order;
 		
 		frame++;
 		collision--;
@@ -121,10 +115,11 @@ public class BlockGrassTop extends BlockType {
 	
 	@Override
 	public void preRender() {
-		block.tmpimg = getImage(0);
+		if (spritecache == null) {
+			getTexture(0);
+		}
 		for (int i = 0; i < spritecache.length; i++) {
 			Image img = getImage(i);
-			if (cantint)
 
 			img.setPosition(block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y + depth);
 			img.setSize(block.rec.width + block.renderoffs.width, (block.rec.height + block.renderoffs.height) * height[i]);
@@ -154,8 +149,8 @@ public class BlockGrassTop extends BlockType {
 	public void render() {
 		for (int i = 0; i < order.length-2; i++) {
 			Sprite sprite = spritecache[order[i]];
-			sprite.setColor(block.tmpimg.getColor());
-			
+			sprite.setColor(block.images.get(order[i]).getColor());
+
 			sprite.draw(Shadow.spriteBatch);
 		}
 	}
@@ -164,8 +159,8 @@ public class BlockGrassTop extends BlockType {
 	public void renderTop() {
 		for (int i = order.length-2; i < order.length; i++) {
 			Sprite sprite = spritecache[order[i]];
-			sprite.setColor(block.tmpimg.getColor());
-			
+			sprite.setColor(block.images.get(order[i]).getColor());
+
 			sprite.draw(Shadow.spriteBatch);
 		}
 	}

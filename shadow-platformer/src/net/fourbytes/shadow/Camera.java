@@ -241,12 +241,14 @@ public class Camera implements Input.KeyListener {
 		for (GameObject go : l.inView) {
 			if (go == null) continue;
 			go.preRender();
-			
-			Image img = go.tmpimg;
-			Shadow.spriteBatch.setColor(0f, 0f, 0f, go.alpha*go.tmpimg.getColor().a*0.5f);
-			img.getDrawable().draw(Shadow.spriteBatch, 0.125f + go.pos.x + go.renderoffs.x,
-					0.125f + go.pos.y + go.rec.height + go.renderoffs.y,
-					go.rec.width + go.renderoffs.width, -go.rec.height + go.renderoffs.height);
+
+			Image img = go.images.get(go.imgIDs[0]); //TODO Render all images' shadows into FBO, then render FBO.
+			if (img != null) {
+				Shadow.spriteBatch.setColor(0f, 0f, 0f, go.alpha*img.getColor().a*0.5f);
+				img.getDrawable().draw(Shadow.spriteBatch, 0.125f + go.pos.x + go.renderoffs.x,
+						0.125f + go.pos.y + go.rec.height + go.renderoffs.y,
+						go.rec.width + go.renderoffs.width, -go.rec.height + go.renderoffs.height);
+			}
 			
 		}
 	}
@@ -285,17 +287,6 @@ public class Camera implements Input.KeyListener {
 				}
 			} else {
 				go.render();
-			}
-			
-			if (go.highlighted > 0f) {
-				if (white == null) {
-					white = Images.getImage("white");
-				}
-				white.setColor(1f, 1f, 1f, go.highlighted/25f);
-				white.setPosition(objrec.x, objrec.y);
-				white.setSize(1f, -1f);
-				white.setScale(objrec.width, objrec.height);
-				white.draw(Shadow.spriteBatch, 1f);
 			}
 		}
 	}

@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.particles.PixelParticle;
 
@@ -26,7 +27,7 @@ public abstract class GameObject {
 	public boolean passSunlight = false;
 	public Color tintSunlight = new Color(1f, 1f, 1f, 1f);
 	public Color tintDarklight = new Color(0f, 0f, 0f, 1f);
-	public float highlighted = 0f;
+	public int[] imgIDs = {0};
 	
 	public GameObject(Vector2 pos, Layer layer) {
 		this.pos = pos;
@@ -38,34 +39,33 @@ public abstract class GameObject {
 		rec.width = w;
 		rec.height = h;
 	}
-	
+
 	public boolean imgupdate = true;
-	public boolean cantint = false;
-	Image ii;
-	TextureRegionDrawable trd;
+	public IntMap<Image> images = new IntMap<Image>();
+	public IntMap<Texture> textures = new IntMap<Texture>();
+	public IntMap<TextureRegionDrawable> trds = new IntMap<TextureRegionDrawable>();
+
 	public static boolean reuseImage = true;
-	public Image getImage() {
-		if (imgupdate || ii == null) {
+	public Image getImage(int id) {
+		if (imgupdate || images.get(id) == null) {
 			if (!reuseImage) {
-				Image img = new Image(getTexture());
-				ii = img;
+				Image img = new Image(getTexture(id));
+				images.put(id, img);
 			} else {
-				if (ii == null) {
-					trd = new TextureRegionDrawable(getTexture());
-					ii = new Image(trd);
+				if (images.get(id) == null) {
+					trds.put(id, new TextureRegionDrawable(getTexture(id)));
+					images.put(id, new Image(trds.get(id)));
 				} else {
-					trd.setRegion(getTexture());
-					ii.setDrawable(trd);
+					trds.get(id).setRegion(getTexture(id));
+					images.get(id).setDrawable(trds.get(id));
 				}
 			}
-			imgupdate = false;
-			cantint = true;
-			return ii;
+			return images.get(id);
 		} else {
-			return ii;
+			return images.get(id);
 		}
 	}
-	public abstract TextureRegion getTexture();
+	public abstract TextureRegion getTexture(int id);
 	
 	public void tick() {
 	}
@@ -96,52 +96,44 @@ public abstract class GameObject {
 		}
 	}
 	
-	public Image tmpimg;
-	
 	public void preRender() {
-		tmpimg = getImage();
-		if (tmpimg != null) {
+		for (int i = 0; i < imgIDs.length; i++) {
+			int id = imgIDs[i];
+			Image img = getImage(id);
 			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-			tmpimg.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y);
-			tmpimg.setSize(rec.width + renderoffs.width, rec.height + renderoffs.height);
-			tmpimg.setScaleY(-1f);
-			renderCalc();
-		} else {
-			System.out.println("I: null; S: "+toString());
+			img.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y);
+			img.setSize(rec.width + renderoffs.width, rec.height + renderoffs.height);
+			img.setScaleY(-1f);
+			renderCalc(id, img);
 		}
+
+		imgupdate = false;
 	}
 	
-	Color baseColor;
+	protected IntMap<Color> baseColors = new IntMap<Color>();
 	
-	public void renderCalc() {
-		tint();
-		highlighted -= 1f;
+	public void renderCalc(int id, Image img) {
+		tint(id, img);
 	}
 	
-	public void tint() {
-		if (cantint) {
-			cantint = false;
-			if (baseColor == null) {
-				baseColor = new Color(tmpimg.getColor());
-			}
-			tmpimg.setColor(baseColor);
-			tmpimg.getColor().mul(layer.tint);
+	public void tint(int id, Image img) {
+		if (baseColors.get(id) == null) {
+			baseColors.put(id, new Color(img.getColor()));
 		}
-	}
-	
-	public void highlight() {
-		highlighted = 25f;
+		img.setColor(baseColors.get(id));
+		img.getColor().mul(layer.tint);
 	}
 	
 	public static Color tmpc = new Color();
 	
 	public void render() {
-		if (tmpimg != null) {
-			//tmpimg.draw(Shadow.spriteBatch, alpha);
-			Shadow.spriteBatch.setColor(tmpc.set(tmpimg.getColor()).mul(1f, 1f, 1f, alpha));
-			tmpimg.getDrawable().draw(Shadow.spriteBatch, pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y, rec.width + renderoffs.width, -rec.height + renderoffs.height);
-		} else {
-			//System.out.println("I: null; S: "+toString());
+		for (int i = 0; i < imgIDs.length; i++) {
+			int id = imgIDs[i];
+			Image img = getImage(id);
+			Shadow.spriteBatch.setColor(tmpc.set(img.getColor()).mul(1f, 1f, 1f, alpha));
+			img.getDrawable().draw(Shadow.spriteBatch, pos.x + renderoffs.x,
+					pos.y + rec.height + renderoffs.y,
+					rec.width + renderoffs.width, -rec.height + renderoffs.height);
 		}
 	}
 	
@@ -160,53 +152,58 @@ public abstract class GameObject {
 		}
 		
 		//pixfac = 2; //DEBUG LINE, COMMENT WHOLE LINE OUT IF NOT DEBUGGING!
-		
-		TextureRegion texreg = getTexture();
-		Texture tex = texreg.getTexture();
-		TextureData texdata = tex.getTextureData();
-		if (!texdata.isPrepared()) {
-			texdata.prepare();
-		}
-		Pixmap pixmap = texdata.consumePixmap();
-		
-		int tx = texreg.getRegionX();
-		int ty = texreg.getRegionY();
-		int tw = texreg.getRegionWidth();
-		int th = texreg.getRegionHeight();
-		float w = rec.width;
-		float h = rec.height;
-		float pixw = w/tw * fac;
-		float pixh = h/th * fac;
 
 		Array<PixelParticle> particles = new Array<PixelParticle>();
 
-		for (int yy = ty; yy < ty+th; yy+=fac) {
-			for (int xx = tx; xx < tx+tw; xx+=fac) {
-				int rgba = pixmap.getPixel(xx, yy);
-				for (int yyy = 0; yyy < fac; yyy++) {
-					for (int xxx = 0; xxx < fac; xxx++) {
-						c.set(0f, 0f, 0f, 0f);
-						cc.set(0f, 0f, 0f, 0f);
-						Color.rgba8888ToColor(c, rgba);
-						Color.rgba8888ToColor(cc, pixmap.getPixel(xx+xxx, yy+yyy));
-						c.mul(0.5f);
-						cc.mul(0.5f);
-						c.add(cc);
-						rgba = Color.rgba8888(c);
-					}
-				}
-				//System.out.println("X: "+xx+"; Y: "+yy+"; RGBA: "+Integer.toHexString(rgba));
-				Color ccc = new Color(0f, 0f, 0f, 0f);
-				Color.rgba8888ToColor(ccc, rgba);
-				ccc.mul(tmpimg.getColor());
-				if (c.a < 0.0625f) continue;
-				PixelParticle pp = new PixelParticle(new Vector2(pos.x+((xx-tx)*pixw/fac)+renderoffs.x, pos.y+((yy-ty)*pixh/fac)+renderoffs.y), layer, 0, pixw, ccc);
-				layer.add(pp);
-				particles.add(pp);
+		for (int i = 0; i < imgIDs.length; i++) {
+			int id = imgIDs[i];
+
+			Image img = getImage(id);
+			TextureRegion texreg = getTexture(id);
+			Texture tex = texreg.getTexture();
+			TextureData texdata = tex.getTextureData();
+			if (!texdata.isPrepared()) {
+				texdata.prepare();
 			}
-		}
-		if (texdata.disposePixmap()) {
-			pixmap.dispose();
+			Pixmap pixmap = texdata.consumePixmap();
+
+			int tx = texreg.getRegionX();
+			int ty = texreg.getRegionY();
+			int tw = texreg.getRegionWidth();
+			int th = texreg.getRegionHeight();
+			float w = rec.width;
+			float h = rec.height;
+			float pixw = w/tw * fac;
+			float pixh = h/th * fac;
+
+			for (int yy = ty; yy < ty+th; yy+=fac) {
+				for (int xx = tx; xx < tx+tw; xx+=fac) {
+					int rgba = pixmap.getPixel(xx, yy);
+					for (int yyy = 0; yyy < fac; yyy++) {
+						for (int xxx = 0; xxx < fac; xxx++) {
+							c.set(0f, 0f, 0f, 0f);
+							cc.set(0f, 0f, 0f, 0f);
+							Color.rgba8888ToColor(c, rgba);
+							Color.rgba8888ToColor(cc, pixmap.getPixel(xx+xxx, yy+yyy));
+							c.mul(0.5f);
+							cc.mul(0.5f);
+							c.add(cc);
+							rgba = Color.rgba8888(c);
+						}
+					}
+					//System.out.println("X: "+xx+"; Y: "+yy+"; RGBA: "+Integer.toHexString(rgba));
+					Color ccc = new Color(0f, 0f, 0f, 0f);
+					Color.rgba8888ToColor(ccc, rgba);
+					ccc.mul(img.getColor());
+					if (c.a < 0.0625f) continue;
+					PixelParticle pp = new PixelParticle(new Vector2(pos.x+((xx-tx)*pixw/fac)+renderoffs.x, pos.y+((yy-ty)*pixh/fac)+renderoffs.y), layer, 0, pixw, ccc);
+					layer.add(pp);
+					particles.add(pp);
+				}
+			}
+			if (texdata.disposePixmap()) {
+				pixmap.dispose();
+			}
 		}
 
 		return particles;

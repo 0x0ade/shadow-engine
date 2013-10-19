@@ -109,7 +109,7 @@ public class Player extends Entity implements Input.KeyListener {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("player", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[facingLeft?0:1][frame];

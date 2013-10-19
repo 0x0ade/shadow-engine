@@ -53,7 +53,7 @@ public class BlockClock extends BlockType implements BlockLogic {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("block_clock", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[0][0];

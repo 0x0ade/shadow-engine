@@ -1,16 +1,12 @@
 package net.fourbytes.shadow.blocks;
 
-import java.util.Random;
-
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.Sounds;
 import net.fourbytes.shadow.entities.Player;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import java.util.Random;
 
 public class BlockPoint extends BlockType {
 	
@@ -30,7 +26,7 @@ public class BlockPoint extends BlockType {
 		if (subframe > 12) {
 			frame++;
 			subframe = 0;
-			imgupdate = true;
+			block.imgupdate = true;
 		}
 		if (frame >= 4) {
 			frame = 0;
@@ -39,7 +35,7 @@ public class BlockPoint extends BlockType {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("block_point", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[0][frame];

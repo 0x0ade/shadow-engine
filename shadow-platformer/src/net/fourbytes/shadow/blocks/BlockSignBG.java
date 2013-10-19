@@ -20,7 +20,7 @@ public class BlockSignBG extends BlockType {
 	}
 
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("block_sign_bg", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[0][type-1];

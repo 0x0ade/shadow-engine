@@ -1,9 +1,7 @@
 package net.fourbytes.shadow.blocks;
 
-import net.fourbytes.shadow.Images;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import net.fourbytes.shadow.Images;
 
 public class BlockImage extends BlockType {
 	
@@ -20,7 +18,7 @@ public class BlockImage extends BlockType {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion(attr[0]);
 	}
 	

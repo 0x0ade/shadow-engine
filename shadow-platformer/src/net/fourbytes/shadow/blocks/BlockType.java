@@ -1,18 +1,11 @@
 package net.fourbytes.shadow.blocks;
 
-import java.lang.reflect.InvocationTargetException;
-
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-
 import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.Level;
-import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.TypeBlock;
 import net.fourbytes.shadow.mod.ModLoader;
 
@@ -94,32 +87,10 @@ public abstract class BlockType {
 		}
 	}
 	
-	public boolean imgupdate = true;
-	public boolean cantint = false;
-	Image ii;
-	TextureRegionDrawable trd;
-	public Image getImage() {
-		if (imgupdate || ii == null) {
-			if (!block.reuseImage) {
-				Image img = new Image(getTexture());
-				ii = img;
-			} else {
-				if (ii == null) {
-					trd = new TextureRegionDrawable(getTexture());
-					ii = new Image(trd);
-				} else {
-					trd.setRegion(getTexture());
-					ii.setDrawable(trd);
-				}
-			}
-			imgupdate = false;
-			cantint = true;
-			return ii;
-		} else {
-			return ii;
-		}
+	public Image getImage(int id) {
+		return block.superGetImage(id);
 	}
-	public abstract TextureRegion getTexture();
+	public abstract TextureRegion getTexture(int id);
 	
 	public void tick() {
 	}
@@ -128,27 +99,11 @@ public abstract class BlockType {
 	}
 	
 	public void preRender() {
-		block.tmpimg = block.getImage();
-		if (block.tmpimg != null) {
-			block.tmpimg.setPosition(block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y);
-			block.tmpimg.setSize(block.rec.width + block.renderoffs.width, block.rec.height + block.renderoffs.height);
-			block.tmpimg.setScaleY(-1f);
-			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-		} else {
-			System.out.println("I: null; S: "+toString());
-		}
+		block.superPreRender();
 	}
 	
-	public static Color tmpc = new Color();
-	
 	public void render() {
-		if (block.tmpimg != null) {
-			Shadow.spriteBatch.setColor(tmpc.set(block.tmpimg.getColor()).mul(1f, 1f, 1f, block.alpha));
-			block.tmpimg.getDrawable().draw(Shadow.spriteBatch, block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y, 
-					block.rec.width + block.renderoffs.width, -block.rec.height + block.renderoffs.height);
-		} else {
-			//System.out.println("I: null; S: "+toString());
-		}
+		block.superRender();
 	}
 	
 	public void renderTop() {

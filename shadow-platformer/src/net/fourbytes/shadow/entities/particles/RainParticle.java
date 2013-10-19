@@ -25,7 +25,7 @@ public class RainParticle extends Particle {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("white");
 	}
 	
@@ -37,7 +37,7 @@ public class RainParticle extends Particle {
 	@Override
 	public void preRender() {
 		super.preRender();
-		tmpimg.setColor(tmpc.set(color).mul(tmpcc.set(1f, 1f, 1f, time/spawntime)).mul(layer.tint));
+		images.get(0).setColor(tmpc.set(color).mul(tmpcc.set(1f, 1f, 1f, time/spawntime)).mul(layer.tint));
 	}
 
 	@Override

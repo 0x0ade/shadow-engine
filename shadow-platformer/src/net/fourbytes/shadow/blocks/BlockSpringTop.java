@@ -1,21 +1,11 @@
 package net.fourbytes.shadow.blocks;
 
-import java.util.Random;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Input;
-import net.fourbytes.shadow.TypeBlock;
-import net.fourbytes.shadow.entities.Player;
-
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import net.fourbytes.shadow.*;
+import net.fourbytes.shadow.entities.Player;
 
 public class BlockSpringTop extends BlockType {
 	
@@ -42,14 +32,14 @@ public class BlockSpringTop extends BlockType {
 	}
 	
 	@Override
-	public Image getImage() {
-		Image img = super.getImage();
+	public Image getImage(int id) {
+		Image img = super.getImage(id);
 		img.setColor(new Color(0f, 0f, 0f, 0f));
 		return img;
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("white");
 	}
 	
@@ -63,7 +53,7 @@ public class BlockSpringTop extends BlockType {
 				if (type_spring != null) {
 					type_spring.doanim = true;
 					type_spring.frame = 1;
-					type_spring.imgupdate = true;
+					type_spring.block.imgupdate = true;
 				}
 			}
 			

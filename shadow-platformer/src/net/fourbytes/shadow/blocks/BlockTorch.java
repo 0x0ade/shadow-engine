@@ -40,7 +40,7 @@ public class BlockTorch extends BlockType implements BlockLogic {
 			if (subframe > 12) {
 				frame++;
 				subframe = 0;
-				imgupdate = true;
+				block.imgupdate = true;
 				block.light.set(0.75f, 0.5f, 0.25f, 1f);
 				block.light.mul(1f-Shadow.rand.nextFloat()*0.2f);
 				block.light.a = 1f-Shadow.rand.nextFloat()*0.15f;
@@ -65,7 +65,7 @@ public class BlockTorch extends BlockType implements BlockLogic {
 			block.light.set(0f, 0f, 0f, 0f);
 		}
 		if (triggered != tmptriggered) {
-			imgupdate = true;
+			block.imgupdate = true;
 		}
 
 		wall = 0;
@@ -95,7 +95,7 @@ public class BlockTorch extends BlockType implements BlockLogic {
 	}
 
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("block_torch_"+(triggered?"on":"off"), 16, 16);
 		TextureRegion reg = null;
 		reg = regs[frame][wall==0?0:1];

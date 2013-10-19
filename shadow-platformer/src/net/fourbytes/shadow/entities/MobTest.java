@@ -2,6 +2,7 @@ package net.fourbytes.shadow.entities;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
 
@@ -14,7 +15,7 @@ public class MobTest extends Mob {
 	}
 
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("player", 16, 16);
 		TextureRegion reg = null;
 		reg = regs[facingLeft?0:1][frame];
@@ -22,9 +23,9 @@ public class MobTest extends Mob {
 	}
 	
 	@Override
-	public void tint() {
-		super.tint();
-		tmpimg.getColor().mul(0f, 0f, 0f, 1f);
+	public void tint(int id, Image img) {
+		super.tint(id, img);
+		img.getColor().mul(0f, 0f, 0f, 1f);
 	}
 	
 }

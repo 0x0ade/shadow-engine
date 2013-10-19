@@ -59,12 +59,12 @@ public abstract class BlockFluid extends BlockType {
 			if (height <= 2) {
 				block.layer.remove(block);
 			}
-			imgupdate = true;
+			block.imgupdate = true;
 		}
 		if (frame >= 4) {
 			frame = 0;
 			block.pixdur = rand.nextInt(20)+20;
-			imgupdate = true;
+			block.imgupdate = true;
 		}
 		
 		Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y));
@@ -90,7 +90,7 @@ public abstract class BlockFluid extends BlockType {
 			for (Block b : al) {
 				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
 					height = 16;
-					imgupdate = true;
+					block.imgupdate = true;
 					topblock = false;
 				}
 				if (b.solid) {
@@ -116,12 +116,12 @@ public abstract class BlockFluid extends BlockType {
 			for (Block b : al) {
 				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
 					onground = false;
-					imgupdate = true;
+					block.imgupdate = true;
 					break;
 				}
 				if (b.solid) {
 					onground = true;
-					imgupdate = true;
+					block.imgupdate = true;
 					break;
 				}
 				//if (!free) break;
@@ -230,7 +230,7 @@ public abstract class BlockFluid extends BlockType {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		int height = this.height;
 		//if (height <= 0) height = 1;
 		//if (height > 16) height = 16;
@@ -260,17 +260,8 @@ public abstract class BlockFluid extends BlockType {
 	
 	@Override
 	public void preRender() {
-		block.tmpimg = block.getImage();
-		if (block.tmpimg != null) {
-			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-			block.tmpimg.setPosition(block.pos.x, block.pos.y + 1f);
-			//block.tmpimg.setSize(block.rec.width, 1f*(height*(1f/16f)));
-			//block.tmpimg.setSize(block.rec.width, block.rec.height);
-			block.tmpimg.setSize(block.rec.width, 1f);
-			block.tmpimg.setScaleY(-1f * (height/16f));
-		} else {
-			System.out.println("I: null; S: "+toString());
-		}
+		super.preRender();
+		block.images.get(0).setScaleY(-1f * (height/16f));
 	}
 	
 	@Override

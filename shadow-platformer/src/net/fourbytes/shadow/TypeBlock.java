@@ -1,12 +1,9 @@
 package net.fourbytes.shadow;
 
-import net.fourbytes.shadow.blocks.BlockType;
-
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import net.fourbytes.shadow.blocks.BlockType;
 
 public class TypeBlock extends Block {
 	
@@ -19,13 +16,17 @@ public class TypeBlock extends Block {
 	}
 	
 	@Override
-	public Image getImage() {
-		return type.getImage();
+	public Image getImage(int id) {
+		return type.getImage(id);
 	}
-	
+
+	public Image superGetImage(int id) {
+		return super.getImage(id);
+	}
+
 	@Override
-	public TextureRegion getTexture() {
-		return type.getTexture();
+	public TextureRegion getTexture(int id) {
+		return type.getTexture(id);
 	}
 	
 	@Override
@@ -42,14 +43,19 @@ public class TypeBlock extends Block {
 	@Override
 	public void preRender() {
 		type.preRender();
-		if (tmpimg != null) {
-			renderCalc();
-		}
+	}
+
+	public void superPreRender() {
+		super.preRender();
 	}
 	
 	@Override
 	public void render() {
 		type.render();
+	}
+
+	public void superRender() {
+		super.render();
 	}
 	
 	@Override

@@ -53,14 +53,14 @@ public class LightSystem {
 		int i = 0;
 		//SELFNOTE: it should be stable enough to draw a light for every object in view.
 		for (GameObject go : level.mainLayer.inView) {
-			if (go.tmpimg != null && go.light.a > 0f) {
+			if (go.light.a > 0f) {
 				i++;
 				tmpc.set(go.light);
 				tmpc.a = 1f;
 				spriteBatch.setColor(tmpc);
 
-				Garbage.rect.x = go.tmpimg.getX() + go.tmpimg.getWidth()/2f;
-				Garbage.rect.y = go.tmpimg.getY() - go.tmpimg.getHeight()/2f;
+				Garbage.rect.x = go.pos.x + go.renderoffs.x + go.rec.width/2f;
+				Garbage.rect.y = go.pos.y + go.renderoffs.y - go.rec.height/2f;
 				Garbage.rect.width = 5f*2f * go.light.a;
 				Garbage.rect.height = 5f*2f * go.light.a;
 				//Garbage.rect.width = 1f;

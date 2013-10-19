@@ -1,15 +1,12 @@
 package net.fourbytes.shadow.blocks;
 
-import java.util.Random;
-
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Input;
 import net.fourbytes.shadow.entities.Player;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import java.util.Random;
 
 public class BlockLadder extends BlockType {
 	
@@ -25,7 +22,7 @@ public class BlockLadder extends BlockType {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("block_ladder");
 	}
 	

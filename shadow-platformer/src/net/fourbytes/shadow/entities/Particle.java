@@ -2,6 +2,7 @@ package net.fourbytes.shadow.entities;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Layer;
 
@@ -38,23 +39,19 @@ public abstract class Particle extends Entity {
 	
 	@Override
 	public void preRender() {
-		tmpimg = getImage();
-		if (tmpimg != null) {
-			Color c = tmpimg.getColor();
-			float af = 0.25f+(3f*(time/spawntime)/4f);
-			if (!fade) af = 1f;
-			if (oa < 0f) {
-				oa = c.a;
-			}
-			c.a = oa*af;
-			tmpimg.setScaleY(-1f);
-			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-			tmpimg.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y);
-			tmpimg.setSize(rec.width + renderoffs.width, rec.height + renderoffs.height);
-			renderCalc();
-		} else {
-			System.out.println("I: null; S: "+toString());
+		super.preRender();
+	}
+
+	@Override
+	public void tint(int id, Image img) {
+		super.tint(id, img);
+		Color c = img.getColor();
+		float af = 0.25f+(3f*(time/spawntime)/4f);
+		if (!fade) af = 1f;
+		if (oa < 0f) {
+			oa = c.a;
 		}
+		c.a = oa*af;
 	}
 	
 }

@@ -48,7 +48,7 @@ public class BlockWire extends BlockType implements BlockLogic {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("block_wire");
 	}
 	

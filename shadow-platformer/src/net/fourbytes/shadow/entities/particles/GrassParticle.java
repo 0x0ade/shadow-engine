@@ -3,6 +3,7 @@ package net.fourbytes.shadow.entities.particles;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Shadow;
@@ -29,7 +30,7 @@ public class GrassParticle extends Particle {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("white");
 	}
 	
@@ -39,11 +40,16 @@ public class GrassParticle extends Particle {
 		movement.x = (Shadow.rand.nextFloat()-0.5f)*rec.width * 2f;
 		movement.y = (Shadow.rand.nextFloat()-0.5f)*rec.height * 0.75f;
 	}
-	
+
 	@Override
 	public void preRender() {
 		super.preRender();
-		tmpimg.setColor(tmpc.set(color).mul(tmpcc.set(1f, 1f, 1f, time/spawntime)).mul(layer.tint));
+	}
+
+	@Override
+	public void tint(int id, Image img) {
+		super.tint(id, img);
+		img.setColor(tmpc.set(color).mul(tmpcc.set(1f, 1f, 1f, time / spawntime)).mul(layer.tint));
 	}
 
 }

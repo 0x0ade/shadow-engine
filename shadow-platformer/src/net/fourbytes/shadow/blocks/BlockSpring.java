@@ -1,24 +1,9 @@
 package net.fourbytes.shadow.blocks;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Vector;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Coord;
-import net.fourbytes.shadow.Entity;
-import net.fourbytes.shadow.Garbage;
-import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.Input;
-import net.fourbytes.shadow.TypeBlock;
-import net.fourbytes.shadow.entities.Player;
-
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import net.fourbytes.shadow.*;
 
 public class BlockSpring extends BlockType {
 	
@@ -60,18 +45,18 @@ public class BlockSpring extends BlockType {
 			if (subframe > 8) {
 				frame++;
 				subframe = 0;
-				imgupdate = true;
+				block.imgupdate = true;
 			}
 			if (frame >= 4) {
 				frame = 0;
 				doanim = false;
-				imgupdate = true;
+				block.imgupdate = true;
 			}
 		}
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("block_spring", 16, 32);
 		TextureRegion reg = null;
 		reg = regs[0][frame];

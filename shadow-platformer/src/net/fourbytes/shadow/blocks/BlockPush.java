@@ -98,7 +98,7 @@ public class BlockPush extends BlockType {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("block_push");
 	}
 	

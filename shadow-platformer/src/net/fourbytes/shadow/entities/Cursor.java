@@ -30,7 +30,7 @@ public class Cursor extends Entity {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("white");
 	}
 	
@@ -175,9 +175,9 @@ public class Cursor extends Entity {
 	@Override
 	public void preRender() {
 		super.preRender();
-		tmpimg.setColor(color);
+		images.get(0).setColor(color);
 		if (!render) {
-			tmpimg.setColor(1f, 1f, 1f, 0f);
+			images.get(0).setColor(1f, 1f, 1f, 0f);
 		}
 	}
 	

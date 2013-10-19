@@ -3,6 +3,7 @@ package net.fourbytes.shadow.entities.particles;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Shadow;
@@ -32,7 +33,7 @@ public class PixelParticle extends Particle {
 	}
 	
 	@Override
-	public TextureRegion getTexture() {
+	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("white");
 	}
 	
@@ -48,6 +49,11 @@ public class PixelParticle extends Particle {
 	@Override
 	public void preRender() {
 		super.preRender();
-		tmpimg.setColor(tmpc.set(color).mul(tmpcc.set(1f, 1f, 1f, time/spawntime)).mul(layer.tint));
+	}
+
+	@Override
+	public void tint(int id, Image img) {
+		super.tint(id, img);
+		img.setColor(tmpc.set(color).mul(tmpcc.set(1f, 1f, 1f, time / spawntime)).mul(layer.tint));
 	}
 }
