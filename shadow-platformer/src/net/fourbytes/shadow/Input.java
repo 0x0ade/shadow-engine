@@ -69,9 +69,9 @@ public class Input {
 		public Key(String name, int[] keyid) {
 			this.name = name;
 			this.keyid = keyid;
-			this.origrec = new Rectangle();
-			this.rec = new Rectangle();
-			this.drawrec = new Rectangle();
+			this.origrec = new Rectangle(-1f, -1f, 1f, 1f);
+			this.rec = new Rectangle(-1f, -1f, 1f, 1f);
+			this.drawrec = new Rectangle(-1f, -1f, 1f, 1f);
 			all.add(this);
 		}
 		
