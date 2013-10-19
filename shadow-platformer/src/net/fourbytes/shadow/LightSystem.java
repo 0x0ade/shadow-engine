@@ -59,8 +59,8 @@ public class LightSystem {
 				tmpc.a = 1f;
 				spriteBatch.setColor(tmpc);
 
-				Garbage.rect.x = go.pos.x + go.renderoffs.x + go.rec.width/2f;
-				Garbage.rect.y = go.pos.y + go.renderoffs.y - go.rec.height/2f;
+				Garbage.rect.x = go.pos.x + go.renderoffs.x + (go.rec.width + go.renderoffs.width)/2f;
+				Garbage.rect.y = go.pos.y + go.renderoffs.y + (go.rec.height - go.renderoffs.height)/2f;
 				Garbage.rect.width = 5f*2f * go.light.a;
 				Garbage.rect.height = 5f*2f * go.light.a;
 				//Garbage.rect.width = 1f;
