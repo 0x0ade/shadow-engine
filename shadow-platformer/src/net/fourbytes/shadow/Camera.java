@@ -1,6 +1,5 @@
 package net.fourbytes.shadow;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
@@ -20,7 +19,6 @@ public class Camera implements Input.KeyListener {
 	public static BitmapFont fpsFont = Fonts.light_normal;
 
 	protected static Rectangle objrec = new Rectangle();
-	protected static Color origc = new Color();
 	protected static Image white;
 
 	protected Player player;
@@ -245,15 +243,11 @@ public class Camera implements Input.KeyListener {
 			go.preRender();
 			
 			Image img = go.tmpimg;
-			origc.set(img.getColor());
-			img.setColor(0f, 0f, 0f, go.alpha*origc.a*0.5f);
-			//img.setColor(0f, 0f, 0f, 0.5f);
-			img.setPosition(img.getX()+0.125f, img.getY()+0.125f);
-
-			img.draw(Shadow.spriteBatch, 1f);
+			Shadow.spriteBatch.setColor(0f, 0f, 0f, go.alpha*go.tmpimg.getColor().a*0.5f);
+			img.getDrawable().draw(Shadow.spriteBatch, 0.125f + go.pos.x + go.renderoffs.x,
+					0.125f + go.pos.y + go.rec.height + go.renderoffs.y,
+					go.rec.width + go.renderoffs.width, -go.rec.height + go.renderoffs.height);
 			
-			img.setColor(origc);
-			img.setPosition(img.getX()-0.125f, img.getY()-0.125f);
 		}
 	}
 	

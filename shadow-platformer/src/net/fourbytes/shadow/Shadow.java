@@ -76,7 +76,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static NetStream server;
 
 	//TODO Bug the LibGDX devs about Pixmaps from offscreen FBOs being empty...
-	public static boolean useFB = true;
+	public static boolean useFB = false;
 	public static FrameBuffer frameBuffer;
 
 	public static boolean record = false;
