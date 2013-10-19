@@ -66,12 +66,12 @@ public class Input {
 		public boolean isDown = false;
 		public boolean nextState = false;
 		
-		public Key(String name, int[] keyid, Rectangle rec) {
+		public Key(String name, int[] keyid) {
 			this.name = name;
 			this.keyid = keyid;
-			this.origrec = new Rectangle(rec);
-			this.rec = new Rectangle(rec);
-			this.drawrec = new Rectangle(rec);
+			this.origrec = new Rectangle();
+			this.rec = new Rectangle();
+			this.drawrec = new Rectangle();
 			all.add(this);
 		}
 		
@@ -145,20 +145,20 @@ public class Input {
 	
 	public static Array<Key> all = new Array<Key>();
 	
-	public static Key up = new Key("Up", new int[] {Keys.UP, Keys.W}, new Rectangle(-1, -1, -1, -1));
-	public static Key jump = new Key("Jump", new int[] {Keys.UP, Keys.W}, new Rectangle(-1, -1, -1, -1));
-	public static Key down = new Key("Down", new int[] {Keys.DOWN, Keys.S}, new Rectangle(-1, -1, -1, -1));
-	public static Key left = new Key("Left", new int[] {Keys.LEFT, Keys.A}, new Rectangle(-1, -1, -1, -1));
-	public static Key right = new Key("Right", new int[] {Keys.RIGHT, Keys.D}, new Rectangle(-1, -1, -1, -1));
+	public static Key up = new Key("Up", new int[] {Keys.UP, Keys.W});
+	public static Key jump = new Key("Jump", new int[] {Keys.UP, Keys.W});
+	public static Key down = new Key("Down", new int[] {Keys.DOWN, Keys.S});
+	public static Key left = new Key("Left", new int[] {Keys.LEFT, Keys.A});
+	public static Key right = new Key("Right", new int[] {Keys.RIGHT, Keys.D});
 	
-	public static Key pause = new Key("Pause", new int[] {Keys.ESCAPE}, new Rectangle(-1, -1, -1, -1));
-	public static Key enter = new Key("Confirm", new int[] {Keys.ENTER}, new Rectangle(-1, -1, -1, -1));
+	public static Key pause = new Key("Pause", new int[] {Keys.ESCAPE});
+	public static Key enter = new Key("Confirm", new int[] {Keys.ENTER});
 	
-	public static Key screenshot = new Key("Screenshot", new int[] {Keys.F12}, new Rectangle(-1, -1, -1, -1));
-	public static Key record = new Key("Record", new int[] {Keys.F11}, new Rectangle(-1, -1, -1, -1));
+	public static Key screenshot = new Key("Screenshot", new int[] {Keys.F12});
+	public static Key record = new Key("Record", new int[] {Keys.F11});
 	
-	public static Key androidBack = new Key("Back", new int[] {Keys.BACK}, new Rectangle(-1, -1, -1, -1));
-	public static Key androidMenu = new Key("Menu", new int[] {Keys.MENU}, new Rectangle(-1, -1, -1, -1));
+	public static Key androidBack = new Key("Back", new int[] {Keys.BACK});
+	public static Key androidMenu = new Key("Menu", new int[] {Keys.MENU});
 	
 	public static ObjectMap<Integer, TouchPoint> touches = new ObjectMap<Integer, TouchPoint>();
 	
