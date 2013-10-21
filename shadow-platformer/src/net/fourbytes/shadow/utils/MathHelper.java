@@ -3,11 +3,11 @@ package net.fourbytes.shadow.utils;
 import com.badlogic.gdx.math.Rectangle;
 
 public class MathHelper {
-	public static float dist(float x1,float y1, float x2, float y2) {
+	public static float dist(float x1, float y1, float x2, float y2) {
 		return (float) Math.sqrt(sq(x2-x1)+sq(y2-y1));
 	}
 	
-	public static float distsq(float x1,float y1, float x2, float y2) {
+	public static float distsq(float x1, float y1, float x2, float y2) {
 		return (sq(x2-x1)+sq(y2-y1));
 	}
 	

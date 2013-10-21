@@ -1,17 +1,23 @@
 package net.fourbytes.shadow.blocks;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Images;
-
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class BlockLava extends BlockFluid {
 	
 	public BlockLava() {
 	}
-	
+
+	@Override
+	public void tick() {
+		block.light.set(1f, 0.35f, 0.01f, 1f);
+		float ff = 5f;
+		block.light.add((1f/ff)-((float)Math.random())/ff, (1f/ff)-((float)Math.random())/ff, (1f/ff)-((float)Math.random())/ff, 0f);
+		super.tick();
+	}
+
 	@Override
 	public TextureRegion getTexture0() {
 		return Images.getTextureRegion("block_lava");

@@ -1,17 +1,16 @@
 package net.fourbytes.shadow.mod;
 
+import com.badlogic.gdx.files.FileHandle;
+import net.fourbytes.shadow.Block;
+import net.fourbytes.shadow.Layer;
+import net.fourbytes.shadow.genlevel.GenLevel;
+import net.fourbytes.shadow.mod.builtin.BuiltinHelper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.net.MalformedURLException;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-
-import net.fourbytes.shadow.Block;
-import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.mod.builtin.BuiltinHelper;
-
-import com.badlogic.gdx.files.FileHandle;
 
 public final class ModLoader {
 	private ModLoader() {}
@@ -141,6 +140,17 @@ public final class ModLoader {
 			}
 		}
 		return b;
+	}
+
+
+	public static boolean generateTile(GenLevel genLevel, int xx, int x, int y, int ln) {
+		for (ModContainer c : mods) {
+			AMod mod = c.mod;
+			if (!c.mod.generateTile(genLevel, xx, x, y, ln)) {
+				return false;
+			}
+		}
+		return true;
 	}
 	
 	public static void loadResources() {

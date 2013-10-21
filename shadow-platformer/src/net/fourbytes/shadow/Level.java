@@ -11,17 +11,17 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Particle;
 import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
 import net.fourbytes.shadow.map.ShadowMap;
-import net.fourbytes.shadow.utils.gdx.ByteMap;
 
 public class Level {
 	
-	public ByteMap<Layer> layers = new ByteMap<Layer>(16);
+	public IntMap<Layer> layers = new IntMap<Layer>(16);
 	public Layer mainLayer = new Layer(this);
 	public LightSystem lights = new LightSystem(this);
 	public TimeDaySystem timeday = new TimeDaySystem(this);
@@ -81,7 +81,7 @@ public class Level {
 
 		ready = true;
 	}
-	
+
 	public void fillLayer(int key) {
 		if (!layers.containsKey(key)) {
 			layers.put(key, new Layer(this));

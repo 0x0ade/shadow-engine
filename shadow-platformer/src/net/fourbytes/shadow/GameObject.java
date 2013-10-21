@@ -48,15 +48,21 @@ public abstract class GameObject {
 	public static boolean reuseImage = true;
 	public Image getImage(int id) {
 		if (imgupdate || images.get(id) == null) {
+			TextureRegion tex = getTexture(id);
+			if (tex == null) {
+				System.out.println("("+this+(this instanceof Block?(", "+((Block)this).subtype+")"):")")+
+						" getTexture("+id+") == null!");
+				tex = Images.getTextureRegion("white");
+			}
 			if (!reuseImage) {
-				Image img = new Image(getTexture(id));
+				Image img = new Image(tex);
 				images.put(id, img);
 			} else {
 				if (images.get(id) == null) {
-					trds.put(id, new TextureRegionDrawable(getTexture(id)));
+					trds.put(id, new TextureRegionDrawable(tex));
 					images.put(id, new Image(trds.get(id)));
 				} else {
-					trds.get(id).setRegion(getTexture(id));
+					trds.get(id).setRegion(tex);
 					images.get(id).setDrawable(trds.get(id));
 				}
 			}

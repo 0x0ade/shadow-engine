@@ -3,13 +3,13 @@ package net.fourbytes.shadow.map;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.ObjectMap;
 import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Mob;
 import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.utils.gdx.ByteMap;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -123,7 +123,7 @@ public class ShadowMap {
 			mo.subtype = go.getClass().getSimpleName();
 		}
 		
-		for (ByteMap.Entry<Layer> entry : go.layer.level.layers.entries()) {
+		for (IntMap.Entry<Layer> entry : go.layer.level.layers.entries()) {
 			if (entry.value == go.layer) {
 				mo.layer = entry.key;
 				break;

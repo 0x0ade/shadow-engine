@@ -3,11 +3,12 @@ package net.fourbytes.shadow.entities;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.blocks.BlockType;
-import net.fourbytes.shadow.utils.gdx.ByteMap;
 
 public class Cursor extends Entity {
 	
@@ -15,8 +16,8 @@ public class Cursor extends Entity {
 	public boolean render = false;
 	Color color;
 
-	public byte layerid = 0;
-	public byte playerln = Byte.MIN_VALUE;
+	public int layerid = 0;
+	public int playerln = Byte.MIN_VALUE;
 	
 	public Cursor(Vector2 position, Layer layer) {
 		this(position, layer, -1);
@@ -38,8 +39,8 @@ public class Cursor extends Entity {
 	
 	public void tick() {
 		if (playerln == Byte.MIN_VALUE) {
-			for (ByteMap.Entry entry : layer.level.layers.entries()) {
-				byte ln = entry.key;
+			for (IntMap.Entry entry : layer.level.layers.entries()) {
+				int ln = entry.key;
 				Layer ll = (Layer) entry.value;
 
 				if (ll.entities.contains(layer.level.player, true)) {
@@ -119,14 +120,14 @@ public class Cursor extends Entity {
 	public void rmb(TouchPoint point, boolean isDown) {
 		downtick++;
 		if (isDown && (!rmb || downtick > 20)) {
-			/*Array<Block> blocks = layer.get(Coord.get(pos.x, pos.y));
+			Array<Block> blocks = layer.get(Coord.get(pos.x, pos.y));
 			if (blocks != null) {
 				for (Block b : blocks) {
 					b.layer.remove(b);
 				}
-			}*/
-			Entity e = new MobTest(new Vector2(pos), layer);
-			e.layer.add(e);
+			}
+			//Entity e = new MobTest(new Vector2(pos), layer);
+			//e.layer.add(e);
 		}
 		rmb = isDown;
 	}
