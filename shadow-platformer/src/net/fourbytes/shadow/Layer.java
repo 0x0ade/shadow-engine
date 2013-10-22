@@ -4,12 +4,15 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
+import net.fourbytes.shadow.utils.Cache;
 
 /**
  *	Placeholder for the layers in the levels. Processing happens in {@link Level}.
  */
 public class Layer {
-	
+
+	protected final static Cache<Array> cache = new Cache(Array.class, 16, new Object[] {4}, new Class[] {int.class});
+
 	public static enum BlockMapSystem {
 		coordinate, //Default, most performance, most garbage
 		row, //performance decreased, less garbage
@@ -27,9 +30,6 @@ public class Layer {
 	public static BlockMapSystem bms = BlockMapSystem.coordinate;
 	protected static BlockMapSystem lastbms;
 	public static float round = 2f;
-	
-	protected static int tget = 0;
-	protected static Array[] tgets = new Array[16];
 
 	public final Color tint = new Color(1f, 1f, 1f, 1f);
 
@@ -108,7 +108,8 @@ public class Layer {
 			blockmap.put(c, v);
 		}
 		*/
-		Array<Block> v = tget0();
+		Array<Block> v = cache.getNext();
+		v.clear();
 		if (vv != null) {
 			for (Block b : vv) {
 				if (cx == (int)b.pos.x && cy == (int)b.pos.y) {
@@ -182,21 +183,6 @@ public class Layer {
 		case none:
 			break;
 		}
-	}
-	
-	protected Array<Block> tget0() {
-		if (tgets[0] == null) {
-			for (int i = 0; i < tgets.length; i++) {
-				tgets[i] = new Array<Block>(4);
-			}
-		}
-		Array<Block> tgot = tgets[tget];
-		tgot.clear();
-		tget++;
-		if (tget >= tgets.length) {
-			tget = 0;
-		}
-		return tgot;
 	}
 	
 	protected void updateSystem0() {

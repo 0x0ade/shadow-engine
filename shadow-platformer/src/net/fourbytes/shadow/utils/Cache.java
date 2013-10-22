@@ -17,27 +17,38 @@ public final class Cache<T> {
 	}
 
 	public Cache(Class<T> clazz, Object[] args) {
-		this(clazz, 8, args);
+		this(clazz, 8, args, getTypes(args));
+	}
+
+	public Cache(Class<T> clazz, Object[] args, Class[] types) {
+		this(clazz, 8, args, types);
 	}
 
 	public Cache(Class<T> clazz, int amount, Object[] args) {
-		this.clazz = clazz;
+		this(clazz, amount, args, getTypes(args));
+	}
 
+	public Cache(Class<T> clazz, int amount, Object[] args, Class[] types) {
+		this.clazz = clazz;
 		cache = (T[]) new Object[amount];
 		this.args = args;
+		this.types = types;
+	}
 
-		types = new Class[args.length];
+	private static Class[] getTypes(Object[] args) {
+		Class[] types = new Class[args.length];
 		for (int i = 0; i < args.length; i++) {
 			types[i] = args[i].getClass();
 		}
+		return types;
 	}
 
 	public Cache<T> previous() {
-		return move(1);
+		return move(-1);
 	}
 
 	public Cache<T> next() {
-		return move(-1);
+		return move(1);
 	}
 
 	public Cache<T> move(int i) {
@@ -46,7 +57,7 @@ public final class Cache<T> {
 
 	public Cache<T> position(int i) {
 		if (i <= 0) {
-			pos = (cache.length-i)%cache.length;
+			pos = cache.length-1-((-i)%cache.length);
 		} else {
 			pos = i%cache.length;
 		}
