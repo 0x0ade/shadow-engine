@@ -592,9 +592,10 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		boolean handled = false;
 		if (level != null && level.c != null) {
 			TouchPoint tp = null;
-			Garbage.vec2.x = screenX;
-			Garbage.vec2.y = screenY;
-			level.c.pos.set(level.c.calcPos(Garbage.vec2));
+			Garbage.vec2s.next();
+			Garbage.vec2s.get().x = screenX;
+			Garbage.vec2s.get().y = screenY;
+			level.c.pos.set(level.c.calcPos(Garbage.vec2s.get()));
 			level.c.render = true;
 			handled = true;
 		}

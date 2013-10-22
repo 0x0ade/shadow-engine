@@ -2,7 +2,7 @@ package net.fourbytes.shadow.mod;
 
 import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.genlevel.GenLevel;
+import net.fourbytes.shadow.Level;
 
 public abstract class AMod {
 	
@@ -22,5 +22,5 @@ public abstract class AMod {
 	public void preRender() {};
 	public void postRender() {};
 	public Block getTypeBlock(String subtype, float x, float y, Layer layer) {return null;}
-	public boolean generateTile(GenLevel genLevel, int xx, int x, int y, int ln) {return true;}
+	public boolean generateTile(Level genLevel, int xx, int x, int y, int ln) {return true;}
 }

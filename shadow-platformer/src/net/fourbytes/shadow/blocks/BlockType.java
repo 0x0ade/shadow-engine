@@ -27,6 +27,9 @@ public abstract class BlockType {
 	public static Block getInstance(String subtype, float x, float y, Layer layer) {
 		Block b = ModLoader.getTypeBlock(subtype, x, y, layer);
 		if (b != null) {
+			if (b.subtype == null || b.subtype.isEmpty()) {
+				b.subtype = subtype;
+			}
 			return b;
 		}
 		String bsubtype = subtype;
@@ -83,6 +86,7 @@ public abstract class BlockType {
 			BlockType instance = new BlockImage(imgname);
 			instance.subtype = bsubtype;
 			Block block = new TypeBlock(new Vector2(x, y), layer, instance);
+			block.subtype = subtype;
 			return block;
 		}
 	}

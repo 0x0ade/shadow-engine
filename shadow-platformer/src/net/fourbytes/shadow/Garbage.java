@@ -5,37 +5,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import net.fourbytes.shadow.entities.Particle;
+import net.fourbytes.shadow.utils.Cache;
 
 public final class Garbage {
 	private Garbage() {
 	}
-	
+
+	//Caches
+
+	public final static Cache<Rectangle> rects = new Cache(Rectangle.class);
+	public final static Cache<Vector2> vec2s = new Cache(Vector2.class);
+
+	//Utility / helper stuff
 	public final static Array<Particle> particles = new Array<Particle>();
-	public final static Rectangle genrec = new Rectangle();
-	public final static Rectangle rect = new Rectangle();
-	public final static Rectangle recta = new Rectangle();
-	public final static Rectangle rectb = new Rectangle();
-	public final static Rectangle rectc = new Rectangle();
-	public final static Rectangle rectd = new Rectangle();
-	public final static Rectangle recte = new Rectangle();
-	public final static Rectangle rectf = new Rectangle();
-	/*
-	public final static Coord coord = new Coord(0, 0);
-	public final static Coord coorda = new Coord(0, 0);
-	public final static Coord coordb = new Coord(0, 0);
-	public final static Coord coordc = new Coord(0, 0);
-	public final static Coord coordd = new Coord(0, 0);
-	public final static Coord coorde = new Coord(0, 0);
-	public final static Coord coordf = new Coord(0, 0);
-	*/
-	public final static Vector2 vec2 = new Vector2();
-	public final static Vector2 vec2a = new Vector2();
-	public final static Vector2 vec2b = new Vector2();
-	public final static Vector2 vec2c = new Vector2();
-	public final static Vector2 vec2d = new Vector2();
-	public final static Vector2 vec2e = new Vector2();
-	public final static Vector2 vec2f = new Vector2();
-	
+
 	public final static Json json = new Json();
 
 }

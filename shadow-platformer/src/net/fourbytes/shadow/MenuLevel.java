@@ -131,7 +131,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			oldpos = new Vector2();
 		}
 		oldpos.set(apos);
-		Vector2 pos = Garbage.vec2;
+		Vector2 pos = Garbage.vec2s.getNext();
 		pos.set(apos);
 		float tx = 0;
 		float ty = 0;

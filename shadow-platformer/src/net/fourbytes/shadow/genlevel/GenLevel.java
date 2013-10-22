@@ -9,6 +9,7 @@ import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.map.Saveable;
 import net.fourbytes.shadow.mod.ModLoader;
 import net.fourbytes.shadow.utils.MathHelper;
 
@@ -18,6 +19,7 @@ public class GenLevel extends Level {
 
 	public static int segSize = 8;
 
+	@Saveable
 	public int seed = (int) (Math.random()*(Integer.MAX_VALUE/2));
 	/*
 	 * Seed list:
@@ -29,12 +31,14 @@ public class GenLevel extends Level {
 	 */
 	public Random rand = new Random(seed);
 
+	@Saveable
 	public LongArray generated = new LongArray();
+	@Saveable
 	public IntIntMap segHeight = new IntIntMap();
+	@Saveable
 	public IntIntMap xHeight = new IntIntMap();
+	@Saveable
 	public IntIntMap xStone = new IntIntMap();
-
-	public Rectangle genrec = new Rectangle(0, 0, 0, 0);
 
 	public CaveGen cavegen = new DefaultCaveGen(this);
 
@@ -48,7 +52,7 @@ public class GenLevel extends Level {
 		float d = 0.5f;
 		layers.get(0).tint.set(d, d, d, 1f);
 
-		segHeight.put(0, -3);
+		segHeight.put(0, 0);
 
 		generateChunks(-25, 25, -25, 25);
 		
@@ -194,14 +198,8 @@ public class GenLevel extends Level {
 	public void tick() {
 		super.tick();
 		Rectangle vp = Shadow.cam.camrec;
-		Rectangle genrec = Garbage.genrec;
-		genrec.set(player.pos.x - vp.width*1.5f, player.pos.y - vp.height*1.5f, vp.width*3f, vp.height*3f);
-		if (!this.genrec.contains(genrec)) {
-			boolean generated = generateChunks((int)(genrec.x), (int)(genrec.x + genrec.width), (int)(genrec.y), (int)(genrec.y + genrec.height));
-			if (generated) {
-				this.genrec.merge(genrec);
-			}
-		}
+		boolean generated = generateChunks((int)(player.pos.x - vp.width*1.5f), (int)(player.pos.x + vp.width*1.5f),
+				(int)(player.pos.y - vp.height*1.5f), (int)(player.pos.y + vp.height*1.5f));
 	}
 	
 	public void bomb(Layer layer, float x, float y, float radius, LongArray xd, String type) {

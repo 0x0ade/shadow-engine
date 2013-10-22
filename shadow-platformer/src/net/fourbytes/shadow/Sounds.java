@@ -66,7 +66,7 @@ public class Sounds {
 		if (!vp.contains(pos.x, pos.y)) {
 			return 0f;
 		}
-		Vector2 orgpos = Garbage.vec2;
+		Vector2 orgpos = Garbage.vec2s.getNext();
 		orgpos.set(0, 0);
 		if (Shadow.level != null && Shadow.level.player != null) {
 			orgpos.set(Shadow.level.player.pos);

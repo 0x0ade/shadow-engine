@@ -35,7 +35,7 @@ public class Level {
 	public float xgravity = 0.0f;
 	
 	public static int maxParticles = 512;
-	public static float inviewf = 5f;
+	public static float inviewf = 10f;
 
 	//Abstract constructor, can be used for non-gameplay levels (menus).
 	public Level() {

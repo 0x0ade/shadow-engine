@@ -18,16 +18,16 @@ public class DefaultCaveGen extends CaveGen {
 		super(level);
 
 		fgobjs.add(new CaveObject("BlockStone", -1f, 0));
-		fgobjs.add(new CaveObject("BlockDirt", 25000000f, 0));
+		fgobjs.add(new CaveObject("BlockDirt", 25000000000f, 0));
 
-		fgobjs.add(new CaveObject("Bomb::6", 3000000f, 3));//Too low minimum depth causes holes in surface
-		fgobjs.add(new CaveObject("Bomb:BlockWater:2", 150000f, 50));
-		fgobjs.add(new CaveObject("Bomb:BlockLava:3", 100000f, 100));
+		fgobjs.add(new CaveObject("Bomb::6", 3000000000f, 2));//Too low minimum depth causes holes in surface
+		fgobjs.add(new CaveObject("Bomb:BlockWater:2", 150000000f, 50));
+		fgobjs.add(new CaveObject("Bomb:BlockLava:3", 100000000f, 100));
 
 		//--------------------------------
 
 		bgobjs.add(new CaveObject("BlockStone", -1f, 0));
-		bgobjs.add(new CaveObject("BlockDirt", 25000000f, 0));
+		bgobjs.add(new CaveObject("BlockDirt", 25000000000f, 0));
 	}
 
 	@Override
@@ -36,12 +36,12 @@ public class DefaultCaveGen extends CaveGen {
 			return replaced.get(Coord.get(x, y));
 		}
 
-		int yo = level.xStone.get(x, 0);
+		int yo = -level.xStone.get(x, 0);
 
 		String got = null;
 		float altprob = 0f;
 		String alt = null;
-		float random = level.rand.nextFloat()*100000000f;
+		float random = level.rand.nextFloat()*100000000000f;
 
 		for (CaveObject obj : isFG?fgobjs:bgobjs) {
 			if (obj.probability < altprob) {
@@ -63,7 +63,6 @@ public class DefaultCaveGen extends CaveGen {
 		if (got.startsWith("Block")) {
 			level.layers.get(ln).add(BlockType.getInstance(got, x, y, level.layers.get(ln)));
 		} else {
-			//TODO Handle non-blocks
 			if (got.startsWith("Bomb:")) {
 				String[] split = got.split(":");
 				bomb(x, y, ln, level.rand.nextInt(Integer.parseInt(split[2]))+1, split[1]);

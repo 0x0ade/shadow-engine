@@ -3,7 +3,7 @@ package net.fourbytes.shadow.mod;
 import com.badlogic.gdx.files.FileHandle;
 import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Layer;
-import net.fourbytes.shadow.genlevel.GenLevel;
+import net.fourbytes.shadow.Level;
 import net.fourbytes.shadow.mod.builtin.BuiltinHelper;
 
 import java.io.BufferedReader;
@@ -143,7 +143,7 @@ public final class ModLoader {
 	}
 
 
-	public static boolean generateTile(GenLevel genLevel, int xx, int x, int y, int ln) {
+	public static boolean generateTile(Level genLevel, int xx, int x, int y, int ln) {
 		for (ModContainer c : mods) {
 			AMod mod = c.mod;
 			if (!c.mod.generateTile(genLevel, xx, x, y, ln)) {

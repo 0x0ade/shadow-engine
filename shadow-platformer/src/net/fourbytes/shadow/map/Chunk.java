@@ -12,7 +12,7 @@ import net.fourbytes.shadow.network.NetStream;
  */
 public class Chunk extends Data {
 	
-	public static float size = 15;
+	public static float size = 8;
 	
 	public int x;
 	public int y;

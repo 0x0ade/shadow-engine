@@ -52,6 +52,7 @@ public class LightSystem {
 
 		int i = 0;
 		//SELFNOTE: it should be stable enough to draw a light for every object in view.
+		Garbage.rects.next();
 		for (GameObject go : level.mainLayer.inView) {
 			if (go.light.a > 0f) {
 				i++;
@@ -59,16 +60,17 @@ public class LightSystem {
 				tmpc.a = 1f;
 				spriteBatch.setColor(tmpc);
 
-				Garbage.rect.x = go.pos.x + go.renderoffs.x + (go.rec.width + go.renderoffs.width)/2f;
-				Garbage.rect.y = go.pos.y + go.renderoffs.y + (go.rec.height - go.renderoffs.height)/2f;
-				Garbage.rect.width = 5f*2f * go.light.a;
-				Garbage.rect.height = 5f*2f * go.light.a;
+				Garbage.rects.get().x = go.pos.x + go.renderoffs.x + (go.rec.width + go.renderoffs.width)/2f;
+				Garbage.rects.get().y = go.pos.y + go.renderoffs.y + (go.rec.height - go.renderoffs.height)/2f;
+				Garbage.rects.get().width = 7.5f*2f * go.light.a;
+				Garbage.rects.get().height = 7.5f*2f * go.light.a;
 				//Garbage.rect.width = 1f;
 				//Garbage.rect.height = 1f;
-				Garbage.rect.x -= Garbage.rect.width/2f;
-				Garbage.rect.y -= Garbage.rect.height/2f;
+				Garbage.rects.get().x -= Garbage.rects.get().width/2f;
+				Garbage.rects.get().y -= Garbage.rects.get().height/2f;
 
-				spriteBatch.draw(light, Garbage.rect.x, Garbage.rect.y, Garbage.rect.width, Garbage.rect.height);
+				spriteBatch.draw(light, Garbage.rects.get().x, Garbage.rects.get().y,
+						Garbage.rects.get().width, Garbage.rects.get().height);
 
 				if (i > maxLights) {
 					System.out.println("Amount of lights in viewport reached limit ("+maxLights+")");
