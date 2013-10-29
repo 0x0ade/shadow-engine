@@ -18,6 +18,7 @@ import net.fourbytes.shadow.entities.Particle;
 import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
 import net.fourbytes.shadow.map.ShadowMap;
+import net.fourbytes.shadow.utils.Garbage;
 
 public class Level {
 	

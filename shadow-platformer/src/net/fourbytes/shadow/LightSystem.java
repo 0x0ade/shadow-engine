@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Rectangle;
+import net.fourbytes.shadow.utils.Garbage;
 import net.fourbytes.shadow.utils.ShaderHelper;
 
 public class LightSystem {
@@ -92,6 +93,21 @@ public class LightSystem {
 		Shadow.spriteBatch.maxSpritesInBatch = 0;
 		/*
 		 */
+	}
+
+	public void renderFBO() {
+		Rectangle vp = Shadow.cam.camrec;
+		int src = Shadow.spriteBatch.getBlendSrcFunc();
+		int dst = Shadow.spriteBatch.getBlendDstFunc();
+		Shadow.spriteBatch.flush();
+		Shadow.spriteBatch.setBlendFunction(GL10.GL_DST_COLOR, GL10.GL_ZERO);
+
+		Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
+		Shadow.spriteBatch.draw(getLightFramebuffer().getColorBufferTexture(), vp.x, vp.y, vp.width, vp.height);
+
+		Shadow.spriteBatch.flush();
+		Shadow.spriteBatch.setBlendFunction(src, dst);
+		Shadow.spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	//Lightmap stuff

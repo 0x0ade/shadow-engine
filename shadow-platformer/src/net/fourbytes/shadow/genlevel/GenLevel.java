@@ -1,5 +1,6 @@
 package net.fourbytes.shadow.genlevel;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -34,8 +35,6 @@ public class GenLevel extends Level {
 	@Saveable
 	public LongArray generated = new LongArray();
 	@Saveable
-	public IntIntMap segHeight = new IntIntMap();
-	@Saveable
 	public IntIntMap xHeight = new IntIntMap();
 	@Saveable
 	public IntIntMap xStone = new IntIntMap();
@@ -52,9 +51,7 @@ public class GenLevel extends Level {
 		float d = 0.5f;
 		layers.get(0).tint.set(d, d, d, 1f);
 
-		segHeight.put(0, 0);
-
-		generateChunks(-25, 25, -25, 25);
+		generateChunks(-3*segSize, 3*segSize, -3*segSize, 3*segSize);
 		
 		Player p = new Player(new Vector2(0f, -5f), layers.get(1));
 		layers.get(1).add(p);
@@ -70,8 +67,12 @@ public class GenLevel extends Level {
 		tox = (tox/segSize)*segSize;
 		fromy = (fromy/segSize)*segSize;
 		toy = (toy/segSize)*segSize;
+		int midx = fromx + (tox - fromx) / 2;
+		midx = (midx/segSize)*segSize;
+
 		boolean generated = false;
-		for (int xx = fromx; xx < tox; xx+=segSize) {
+
+		for (int xx = midx; xx < tox; xx+=segSize) {
 			for (int yy = fromy; yy < toy; yy+=segSize) {
 				boolean cgenerated = generateChunk(xx, yy);
 				if (cgenerated) {
@@ -79,6 +80,16 @@ public class GenLevel extends Level {
 				}
 			}
 		}
+
+		for (int xx = midx; xx >= fromx; xx-=segSize) {
+			for (int yy = fromy; yy < toy; yy+=segSize) {
+				boolean cgenerated = generateChunk(xx, yy);
+				if (cgenerated) {
+					generated = true;
+				}
+			}
+		}
+
 		return generated;
 	}
 	
@@ -93,49 +104,23 @@ public class GenLevel extends Level {
 
 		rand.setSeed(seed+Coord.get(xx, xx));
 
-		//Init segment variables
-		//Segment height
-		int h;
-		if (segHeight.containsKey(xx/segSize)) {
-			//Get segment height
-			h = segHeight.get(xx/segSize, 0);
-		} else {
-			//Set new segment height
-			if (segHeight.containsKey(xx/segSize - 1) && segHeight.containsKey(xx/segSize + 1)) {
-				//Set height relative to segments left and right to current one
-				int lefth = segHeight.get(xx/segSize - 1, 0);
-				int righth = segHeight.get(xx/segSize + 1, 0);
-				h = (lefth+righth)/2;
-			} else if (segHeight.containsKey(xx/segSize - 1) || segHeight.containsKey(xx/segSize + 1)) {
-				//Set height relative to segment left or right to current one
-				int baseh = segHeight.get(xx/segSize - 1, segHeight.get(xx/segSize + 1, 0));
-				int offs = rand.nextInt(5)-2;
-				h = baseh + offs;
-				if (h < -15 || h > 15) {
-					h = baseh - offs;
-				}
-			} else {
-				//Set random height
-				h = rand.nextInt(5)-2;
-				h = rand.nextInt(5)-2+h;
-			}
-			segHeight.put(xx/segSize, h);
-		}
-
 		//For each block in the current row
 		for (int x = xx; x < xx+segSize; x++) {
 			rand.setSeed(seed+Coord.get(x, xx));
 
 			//Init X variables
-			//X height
-			int xh = xHeight.get(x, rand.nextInt(2) + h);
-			xHeight.put(x, xh);
+			//TODO better generation
 
-			//X stone height
-			int xsh = xStone.get(x, rand.nextInt(3) + 5 + xh);
-			xStone.put(x, xsh);
+			xHeight.put(x, xHeight.get(x, (int)(
+					3f*MathUtils.sinDeg(x+rand.nextInt(24)-12)
+							- 6f*MathUtils.cosDeg(x*0.25f+rand.nextInt(8)-4)
+							+ 2f*MathUtils.sinDeg(x*2f+rand.nextInt(32)-16)
+							- 4f*MathUtils.cosDeg(MathUtils.sinDeg(x*0.75f+rand.nextInt(48)-28)*90f)
+			) + 7));
 
-			rand.setSeed(seed+Coord.get(x, yy));
+			xStone.put(x, xStone.get(x, rand.nextInt(5)+xHeight.get(x, 0)));
+
+			rand.setSeed(seed + Coord.get(x, yy));
 
 			//For each block in current chunk
 			for (int y = yy; y < yy+segSize; y++) {
@@ -158,19 +143,28 @@ public class GenLevel extends Level {
 				if (cangen) {
 					generateTile(xx, x, y, 1);
 				}
+				/*//Add / remove /* on beginning of line to disable / enable debugging.
+				if (y == xHeight.get(x/xSmooth, 0)) {
+					Block block = BlockType.getInstance("BlockDebug", x, y, layers.get(1));
+					block.alpha = 0.25f;
+					block.blending = true;
+					layers.get(1).add(block);
+				}
+				/*
+				*/
 			}
 		}
 		return true;
 	}
 	
 	public void generateTile(int xx, int x, int y, int fg) {
-		if (y >= 2 && y < xHeight.get(x, 0)+1 && 0 < segHeight.get(xx/segSize, 0)) {
+		if (2 <= y && y < xHeight.get(x, 0)) {
 			//Generate water.
 			layers.get(fg).add(BlockType.getInstance("BlockWater", x, y, layers.get(fg)));
 			return;
 		}
 
-		if (y == xHeight.get(x, 0) || (y > 2 && y == xHeight.get(x, 0)+1)) {
+		if (y == xHeight.get(x, 0)) {
 			//Generate surface (grass)
 			layers.get(fg).add(BlockType.getInstance("BlockGrass", x, y, layers.get(fg)));
 			layers.get(fg-1).add(BlockType.getInstance("BlockGrass", x, y, layers.get(fg-1)));
@@ -184,7 +178,6 @@ public class GenLevel extends Level {
 				layers.get(fg-1).add(BlockType.getInstance("BlockDirt", x, y, layers.get(fg-1)));
 			} else {
 				//Generate everything underground.
-				//TODO Write some simple cave generator
 				cavegen.generateFG(xx, x, y, fg);
 				cavegen.generateBG(xx, x, y, fg);
 				//layers.get(fg).add(BlockType.getInstance("BlockStone", x, y, layers.get(fg)));
@@ -198,7 +191,7 @@ public class GenLevel extends Level {
 	public void tick() {
 		super.tick();
 		Rectangle vp = Shadow.cam.camrec;
-		boolean generated = generateChunks((int)(player.pos.x - vp.width*1.5f), (int)(player.pos.x + vp.width*1.5f),
+		generateChunks((int)(player.pos.x - vp.width*1.5f), (int)(player.pos.x + vp.width*1.5f),
 				(int)(player.pos.y - vp.height*1.5f), (int)(player.pos.y + vp.height*1.5f));
 	}
 	

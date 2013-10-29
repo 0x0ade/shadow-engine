@@ -10,6 +10,7 @@ import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Mob;
 import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.utils.Garbage;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
 import net.fourbytes.shadow.mod.AMod;
+import net.fourbytes.shadow.utils.Garbage;
 
 public class Sounds {
 	private final static ObjectMap<String, Sound> sounds = new ObjectMap<String, Sound>();

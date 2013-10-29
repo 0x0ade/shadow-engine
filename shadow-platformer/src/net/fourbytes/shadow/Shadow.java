@@ -21,6 +21,7 @@ import net.fourbytes.shadow.mod.ModLoader;
 import net.fourbytes.shadow.network.NetClient;
 import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
+import net.fourbytes.shadow.utils.Garbage;
 import net.fourbytes.shadow.utils.ScreenshotUtil;
 import net.fourbytes.shadow.utils.ShaderHelper;
 import net.fourbytes.shadow.utils.ViewModes;

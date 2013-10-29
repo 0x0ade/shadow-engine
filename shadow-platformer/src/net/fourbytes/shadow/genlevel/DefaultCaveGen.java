@@ -20,7 +20,7 @@ public class DefaultCaveGen extends CaveGen {
 		fgobjs.add(new CaveObject("BlockStone", -1f, 0));
 		fgobjs.add(new CaveObject("BlockDirt", 25000000000f, 0));
 
-		fgobjs.add(new CaveObject("Bomb::6", 3000000000f, 2));//Too low minimum depth causes holes in surface
+		fgobjs.add(new CaveObject("Bomb::6", 2000000000f, 6));//Too low minimum depth causes holes in surface
 		fgobjs.add(new CaveObject("Bomb:BlockWater:2", 150000000f, 50));
 		fgobjs.add(new CaveObject("Bomb:BlockLava:3", 100000000f, 100));
 
@@ -73,7 +73,7 @@ public class DefaultCaveGen extends CaveGen {
 	public void bomb(int x, int y, int ln, int rad, String type) {
 		Layer layer = level.layers.get(ln);
 		for (float xx = x - rad; xx <= x + rad; xx++) {
-			int yo = level.xStone.get((int)xx, 0);//YO is just a funny thing to play with...
+			int yo = -level.xStone.get((int)xx, level.rand.nextInt(5)-2);//YO is just a funny thing to play with...
 			for (float yy = y + yo - rad; yy <= y + yo + rad; yy++) {
 				if (MathHelper.distsq(x, y, xx, yy) <= MathHelper.sq(rad)) {
 					replaced.put(Coord.get(xx, yy), type);

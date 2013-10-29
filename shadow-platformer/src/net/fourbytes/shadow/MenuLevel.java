@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.Input.TouchPoint;
+import net.fourbytes.shadow.utils.Garbage;
 
 public abstract class MenuLevel extends Level implements KeyListener {
 	

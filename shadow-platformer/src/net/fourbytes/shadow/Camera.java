@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.utils.ShaderHelper;
 
 public class Camera implements Input.KeyListener {
 	
@@ -170,16 +169,20 @@ public class Camera implements Input.KeyListener {
 
 	public void renderLevel(Level level) {
 		if (!(level instanceof MenuLevel)) {
-			Shadow.spriteBatch.flush();
-			ShaderHelper.setCurrentShader("light");
-			level.lights.updateLightBounds();
+			//Shadow.spriteBatch.flush();
+			//ShaderHelper.setCurrentShader("light");
+			//level.lights.updateLightBounds();
 
 			for (Layer ll : level.layers.values()) {
 				renderLayer(ll);
 			}
 
-			Shadow.spriteBatch.flush();
-			ShaderHelper.resetCurrentShader();
+			//Shadow.spriteBatch.flush();
+			//ShaderHelper.resetCurrentShader();
+
+			level.lights.updateLightBounds();
+			level.lights.renderFBO();
+
 		}
 
 		if (this.level) {
