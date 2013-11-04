@@ -169,20 +169,12 @@ public class Camera implements Input.KeyListener {
 
 	public void renderLevel(Level level) {
 		if (!(level instanceof MenuLevel)) {
-			//Shadow.spriteBatch.flush();
-			//ShaderHelper.setCurrentShader("light");
-			//level.lights.updateLightBounds();
-
 			for (Layer ll : level.layers.values()) {
 				renderLayer(ll);
 			}
 
-			//Shadow.spriteBatch.flush();
-			//ShaderHelper.resetCurrentShader();
-
 			level.lights.updateLightBounds();
 			level.lights.renderFBO();
-
 		}
 
 		if (this.level) {
@@ -228,7 +220,7 @@ public class Camera implements Input.KeyListener {
 		if (l == null) {
 			return;
 		}
-		
+
 		renderShadows(l);
 
 		renderObjects(l, false, false);
@@ -245,7 +237,11 @@ public class Camera implements Input.KeyListener {
 			if (go == null) continue;
 			go.preRender();
 
-			Image img = go.images.get(go.imgIDs[0]); //TODO Render all images' shadows into FBO, then render FBO.
+			if (!Shadow.options.getBoolean("gfx.shadows", true)) {
+				continue;
+			}
+
+			Image img = go.images.get(go.imgIDs[0]); //TODO Render all images' shadows.
 			if (img != null) {
 				Shadow.spriteBatch.setColor(0f, 0f, 0f, go.alpha*img.getColor().a*0.5f);
 				img.getDrawable().draw(Shadow.spriteBatch, 0.125f + go.pos.x + go.renderoffs.x,

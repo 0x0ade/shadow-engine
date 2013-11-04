@@ -1,1 +1,0 @@
-copy shaders/default.vert;

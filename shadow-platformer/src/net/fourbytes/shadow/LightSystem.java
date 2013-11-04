@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Rectangle;
 import net.fourbytes.shadow.utils.Garbage;
-import net.fourbytes.shadow.utils.ShaderHelper;
 
 public class LightSystem {
 	
@@ -18,7 +17,7 @@ public class LightSystem {
 	public int speed = 2;
 	public int tick = 0;
 
-	public static int maxLights = 64;
+	public static int maxLights = 96;
 
 	protected final static Color tmpc = new Color(1f, 1f, 1f, 1f);
 
@@ -33,26 +32,25 @@ public class LightSystem {
 		}
 		tick = 0;
 
-		Rectangle vp = Shadow.cam.camrec;
+		//SELFNOTE: it should be stable enough to draw a light for every object in view.
 
+		Rectangle vp = Shadow.cam.camrec;
 		TextureRegion light = Images.getTextureRegion("light");
+		TextureRegion white = Images.getTextureRegion("white");
 
 		SpriteBatch spriteBatch = Shadow.spriteBatch;
-		int src = Shadow.spriteBatch.getBlendSrcFunc();
-		int dst = Shadow.spriteBatch.getBlendDstFunc();
-		spriteBatch.setBlendFunction(GL10.GL_ONE, GL10.GL_ONE);
 		spriteBatch.setProjectionMatrix(Shadow.cam.cam.combined);
-		Shadow.spriteBatch.maxSpritesInBatch = 0;
+		spriteBatch.maxSpritesInBatch = 0;
 		spriteBatch.begin();
 
 		FrameBuffer lightFB = getLightFramebuffer();
 		lightFB.begin();
+		spriteBatch.setBlendFunction(GL10.GL_ONE, GL10.GL_ONE);
 
 		Gdx.gl.glClearColor(level.globalLight.r, level.globalLight.g, level.globalLight.b, 1f);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		int i = 0;
-		//SELFNOTE: it should be stable enough to draw a light for every object in view.
 		Garbage.rects.next();
 		for (GameObject go : level.mainLayer.inView) {
 			if (go.light.a > 0f) {
@@ -85,7 +83,7 @@ public class LightSystem {
 		lightFB.end();
 
 		spriteBatch.end();
-		spriteBatch.setBlendFunction(src, dst);
+		spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 
 		/*//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
 		System.out.println("(LightSystem) max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
@@ -97,8 +95,6 @@ public class LightSystem {
 
 	public void renderFBO() {
 		Rectangle vp = Shadow.cam.camrec;
-		int src = Shadow.spriteBatch.getBlendSrcFunc();
-		int dst = Shadow.spriteBatch.getBlendDstFunc();
 		Shadow.spriteBatch.flush();
 		Shadow.spriteBatch.setBlendFunction(GL10.GL_DST_COLOR, GL10.GL_ZERO);
 
@@ -106,7 +102,6 @@ public class LightSystem {
 		Shadow.spriteBatch.draw(getLightFramebuffer().getColorBufferTexture(), vp.x, vp.y, vp.width, vp.height);
 
 		Shadow.spriteBatch.flush();
-		Shadow.spriteBatch.setBlendFunction(src, dst);
 		Shadow.spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
@@ -115,7 +110,6 @@ public class LightSystem {
 	public static FrameBuffer lightFB;
 	public static Rectangle lightFBRect = new Rectangle();
 	public static float lightFBFactor = 0.5f;
-	public static int lightTexID = 1;
 
 	public final static FrameBuffer getLightFramebuffer() {
 		if (lightFB == null) {
@@ -123,12 +117,6 @@ public class LightSystem {
 
 			lightFB = new FrameBuffer(Pixmap.Format.RGB565, (int) lightFBRect.width, (int) lightFBRect.height, false);
 			lightFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
-
-			lightFB.getColorBufferTexture().bind(lightTexID);
-			ShaderHelper.getShader("light").begin();
-			ShaderHelper.getShader("light").setUniformi("textureLight", lightTexID);
-			ShaderHelper.getShader("light").end();
-			Gdx.gl.glActiveTexture(GL10.GL_TEXTURE0);
 		}
 
 		return lightFB;

@@ -3,6 +3,7 @@ package net.fourbytes.shadow;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
@@ -37,6 +38,8 @@ import java.util.Calendar;
 import java.util.Random;
 
 public final class Shadow implements ApplicationListener, InputProcessor, KeyListener {
+
+	public static Preferences options;
 
 	public static Random rand = new Random();
 	
@@ -76,7 +79,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static NetStream client;
 	public static NetStream server;
 
-	//TODO Bug the LibGDX devs about Pixmaps from offscreen FBOs being empty...
 	public static boolean useFB = false;
 	public static FrameBuffer frameBuffer;
 
@@ -137,6 +139,8 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	
 	@Override
 	public void create() {
+		options = Gdx.app.getPreferences(getClass().getName()+".settings");
+
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);
 		UncaughtExceptionHandler eh = new UncaughtExceptionHandler() {
@@ -304,10 +308,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 
 			//TODO Change / update / fix / complete GLSL shaders
 			ShaderProgram defaultShader = ShaderHelper.loadShader("shaders/default");
-			ShaderProgram lightShader = ShaderHelper.loadShader("shaders/light");
-
 			ShaderHelper.addShader(defaultShader);
-			ShaderHelper.addShader(lightShader, "light");
 
 			spriteBatch = new SpriteBatch(4096);
 			
@@ -444,14 +445,13 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			if (frameBuffer != null) {
 				frameBuffer.dispose();
 			}
-			frameBuffer = new FrameBuffer(Pixmap.Format.RGB888, (int)dispw, (int)disph, true);
+			frameBuffer = new FrameBuffer(Pixmap.Format.RGB888, (int)dispw, (int)disph, false);
 			frameBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
 
 			if (LightSystem.lightFB != null) {
 				LightSystem.lightFB.dispose();
 				LightSystem.lightFB = null;
 			}
-
 		}
 	}
 
