@@ -79,7 +79,7 @@ public class Background {
 	final static Rectangle tvp = new Rectangle();
 	
 	public void render() {
-		Shadow.spriteBatch.disableBlending();
+		//Shadow.spriteBatch.disableBlending();//TODO Decide / Benchmark / Test / ...
 		if (white == null) {
 			white = Images.getImage("white");
 		}

@@ -9,10 +9,11 @@ import net.fourbytes.shadow.map.Saveable;
 public class Player extends Entity implements Input.KeyListener {
 	
 	@Saveable
-	public int POINTS = 0;
-	
-	public static final float SPEED = 0.1f;
-	public static final float JUMPH = 0.4f;
+	public int points = 0;
+	@Saveable
+	public float speed = 0.1f;
+	@Saveable
+	public float jumph = 0.4f;
 	public boolean standing = true;
 	int subframe = 0;
 	public int frame = 0;
@@ -48,14 +49,14 @@ public class Player extends Entity implements Input.KeyListener {
 	public void tick() {
 		if (canInteract) {
 			if (Input.left.isDown) {
-				movement.add(-SPEED, 0f);
+				movement.add(-speed, 0f);
 				facingLeft = true;
 				standing = false;
 				imgupdate = true;
 				subframe++;
 			}
 			if (Input.right.isDown) {
-				movement.add(SPEED, 0f);
+				movement.add(speed, 0f);
 				facingLeft = false;
 				standing = false;
 				imgupdate = true;
@@ -119,16 +120,18 @@ public class Player extends Entity implements Input.KeyListener {
 	@Override
 	public void keyDown(Input.Key key) {
 		//canJump = 1; //comment line when not debugging
-		if (key == Input.jump && canJump > 0 && canInteract) {
-			Sounds.getSound("jump").play(1f, Sounds.calcPitch(1f, 0.3f), 0f);
-			movement.add(0f, -movement.y - JUMPH);
-			canJump--;
-			/*
-			for (PixelParticle pp : pixelify()) {
-				pp.light.set(pp.color);
-				pp.light.a = 0.0775f;
+		if (key == Input.jump && canInteract) {
+			if (canJump > 0) {
+				Sounds.getSound("jump").play(1f, Sounds.calcPitch(1f, 0.3f), 0f);
+				movement.add(0f, -movement.y - jumph);
+				/*
+				for (PixelParticle pp : pixelify()) {
+					pp.light.set(pp.color);
+					pp.light.a = 0.0775f;
+				}
+				*/
 			}
-			*/
+			canJump--;
 		}
 		
 		if (key == Input.down) {

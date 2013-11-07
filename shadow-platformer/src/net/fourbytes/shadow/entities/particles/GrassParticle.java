@@ -37,6 +37,12 @@ public class GrassParticle extends Particle {
 	@Override
 	public void tick() {
 		super.tick();
+
+		light.set(color);
+		light.mul(0.4f);
+		light.a = 0.0775f;
+		light.mul(time / spawntime);
+
 		movement.x = (Shadow.rand.nextFloat()-0.5f)*rec.width * 2f;
 		movement.y = (Shadow.rand.nextFloat()-0.5f)*rec.height * 0.75f;
 	}

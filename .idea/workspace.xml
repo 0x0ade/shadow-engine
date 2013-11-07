@@ -1,55 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="shadow-platformer-desktop:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="4a3d0e09-03f1-4129-864f-72280440ca43" name="Default" comment="Added multiple images EVERYWHERE... &#10;@patrikspengler happy now?">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Block.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Block.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockButton.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockButton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockClock.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockClock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockDissolve.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockDissolve.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockFluid.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockFluid.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGlass.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGlass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrass.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrass.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPlayerLight.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/OptionsMenuLevel.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/PlayerLightParticle.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-android/assets/menus/options/gfx.menu" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-android/assets/menus/options/main.menu" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android-sources.jar" afterPath="$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android-sources.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android.jar" afterPath="$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl-sources.jar" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl-sources.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl.jar" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-natives.jar" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-natives.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar" afterPath="$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/libs/gdx.jar" afterPath="$PROJECT_DIR$/shadow-platformer/libs/gdx.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Background.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Background.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrassTop.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrassTop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockImage.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockImage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLab.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLab.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLadder.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLadder.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPoint.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPush.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPush.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSignBG.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSignBG.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpring.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpring.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockTorch.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockTorch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockType.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockType.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWire.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWire.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Cursor.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Cursor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/GameObject.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/GameObject.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/GrassParticle.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/GrassParticle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/LightSystem.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/LightSystem.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/MobTest.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/MobTest.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Particle.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Particle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/PixelParticle.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/PixelParticle.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Level.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Level.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/RainParticle.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/RainParticle.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/ShadowMap.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/ShadowMap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TypeBlock.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TypeBlock.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TimeDaySystem.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TimeDaySystem.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/assets/shaders/default.frag" afterPath="$PROJECT_DIR$/shadow-platformer-android/assets/shaders/default.frag" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="shadow.iws" />
     <ignored path=".idea/" />
-    <file path="/Dummy.txt" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382209013164" ignored="false" />
-    <file path="/fragment.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381676705194" ignored="false" />
+    <file path="/Dummy.txt" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383842416808" ignored="false" />
+    <file path="/fragment.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383766656557" ignored="false" />
     <file path="/Input.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1380807502912" ignored="false" />
-    <file path="/Camera.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382208490106" ignored="false" />
+    <file path="/Camera.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383682022055" ignored="false" />
     <file path="/Images.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1380807956762" ignored="false" />
     <file path="/MultiObject.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1380807640658" ignored="false" />
     <file path="/PixelParticle.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205292863" ignored="false" />
     <file path="/GameObject.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381609697687" ignored="false" />
-    <file path="/Level.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381681894816" ignored="false" />
-    <file path="/MenuLevel.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381835553441" ignored="false" />
+    <file path="/Level.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383769967789" ignored="false" />
+    <file path="/MenuLevel.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383770825316" ignored="false" />
     <file path="/Sounds.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1380810476779" ignored="false" />
-    <file path="/LightSystem.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382204757883" ignored="false" />
-    <file path="/Shadow.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382012923363" ignored="false" />
+    <file path="/LightSystem.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383597656271" ignored="false" />
+    <file path="/Shadow.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383762147716" ignored="false" />
     <file path="/.gitignore" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1380828499174" ignored="false" />
     <file path="/BlockTorch.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205383081" ignored="false" />
     <file path="/RainParticle.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1381680496809" ignored="false" />
@@ -71,11 +72,30 @@
     <file path="/MobTest.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205227068" ignored="false" />
     <file path="/GrassParticle.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205255866" ignored="false" />
     <file path="/BlockDissolve.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205358414" ignored="false" />
-    <file path="/BlockPoint.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205465916" ignored="false" />
+    <file path="/BlockPoint.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383769940681" ignored="false" />
     <file path="/BlockSpring.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205478722" ignored="false" />
     <file path="/BlockButton.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205490840" ignored="false" />
-    <file path="/BlockSpringTop.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382205534254" ignored="false" />
-    <file path="/BlockGrassTop.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1382208828637" ignored="false" />
+    <file path="/BlockSpringTop.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383769971708" ignored="false" />
+    <file path="/BlockGrassTop.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383770789950" ignored="false" />
+    <file path="/BlurUtil.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383671656754" ignored="false" />
+    <file path="/ScreenshotUtil.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383674467084" ignored="false" />
+    <file path="/Background.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383672978404" ignored="false" />
+    <file path="/OptionsMenuLevel.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383750396588" ignored="false" />
+    <file path="/TitleLevel.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383683415936" ignored="false" />
+    <file path="/main.prop" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383683822184" ignored="false" />
+    <file path="/main.menu" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383684495760" ignored="false" />
+    <file path="/gfx.menu" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383750451132" ignored="false" />
+    <file path="/PauseLevel.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383685018396" ignored="false" />
+    <file path="/BlockPlayerLight.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383767012623" ignored="false" />
+    <file path="/PlayerLightParticle.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383770380879" ignored="false" />
+    <file path="/Player.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383770112916" ignored="false" />
+    <file path="/BlockLadder.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383769958514" ignored="false" />
+    <file path="/Coord.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383770673566" ignored="false" />
+    <file path="$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/com/badlogic/gdx/utils/ObjectMap.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383841456733" ignored="false" />
+    <file path="$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/com/badlogic/gdx/graphics/GLTexture.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383841456733" ignored="false" />
+    <file path="$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/com/badlogic/gdx/graphics/glutils/FrameBuffer.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383841456733" ignored="false" />
+    <file path="$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/com/badlogic/gdx/math/Vector2.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383841456733" ignored="false" />
+    <file path="$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/com/badlogic/gdx/utils/Array.java" changelist="4a3d0e09-03f1-4129-864f-72280440ca43" time="1383841456733" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,93 +156,82 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Camera.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java">
+      <file leaf-file-name="BlockPlayerLight.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPlayerLight.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="246" column="28" selection-start="7234" selection-end="7234" vertical-scroll-proportion="0.0">
+            <state line="55" column="18" selection-start="1397" selection-end="1397" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BlockGrass.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrass.java">
+      <file leaf-file-name="PlayerLightParticle.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/PlayerLightParticle.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="21" column="42" selection-start="531" selection-end="531" vertical-scroll-proportion="0.0">
+            <state line="78" column="23" selection-start="1743" selection-end="1743" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BlockWater.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWater.java">
+      <file leaf-file-name="MathHelper.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/MathHelper.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="22" selection-start="400" selection-end="400" vertical-scroll-proportion="0.0">
+            <state line="4" column="13" selection-start="91" selection-end="91" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BlockSpringTop.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java">
+      <file leaf-file-name="BlockPoint.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPoint.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="46" column="35" selection-start="1156" selection-end="1156" vertical-scroll-proportion="0.0">
+            <state line="52" column="20" selection-start="1148" selection-end="1148" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BlockFluid.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockFluid.java">
+      <file leaf-file-name="Player.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="190" column="47" selection-start="4391" selection-end="4391" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state line="133" column="22" selection-start="2779" selection-end="2779" vertical-scroll-proportion="0.0">
+              <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BlockGrassTop.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="MenuLevel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="199" column="60" selection-start="4788" selection-end="4788" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Shadow.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="191" column="16" selection-start="5665" selection-end="5665" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TimeDaySystem.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TimeDaySystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="32" selection-start="809" selection-end="809" vertical-scroll-proportion="0.5412371">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockGrassTop.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrassTop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="72" column="38" selection-start="2114" selection-end="2114" vertical-scroll-proportion="0.22969188">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockButton.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockButton.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="42" selection-start="658" selection-end="658" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockGlass.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGlass.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="42" selection-start="364" selection-end="364" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockWire.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWire.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="50" column="42" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockSignBG.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSignBG.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="42" selection-start="419" selection-end="419" vertical-scroll-proportion="0.0">
+            <state line="135" column="89" selection-start="3911" selection-end="3911" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -240,7 +249,16 @@
       <file leaf-file-name="Level.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Level.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="65" column="54" selection-start="2086" selection-end="2086" vertical-scroll-proportion="0.0">
+            <state line="300" column="59" selection-start="8038" selection-end="8038" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BlockSpringTop.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="51" column="54" selection-start="1286" selection-end="1286" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -249,16 +267,7 @@
       <file leaf-file-name="Layer.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Layer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="10" column="13" selection-start="289" selection-end="289" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ScreenshotUtil.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/ScreenshotUtil.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="34" selection-start="354" selection-end="354" vertical-scroll-proportion="0.0">
+            <state line="10" column="3" selection-start="316" selection-end="316" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -267,7 +276,7 @@
       <file leaf-file-name="PauseLevel.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/PauseLevel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="27" column="14" selection-start="678" selection-end="678" vertical-scroll-proportion="0.0">
+            <state line="19" column="22" selection-start="431" selection-end="431" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -291,29 +300,29 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockImage.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLadder.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockTorch.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPoint.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpring.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockClock.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockButton.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGlass.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWire.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSignBG.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPush.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrass.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockFluid.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Cursor.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/GrassParticle.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPoint.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPlayerLight.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLadder.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Level.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/PlayerLightParticle.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Coord.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrassTop.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer-android/assets/shaders/default.frag" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TimeDaySystem.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="-2" />
+    <option name="y" value="-3" />
     <option name="width" value="1366" />
-    <option name="height" value="770" />
+    <option name="height" value="771" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -341,7 +350,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -357,6 +365,38 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="shadow-platformer-android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow-platformer-android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shaders" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow-platformer-android" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -678,18 +718,37 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow-platformer-desktop" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
       <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
     <property name="options.lastSelected" value="project.propVCSSupport.Ignored.Files" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.idea" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
@@ -702,6 +761,7 @@
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="net.fourbytes.shadow.entities.particles" />
+      <recent name="net.fourbytes.shadow.blocks" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="net.fourbytes.shadow.utils" />
@@ -939,10 +999,14 @@
       <created>1381840579561</created>
       <updated>1381840579561</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Light system stuff.">
+      <created>1383595719713</created>
+      <updated>1383595719713</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
-  <component name="TodoView" selected-index="5">
+  <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
       <are-packages-shown value="false" />
       <are-modules-shown value="false" />
@@ -963,29 +1027,29 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="-2" width="1366" height="770" extended-state="6" />
-    <editor active="false" />
+    <frame x="0" y="-3" width="1366" height="771" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39871383" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3130016" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33118972" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.329582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.329582" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3296" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32744783" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3130016" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.6902087" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.670418" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31028938" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.6982344" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.30176565" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -993,7 +1057,7 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_NEW_TODO" value="true" />
     <option name="myTodoPanelSettings">
@@ -1031,7 +1095,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added multiple images EVERYWHERE... &#10;@patrikspengler happy now?" />
+    <option name="LAST_COMMIT_MESSAGE" value="Light system stuff." />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1060,6 +1124,7 @@
     <MESSAGE value="Mark some directories as excluded" />
     <MESSAGE value="Protip: Don't get random values inside constructors." />
     <MESSAGE value="Added multiple images EVERYWHERE... &#10;@patrikspengler happy now?" />
+    <MESSAGE value="Light system stuff." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -1101,120 +1166,188 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWire.java">
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/backend/BackendHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="50" column="42" selection-start="1160" selection-end="1160" vertical-scroll-proportion="0.0">
+        <state line="4" column="19" selection-start="122" selection-end="122" vertical-scroll-proportion="0.16438356">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLava.java">
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/MathHelper.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="37" selection-start="359" selection-end="359" vertical-scroll-proportion="0.0">
+        <state line="4" column="13" selection-start="91" selection-end="91" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSignBG.java">
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/GrassParticle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="42" selection-start="419" selection-end="419" vertical-scroll-proportion="0.0">
+        <state line="43" column="36" selection-start="1123" selection-end="1123" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockImage.java">
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Cursor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="7" selection-start="134" selection-end="134" vertical-scroll-proportion="0.0">
+        <state line="145" column="4" selection-start="3366" selection-end="3366" vertical-scroll-proportion="-0.369863">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPush.java">
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Coord.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="100" column="42" selection-start="2297" selection-end="2297" vertical-scroll-proportion="0.0">
+        <state line="29" column="8" selection-start="574" selection-end="574" vertical-scroll-proportion="0.54404145">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLadder.java">
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/PlayerLightParticle.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="23" column="8" selection-start="486" selection-end="486" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="21" column="42" selection-start="531" selection-end="531" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockTorch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="7" selection-start="393" selection-end="393" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWater.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="22" selection-start="400" selection-end="400" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="46" column="35" selection-start="1156" selection-end="1156" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPoint.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="42" selection-start="758" selection-end="758" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockFluid.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="190" column="47" selection-start="4391" selection-end="4391" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpring.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="58" column="42" selection-start="1317" selection-end="1317" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockClock.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="42" selection-start="1259" selection-end="1259" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="246" column="28" selection-start="7234" selection-end="7234" vertical-scroll-proportion="0.0">
+        <state line="78" column="23" selection-start="1743" selection-end="1743" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrassTop.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="38" selection-start="2114" selection-end="2114" vertical-scroll-proportion="0.22969188">
+        <state line="135" column="89" selection-start="3911" selection-end="3911" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="170" column="10" selection-start="5170" selection-end="5170" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLadder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="36" column="57" selection-start="855" selection-end="855" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-7-openjdk-i386/src.zip!/java/lang/StrictMath.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="32" selection-start="3767" selection-end="3767" vertical-scroll-proportion="-1.650259" />
+      </provider>
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-7-openjdk-i386/src.zip!/java/lang/Math.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="120" column="28" selection-start="5366" selection-end="5366" vertical-scroll-proportion="-3.4766839" />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/com/badlogic/gdx/math/MathUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="52" column="41" selection-start="1964" selection-end="1964" vertical-scroll-proportion="-7.2037535" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="199" column="60" selection-start="4788" selection-end="4788" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer-android/assets/shaders/default.frag">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="4" column="24" selection-start="77" selection-end="77" vertical-scroll-proportion="0.10380623">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="191" column="16" selection-start="5665" selection-end="5665" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TimeDaySystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="32" selection-start="809" selection-end="809" vertical-scroll-proportion="0.5412371">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>shadow-platformer-desktop:jar</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>Android</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>Android 2.1 Platform</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>shadow-platformer</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
   </component>
 </project>
 

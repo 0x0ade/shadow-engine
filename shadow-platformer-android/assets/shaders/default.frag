@@ -4,7 +4,7 @@ uniform sampler2D u_texture;
 
 setting vec2 resolution;
 
-LOWP varying vec4 v_color;
+varying vec4 v_color;
 varying vec2 v_texCoord;
 
 void main() {

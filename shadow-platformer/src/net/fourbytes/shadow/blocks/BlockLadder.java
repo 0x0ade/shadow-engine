@@ -32,9 +32,9 @@ public class BlockLadder extends BlockType {
 			Player p = (Player) e;
 			
 			if (Input.up.isDown) {
-				p.movement.add(0, -p.movement.y - p.JUMPH * 0.35f);
+				p.movement.add(0, -p.movement.y - p.jumph * 0.35f);
 			} else if (Input.down.isDown) {
-				p.movement.add(0, -p.movement.y + p.JUMPH * 0.35f);
+				p.movement.add(0, -p.movement.y + p.jumph * 0.35f);
 			} else {
 				p.movement.add(0, -p.movement.y * 0.75f);
 			}

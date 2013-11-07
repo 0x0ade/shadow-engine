@@ -3,6 +3,7 @@ package net.fourbytes.shadow.blocks;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Entity;
@@ -132,7 +133,7 @@ public class BlockGrassTop extends BlockType {
 			sprite.setSize(block.rec.width + block.renderoffs.width, -(block.rec.height + block.renderoffs.height) * height[i]);
 			
 			int offsetframe = frame + offsets[i];
-			float offs = (float)Math.sin(offsetframe/(1.3f*speed1[i]))/8f + ((float)Math.cos(offsetframe/(1.2f*speed2[i]))/8f);
+			float offs = MathUtils.sin(offsetframe / (1.3f * speed1[i]))/8f + (MathUtils.cos(offsetframe/(1.2f*speed2[i]))/8f);
 			offs *= 1.15f;
 			offs *= factors[i];
 			float[] verts = sprite.getVertices();

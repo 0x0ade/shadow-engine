@@ -298,7 +298,7 @@ public class Level {
 
 			font.setScale(Shadow.vieww/Shadow.dispw, -Shadow.viewh/Shadow.disph);
 			
-			font.draw(Shadow.spriteBatch, "x"+player.POINTS, xx4, yy4);
+			font.draw(Shadow.spriteBatch, "x"+player.points, xx4, yy4);
 		}
 		
 	}

@@ -79,9 +79,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static NetStream client;
 	public static NetStream server;
 
-	public static boolean useFB = false;
-	public static FrameBuffer frameBuffer;
-
 	public static boolean record = false;
 	public static String recordDirName;
 
@@ -136,10 +133,17 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			return child;
 		}
 	}
-	
+
+	public void setupOptions() {
+		options = Gdx.app.getPreferences(getClass().getName()+".settings");
+
+		options.putBoolean("gfx.blur", options.getBoolean("gfx.blur", false));
+		options.putBoolean("gfx.blur.twice", options.getBoolean("gfx.blur.twice", false));
+	}
+
 	@Override
 	public void create() {
-		options = Gdx.app.getPreferences(getClass().getName()+".settings");
+		setupOptions();
 
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);
@@ -161,28 +165,28 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			}
 		};
 		
-		Thread.currentThread().setDefaultUncaughtExceptionHandler(eh);
+		Thread.currentThread().setUncaughtExceptionHandler(eh);
 		Thread.setDefaultUncaughtExceptionHandler(eh);
 		
 		dispw = Gdx.graphics.getWidth();
 		disph = Gdx.graphics.getHeight();
 		
 		if (!isAndroid || isOuya) {
-			viewmode = 0x02;
+			viewmode = ViewModes.fixedw;
 		} else {
-			viewmode = 0x01;
+			viewmode = ViewModes.fixedh;
 		}
-		viewmode = 0x04;
+		viewmode = ViewModes.auto;
 		
 		//Alternate values for view: vieww = 12.5f; viewh = 15f;
 		switch (viewmode) {
-		case 0x00:
+		case ViewModes.dynamic:
 			vieww = dispw/viewff;
 			viewh = disph/viewff;
-		case 0x01:
+		case ViewModes.fixedh:
 			vieww = dispw/viewff;
 			break;
-		case 0x02:
+		case ViewModes.fixedw:
 			viewh = disph/viewff;
 			break;
 		default:
@@ -240,10 +244,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			}
 		}
 
-		if (useFB) {
-			frameBuffer.begin();
-		}
-
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		spriteBatch.setColor(1f, 1f, 1f, 1f);
@@ -255,19 +255,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		}
 		cam.render();
 		ModLoader.postRender();
-
-		if (useFB) {
-			frameBuffer.end();
-
-			spriteBatch.disableBlending();
-			spriteBatch.setProjectionMatrix(cam.cam.combined);
-			spriteBatch.begin();
-			spriteBatch.setColor(1f, 1f, 1f, 1f);
-			spriteBatch.draw(frameBuffer.getColorBufferTexture(),
-							cam.camrec.x, cam.camrec.y, cam.camrec.width, cam.camrec.height);
-			spriteBatch.end();
-			spriteBatch.enableBlending();
-		}
 
 		if (record) {
 			ScreenshotUtil.pushFrame();
@@ -412,19 +399,19 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			disph = Gdx.graphics.getHeight();
 
 			switch (viewmode) {
-			case 0x00:
+			case ViewModes.dynamic:
 				break;
-			case 0x01:
+			case ViewModes.fixedh:
 				viewh = vieww*disph/dispw;
 				break;
-			case 0x02:
+			case ViewModes.fixedw:
 				vieww = viewh*dispw/disph;
 				break;
-			case 0x03:
+			case ViewModes.fixed:
 				vieww = dispw/viewff;
 				viewh = disph/viewff;
 				break;
-			case 0x04:
+			case ViewModes.auto:
 				vieww = dispw/viewff;
 				viewh = disph/viewff;
 				if (isAndroid || (dispw/viewff >= 21.75f && disph/viewff >= 18f)) {
@@ -442,11 +429,21 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 
 			ShaderHelper.set("resolution", dispw, disph);
 
-			if (frameBuffer != null) {
-				frameBuffer.dispose();
+			if (Camera.tmpFB != null) {
+				Camera.tmpFB.dispose();
 			}
-			frameBuffer = new FrameBuffer(Pixmap.Format.RGB888, (int)dispw, (int)disph, false);
-			frameBuffer.getColorBufferTexture().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);
+			Camera.tmpFB = new FrameBuffer(Pixmap.Format.RGB565,
+					(int)dispw, (int)disph, false);
+			Camera.tmpFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear,
+					Texture.TextureFilter.Linear);
+
+			if (Camera.blurFB != null) {
+				Camera.blurFB.dispose();
+			}
+			Camera.blurFB = new FrameBuffer(Pixmap.Format.RGB565,
+					(int)(dispw/Camera.blursize), (int)(disph/Camera.blursize), false);
+			Camera.blurFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear,
+					Texture.TextureFilter.Linear);
 
 			if (LightSystem.lightFB != null) {
 				LightSystem.lightFB.dispose();

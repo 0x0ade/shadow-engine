@@ -20,8 +20,8 @@ public class TitleLevel extends MenuLevel {
 			Shadow.level = new Level("test");
 			Shadow.cam.firsttick = true;
 		}}));
-		items.add(new MenuItem(this, "Setup Controller", new Runnable(){public void run(){
-			Shadow.level = new SetupControllerLevel(TitleLevel.this);
+		items.add(new MenuItem(this, "Options", new Runnable(){public void run(){
+			Shadow.level = new OptionsMenuLevel(TitleLevel.this);
 			Shadow.cam.firsttick = true;
 		}}));
 		items.add(new MenuItem(this, "Exit Game", new Runnable(){public void run(){

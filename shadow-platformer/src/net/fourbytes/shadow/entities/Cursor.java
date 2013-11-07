@@ -135,7 +135,7 @@ public class Cursor extends Entity {
 	public void mmb(TouchPoint point, boolean isDown) {
 		downtick++;
 		if (isDown && (!mmb || downtick > 20)) {
-			Block b = BlockType.getInstance("BlockWater", pos.x, pos.y, layer);
+			Block b = BlockType.getInstance("BlockPlayerLight", pos.x, pos.y, layer);
 			b.layer.add(b);
 		}
 		mmb = isDown;

@@ -1,8 +1,11 @@
 package net.fourbytes.shadow;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -27,6 +30,13 @@ public class Camera implements Input.KeyListener {
 
 	public Rectangle camrec = new Rectangle(0f, 0f, 0f, 0f);
 	public Vector2 offs = new Vector2(0f, 0f);
+
+	public static FrameBuffer tmpFB;
+	public static FrameBuffer blurFB;
+	/**
+	 * Requires Shadow.resize() to update FB.
+	 */
+	public static float blursize = 2f;
 
 	public Camera() {
 		this.cam = new OrthographicCamera(Shadow.vieww, -Shadow.viewh);
@@ -151,7 +161,6 @@ public class Camera implements Input.KeyListener {
 		}
 
 		Shadow.spriteBatch.flush();
-
 		Shadow.spriteBatch.setProjectionMatrix(Input.cam.combined);
 
 		Input.render();
@@ -169,12 +178,79 @@ public class Camera implements Input.KeyListener {
 
 	public void renderLevel(Level level) {
 		if (!(level instanceof MenuLevel)) {
+			if (Shadow.options.getBoolean("gfx.blur", true) &&
+					//!(level instanceof MenuLevel) && Shadow.level instanceof MenuLevel) {
+					!this.level) {
+				if (Shadow.options.getBoolean("gfx.blur.twice", true)) {
+					tmpFB.begin();
+				} else {
+					blurFB.begin();
+				}
+				Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
+				Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+				Shadow.spriteBatch.flush();
+				Shadow.spriteBatch.disableBlending();
+				Shadow.spriteBatch.enableBlending();
+			}
+
 			for (Layer ll : level.layers.values()) {
 				renderLayer(ll);
 			}
 
 			level.lights.updateLightBounds();
 			level.lights.renderFBO();
+
+			if (level.hasvoid) {
+				Image levoid = Images.getImage("void");
+				objrec.set(camrec.x, level.tiledh - 2, 1024, 1);
+				levoid.setScaleY(-1f);
+				//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
+				levoid.setPosition(objrec.x, objrec.y + objrec.height*2);
+				levoid.setSize(objrec.width, objrec.height + objrec.height);
+				levoid.draw(Shadow.spriteBatch, 1f);
+
+				Shadow.spriteBatch.disableBlending();
+				float fy = level.tiledh;
+				if (camrec.y > fy) {
+					fy = camrec.y;
+				}
+				objrec.set(camrec.x, fy, camrec.width, -camrec.height);
+				Image lewhite = Images.getImage("white");
+				lewhite.setColor(0f, 0f, 0f, 1f);
+				lewhite.setPosition(objrec.x, objrec.y);
+				lewhite.setSize(1f, 1f);
+				lewhite.setScale(objrec.width, objrec.height);
+				lewhite.draw(Shadow.spriteBatch, 1f);
+				Shadow.spriteBatch.enableBlending();
+			}
+
+			if (Shadow.options.getBoolean("gfx.blur", true) &&
+					!this.level) {
+				Shadow.spriteBatch.flush();
+				if (Shadow.options.getBoolean("gfx.blur.twice", true)) {
+					tmpFB.end();
+				} else {
+					blurFB.end();
+				}
+
+				Shadow.spriteBatch.disableBlending();
+
+				if (Shadow.options.getBoolean("gfx.blur.twice", true)) {
+					blurFB.begin();
+					Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
+					Shadow.spriteBatch.draw(tmpFB.getColorBufferTexture(),
+							camrec.x, camrec.y, camrec.width, camrec.height);
+					Shadow.spriteBatch.flush();
+					blurFB.end();
+				}
+
+				Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
+				Shadow.spriteBatch.draw(blurFB.getColorBufferTexture(),
+						camrec.x, camrec.y, camrec.width, camrec.height);
+
+				Shadow.spriteBatch.enableBlending();
+			}
+
 		}
 
 		if (this.level) {
@@ -191,29 +267,6 @@ public class Camera implements Input.KeyListener {
 			level.renderImpl();
 		}
 
-		if (level.hasvoid) {
-			Image levoid = Images.getImage("void");
-			objrec.set(camrec.x, level.tiledh - 2, 1024, 1);
-			levoid.setScaleY(-1f);
-			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-			levoid.setPosition(objrec.x, objrec.y + objrec.height*2);
-			levoid.setSize(objrec.width, objrec.height + objrec.height);
-			levoid.draw(Shadow.spriteBatch, 1f);
-
-			Shadow.spriteBatch.disableBlending();
-			float fy = level.tiledh;
-			if (camrec.y > fy) {
-				fy = camrec.y;
-			}
-			objrec.set(camrec.x, fy, camrec.width, -camrec.height);
-			Image lewhite = Images.getImage("white");
-			lewhite.setColor(0f, 0f, 0f, 1f);
-			lewhite.setPosition(objrec.x, objrec.y);
-			lewhite.setSize(1f, 1f);
-			lewhite.setScale(objrec.width, objrec.height);
-			lewhite.draw(Shadow.spriteBatch, 1f);
-			Shadow.spriteBatch.enableBlending();
-		}
 	}
 
 	public void renderLayer(Layer l) {

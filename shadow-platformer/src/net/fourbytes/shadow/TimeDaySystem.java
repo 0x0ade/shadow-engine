@@ -11,8 +11,8 @@ public class TimeDaySystem {
 	public float fullday = 60f * 10f;
 	//public float fullday = 14f;
 	public float day = 0;
-	//public float delta = fullday/2f - fullday/14f;
-	public float delta = 0f;
+	public float delta = fullday/2f - fullday/14f;
+	//public float delta = 0f;
 	
 	public static Array<Color> colors = new Array<Color>();
 	public static Array<Color> colorsbg = new Array<Color>();
@@ -20,10 +20,10 @@ public class TimeDaySystem {
 		colors.add(new Color(0.125f, 0.25f, 0.5f, 1f));
 		colors.add(new Color(0.125f, 0.25f, 0.5f, 1f));
 		colors.add(new Color(0.125f, 0.25f, 0.5f, 1f));
-		colors.add(new Color(0.7f, 0.6f, 0.5f, 1f));
+		colors.add(new Color(0.9f, 0.85f, 0.8f, 1f));
 		colors.add(new Color(1f, 1f, 1f, 1f));
 		colors.add(new Color(1f, 1f, 1f, 1f));
-		colors.add(new Color(0.7f, 0.6f, 0.5f, 1f));
+		colors.add(new Color(0.9f, 0.85f, 0.8f, 1f));
 		
 		colorsbg.add(new Color(0f, 0.125f, 0.3f, 1f));
 		colorsbg.add(new Color(0f, 0.125f, 0.3f, 1f));

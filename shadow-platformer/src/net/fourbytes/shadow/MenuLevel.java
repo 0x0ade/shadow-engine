@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -16,11 +17,11 @@ import net.fourbytes.shadow.utils.Garbage;
 public abstract class MenuLevel extends Level implements KeyListener {
 	
 	public static class MenuItem {
-		MenuLevel menu;
-		String text;
-		Runnable action;
-		boolean mouseDown = false;
-		Rectangle mouser = new Rectangle();
+		public MenuLevel menu;
+		public String text;
+		public Runnable action;
+		public boolean mouseDown = false;
+		public Rectangle mouser = new Rectangle();
 		public MenuItem(MenuLevel menu, String text, Runnable action) {
 			this.menu = menu;
 			this.text = text;
@@ -28,16 +29,16 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		}
 	}
 	
-	Array<MenuItem> items = new Array<MenuItem>();
-	MenuLevel parent;
-	MenuItem current;
-	Level bglevel;
-	boolean bgpaused = true;
-	Color dimm = new Color(0f, 0f, 0f, 0.3f);
-	float stepspeed = 0.9f;
-	float step = 0f;
-	int logostep = 0;
-	boolean showtitle = true;
+	public Array<MenuItem> items = new Array<MenuItem>();
+	public MenuLevel parent;
+	public MenuItem current;
+	public Level bglevel;
+	public boolean bgpaused = true;
+	public Color dimm = new Color(0f, 0f, 0f, 0.3f);
+	public float stepspeed = 0.9f;
+	public float step = 0f;
+	public int logostep = 0;
+	public boolean showtitle = true;
 	
 	public MenuLevel() {
 		this(null);
@@ -193,11 +194,11 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				logo = Images.getImage("logo");
 			}
 			logo.setScale(font.getScaleX(), font.getScaleY());
-			float possibruu = (float)Math.sin(logostep/16f)/8f;
+			float possibruu = MathUtils.sin(logostep / 16f)/8f;
 			logo.setPosition(vp.x + vp.width - logo.getWidth()*logo.getScaleX()
 					- x1*32f - 0.125f + Shadow.cam.offs.x*2f,
 					vp.y - logo.getHeight()*logo.getScaleY()
-							- y1*32f + (float)Math.sin(logostep/32f)/8f + possibruu - 0.125f + Shadow.cam.offs.y*2f);
+							- y1*32f + MathUtils.sin(logostep/32f)/8f + possibruu - 0.125f + Shadow.cam.offs.y*2f);
 			logo.draw(Shadow.spriteBatch, 1f);
 		}
 
@@ -293,7 +294,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				//index = 0;
 			}
 			current = items.get(index);
-			step += (oindex - index)*0.75f;
+			step += (oindex - index)*0.875f;
 		}
 		if (key == Input.enter) {
 			if (current == null) {
