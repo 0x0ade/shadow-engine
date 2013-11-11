@@ -10,20 +10,20 @@ import net.fourbytes.shadow.network.NetStream;
  *A chunk contains an area of {@link GameObject}s beginning at the given position with given size from a given map.
  * It's containing it's children as Data for saving space and avoiding infinite recursion / bi-directional references when serializing. 
  */
-public class Chunk extends Data {
+public class DataChunk extends Data {
 	
-	public static float size = 8;
+	public static int size = 8;
 	
 	public int x;
 	public int y;
 	
 	public Array<MapObject> objects = new Array<MapObject>();
 	
-	protected Chunk() {
+	protected DataChunk() {
 		this(0, 0);
 	}
 	
-	protected Chunk(int x, int y) {
+	protected DataChunk(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
@@ -38,8 +38,8 @@ public class Chunk extends Data {
 	 * @param level Level to get the chunk from
 	 * @return Chunk containing all game objects in area of (x, y) to (x+size, y+size)
 	 */
-	public static Chunk create(int x, int y, Level level) {
-		Chunk chunk = new Chunk(x, y);
+	public static DataChunk create(int x, int y, Level level) {
+		DataChunk chunk = new DataChunk(x, y);
 		tmpcb.set(x, y, size, size);
 		
 		for (Entity e : level.mainLayer.entities) {

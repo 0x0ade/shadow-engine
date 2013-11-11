@@ -3,7 +3,6 @@ package net.fourbytes.shadow;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL10;
@@ -22,10 +21,7 @@ import net.fourbytes.shadow.mod.ModLoader;
 import net.fourbytes.shadow.network.NetClient;
 import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
-import net.fourbytes.shadow.utils.Garbage;
-import net.fourbytes.shadow.utils.ScreenshotUtil;
-import net.fourbytes.shadow.utils.ShaderHelper;
-import net.fourbytes.shadow.utils.ViewModes;
+import net.fourbytes.shadow.utils.*;
 import net.fourbytes.shadow.utils.backend.BackendHelper;
 
 import java.io.File;
@@ -38,8 +34,6 @@ import java.util.Calendar;
 import java.util.Random;
 
 public final class Shadow implements ApplicationListener, InputProcessor, KeyListener {
-
-	public static Preferences options;
 
 	public static Random rand = new Random();
 	
@@ -134,16 +128,9 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		}
 	}
 
-	public void setupOptions() {
-		options = Gdx.app.getPreferences(getClass().getName()+".settings");
-
-		options.putBoolean("gfx.blur", options.getBoolean("gfx.blur", false));
-		options.putBoolean("gfx.blur.twice", options.getBoolean("gfx.blur.twice", false));
-	}
-
 	@Override
 	public void create() {
-		setupOptions();
+		Options.setup();
 
 		Gdx.input.setCatchBackKey(true);
 		Gdx.input.setCatchMenuKey(true);

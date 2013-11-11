@@ -167,7 +167,7 @@ public class Level {
 		for (Entity entity : mainLayer.entities) {
 			if (entity == null) continue;
 			if (entity instanceof Particle) {
-				if (!((Particle)entity).isStatic) {
+				if (!((Particle)entity).interactive) {
 					particles.add((Particle)entity);
 					if (particle >= maxParticles) {
 						mainLayer.remove(particles.get(0));

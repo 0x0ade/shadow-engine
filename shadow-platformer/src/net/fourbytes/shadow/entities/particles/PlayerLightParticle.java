@@ -25,6 +25,7 @@ public class PlayerLightParticle extends Particle implements Input.KeyListener {
 
 	public PlayerLightParticle(Player player, Color color) {
 		super(new Vector2(player.pos), player.layer, -1);
+		this.interactive = true;
 		this.player = player;
 		this.color = new Color(color);
 

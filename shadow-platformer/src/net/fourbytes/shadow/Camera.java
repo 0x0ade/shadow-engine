@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.utils.Options;
 
 public class Camera implements Input.KeyListener {
 	
@@ -178,10 +179,10 @@ public class Camera implements Input.KeyListener {
 
 	public void renderLevel(Level level) {
 		if (!(level instanceof MenuLevel)) {
-			if (Shadow.options.getBoolean("gfx.blur", true) &&
+			if (Options.getBoolean("gfx.blur", true) &&
 					//!(level instanceof MenuLevel) && Shadow.level instanceof MenuLevel) {
 					!this.level) {
-				if (Shadow.options.getBoolean("gfx.blur.twice", true)) {
+				if (Options.getBoolean("gfx.blur.twice", true)) {
 					tmpFB.begin();
 				} else {
 					blurFB.begin();
@@ -224,10 +225,10 @@ public class Camera implements Input.KeyListener {
 				Shadow.spriteBatch.enableBlending();
 			}
 
-			if (Shadow.options.getBoolean("gfx.blur", true) &&
+			if (Options.getBoolean("gfx.blur", true) &&
 					!this.level) {
 				Shadow.spriteBatch.flush();
-				if (Shadow.options.getBoolean("gfx.blur.twice", true)) {
+				if (Options.getBoolean("gfx.blur.twice", true)) {
 					tmpFB.end();
 				} else {
 					blurFB.end();
@@ -235,7 +236,7 @@ public class Camera implements Input.KeyListener {
 
 				Shadow.spriteBatch.disableBlending();
 
-				if (Shadow.options.getBoolean("gfx.blur.twice", true)) {
+				if (Options.getBoolean("gfx.blur.twice", true)) {
 					blurFB.begin();
 					Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
 					Shadow.spriteBatch.draw(tmpFB.getColorBufferTexture(),
@@ -290,7 +291,7 @@ public class Camera implements Input.KeyListener {
 			if (go == null) continue;
 			go.preRender();
 
-			if (!Shadow.options.getBoolean("gfx.shadows", true)) {
+			if (!Options.getBoolean("gfx.shadows", true)) {
 				continue;
 			}
 

@@ -10,16 +10,16 @@ public class Coord {
 		return get((int) x, (int) y);
 	}
 	
-	public static int[] getXY(long l) {
-		return new int[] {getX(l), getY(l)};
+	public static int[] getXY(long c) {
+		return new int[] {getX(c), getY(c)};
 	}
 	
-	public static int getX(long l) {
-		return (int) (l >> 32);
+	public static int getX(long c) {
+		return (int) (c >> 32);
 	}
 	
-	public static int getY(long l) {
-		return (int) (l);
+	public static int getY(long c) {
+		return (int) (c);
 	}
 	
 	/**
@@ -31,6 +31,22 @@ public class Coord {
 			x++;
 		}
 		return x;
+	}
+
+	public static long mul(long c, int x) {
+		return mul(c, x, x);
+	}
+
+	public static long mul(long c, int x, int y) {
+		return Coord.get(Coord.getX(c)*x, Coord.getY(c)*y);
+	}
+
+	public static long div(long c, int x) {
+		return div(c, x, x);
+	}
+
+	public static long div(long c, int x, int y) {
+		return Coord.get(Coord.getX(c)/x, Coord.getY(c)/y);
 	}
 	
 }

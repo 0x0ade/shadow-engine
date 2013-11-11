@@ -1,13 +1,6 @@
 package net.fourbytes.shadow;
 
-import java.util.Vector;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
-
-import net.fourbytes.shadow.Input.Key;
-import net.fourbytes.shadow.map.Chunk;
-import net.fourbytes.shadow.map.MapObject;
 import net.fourbytes.shadow.map.ShadowMap;
 
 public class PauseLevel extends TitleLevel {

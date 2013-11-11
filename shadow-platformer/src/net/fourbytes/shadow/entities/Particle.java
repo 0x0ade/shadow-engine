@@ -7,11 +7,11 @@ import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Layer;
 
 public abstract class Particle extends Entity {
-	
+
 	public float time = 0;
 	public float spawntime = 0;
 	public boolean fade = false;
-	public static boolean isStatic = false;
+	public boolean interactive = false;
 
 	public Particle(Vector2 position, Layer layer, int time) {
 		super(position, layer);

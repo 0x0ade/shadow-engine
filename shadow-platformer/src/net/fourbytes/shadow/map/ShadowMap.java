@@ -45,7 +45,7 @@ import java.util.zip.GZIPOutputStream;
  */
 public class ShadowMap {
 
-	public LongMap<Chunk> chunks = new LongMap<Chunk>();
+	public LongMap<DataChunk> chunks = new LongMap<DataChunk>();
 	public long playerchunk;
 
 	public ObjectMap<String, Object> params = new ObjectMap<String, Object>();
@@ -194,7 +194,7 @@ public class ShadowMap {
 	/**
 	 * Temporarily loads a ShadowMap into memory. Doesn't create a level.
 	 * @param file File to load map from.
-	 * @return ShadowMap containing {@link Chunk}s containing {@link MapObject}s NOT {@link GameObject}s, or null when failed.
+	 * @return ShadowMap containing {@link DataChunk}s containing {@link MapObject}s NOT {@link GameObject}s, or null when failed.
 	 */
 	public static ShadowMap loadFile(FileHandle file) {
 		ShadowMap map = null;
@@ -224,7 +224,7 @@ public class ShadowMap {
 			}
 		}
 
-		for (Chunk chunk : chunks.values()) {
+		for (DataChunk chunk : chunks.values()) {
 			convert(chunk, level, true);
 		}
 	}
@@ -237,7 +237,7 @@ public class ShadowMap {
 	 * @param add Add the result of conversion to level?
 	 * @return Result of conversion. Note: The returned {@link Array} will be reused for further converts!
 	 */
-	public Array<GameObject> convert(Chunk chunk, Level level, boolean add) {
+	public Array<GameObject> convert(DataChunk chunk, Level level, boolean add) {
 		gos.clear();
 		for (MapObject mo : chunk.objects) {
 			GameObject go = convert(mo, level);
@@ -264,7 +264,7 @@ public class ShadowMap {
 	/**
 	 * Creates a ShadowMap from a level to save afterwards.
 	 * @param level Level to get data from.
-	 * @return ShadowMap containing {@link Chunk}s containing {@link MapObject}s converted from 
+	 * @return ShadowMap containing {@link DataChunk}s containing {@link MapObject}s converted from
 	 * {@link GameObject}s of the level.
 	 */
 	public static ShadowMap createFrom(Level level) {
@@ -295,12 +295,12 @@ public class ShadowMap {
 	
 	protected static void add0(ShadowMap map, GameObject go) {
 		MapObject mo = convert(go);
-		long c = Coord.get((int)(mo.x / Chunk.size), (int)(mo.y / Chunk.size));
-		Chunk chunk = map.chunks.get(c);
+		long c = Coord.get((int)(mo.x / DataChunk.size), (int)(mo.y / DataChunk.size));
+		DataChunk chunk = map.chunks.get(c);
 		if (chunk == null) {
-			chunk = new Chunk();
-			chunk.x = (int)(mo.x / Chunk.size);
-			chunk.y = (int)(mo.y / Chunk.size);
+			chunk = new DataChunk();
+			chunk.x = (int)(mo.x / DataChunk.size);
+			chunk.y = (int)(mo.y / DataChunk.size);
 			map.chunks.put(c, chunk);
 		}
 		if (go instanceof Player) {

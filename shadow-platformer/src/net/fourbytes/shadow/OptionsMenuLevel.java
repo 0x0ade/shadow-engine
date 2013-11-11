@@ -2,6 +2,7 @@ package net.fourbytes.shadow;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import net.fourbytes.shadow.utils.Options;
 
 import java.lang.reflect.Constructor;
 
@@ -67,16 +68,15 @@ public class OptionsMenuLevel extends MenuLevel {
 				}));
 			}
 
-			//TODO bool / boolean
 			if (type.equals("bool") || type.equals("boolean")) {
-				boolean value = Shadow.options.getBoolean(args[0], Boolean.parseBoolean(args[1]));
+				boolean value = Options.getBoolean(args[0], Boolean.parseBoolean(args[1]));
 				final MenuItem mi = new MenuItem(this, text+": "+(value?"Yes":"No"), null);
 				Runnable run = new Runnable() {
 					public void run() {
-						boolean value = Shadow.options.getBoolean(args[0], Boolean.parseBoolean(args[1]));
+						boolean value = Options.getBoolean(args[0], Boolean.parseBoolean(args[1]));
 						value = !value;
-						Shadow.options.putBoolean(args[0], value);
-						Shadow.options.flush();
+						Options.putBoolean(args[0], value);
+						Options.flush();
 						mi.text = text+": "+(value?"Yes":"No");
 					}
 				};

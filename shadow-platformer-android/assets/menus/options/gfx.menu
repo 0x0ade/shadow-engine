@@ -1,2 +1,3 @@
+boolean gfx.vsync;true Enable VSync
 boolean gfx.blur;false Pause Menu blur
 boolean gfx.blur.twice;false HQ Pause Menu blur
