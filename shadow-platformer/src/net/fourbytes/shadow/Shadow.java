@@ -57,8 +57,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static int frames = 0;
 	public static long lastfmicro = 0;
 	public static int fps = 0;
-	public static int eframes = 0;
-	public static long elastfmicro = 0;
 	public static int efps = 0;
 	
 	public static boolean isAndroid = false;
@@ -250,24 +248,16 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		long time = System.currentTimeMillis();
 		
 		frames++;
-		eframes++;
 		if (lastfmicro == 0) {
 			lastfmicro = time;
 		}
-		if (elastfmicro == 0) {
-			elastfmicro = time;
-		}
-		
 		if (time - lastfmicro >= 1000) {
 			lastfmicro = time;
 			fps = frames;
 			frames = 0;
 		}
-		if (time - elastfmicro >= 100) {
-			elastfmicro = time;
-			efps = eframes*10;
-			eframes = 0;
-		}
+
+		efps = (int)(1f/Gdx.graphics.getDeltaTime());
 	}
 	
 	public void subtick() {
