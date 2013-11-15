@@ -214,6 +214,18 @@ public final class ControllerHelper implements ControllerListener {
 			map(Input.enter, new ControllerButton(controller, 14));
 			map(Input.androidBack, new ControllerButton(controller, 13));
 		}
+		if ((os.equals("linux") || os.equals("unix")) && controller.getName().contains("Sanmos TWIN SHOCK")) {
+			System.out.println("Automapping Sanmos TWIN SHOCK on Linux...");
+			//TODO Update bindings
+			map(Input.up, new ControllerAxis(controller, 1, true));
+			map(Input.down, new ControllerAxis(controller, 1, false));
+			map(Input.left, new ControllerAxis(controller, 0, true));
+			map(Input.right, new ControllerAxis(controller, 0, false));
+			map(Input.jump, new ControllerButton(controller, 2));
+			map(Input.pause, new ControllerButton(controller, 11));
+			map(Input.enter, new ControllerButton(controller, 2));
+			map(Input.androidBack, new ControllerButton(controller, 3));
+		}
 		if (Ouya.ID.equals(controller.getName())) {
 			System.out.println("Automapping Ouya controller...");
 			//TODO Update bindings
