@@ -282,15 +282,16 @@ public abstract class BlockFluid extends BlockType {
 	@Override
 	public void collide(Entity e) {
 		e.movement.scl(0.8f);
-		e.movement.y -= 0.02f;
+		e.movement.y = 0.01f;
 		if (e instanceof Player) {
 			((Player)e).canJump = ((Player)e).maxJump;
-		}
-		if (e instanceof Player && Input.down.isDown) {
-			e.movement.y += 0.03f;
-		}
-		if (e instanceof Player && Input.up.isDown) {
-			e.movement.y -= 0.02f;
+
+			if (Input.down.isDown) {
+				e.movement.y = 0.14f;
+			}
+			if (Input.up.isDown) {
+				e.movement.y = -0.14f;
+			}
 		}
 	}
 	
