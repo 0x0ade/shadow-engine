@@ -6,13 +6,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntIntMap;
 import com.badlogic.gdx.utils.LongArray;
-import net.fourbytes.shadow.*;
+import net.fourbytes.shadow.Block;
+import net.fourbytes.shadow.Coord;
+import net.fourbytes.shadow.Level;
+import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
 import net.fourbytes.shadow.mod.ModLoader;
-import net.fourbytes.shadow.utils.MathHelper;
 
 import java.util.Random;
 
@@ -112,8 +114,8 @@ public class GenLevel extends Level {
 			//TODO better generation
 
 			xHeight.put(x, xHeight.get(x, (int)(
-					3f*MathUtils.sinDeg(x+rand.nextInt(24)-12)
-							- 6f*MathUtils.cosDeg(x*0.25f+rand.nextInt(8)-4)
+					5f*MathUtils.sinDeg(x+rand.nextInt(24)-12)
+							- 4f*MathUtils.cosDeg(x*0.25f+rand.nextInt(8)-4)
 							+ 2f*MathUtils.sinDeg(x*2f+rand.nextInt(32)-16)
 							- 4f*MathUtils.cosDeg(MathUtils.sinDeg(x*0.75f+rand.nextInt(48)-28)*90f)
 			) + 7));
@@ -143,8 +145,8 @@ public class GenLevel extends Level {
 				if (cangen) {
 					generateTile(xx, x, y, 1);
 				}
-				/*//Add / remove /* on beginning of line to disable / enable debugging.
-				if (y == xHeight.get(x/xSmooth, 0)) {
+				//Add / remove /* on beginning of line to disable / enable debugging.
+				if (y == xHeight.get(x, 0)) {
 					Block block = BlockType.getInstance("BlockDebug", x, y, layers.get(1));
 					block.alpha = 0.25f;
 					block.blending = true;
@@ -193,26 +195,6 @@ public class GenLevel extends Level {
 		Rectangle vp = Shadow.cam.camrec;
 		generateChunks((int)(player.pos.x - vp.width*1.5f), (int)(player.pos.x + vp.width*1.5f),
 				(int)(player.pos.y - vp.height*1.5f), (int)(player.pos.y + vp.height*1.5f));
-	}
-	
-	public void bomb(Layer layer, float x, float y, float radius, LongArray xd, String type) {
-		for(float xx=x-radius;xx<=x+radius;xx+=1) {
-			for(float yy=y-radius;yy<=y+radius;yy+=1) {
-				if (MathHelper.distsq(x, y, xx, yy)<=MathHelper.sq(radius)) {
-					Array<Block> al = layer.get(Coord.get(xx, yy));
-					xd.add(Coord.get(xx, yy)); //adding c would cause reference problems
-					if (al != null) {
-						//al = (Vector<Block>) al.clone();
-						for (Block b : al) {
-							layer.remove(b);
-						}
-					}
-					if (!type.isEmpty()) {
-						layer.add(BlockType.getInstance(type, xx, yy, layer));
-					}
-				}
-			}
-		}
 	}
 	
 }
