@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.particles.PixelParticle;
 
+import java.lang.reflect.Constructor;
+
 public abstract class GameObject {
 	
 	public boolean blending = true;
@@ -215,7 +217,9 @@ public abstract class GameObject {
 		Class<? extends GameObject> c = getClass();
 		GameObject clone = null;
 		try {
-			clone = c.getConstructor(Vector2.class, Layer.class).newInstance(new Vector2(pos), layer);
+			Constructor<? extends GameObject> constr = c.getConstructor(Vector2.class, Layer.class);
+			constr.setAccessible(true);
+			clone = constr.newInstance(new Vector2(pos), layer);
 		} catch (Exception e) {
 			try {
 				if (this instanceof Block) {

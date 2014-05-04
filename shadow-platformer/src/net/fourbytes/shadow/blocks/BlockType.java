@@ -6,6 +6,8 @@ import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.mod.ModManager;
 
+import java.lang.reflect.Constructor;
+
 public abstract class BlockType extends Block {
 	
 	public static enum LogicType {
@@ -36,18 +38,17 @@ public abstract class BlockType extends Block {
 				String[] split = subtype.split("\\.");
 				classname = split[0];
 				args = new Object[split.length-1];
-				System.arraycopy(split, 1, args, 0, args.length);
 				argtypes = new Class[args.length];
 				for (int i = 0; i < args.length; i++) {
 					try {
-						args[i] = Integer.parseInt((String) args[i]);
+						args[i] = Integer.parseInt(split[i+1]);
 						argtypes[i] = int.class;
 					} catch (Throwable e) {
 						try {
-							args[i] = Float.parseFloat((String) args[i]);
+							args[i] = Float.parseFloat(split[i+1]);
 							argtypes[i] = float.class;
 						} catch (Throwable e1) {
-							args[i] = ((String) args[i]).replace("\\|", "\\.");
+							args[i] = split[i+1].replace("\\|", "\\.");
 							argtypes[i] = String.class;
 						}
 					}
@@ -64,7 +65,9 @@ public abstract class BlockType extends Block {
 			if (!tmp.isEmpty()) {
 				System.out.println(tmp);
 			}*/
-			BlockType block = (BlockType) c.getConstructor(argtypes).newInstance(args);
+			Constructor<?> constr = c.getConstructor(argtypes);
+			constr.setAccessible(true);
+			BlockType block = (BlockType) constr.newInstance(args);
 			block.subtype = subtype;
 			block.pos.set(x, y);
 			block.layer = layer;
