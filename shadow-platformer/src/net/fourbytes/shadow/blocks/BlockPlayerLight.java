@@ -12,41 +12,24 @@ import java.util.Random;
 
 public class BlockPlayerLight extends BlockType {
 
-	int subframe = 0;
-	int frame = 0;
+	public int subframe = 0;
+	public int frame = 0;
 
 	public BlockPlayerLight() {
 	}
 	
 	public static Random rand = new Random();
-	
-	@Override 
-	public void tick() {
-		subframe += rand.nextInt(3);
-		if (block.solid) {
-			block.light.set(0f, 0.5f, 0.7625f, 1f);
-		}
-		block.solid = false;
-		block.passSunlight = true;
-		if (subframe > 12) {
-			block.light.set(0f, 0.5f, 0.7625f, 1f);
-			float ff = 5f;
-			block.light.add((1f / ff) - ((float) Math.random()) / ff, (1f / ff) - ((float) Math.random()) / ff, (1f / ff) - ((float) Math.random()) / ff, 0f);
-			frame++;
-			subframe = 0;
-			block.imgupdate = true;
-		}
-		if (frame >= 4) {
-			frame = 0;
-			block.pixdur = rand.nextInt(20)+20;
-		}
+
+	@Override
+	public void init() {
+		light.set(0f, 0.5f, 0.7625f, 1f);
+		solid = false;
+		passSunlight = true;
 	}
-	
+
 	@Override
 	public TextureRegion getTexture(int id) {
-		TextureRegion[][] regs = Images.split("block_point_white", 16, 16);
-		TextureRegion reg = regs[0][frame];
-		return reg;
+		return Images.split("block_point_white", 16, 16)[0][frame];
 	}
 	
 	@Override
@@ -55,21 +38,36 @@ public class BlockPlayerLight extends BlockType {
 		if (e instanceof Player) {
 			Sounds.getSound("point").play(1f, Sounds.calcPitch(1f, 0.2f), 0f);
 			Player p = (Player) e;
-			block.pixelify();
-			PlayerLightParticle plp = new PlayerLightParticle(p, block.light);
-			block.layer.add(plp);
-			block.layer.remove(block);
+			pixelify();
+			PlayerLightParticle plp = new PlayerLightParticle(p, light);
+			layer.add(plp);
+			layer.remove(this);
 		}
 	}
 
 	@Override
 	public void preRender() {
-		super.preRender();
-		for (int i = 0; i < block.imgIDs.length; i++) {
-			int id = block.imgIDs[i];
-			Image img = getImage(id);
-			img.getColor().mul(block.light);
+		subframe += rand.nextInt(3);
+		if (subframe > 12) {
+			light.set(0f, 0.5f, 0.7625f, 1f);
+			float ff = 5f;
+			light.add((1f / ff) - ((float) Math.random()) / ff, (1f / ff) - ((float) Math.random()) / ff, (1f / ff) - ((float) Math.random()) / ff, 0f);
+			frame++;
+			subframe = 0;
+			imgupdate = true;
 		}
+		if (frame >= 4) {
+			frame = 0;
+			pixdur = rand.nextInt(20)+20;
+		}
+
+		super.preRender();
+	}
+
+	@Override
+	public void tint(int id, Image img) {
+		super.tint(id, img);
+		img.getColor().mul(light);
 	}
 
 }

@@ -1,0 +1,3 @@
+boolean gfx.shadows;true Draw layer shadows
+boolean gfx.shadows.check;true Intelligent layer shadows
+boolean gfx.large;false Large Display Mode (WIP)

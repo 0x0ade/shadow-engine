@@ -13,6 +13,7 @@ import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.utils.Garbage;
+import net.fourbytes.shadow.utils.Options;
 
 public abstract class MenuLevel extends Level implements KeyListener {
 	
@@ -29,7 +30,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		}
 	}
 	
-	public Array<MenuItem> items = new Array<MenuItem>();
+	public Array<MenuItem> items = new Array<MenuItem>(MenuItem.class);
 	public MenuLevel parent;
 	public MenuItem current;
 	public Level bglevel;
@@ -56,9 +57,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		
 		System.gc();
 	}
-	
-	static Rectangle r = new Rectangle();
-	
+
 	@Override
 	public void tick() {
 		if (bglevel != null) {
@@ -78,7 +77,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			player = null;
 		}
 		if (current == null || !items.contains(current, true)) {
-			current = items.get(0);
+			current = items.items[0];
 		}
 		
 		TouchPoint tp = null;
@@ -91,12 +90,10 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		if (tp != null) {
 			Vector2 newpos = calcMousePos(tp.pos);
 			
-			Rectangle vp = Shadow.cam.camrec;
-			
 			float mx = newpos.x;
 			float my = newpos.y;
 			
-			Rectangle	r = new Rectangle();
+			Rectangle r = Garbage.rects.getNext();
 			for (MenuItem mi : items) {
 				r.set(mi.mouser);
 				r.height = -r.height;
@@ -116,7 +113,6 @@ public abstract class MenuLevel extends Level implements KeyListener {
 					current = mi;
 					keyDown(Input.enter);
 					mi.mouseDown = false;
-				} else {
 				}
 			}
 			
@@ -126,38 +122,33 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		logostep++;
 	}
 	
-	Vector2 oldpos;
+	protected final static Vector2 oldpos = new Vector2();
 	
 	public Vector2 calcMousePos(Vector2 apos) {
-		if (oldpos == null) {
-			oldpos = new Vector2();
-		}
 		oldpos.set(apos);
 		Vector2 pos = Garbage.vec2s.getNext();
 		pos.set(apos);
-		float tx = 0;
-		float ty = 0;
 		float cx = Shadow.cam.camrec.x;
 		float cy = Shadow.cam.camrec.y;
 		float mx = (pos.x * (Shadow.vieww/Shadow.dispw)) * Shadow.cam.cam.zoom;
 		float my = (pos.y * (Shadow.viewh/Shadow.disph)) * Shadow.cam.cam.zoom;
-		tx = mx + cx;
-		ty = my + cy;
-		float otx = tx;
-		float oty = ty;
+		float tx = mx + cx;
+		float ty = my + cy;
 		pos.set(tx, ty);
 		return pos;
 	}
 
-	Image logo;
-	Image image;
-	Image dimmimg;
-	BitmapFont font;
-	
-	boolean omitloop = false;
+	public Image logo;
+	public Image image;
+	public Image dimmimg;
+	public BitmapFont font;
+
+	protected boolean omitloop = false;
 	
 	@Override
 	public void renderImpl() {
+		boolean largeUI = Options.getBoolean("gfx.large", true);
+
 		if (bglevel != null && !omitloop) {
 			omitloop = true;
 			bglevel.canRenderImpl = false;
@@ -177,12 +168,10 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		dimmimg.setColor(dimm);
 		dimmimg.draw(Shadow.spriteBatch, 1f);
 		
-		if (font == null) {
-			if (Shadow.isAndroid) {
-				font = Fonts.light_large;
-			} else {
-				font = Fonts.light_normal;
-			}
+		if (largeUI) {
+			font = Fonts.light_large;
+		} else {
+			font = Fonts.light_normal;
 		}
 		font.setScale(Shadow.vieww/Shadow.dispw, -Shadow.viewh/Shadow.disph);
 		
@@ -204,8 +193,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 
 		if (image != null) {
 			//Render the "cursor" in between of map / title and font for less render calls.
-			//Note: How does lowering the amount of render calls fix the ...
-			//... unstable maxSpritesInBatch but also raise it?
+			//BTW: How does lowering the amount of render calls fix unstable maxSpritesInBatch but also raise it?
 			image.setColor(0f, 0f, 0f, 0.5f);
 			image.draw(Shadow.spriteBatch, 1f);
 			image.setPosition(image.getX() - 0.0825f, image.getY() - 0.0825f);
@@ -214,7 +202,8 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		}
 
 		float maxw = 0;
-		for (MenuItem mi : items) {
+		for (int i = 0; i < items.size; i++) {
+			MenuItem mi = items.items[i];
 			String txt = mi.text;
 			TextBounds tb = font.getBounds(txt);
 			if (tb.width > maxw) {
@@ -222,8 +211,8 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			}
 		}
 		float texth = font.getLineHeight();
-		int i = 0;
-		for (MenuItem mi : items) {
+		for (int i = 0; i < items.size; i++) {
+			MenuItem mi = items.items[i];
 			String txt = mi.text;
 			TextBounds tb = font.getBounds(txt);
 			
@@ -245,23 +234,19 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			
 			if (mi == current) {
 				if (image == null) {
-					TextureRegion[][] regs = Images.split("player", 16, 16);
-					TextureRegion reg = null;
-					reg = regs[1][0];
+					TextureRegion reg = Images.split("player", 16, 16)[1][0];
 					image = new Image(reg);
 				}
 				
 				float zoomscale = 2f;
-				
-				if (Shadow.isAndroid) {
+
+				if (largeUI) {
 					zoomscale = 4f;
 				}
 				
 				image.setScale(font.getScaleX()*zoomscale, font.getScaleY()*zoomscale);
 				image.setPosition(x - 16f*image.getScaleX()*1.5f + 0.0825f, (y+step) - 16f*image.getScaleY() - 3f/16f + 0.0825f);
 			}
-			
-			i++;
 		}
 	}
 	
@@ -293,18 +278,25 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				index = items.size-1;
 				//index = 0;
 			}
-			current = items.get(index);
+			current = items.items[index];
 			step += (oindex - index)*0.875f;
 		}
 		if (key == Input.enter) {
 			if (current == null) {
-				current = items.get(0);
+				current = items.items[0];
 			}
 			if (current != null) {
 				Runnable action = current.action;
 				if (action != null) {
 					action.run();
 				}
+			}
+		}
+		if (key == Input.androidBack) {
+			if (parent != null) {
+				Shadow.level = parent;
+			} else if (bglevel != null) {
+				Shadow.level = bglevel;
 			}
 		}
 	}

@@ -17,15 +17,12 @@ public class BlockGlass extends BlockType {
 
 	@Override
 	public TextureRegion getTexture(int id) {
-		TextureRegion[][] regs = Images.split("block_glass", 16, 16);
-		TextureRegion reg = null;
-		reg = regs[0][type-1];
-		return reg;
+		return Images.split("block_glass", 16, 16)[0][type-1];
 	}
-	
-	public void tick() {
-		super.tick();
-		block.passSunlight = true;
+
+	@Override
+	public void init() {
+		passSunlight = true;
 	}
 	
 }

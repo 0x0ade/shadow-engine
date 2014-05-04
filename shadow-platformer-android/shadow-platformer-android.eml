@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component jdk="Android 2.1 Platform" jdk_type="Android SDK">
+<component jdk="Android API 15 Platform" jdk_type="Android SDK">
 	<exclude-output/>
 	<contentEntry url="file://$MODULE_DIR$">
 		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
@@ -15,23 +15,13 @@
 		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer-android/libs/gdx-controllers-android-sources.jar!/"/>
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-android/libs/gdx-controllers-android.jar!/"/>
 	</lib>
-	<lib name="bodyeditor-loader.jar" scope="COMPILE">
-		<srcroot url="jar://$PARENT-1-PROJECT_LOC$/shadow-platformer/libs/bodyeditor-loader-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/bodyeditor-loader-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/bodyeditor-loader.jar!/"/>
-	</lib>
-	<lib name="gdx-audio.jar" scope="COMPILE">
-		<srcroot url="jar://$PARENT-1-PROJECT_LOC$/shadow-platformer/libs/gdx-audio-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-audio-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-audio.jar!/"/>
-	</lib>
 	<lib name="gdx-freetype.jar" scope="COMPILE">
-		<srcroot url="jar://$PARENT-1-PROJECT_LOC$/shadow-platformer/libs/gdx-freetype-sources.jar!/"/>
+		<srcroot url="jar://$MODULE_DIR$/../shadow-platformer/libs/gdx-freetype-sources.jar!/"/>
 		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-freetype-sources.jar!/"/>
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-freetype.jar!/"/>
 	</lib>
 	<lib name="gdx.jar" scope="COMPILE">
-		<srcroot url="jar://$PARENT-1-PROJECT_LOC$/shadow-platformer/libs/gdx-sources.jar!/"/>
+		<srcroot url="jar://$MODULE_DIR$/../shadow-platformer/libs/gdx-sources.jar!/"/>
 		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/"/>
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx.jar!/"/>
 	</lib>

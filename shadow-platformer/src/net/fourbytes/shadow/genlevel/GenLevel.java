@@ -14,7 +14,7 @@ import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
-import net.fourbytes.shadow.mod.ModLoader;
+import net.fourbytes.shadow.mod.ModManager;
 
 import java.util.Random;
 
@@ -60,6 +60,10 @@ public class GenLevel extends Level {
 		player = p;
 		
 		c = new Cursor(new Vector2(0f, 0f), layers.get(1));
+
+		initSystems();
+
+		System.gc();
 
 		ready = true;
 	}
@@ -141,11 +145,11 @@ public class GenLevel extends Level {
 				}
 
 				//Generate the tile at X, Y
-				boolean cangen = ModLoader.generateTile(this, xx, x, y, 1);
+				boolean cangen = ModManager.generateTile(this, xx, x, y, 1);
 				if (cangen) {
 					generateTile(xx, x, y, 1);
 				}
-				//Add / remove /* on beginning of line to disable / enable debugging.
+				/*//Add / remove /* on beginning of line to disable / enable debugging.
 				if (y == xHeight.get(x, 0)) {
 					Block block = BlockType.getInstance("BlockDebug", x, y, layers.get(1));
 					block.alpha = 0.25f;
@@ -185,7 +189,6 @@ public class GenLevel extends Level {
 				//layers.get(fg).add(BlockType.getInstance("BlockStone", x, y, layers.get(fg)));
 				//layers.get(fg-1).add(BlockType.getInstance("BlockStone", x, y, layers.get(fg-1)));
 			}
-			return;
 		}
 	}
 

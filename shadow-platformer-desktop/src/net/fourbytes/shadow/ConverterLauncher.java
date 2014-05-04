@@ -20,7 +20,7 @@ public class ConverterLauncher {
 
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "shadow-tmx-to-smf";
-		cfg.useGL20 = true;
+		cfg.useGL30 = false;
 		cfg.width = 600;
 		cfg.height = 480;
 
@@ -42,7 +42,7 @@ public class ConverterLauncher {
 		Converter.list.add(converter);
 		Converter.convertOnly = true;
 
-		BackendHelper.backend = new LWJGLBackend();
+		BackendHelper.backend = new LWJGLBackend(cfg);
 		new LwjglApplication(new Shadow(), cfg);
 	}
 }

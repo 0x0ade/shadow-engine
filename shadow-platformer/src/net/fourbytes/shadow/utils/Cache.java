@@ -44,11 +44,11 @@ public final class Cache<T> {
 	}
 
 	public Cache<T> previous() {
-		return move(-1);
+		return position(pos - 1);
 	}
 
 	public Cache<T> next() {
-		return move(1);
+		return position(pos + 1);
 	}
 
 	public Cache<T> move(int i) {
@@ -65,11 +65,11 @@ public final class Cache<T> {
 	}
 
 	public T getPrevious() {
-		return cache[previous().fill().pos];
+		return cache[position(pos - 1).fill().pos];
 	}
 
 	public T getNext() {
-		return cache[next().fill().pos];
+		return cache[position(pos + 1).fill().pos];
 	}
 
 	public T getPosition(int i) {

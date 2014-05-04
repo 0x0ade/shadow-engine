@@ -2,7 +2,7 @@ package net.fourbytes.shadow;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -34,9 +34,7 @@ public class LightSystem {
 
 		//SELFNOTE: it should be stable enough to draw a light for every object in view.
 
-		Rectangle vp = Shadow.cam.camrec;
 		TextureRegion light = Images.getTextureRegion("light");
-		TextureRegion white = Images.getTextureRegion("white");
 
 		SpriteBatch spriteBatch = Shadow.spriteBatch;
 		spriteBatch.setProjectionMatrix(Shadow.cam.cam.combined);
@@ -45,37 +43,40 @@ public class LightSystem {
 
 		FrameBuffer lightFB = getLightFramebuffer();
 		lightFB.begin();
-		spriteBatch.setBlendFunction(GL10.GL_ONE, GL10.GL_ONE);
+		spriteBatch.setBlendFunction(GL20.GL_ONE, GL20.GL_ONE);
 
 		Gdx.gl.glClearColor(level.globalLight.r, level.globalLight.g, level.globalLight.b, 1f);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		int i = 0;
-		Garbage.rects.next();
-		for (GameObject go : level.mainLayer.inView) {
+		Rectangle rect = Garbage.rects.getNext();
+		for (int ii = 0; ii < level.mainLayer.inView.size; ii++) {
+			GameObject go = level.mainLayer.inView.items[ii];
+			if (go == null) {
+				continue;
+			}
 			if (go.light.a > 0f) {
 				i++;
 				tmpc.set(go.light);
 				tmpc.a = 1f;
 				spriteBatch.setColor(tmpc);
 
-				Garbage.rects.get().x = go.pos.x + go.renderoffs.x + (go.rec.width + go.renderoffs.width)/2f;
-				Garbage.rects.get().y = go.pos.y + go.renderoffs.y + (go.rec.height - go.renderoffs.height)/2f;
-				Garbage.rects.get().width = 7.5f*2f * go.light.a;
-				Garbage.rects.get().height = 7.5f*2f * go.light.a;
-				//Garbage.rect.width = 1f;
-				//Garbage.rect.height = 1f;
-				Garbage.rects.get().x -= Garbage.rects.get().width/2f;
-				Garbage.rects.get().y -= Garbage.rects.get().height/2f;
+				rect.x = go.pos.x + go.renderoffs.x + (go.rec.width + go.renderoffs.width)/2f;
+				rect.y = go.pos.y + go.renderoffs.y + (go.rec.height - go.renderoffs.height)/2f;
+				rect.width = 7.5f*2f * go.light.a;
+				rect.height = 7.5f*2f * go.light.a;
+				//rect.width = 1f;
+				//rect.height = 1f;
+				rect.x -= rect.width/2f;
+				rect.y -= rect.height/2f;
 
-				spriteBatch.draw(light, Garbage.rects.get().x, Garbage.rects.get().y,
-						Garbage.rects.get().width, Garbage.rects.get().height);
+				spriteBatch.draw(light, rect.x, rect.y, rect.width, rect.height);
 
-				if (i > maxLights) {
-					System.out.println("Amount of lights in viewport reached limit ("+maxLights+")");
-					System.out.println("Stopping drawing lights to lightmap...");
-					break;
-				}
+				//if (i > maxLights) {
+					//System.out.println("Amount of lights in viewport reached limit ("+maxLights+")");
+					//System.out.println("Stopping drawing lights to lightmap...");
+					//break;
+				//}
 			}
 		}
 
@@ -83,7 +84,7 @@ public class LightSystem {
 		lightFB.end();
 
 		spriteBatch.end();
-		spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
 		/*//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
 		System.out.println("(LightSystem) max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
@@ -96,13 +97,13 @@ public class LightSystem {
 	public void renderFBO() {
 		Rectangle vp = Shadow.cam.camrec;
 		Shadow.spriteBatch.flush();
-		Shadow.spriteBatch.setBlendFunction(GL10.GL_DST_COLOR, GL10.GL_ZERO);
+		Shadow.spriteBatch.setBlendFunction(GL20.GL_DST_COLOR, GL20.GL_ZERO);
 
 		Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
 		Shadow.spriteBatch.draw(getLightFramebuffer().getColorBufferTexture(), vp.x, vp.y, vp.width, vp.height);
 
 		Shadow.spriteBatch.flush();
-		Shadow.spriteBatch.setBlendFunction(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);
+		Shadow.spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	//Lightmap stuff
@@ -111,7 +112,7 @@ public class LightSystem {
 	public static Rectangle lightFBRect = new Rectangle();
 	public static float lightFBFactor = 0.5f;
 
-	public final static FrameBuffer getLightFramebuffer() {
+	public static FrameBuffer getLightFramebuffer() {
 		if (lightFB == null) {
 			updateLightBounds();
 
@@ -122,7 +123,7 @@ public class LightSystem {
 		return lightFB;
 	}
 
-	public final static void updateLightBounds() {
+	public static void updateLightBounds() {
 		lightFBRect.x = 0f;
 		lightFBRect.y = 0f;
 		lightFBRect.width = Shadow.dispw*lightFBFactor;

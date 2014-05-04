@@ -13,8 +13,8 @@ public class BlockImage extends BlockType {
 	}
 
 	@Override
-	public void tick() {
-		block.blending = false;
+	public void init() {
+		blending = false;
 	}
 	
 	@Override

@@ -600,7 +600,7 @@ public class LongIntMap {
 		return keys2;
 	}
 
-	static public class Entry<K> {
+	static public class Entry {
 		public long key;
 		public int value;
 
@@ -609,7 +609,7 @@ public class LongIntMap {
 		}
 	}
 
-	static private class MapIterator<K> {
+	static private class MapIterator {
 		static final int INDEX_ILLEGAL = -2;
 		static final int INDEX_ZERO = -1;
 
@@ -692,7 +692,7 @@ public class LongIntMap {
 		}
 	}
 
-	static public class Values extends MapIterator<Object> {
+	static public class Values extends MapIterator {
 		public Values (LongIntMap map) {
 			super(map);
 		}

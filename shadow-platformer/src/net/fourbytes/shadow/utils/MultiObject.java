@@ -40,5 +40,13 @@ public class MultiObject {
 		return false;
 	}
 
+	@Override
+	public int hashCode() {
+		int hash = Integer.MIN_VALUE;
+		for (Object o : objects) {
+			hash += o.hashCode();
+		}
+		return hash;
+	}
 
 }

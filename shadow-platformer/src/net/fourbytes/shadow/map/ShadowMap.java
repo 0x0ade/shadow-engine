@@ -3,7 +3,6 @@ package net.fourbytes.shadow.map;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.ObjectMap;
 import net.fourbytes.shadow.*;
@@ -21,10 +20,10 @@ import java.util.zip.GZIPOutputStream;
 
 /**
  * <p>
- * ShadowMap (SMF) is Shadow's own / native map format.
+ * ShadowMap (SMF) is Shadow's own map format also used by the networking code.
  * </p>
  * <p>
- * It mostly differs from the TilED map format (TMX) by splitting it's contents into chunks, thus it's perfect
+ * It mostly differs from the TilED map format (TMX) by splitting it's contents into chunks, thus it's better
  * when loading big maps on the fly or multiplayer. Also, it's using JSON instead of XML, is compressed via
  * GZIP and avoids Base64 completely.
  * </p>
@@ -55,7 +54,7 @@ public class ShadowMap {
 	
 	/**
 	 * Creates a fresh, "initial state" {@link GameObject}.
-	 * @param x X position,
+	 * @param x X position
 	 * @param y Y position
 	 * @param layer The layer to create the GameObject in.
 	 * @param tid Tile ID (optional, use 0 by default)
@@ -81,13 +80,12 @@ public class ShadowMap {
 			}
 		} else if ("entity".equals(type)) {
 			if ("Player".equals(subtype)) {
-				Entity ent = new Player(new Vector2(x, y), layer);
-				obj = ent;
+				obj = new Player(new Vector2(x, y), layer);
 			} else if (subtype.startsWith("Mob")) {
 				try {
-					Class clazz = ShadowMap.class.getClassLoader().loadClass("net.fourbytes.shadow."+subtype);
-					Mob mob = (Mob) clazz.getConstructor(Vector2.class, Layer.class).newInstance(new Vector2(x, y), layer);
-					obj = mob;
+					Class<? extends Mob> clazz = (Class<? extends Mob>)
+							ShadowMap.class.getClassLoader().loadClass("net.fourbytes.shadow."+subtype);
+					obj = clazz.getConstructor(Vector2.class, Layer.class).newInstance(new Vector2(x, y), layer);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -118,30 +116,20 @@ public class ShadowMap {
 			mo.type = "entity";
 		}
 		
-		if (go instanceof TypeBlock) {
+		if (go instanceof BlockType) {
 			mo.subtype = ((Block)go).subtype;
 		} else if (mo.subtype == null || mo.subtype.isEmpty()) {
 			mo.subtype = go.getClass().getSimpleName();
 		}
-		
-		for (IntMap.Entry<Layer> entry : go.layer.level.layers.entries()) {
-			if (entry.value == go.layer) {
-				mo.layer = entry.key;
-				break;
-			}
-		}
-		
-		Object o = go;
-		if (go instanceof TypeBlock) {
-			o = ((TypeBlock)go).type;
-		}
-		
-		Field[] fields = o.getClass().getFields();
+
+		mo.layer = go.layer.level.layers.findKey(go.layer, true, Integer.MAX_VALUE);
+
+		Field[] fields = go.getClass().getFields();
 		for (Field field : fields) {
 			Saveable saveable = field.getAnnotation(Saveable.class);
 			if (saveable != null) {
 				try {
-					mo.args.put(field.getName(), field.get(o));
+					mo.args.put(field.getName(), field.get(go));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -175,14 +163,9 @@ public class ShadowMap {
 		go.pos.x = mo.x;
 		go.pos.y = mo.y;
 		
-		Object o = go;
-		if (o instanceof TypeBlock) {
-			o = ((TypeBlock)o).type;
-		}
-		
 		for (ObjectMap.Entry<String, Object> entry : mo.args.entries()) {
 			try {
-				o.getClass().getField(entry.key).set(o, entry.value);
+				go.getClass().getField(entry.key).set(go, entry.value);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -198,12 +181,28 @@ public class ShadowMap {
 	 */
 	public static ShadowMap loadFile(FileHandle file) {
 		ShadowMap map = null;
+		InputStream fis = null;
+		GZIPInputStream gis = null;
 		try {
-			InputStream fis = file.read();
-			GZIPInputStream gis = new GZIPInputStream(fis);
+			fis = file.read();
+			gis = new GZIPInputStream(fis);
 			map = Garbage.json.fromJson(ShadowMap.class, gis);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (gis != null) {
+				try {
+					gis.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (fis != null) {
+				try {
+					fis.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return map;
 	}
@@ -216,7 +215,7 @@ public class ShadowMap {
 		Class<? extends Level> clazz = level.getClass();
 		for (ObjectMap.Entry param : params.entries()) {
 			try {
-				Field field = clazz.getField((String)param.key);
+				Field field = clazz.getDeclaredField((String)param.key);
 				field.set(level, param.value);
 			} catch (Exception e) {
 				System.err.println("Failed to bind property "+param.key+" to level!");
@@ -270,7 +269,7 @@ public class ShadowMap {
 	public static ShadowMap createFrom(Level level) {
 		ShadowMap map = new ShadowMap();
 
-		Field[] fields = level.getClass().getFields();
+		Field[] fields = level.getClass().getDeclaredFields();
 		for (Field field : fields) {
 			Saveable saveable = field.getAnnotation(Saveable.class);
 			if (saveable != null) {
@@ -314,14 +313,29 @@ public class ShadowMap {
 	 * @param file File to save the ShadowMap to.
 	 */
 	public void save(FileHandle file) {
+		OutputStream fos = null;
+		GZIPOutputStream gos = null;
 		try {
 			String json = Garbage.json.toJson(this);
-			OutputStream fos = file.write(false);
-			GZIPOutputStream gos = new GZIPOutputStream(fos);
+			fos = file.write(false);
+			gos = new GZIPOutputStream(fos);
 			gos.write(json.getBytes("UTF-8"));
-			gos.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (gos != null) {
+				try {
+					gos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			} else if (fos != null) {
+				try {
+					fos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	

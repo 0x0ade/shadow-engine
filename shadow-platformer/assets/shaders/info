@@ -1,0 +1,22 @@
+Shadow Engine pre-processes shader code in a special manner, allowing special syntaxes, for example:
+
+#import basic_imports;
+#copy shaders/default.vert;
+#copy shaders/default.frag;
+#setting int noise;
+#setting float offset = 5.2;
+
+#import:
+Loads the content of the given .glsl file in the shaders/imports directory.
+Makes maintaining of the same functions in various shaders easier (f.e. noise functions) and
+thus reduces the amount of duplicate code.
+
+#copy:
+Loads the content of the given internal file (import with full paths).
+Why did I even add this feature?
+
+#setting:
+Creates an uniform with the given type, name and initial value (if any).
+Also adds the uniform to ShaderHelper's list of settings.
+
+Possible syntax additions to follow.

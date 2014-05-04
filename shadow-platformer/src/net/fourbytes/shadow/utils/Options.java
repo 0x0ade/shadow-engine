@@ -113,8 +113,16 @@ public final class Options {
 			throw new IllegalStateException("Options already set up!");
 		}
 		back = Gdx.app.getPreferences(Options.class.getName()+".settings");
+		//TODO add more
+		putBoolean("gfx.vsync", getBoolean("gfx.vsync", true));
+		putBoolean("gfx.multiblend", getBoolean("gfx.multiblend", true));
+		putBoolean("gfx.shadows", getBoolean("gfx.shadows", true));
+		putBoolean("gfx.shadows.check", getBoolean("gfx.shadows.check", false));
+		putBoolean("gfx.clear", getBoolean("gfx.clear", true));
 		putBoolean("gfx.blur", getBoolean("gfx.blur", false));
-		putBoolean("gfx.blur.twice", getBoolean("gfx.blur.twice", false));
+		putBoolean("gfx.blur.hq", getBoolean("gfx.blur.hq", false));
+		putBoolean("gfx.blur.hd", getBoolean("gfx.blur.hd", false));
+		putBoolean("gfx.large", getBoolean("gfx.large", false));
 		flush();
 	}
 }

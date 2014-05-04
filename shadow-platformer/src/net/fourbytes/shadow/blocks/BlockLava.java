@@ -1,20 +1,22 @@
 package net.fourbytes.shadow.blocks;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import net.fourbytes.shadow.Block;
+import com.badlogic.gdx.math.MathUtils;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Images;
 
 public class BlockLava extends BlockFluid {
-	
+
+	public float lightDelta = 1f/5f;
+
 	public BlockLava() {
 	}
 
 	@Override
 	public void tick() {
-		block.light.set(1f, 0.35f, 0.01f, 1f);
-		float ff = 5f;
-		block.light.add((1f/ff)-((float)Math.random())/ff, (1f/ff)-((float)Math.random())/ff, (1f/ff)-((float)Math.random())/ff, 0f);
+		light.set(1f, 0.35f, 0.01f, 1f);
+		light.add(MathUtils.random(lightDelta), MathUtils.random(lightDelta), MathUtils.random(lightDelta), 0f);
+		tintSunlight.set(light);
 		super.tick();
 	}
 
@@ -38,9 +40,9 @@ public class BlockLava extends BlockFluid {
 	public boolean handleMix(BlockFluid type) {
 		if (type instanceof BlockWater) {
 			//Generate Obsidian! TRANSFORMATION!
-			Block newblock = BlockType.getInstance("BlockObsidian", block.pos.x, block.pos.y, block.layer);
-			block.layer.add(newblock);
-			block.layer.remove(block);
+			BlockType newblock = BlockType.getInstance("BlockObsidian", pos.x, pos.y, layer);
+			layer.add(newblock);
+			layer.remove(this);
 			return false;
 		}
 		return true;

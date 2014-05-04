@@ -8,35 +8,35 @@ import net.fourbytes.shadow.map.Saveable;
 public class BlockWire extends BlockType implements BlockLogic {
 	
 	@Saveable
-	boolean triggered = false;
+	public boolean triggered = false;
 	@Saveable
-	int send = 0;
+	public int send = 0;
 	
 	public BlockWire() {
 	}
-	
+
+	@Override
+	public void init() {
+		tickAlways = true;
+		solid = false;
+		passSunlight = false;
+		alpha = 0f;
+		blending = false;
+	}
+
 	@Override 
 	public void tick() {
-		block.interactive = true;
-		block.solid = false;
-		block.passSunlight = false;
-		block.alpha = 0f;
-		block.blending = false;
-		
 		if (send == -6) {
-			for (Layer l : block.layer.level.layers.values()) {
+			for (Layer l : layer.level.layers.values()) {
 				for (int xo = -1; xo <= 1; xo++) {
 					for (int yo = -1; yo <= 1; yo++) {
-						Array<Block> v = l.get(Coord.get(block.pos.x+xo, block.pos.y+yo));
+						Array<Block> v = l.get(Coord.get(pos.x+xo, pos.y+yo));
 						if (v != null) {
-							for (Block b : v) {
-								if (b instanceof TypeBlock) {
-									TypeBlock tb = (TypeBlock) b;
-									BlockType type = tb.type;
-									if (type instanceof BlockLogic) {
-										BlockLogic bl = (BlockLogic) type;
-										bl.handle(triggered);
-									}
+							for (int i = 0; i < v.size; i++) {
+								Block b = v.items[i];
+								if (b instanceof BlockLogic) {
+									BlockLogic bl = (BlockLogic) b;
+									bl.handle(triggered);
 								}
 							}
 						}
@@ -51,7 +51,11 @@ public class BlockWire extends BlockType implements BlockLogic {
 	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("block_wire");
 	}
-	
+
+	@Override
+	public void preRender() {
+	}
+
 	@Override
 	public void render() {
 	}

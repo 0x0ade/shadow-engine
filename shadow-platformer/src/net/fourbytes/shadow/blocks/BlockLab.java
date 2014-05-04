@@ -2,9 +2,11 @@ package net.fourbytes.shadow.blocks;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import net.fourbytes.shadow.Images;
+import net.fourbytes.shadow.map.Saveable;
 
 public class BlockLab extends BlockType {
-	
+
+	@Saveable
 	public int type;
 	
 	public BlockLab(int type) {
@@ -15,8 +17,9 @@ public class BlockLab extends BlockType {
 	public BlockLab() {
 	}
 
-	public void tick() {
-		block.blending = false;
+	@Override
+	public void init() {
+		blending = false;
 	}
 
 	@Override

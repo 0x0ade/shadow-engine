@@ -12,9 +12,7 @@ public class BlockGrass extends BlockType {
 	
 	@Saveable
 	public int hasGrassTop = -1;
-	@Saveable
-	public boolean checkedGrassTop = false;
-	
+
 	public BlockGrass() {
 	}
 	
@@ -22,18 +20,17 @@ public class BlockGrass extends BlockType {
 	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("block_grass");
 	}
-	
-	public void tick() {
-		block.blending = false;
+
+	@Override
+	public void init() {
+		blending = false;
 		if (hasGrassTop == -1) {
 			hasGrassTop = Shadow.rand.nextInt(3);
 		}
-		if (!checkedGrassTop && hasGrassTop == 0) {
-			checkedGrassTop = true;
-			
-			Array<Block> blocks = block.layer.get(Coord.get(block.pos.x, block.pos.y-1f));
+		if (hasGrassTop == 0) {
+			Array<Block> blocks = layer.get(Coord.get(pos.x, pos.y-1f));
 			if (blocks == null || blocks.size == 0) {
-				Block grasstop = BlockType.getInstance("BlockGrassTop", block.pos.x, block.pos.y-1f, block.layer);
+				Block grasstop = BlockType.getInstance("BlockGrassTop", pos.x, pos.y-1f, layer);
 				grasstop.layer.add(grasstop);
 			}
 		}

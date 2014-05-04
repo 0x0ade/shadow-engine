@@ -3,17 +3,9 @@
 	<exclude-output/>
 	<contentEntry url="file://$MODULE_DIR$">
 		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
+		<excludeFolder url="file://$MODULE_DIR$/logs"/>
+		<excludeFolder url="file://$MODULE_DIR$/saves"/>
 	</contentEntry>
-	<lib name="bodyeditor-loader.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/libs/bodyeditor-loader-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/bodyeditor-loader-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/bodyeditor-loader.jar!/"/>
-	</lib>
-	<lib name="gdx-audio.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/libs/gdx-audio-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-audio-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-audio.jar!/"/>
-	</lib>
 	<lib name="gdx-controllers.jar" scope="COMPILE">
 		<srcroot url="jar://$MODULE_DIR$/libs/gdx-controllers-sources.jar!/"/>
 		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-controllers-sources.jar!/"/>

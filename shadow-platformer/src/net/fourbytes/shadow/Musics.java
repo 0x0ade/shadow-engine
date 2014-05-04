@@ -1,7 +1,5 @@
 package net.fourbytes.shadow;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 

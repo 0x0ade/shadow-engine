@@ -15,16 +15,14 @@ public class BlockSignBG extends BlockType {
 	public BlockSignBG() {
 	}
 
-	public void tick() {
-		block.blending = false;
+	@Override
+	public void init() {
+		blending = false;
 	}
 
 	@Override
 	public TextureRegion getTexture(int id) {
-		TextureRegion[][] regs = Images.split("block_sign_bg", 16, 16);
-		TextureRegion reg = null;
-		reg = regs[0][type-1];
-		return reg;
+		return Images.split("block_sign_bg", 16, 16)[0][type-1];
 	}
 	
 }

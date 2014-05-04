@@ -1,0 +1,3 @@
+cat gfx.renderer Setup renderer
+cat gfx.blur Setup pause menu blur
+cat gfx.advanced Advanced options

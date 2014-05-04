@@ -75,7 +75,7 @@ public class DefaultCaveGen extends CaveGen {
 		for (float xx = x - rad; xx <= x + rad; xx++) {
 			int yo = -level.xStone.get((int)xx, level.rand.nextInt(5)-2);//YO is just a funny thing to play with...
 			for (float yy = y + yo - rad; yy <= y + yo + rad; yy++) {
-				if (MathHelper.distsq(x, y, xx, yy) <= MathHelper.sq(rad)) {
+				if (MathHelper.distsq(x, y, xx, yy) <= rad * rad) {
 					replaced.put(Coord.get(xx, yy), type);
 
 					Array<Block> blocks = layer.get(Coord.get(xx, yy));

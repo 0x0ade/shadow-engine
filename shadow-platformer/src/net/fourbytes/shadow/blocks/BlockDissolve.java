@@ -11,35 +11,33 @@ import net.fourbytes.shadow.map.Saveable;
 public class BlockDissolve extends BlockType implements BlockLogic {
 	
 	@Saveable
-	boolean triggered = false;
-	boolean inverted = false;
+	public boolean triggered = false;
+	@Saveable
+	public boolean inverted = false;
 	
 	public BlockDissolve() {
 	}
 	
 	public BlockDissolve(int inverted) {
-		this.inverted = inverted==1?true:false;
+		this.inverted = inverted == 1;
 	}
 	
 	@Override 
 	public void tick() {
-		block.interactive = true;
+		tickAlways = true;
 		if (!inverted) {
-			block.solid = !triggered;
+			solid = !triggered;
 		} else {
-			block.solid = triggered;
+			solid = triggered;
 		}
-		block.passSunlight = !block.solid;
-		block.alpha = block.solid?1f:0f;
-		block.blending = false;
+		passSunlight = !solid;
+		alpha = solid?1f:0f;
+		blending = false;
 	}
 	
 	@Override
 	public TextureRegion getTexture(int id) {
-		TextureRegion[][] regs = Images.split("block_dissolve", 16, 16);
-		TextureRegion reg = null;
-		reg = regs[0][0];
-		return reg;
+		return Images.split("block_dissolve", 16, 16)[0][0];
 	}
 
 	@Override
@@ -50,13 +48,13 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 	@Override
 	public void handle(boolean triggered) {
 		if (triggered != this.triggered) {
-			Sounds.getSound("disappear").play(Sounds.calcVolume(block.pos), Sounds.calcPitch(1f, 0.15f), 0f);
+			Sounds.getSound("disappear").play(Sounds.calcVolume(pos), Sounds.calcPitch(1f, 0.15f), 0f);
 			this.triggered = triggered;
 			
 			if ((!inverted && !triggered) || (inverted && triggered)) {
-				Array<Block> v = block.layer.get(Coord.get(block.pos.x, block.pos.y));
+				Array<Block> v = layer.get(Coord.get(pos.x, pos.y));
 				for (Block b : v) {
-					if (b != block) {
+					if (b != this) {
 						b.layer.remove(b);
 					}
 				}
@@ -68,10 +66,17 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 	public LogicType getType() {
 		return LogicType.INPUT;
 	}
-	
+
+	@Override
+	public void preRender() {
+		if (solid) {
+			super.preRender();
+		}
+	}
+
 	@Override
 	public void render() {
-		if (block.solid) {
+		if (solid) {
 			super.render();
 		}
 	}

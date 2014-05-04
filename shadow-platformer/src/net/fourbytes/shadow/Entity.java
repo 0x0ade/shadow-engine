@@ -71,7 +71,8 @@ public abstract class Entity extends GameObject {
 				for (float y = pos.y-rec.height*2; y <= pos.y+rec.height*3; y++) {
 					Array<Block> blocks = layer.get(Coord.get(x, y));
 					if (blocks != null) {
-						for (Block b : blocks) {
+						for (int i = 0; i < blocks.size; i++) {
+							Block b = blocks.items[i];
 							if (b == null) continue;
 							if (!b.solid) collide(b, true);
 							else collide(b, false);
@@ -80,7 +81,8 @@ public abstract class Entity extends GameObject {
 				}
 			}
 			
-			for (Entity e : layer.entities) {
+			for (int i = 0; i < layer.entities.size; i++) {
+				Entity e = layer.entities.items[i];
 				if (e == null) continue;
 				if (e == this) continue;
 				if (!e.solid) collide(e, true);
@@ -95,10 +97,9 @@ public abstract class Entity extends GameObject {
 	protected static Rectangle or = new Rectangle();
 	
 	protected void calcCollide() {
-		er.set(pos.x, pos.y, rec.width, rec.height);
 		float rad = (er.width+er.height)/2f;
 		rad *= 0.0625f;
-		er.set(er.x + rad, er.y + rad, er.width - rad*2, er.height - rad*2);
+		er.set(pos.x + rad, pos.y + rad, rec.width - rad*2, rec.height - rad*2);
 		if ((er.width+er.height)/2f <= 0.0725f) {
 			er.set(er.x, er.y, er.width, er.height);
 		}

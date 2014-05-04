@@ -4,7 +4,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.map.Saveable;
-import net.fourbytes.shadow.utils.MathHelper;
 
 public abstract class Mob extends Entity {
 	
@@ -76,15 +75,16 @@ public abstract class Mob extends Entity {
 			imgupdate = true;
 		}
 		
-		if ((layer != null && layer.level != null && layer.level.hasvoid) || movement.y > 5f) {
-			if (pos.y > layer.level.tiledh && !invoid) {
+		if ((layer != null && layer.level != null && layer.level.hasvoid && pos.y > layer.level.tiledh) ||
+				(movement.y > 5f)) {
+			if (!invoid) {
 				health = 0f;
 				invoid = true;
-			} else {
-				invoid = false;
 			}
+		} else {
+			invoid = false;
 		}
-		
+
 		objgravity = objgravityOG;
 		if (canJump != maxJump && movement.y > 0f) {
 			objgravity = objgravityIA;
@@ -120,7 +120,7 @@ public abstract class Mob extends Entity {
 							if (!b.solid) continue;
 							
 							or.set((int)b.pos.x, (int)b.pos.y, 1f, 1f);
-							if (MathHelper.overlaps(or, er)) {
+							if (er.overlaps(or)) {
 								//b.highlight();
 								collides = true;
 								break;
@@ -195,15 +195,13 @@ public abstract class Mob extends Entity {
 		
 		super.tick();
 		
-		/*
 		if (invertedImage?!facingLeft:facingLeft) {
 			renderoffs.width = -rec.width*2;
 			renderoffs.x = rec.width;
-		} else {
-			renderoffs.width = 0;
-			renderoffs.x = 0;
+		//} else {
+			//renderoffs.width = 0;
+			//renderoffs.x = 0;
 		}
-		*/
 	}
 	
 }

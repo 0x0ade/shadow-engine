@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component jdk="OpenJDK 1.6" jdk_type="JavaSDK">
+<component inheritJdk="true">
 	<exclude-output/>
-	<contentEntry url="file://$PARENT-1-PROJECT_LOC$/shadow-platformer-android/assets"/>
 	<contentEntry url="file://$MODULE_DIR$">
 		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
 	</contentEntry>
-	<lib name="gdx-audio-natives.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-audio-natives.jar!/"/>
-	</lib>
+	<contentEntry url="file://$PARENT-1-PROJECT_LOC$/shadow-platformer-android/assets"/>
 	<lib name="gdx-backend-lwjgl-natives.jar" scope="COMPILE">
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl-natives.jar!/"/>
 	</lib>
@@ -30,4 +27,8 @@
 	<lib name="gdx-natives.jar" scope="COMPILE">
 		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-natives.jar!/"/>
 	</lib>
+	<levels>
+		<level name="gdx-backend-jglfw-natives" value="project"/>
+		<level name="gdx-backend-jglfw" value="project"/>
+	</levels>
 </component>

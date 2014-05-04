@@ -12,7 +12,7 @@ public class PauseLevel extends TitleLevel {
 	public PauseLevel(MenuLevel parent) {
 		super(parent);
 		
-		Array<MenuItem> items = new Array<MenuItem>();
+		Array<MenuItem> items = new Array<MenuItem>(MenuItem.class);
 		
 		items.add(new MenuItem(this, "Continue", new Runnable(){public void run(){
 			Shadow.level = bglevel;
@@ -57,5 +57,19 @@ public class PauseLevel extends TitleLevel {
 		hasvoid = false;
 		ready = true;
 	}
+
+	/*
+	@Override
+	public void keyDown(Input.Key key) {
+		if (Shadow.level != this) {
+			return;
+		}
+		if (key == Input.androidBack) {
+			Shadow.level = new TitleLevel();
+		} else {
+			super.keyDown(key);
+		}
+	}
+	*/
 	
 }

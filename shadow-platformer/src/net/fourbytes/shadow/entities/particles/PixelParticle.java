@@ -29,7 +29,7 @@ public class PixelParticle extends Particle {
 		spawntime = this.time;
 		
 		fade = true;
-		objgravity = 0.5f*(8*size);
+		objgravity = 0.5f*(8f*size);
 	}
 	
 	@Override

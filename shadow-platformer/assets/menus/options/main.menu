@@ -1,0 +1,3 @@
+cat gfx.main Graphics
+link net.fourbytes.shadow.SetupControllerLevel Setup Controller
+link net.fourbytes.shadow.SetupModsLevel Setup Mods

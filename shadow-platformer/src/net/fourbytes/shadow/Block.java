@@ -7,7 +7,8 @@ import com.badlogic.gdx.math.Vector2;
 public class Block extends GameObject {
 	
 	public String subtype = "";
-	public boolean interactive = false;
+	public boolean tickInView = false;
+	public boolean tickAlways = false;
 	/**
 	 * 0x00 = normal only, 0x01 = rendertop only, anything other = both
 	 */
@@ -17,7 +18,7 @@ public class Block extends GameObject {
 	public Block(Vector2 pos, Layer layer) {
 		super(pos, layer);
 	}
-	
+
 	@Override
 	public TextureRegion getTexture(int id) {
 		return Images.getTextureRegion("block_test");

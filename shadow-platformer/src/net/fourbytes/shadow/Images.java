@@ -19,7 +19,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
-public class Images {
+public final class Images {
+	private Images() {}
+
 	private final static ObjectMap<String, Image> images = new ObjectMap<String, Image>();
 	private final static ObjectMap<String, TextureRegion> textureregs = new ObjectMap<String, TextureRegion>();
 	
@@ -113,7 +115,7 @@ public class Images {
 			InputStream in = new BufferedInputStream(url.openStream());
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			byte[] buf = new byte[2048];
-			int n = 0;
+			int n;
 			while (-1 != (n = in.read(buf))) {
 				out.write(buf, 0, n);
 			}
@@ -161,8 +163,10 @@ public class Images {
 	 */
 	public static TextureRegion[][] split(TextureRegion reg, int w, int h) {
 		tmptrimo.set(reg, w, h);
-		if (splitCache.containsKey(tmptrimo)) {
-			return splitCache.get(tmptrimo);
+
+		TextureRegion[][] got = splitCache.get(tmptrimo);
+		if (got != null) {
+			return got;
 		}
 
 		w = Math.max(Math.max(w, -w), 1);

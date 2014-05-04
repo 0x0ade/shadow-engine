@@ -14,9 +14,14 @@ public final class ShaderHelper {
 	private static ObjectMap<String, Object[]> values = new ObjectMap<String, Object[]>();
 
 	private static ShaderProgram current;
+	private static String currentName;
 
 	public static ShaderProgram getCurrentShader() {
 		return current;
+	}
+
+	public static String getCurrentShaderName() {
+		return currentName;
 	}
 
 	public static void resetCurrentShader() {
@@ -25,6 +30,7 @@ public final class ShaderHelper {
 
 	public static void setCurrentShader(String name) {
 		current = getShader(name);
+		currentName = name;
 		Shadow.spriteBatch.setShader(current);
 		setAll();
 	}
@@ -52,11 +58,7 @@ public final class ShaderHelper {
 
 	public static void setDefault(boolean set, String setting, Object... values) {
 		if (values[0] instanceof Object[]) {
-			Object[] casted = new Object[((Object[])values[0]).length];
-			for (int i = 0; i < casted.length; i++) {
-				casted[i] = ((Object[])values[0])[i];
-			}
-			values = casted;
+			values = (Object[]) values[0];
 		}
 
 		defaults.put(setting, values);
@@ -67,11 +69,7 @@ public final class ShaderHelper {
 
 	public static void set(String setting, Object... values) {
 		if (values[0] instanceof Object[]) {
-			Object[] casted = new Object[((Object[])values[0]).length];
-			for (int i = 0; i < casted.length; i++) {
-				casted[i] = ((Object[])values[0])[i];
-			}
-			values = casted;
+			values = (Object[]) values[0];
 		}
 
 		ShaderHelper.values.put(setting, values);
@@ -181,7 +179,7 @@ public final class ShaderHelper {
 		}
 
 		//4 floats
-		if (values.length == 3) {
+		if (values.length == 4) {
 			try {
 				float value1;
 				if (values[0] instanceof Float) {
@@ -232,11 +230,11 @@ public final class ShaderHelper {
 
 	public static Object[] getDefault(String setting) {
 		return defaults.get(setting);
-	};
+	}
 
 	public static Object[] get(String setting) {
 		return values.get(setting);
-	};
+	}
 
 	public static String loadImports(String shader, String imports_root) {
 		String finalShader = "";
@@ -244,16 +242,16 @@ public final class ShaderHelper {
 		String[] lines = shader.split("\n");
 		for (int i = 0; i < lines.length; i++) {
 			String input = lines[i];
-			String output = "";
+			String output;
 
-			if (input.startsWith("import ")) {
-				String importPath = input.substring(7, input.indexOf(';'));
+			if (input.startsWith("#import ")) {
+				String importPath = input.substring(8, input.indexOf(';'));
 
 				String subshader = Gdx.files.internal(imports_root + "/" + importPath + ".glsl").readString();
 				output = loadImports(subshader, imports_root);
 
-			} else if (input.startsWith("copy ")) {
-				String importPath = input.substring(5, input.indexOf(';'));
+			} else if (input.startsWith("#copy ")) {
+				String importPath = input.substring(6, input.indexOf(';'));
 
 				String subshader = Gdx.files.internal(importPath).readString();
 				output = loadImports(subshader, imports_root);
@@ -280,10 +278,10 @@ public final class ShaderHelper {
 		String[] lines = shader.split("\n");
 		for (int i = 0; i < lines.length; i++) {
 			String input = lines[i];
-			String output = "";
+			String output;
 
-			if (input.startsWith("setting ")) {
-				String postPrefix = input.substring(8, input.indexOf(';'));
+			if (input.startsWith("#setting ")) {
+				String postPrefix = input.substring(9, input.indexOf(';'));
 				String setting = postPrefix.trim();
 				String type = setting.substring(0, setting.indexOf(' ')).trim();
 				setting = setting.substring(setting.indexOf(' ')+1).trim();
@@ -321,8 +319,8 @@ public final class ShaderHelper {
 	}
 
 	public static ShaderProgram loadShader(String path) {
-		String vertex = Gdx.files.internal(path+".vert").readString();
-		String fragment = Gdx.files.internal(path+".frag").readString();
+		String vertex = Gdx.files.internal(path+".vert.glsl").readString();
+		String fragment = Gdx.files.internal(path+".frag.glsl").readString();
 
 		vertex = ShaderHelper.setupShaderSource(vertex, "shaders/imports");
 		fragment = ShaderHelper.setupShaderSource(fragment, "shaders/imports");
@@ -349,4 +347,6 @@ public final class ShaderHelper {
 
 		return shader;
 	}
+
+
 }

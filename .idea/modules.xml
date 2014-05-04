@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/mods/shadow-module-gdxremote/shadow-module-gdxremote.iml" filepath="$PROJECT_DIR$/mods/shadow-module-gdxremote/shadow-module-gdxremote.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mods/shadow-module-gdxremote-android/shadow-module-gdxremote-android.iml" filepath="$PROJECT_DIR$/mods/shadow-module-gdxremote-android/shadow-module-gdxremote-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/shadow-platformer/shadow-platformer.iml" filepath="$PROJECT_DIR$/shadow-platformer/shadow-platformer.iml" />
       <module fileurl="file://$PROJECT_DIR$/shadow-platformer-android/shadow-platformer-android.iml" filepath="$PROJECT_DIR$/shadow-platformer-android/shadow-platformer-android.iml" />
       <module fileurl="file://$PROJECT_DIR$/shadow-platformer-desktop/shadow-platformer-desktop.iml" filepath="$PROJECT_DIR$/shadow-platformer-desktop/shadow-platformer-desktop.iml" />

@@ -7,8 +7,11 @@ import net.fourbytes.shadow.network.Data;
 import net.fourbytes.shadow.network.NetStream;
 
 /**
- *A chunk contains an area of {@link GameObject}s beginning at the given position with given size from a given map.
- * It's containing it's children as Data for saving space and avoiding infinite recursion / bi-directional references when serializing. 
+ * A chunk contains an area of {@link GameObject}s beginning at the
+ * given position with given size from a given map.
+ * <br>
+ * It is containing it's children as Data for saving space and
+ * avoiding infinite recursion / bi-directional references when serializing.
  */
 public class DataChunk extends Data {
 	

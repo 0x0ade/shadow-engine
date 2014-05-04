@@ -9,23 +9,26 @@ import net.fourbytes.shadow.entities.Player;
 import java.util.Random;
 
 public class BlockPush extends BlockType {
-	
-	Vector2 lastpos;
-	int gframe = 0;
-	int oframe = 0;
-	int pframe = 0;
+
+	public Vector2 lastpos;
+	public int gframe = 0;
+	public int oframe = 0;
+	public int pframe = 0;
 	
 	public BlockPush() {
 	}
 	
 	public static Random rand = new Random();
-	
+
+	@Override
+	public void init() {
+		blending = false;
+		tickAlways = true;
+		light.set(0.25f, 0.5f, 0.75f, 1f);
+	}
+
 	@Override 
 	public void tick() {
-		block.blending = false;
-		block.interactive = true;
-		block.light.set(0.25f, 0.5f, 0.75f, 1f);
-		
 		gframe--;
 		if (gframe <= 0) {
 			boolean free = true;
@@ -41,11 +44,12 @@ public class BlockPush extends BlockType {
 				if (!free) break;
 			}*/
 			
-			Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y+1));
+			Array<Block> al = layer.get(Coord.get(pos.x, pos.y+1));
 			if (al != null) {
-				for (Block b : al) {
-					if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
-						if (((BlockFluid)((TypeBlock)b).type).height > 12) {
+				for (int i = 0; i < al.size; i++) {
+					Block b = al.items[i];
+					if (b instanceof BlockFluid) {
+						if (((BlockFluid)b).height > 12) {
 							free = false;
 							break;
 						} else {
@@ -62,13 +66,13 @@ public class BlockPush extends BlockType {
 				if (lastpos == null) {
 					lastpos = new Vector2();
 				}
-				lastpos.set(block.pos);
-				int lastx = (int)block.pos.x;
-				int lasty = (int)block.pos.y;
-				block.pos.add(0, 1);
-				int newx = (int)block.pos.x;
-				int newy = (int)block.pos.y;
-				block.layer.move(block, Coord.get(lastx, lasty), Coord.get(newx, newy));
+				lastpos.set(pos);
+				int lastx = (int)pos.x;
+				int lasty = (int)pos.y;
+				pos.y += 1f;
+				int newx = (int)pos.x;
+				int newy = (int)pos.y;
+				layer.move(this, Coord.get(lastx, lasty), Coord.get(newx, newy));
 				gframe = 18;
 				oframe = 15;
 			}
@@ -80,14 +84,14 @@ public class BlockPush extends BlockType {
 		
 		if (lastpos != null) {
 			if (oframe > 0) {
-				block.renderoffs.set(lastpos.x-block.pos.x, lastpos.y-block.pos.y, 0f, 0f);
+				renderoffs.set(lastpos.x-pos.x, lastpos.y-pos.y, 0f, 0f);
 				float fac = 383f/512f;
 				for (int i = 0; i < 15-oframe; i++) {
-					block.renderoffs.x *= fac;
-					block.renderoffs.y *= fac;
+					renderoffs.x *= fac;
+					renderoffs.y *= fac;
 				}
 			} else {
-				block.renderoffs.set(0f, 0f, 0f, 0f);
+				renderoffs.set(0f, 0f, 0f, 0f);
 			}
 		}
 		
@@ -106,7 +110,7 @@ public class BlockPush extends BlockType {
 	public void collide(Entity e) {
 		if (e instanceof Player) {
 			Player p = (Player) e;
-			if (Coord.get1337((int)(p.pos.y)) == (int)(block.pos.y+p.rec.height) && pframe <= 0) {
+			if (Coord.get1337((int)(p.pos.y)) == (int)(pos.y+p.rec.height) && pframe <= 0) {
 			//if (pframe <= 0) {
 				int dir = p.facingLeft?-1:1;
 				push(dir, 0);
@@ -133,17 +137,18 @@ public class BlockPush extends BlockType {
 			}
 			if (!free) break;
 		}*/
-		
-		Array<Block> al = block.layer.get(Coord.get(block.pos.x+dir, block.pos.y));
+
+		Array<Block> al = layer.get(Coord.get(pos.x+dir, pos.y));
 		if (al != null) {
-			for (Block b : al) {
-				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
+			for (int i = 0; i < al.size; i++) {
+				Block b = al.items[i];
+				if (b instanceof BlockFluid) {
 					free = false;
 					break;
 				}
 				if (!b.solid) continue;
-				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockPush && count < 6) {
-					((BlockPush)((TypeBlock)b).type).push(dir, count+1);
+				if (b instanceof BlockPush && count < 6) {
+					((BlockPush)b).push(dir, count+1);
 					free = false;
 					pframe = 4;
 					break;
@@ -158,14 +163,14 @@ public class BlockPush extends BlockType {
 			if (lastpos == null) {
 				lastpos = new Vector2();
 			}
-			lastpos.set(block.pos);
-			int lastx = (int)block.pos.x;
-			int lasty = (int)block.pos.y;
-			block.pos.add(dir, 0);
-			int newx = (int)block.pos.x;
-			int newy = (int)block.pos.y;
-			block.layer.move(block, Coord.get(lastx, lasty), Coord.get(newx, newy));
-			block.renderoffs.set(lastpos.x-block.pos.x, lastpos.y-block.pos.y, 0f, 0f);
+			lastpos.set(pos);
+			int lastx = (int)pos.x;
+			int lasty = (int)pos.y;
+			pos.x += dir;
+			int newx = (int)pos.x;
+			int newy = (int)pos.y;
+			layer.move(this, Coord.get(lastx, lasty), Coord.get(newx, newy));
+			renderoffs.set(lastpos.x-pos.x, lastpos.y-pos.y, 0f, 0f);
 			oframe = 15;
 			pframe = 2;
 		}

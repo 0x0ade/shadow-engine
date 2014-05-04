@@ -1,20 +1,24 @@
 package net.fourbytes.shadow.utils.backend;
 
-import net.fourbytes.shadow.utils.backend.opengl.GLUtil;
+import net.fourbytes.shadow.Shadow;
+import net.fourbytes.shadow.mod.ModManager;
 
 public final class BackendHelper {
 
-	public static Backend backend;
-	public static void setUp() {
+	public final static void checkBackend() {
 		if (backend == null) {
 			throw new IllegalStateException("No Shadow backend found!");
 		}
+	}
+
+	public static Backend backend;
+	public static void setUp() {
+		checkBackend();
 
 		backend.create();
 
-		glUtil = backend.getGLUtil();
+		ModManager.loader = backend.newModLoader();
+		Shadow.controllerHelper.numerator = backend.newControllerNumerator();
 	}
-
-	public static GLUtil glUtil;
 
 }

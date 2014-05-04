@@ -3,9 +3,8 @@ package net.fourbytes.shadow;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,7 +16,7 @@ import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.map.Converter;
-import net.fourbytes.shadow.mod.ModLoader;
+import net.fourbytes.shadow.mod.ModManager;
 import net.fourbytes.shadow.network.NetClient;
 import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
@@ -65,7 +64,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	
 	public static int loadstate = 0;
 	public static int loadtick = 0;
-	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6}};
+	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6, 7}};
 	
 	public static String clientID = getSecureRandomBytes(512);
 	public static NetStream client;
@@ -90,8 +89,8 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		random.nextBytes(bytes);
 		
 		String str = "";
-		for (int i = 0; i < bytes.length; i++) {
-			str += Integer.toHexString(bytes[i] & 0xFF);
+		for (byte aByte : bytes) {
+			str += Integer.toHexString(aByte & 0xFF);
 		}
 		return str;
 	}
@@ -138,10 +137,11 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 				try {
 					File dir = getDir("logs").file();
 					File logfile = new File(dir, "log_"+(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()))+".txt");
-					logfile.createNewFile();
-					PrintStream fos = new PrintStream(logfile);
-					e.printStackTrace(fos);
-					fos.close();
+					if (logfile.createNewFile()) {
+						PrintStream fos = new PrintStream(logfile);
+						e.printStackTrace(fos);
+						fos.close();
+					}
 				} catch (Throwable e1) {
 					e1.printStackTrace();
 				}
@@ -149,20 +149,16 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 				System.exit(1);
 			}
 		};
-		
+
 		Thread.currentThread().setUncaughtExceptionHandler(eh);
 		Thread.setDefaultUncaughtExceptionHandler(eh);
-		
+
 		dispw = Gdx.graphics.getWidth();
 		disph = Gdx.graphics.getHeight();
-		
-		if (!isAndroid || isOuya) {
-			viewmode = ViewModes.fixedw;
-		} else {
-			viewmode = ViewModes.fixedh;
-		}
-		viewmode = ViewModes.auto;
-		
+
+		//TODO replace ViewModes.def
+		viewmode = ViewModes.def;
+
 		//Alternate values for view: vieww = 12.5f; viewh = 15f;
 		switch (viewmode) {
 		case ViewModes.dynamic:
@@ -180,21 +176,18 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		
 		touchh = 7f;
 		touchw = touchh*dispw/disph;
-		
+
 		Gdx.input.setInputProcessor(this);
-		controllerHelper = new ControllerHelper();
-		Controllers.addListener(controllerHelper);
 		Input.setUp();
 		Input.keylisteners.add(this);
-		
+
 		cam = new Camera();
 		resize();
-
-		BackendHelper.setUp();
 	}
 
 	@Override
 	public void dispose() {
+		ModManager.dispose();
 		Gdx.input.setInputProcessor(null);
 		if (Shadow.isAndroid && !Shadow.isOuya) {
 			System.exit(0);
@@ -210,7 +203,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		if (loadstate == 0) {
 			return;
 		}
-		
+
 		tick();
 
 		/*
@@ -229,22 +222,21 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			}
 		}
 
-		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		spriteBatch.setColor(1f, 1f, 1f, 1f);
-		ModLoader.preRender();
-		if (level != null && (level instanceof MenuLevel)) {
-			Input.isInMenu = true;
-		} else {
-			Input.isInMenu = false;
+		if (Options.getBoolean("gfx.clear", true)) {
+			Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
+			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		}
+
+		spriteBatch.setColor(1f, 1f, 1f, 1f);
+		ModManager.preRender();
+		Input.isInMenu = level != null && level instanceof MenuLevel;
 		cam.render();
-		ModLoader.postRender();
+		ModManager.postRender();
 
 		if (record) {
-			ScreenshotUtil.pushFrame();
+			ScreenshotUtil.frameRecord();
 		}
-		
+
 		long time = System.currentTimeMillis();
 		
 		frames++;
@@ -262,23 +254,30 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	
 	public void subtick() {
 		while (Gdx.graphics == null) {
+			Thread.yield();
 		}
 		if (loadstate == 0) {
 			//Gdx.graphics.setVSync(true);
 
-			Gdx.gl.glDisable(GL10.GL_ALPHA_TEST);
-
 			ShaderProgram.pedantic = false;
 
-			//TODO Change / update / fix / complete GLSL shaders
 			ShaderProgram defaultShader = ShaderHelper.loadShader("shaders/default");
 			ShaderHelper.addShader(defaultShader);
 
+			ShaderProgram noiseOffsetShader = ShaderHelper.loadShader("shaders/noiseoffs");
+			ShaderHelper.addShader(noiseOffsetShader, "noiseoffs");
+
 			spriteBatch = new SpriteBatch(4096);
-			
+
 			ShaderHelper.resetCurrentShader();
 
 			Images.loadBasic();
+
+			//Init controller helper here as JGLFW needs a window before doing controller stuff
+			controllerHelper = new ControllerHelper();
+
+			//At this point it's safe to assume that most stuff needeed for a backend setup is set up.
+			BackendHelper.setUp();
 			
 			loadstate = 1;
 			loadtick = 0;
@@ -306,6 +305,8 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 				if (isAndroid) {
 					GameObject.pixffac = 2;
 					Level.maxParticles = 128;
+					Camera.blursize = 4f;
+					resize();
 				}
 			}
 			if (loadtick == loadticks[0][4]) {
@@ -316,22 +317,13 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 				}
 			}
 			if (loadtick == loadticks[0][5]) {
-				//If NOT android load mods.
-				ModLoader.initBuiltin();
-				if (!isAndroid) {
-					String path = "";
-					try {
-						String rawpath = Shadow.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-						path = URLDecoder.decode(rawpath, "UTF-8");
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					FileHandle fh = Gdx.files.absolute(path).parent();
-					ModLoader.init(fh);
-					ModLoader.loadResources();
-				}
+				//TODO add random stuff to load
 			}
 			if (loadtick == loadticks[0][6]) {
+				ModManager.loader.init(null);
+				ModManager.create();
+			}
+			if (loadtick == loadticks[0][7]) {
 				//Jump into first level (TitleLevel).
 				if (Converter.convertOnly) {
 					System.out.println("Starting internal converter...");
@@ -349,10 +341,9 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	}
 	
 	public void tick() {
-		ModLoader.preTick();
+		ModManager.preTick();
 		controllerHelper.tick();
 		Input.tick();
-		Level tmplvl = level;
 		if (!Converter.convertOnly && level != null) {
 			level.tick();
 		}
@@ -362,7 +353,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		if (!Converter.convertOnly && client != null) {
 			client.tick();
 		}
-		ModLoader.postTick();
+		ModManager.postTick();
 	}
 	
 	@Override
@@ -404,12 +395,12 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			cam.resize();
 			Input.resize();
 
-			ShaderHelper.set("resolution", dispw, disph);
+			ShaderHelper.set("s_resolution", dispw, disph);
 
 			if (Camera.tmpFB != null) {
 				Camera.tmpFB.dispose();
 			}
-			Camera.tmpFB = new FrameBuffer(Pixmap.Format.RGB565,
+			Camera.tmpFB = new FrameBuffer(Pixmap.Format.RGB888,
 					(int)dispw, (int)disph, false);
 			Camera.tmpFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear,
 					Texture.TextureFilter.Linear);
@@ -417,9 +408,17 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			if (Camera.blurFB != null) {
 				Camera.blurFB.dispose();
 			}
-			Camera.blurFB = new FrameBuffer(Pixmap.Format.RGB565,
+			Camera.blurFB = new FrameBuffer(Pixmap.Format.RGB888,
 					(int)(dispw/Camera.blursize), (int)(disph/Camera.blursize), false);
 			Camera.blurFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear,
+					Texture.TextureFilter.Linear);
+
+			if (Camera.blurXFB != null) {
+				Camera.blurXFB.dispose();
+			}
+			Camera.blurXFB = new FrameBuffer(Pixmap.Format.RGB888,
+					(int)(dispw/Camera.blursize), (int)(disph/Camera.blursize), false);
+			Camera.blurXFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear,
 					Texture.TextureFilter.Linear);
 
 			if (LightSystem.lightFB != null) {
@@ -474,9 +473,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		return false;
 	}
 	
-	float hxoffs = 0;
-	float hyoffs = 0;
-	
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		boolean handle = false;
@@ -511,7 +507,6 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-		boolean handle = true;
 		if (!Input.isAndroid) {
 			pointer = -1;
 		}
@@ -528,12 +523,11 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		
 		Input.touches.remove(pointer);
 		
-		return handle;
+		return true;
 	}
 
 	@Override
 	public boolean touchDragged(int screenX, int screenY, int pointer) {
-		boolean handle = true;
 		if (!Input.isAndroid) {
 			pointer = -1;
 		}
@@ -559,14 +553,14 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			}
 		}
 		
-		return handle;
+		return true;
 	}
 
 	@Override
 	public boolean mouseMoved(int screenX, int screenY) {
 		boolean handled = false;
 		if (level != null && level.c != null) {
-			TouchPoint tp = null;
+			//No touch point while moving as no "touch" is occuring.
 			Garbage.vec2s.next();
 			Garbage.vec2s.get().x = screenX;
 			Garbage.vec2s.get().y = screenY;
@@ -589,33 +583,22 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	
 	@Override
 	public void keyDown(Key key) {
-		if (key == Input.pause || key == Input.androidBack || key == Input.androidMenu) {
-			if (!(level instanceof MenuLevel) && (isAndroid || key == Input.pause)) {
-				MenuLevel pause = new PauseLevel();
-				pause.bglevel = level;
-				level = pause;
-			} else if (isAndroid && level instanceof PauseLevel && key == Input.androidBack) {
-				level = new TitleLevel();
-			} else if (isAndroid && level instanceof TitleLevel && key == Input.androidBack){
-				Gdx.app.exit();
-			} else if (level instanceof MenuLevel && key == Input.androidBack) {
-				MenuLevel ml = (MenuLevel) level;
-				if (ml.parent != null) {
-					level = ml.parent;
-				} else if (ml.bglevel != null) {
-					level = ml.bglevel;
-				}
-			} 
+		if (!(level instanceof MenuLevel) &&
+				(key == Input.pause ||
+						(isAndroid && (key == Input.androidBack || key == Input.androidMenu)))) {
+			MenuLevel pause = new PauseLevel();
+			pause.bglevel = level;
+			level = pause;
 		}
 		if (key == Input.screenshot) {
-			ScreenshotUtil.saveScreen();
+			ScreenshotUtil.frameSave();
 		}
 		if (key == Input.record) {
 			record = !record;
 			if (record) {
 				recordDirName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
 			} else {
-				ScreenshotUtil.pullRecord();
+				ScreenshotUtil.framesPull();
 			}
 		}
 	}

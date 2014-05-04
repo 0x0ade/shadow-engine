@@ -6,19 +6,15 @@ import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Input;
 import net.fourbytes.shadow.entities.Player;
 
-import java.util.Random;
-
 public class BlockLadder extends BlockType {
 	
 	public BlockLadder() {
 	}
 	
-	public static Random rand = new Random();
-	
-	@Override 
-	public void tick() {
-		block.solid = false;
-		block.passSunlight = true;
+	@Override
+	public void init() {
+		solid = false;
+		passSunlight = true;
 	}
 	
 	@Override

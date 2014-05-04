@@ -9,9 +9,9 @@ import net.fourbytes.shadow.map.Saveable;
 public class BlockButton extends BlockType implements BlockLogic {
 	
 	@Saveable
-	boolean triggered = false;
+	public boolean triggered = false;
 	@Saveable
-	int mode = 0;
+	public int mode = 0;
 	
 	public BlockButton() {
 	}
@@ -21,20 +21,17 @@ public class BlockButton extends BlockType implements BlockLogic {
 	}
 	
 	@Override 
-	public void tick() {
-		block.interactive = true;
-		block.solid = true;
-		block.colloffs.set(0f, 9f/16f, 0f, 1f-(7f/16f));
+	public void init() {
+		tickAlways = true;
+		solid = true;
+		colloffs.set(0f, 9f/16f, 0f, 1f-(7f/16f));
 	}
 	
 	@Override
 	public TextureRegion getTexture(int id) {
-		TextureRegion[][] regs = Images.split("block_button", 16, 16);
-		TextureRegion reg = null;
-		reg = regs[0][triggered?1:0];
-		return reg;
+		return Images.split("block_button", 16, 16)[0][triggered?1:0];
 	}
-	
+
 	@Override
 	public void collide(Entity e) {
 		super.collide(e);
@@ -46,23 +43,19 @@ public class BlockButton extends BlockType implements BlockLogic {
 			}
 			
 			//TODO: only trigger if player is ON the button
-			if (triggered == false && p.pos.y < block.pos.y-0.1f) {
+			if (!triggered && p.pos.y < pos.y-0.1f) {
 				Sounds.getSound("button_ingame").play(1f, Sounds.calcPitch(1f, 0.2f), 0f);
-				block.imgupdate = true;
-				block.imgupdate = true;
+				imgupdate = true;
 				triggered = true;
 				
-				for (Layer l : block.layer.level.layers.values()) {
-					Array<Block> v = l.get(Coord.get(block.pos.x, block.pos.y));
+				for (Layer l : layer.level.layers.values()) {
+					Array<Block> v = l.get(Coord.get(pos.x, pos.y));
 					if (v != null) {
-						for (Block b : v) {
-							if (b instanceof TypeBlock) {
-								TypeBlock tb = (TypeBlock) b;
-								BlockType type = tb.type;
-								if (type instanceof BlockLogic) {
-									BlockLogic bl = (BlockLogic) type;
-									bl.handle(triggered);
-								}
+						for (int i = 0; i < v.size; i++) {
+							Block b = v.items[i];
+							if (b instanceof BlockLogic) {
+								BlockLogic bl = (BlockLogic) b;
+								bl.handle(triggered);
 							}
 						}
 					}

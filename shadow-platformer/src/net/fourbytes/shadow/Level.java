@@ -18,18 +18,19 @@ import net.fourbytes.shadow.entities.Particle;
 import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
 import net.fourbytes.shadow.map.ShadowMap;
+import net.fourbytes.shadow.mod.ModManager;
 import net.fourbytes.shadow.utils.Garbage;
 
 public class Level {
 	
 	public IntMap<Layer> layers = new IntMap<Layer>(16);
 	public Layer mainLayer = new Layer(this);
-	public LightSystem lights = new LightSystem(this);
-	public TimeDaySystem timeday = new TimeDaySystem(this);
+	public LightSystem lights;
+	public TimeDaySystem timeday;
 	public Color globalLight = new Color(1f, 1f, 1f, 1f);
 	public Player player;
 	public Cursor c;
-	public Array<Cursor> cursors = new Array<Cursor>();
+	public Array<Cursor> cursors = new Array<Cursor>(Cursor.class);
 	@Saveable
 	public float gravity = 0.02f;
 	@Saveable
@@ -78,9 +79,23 @@ public class Level {
 		fillLayer(0);
 		c = new Cursor(new Vector2(0f, 0f), layers.get(0));
 
+		initSystems();
+
 		System.gc();
 
 		ready = true;
+	}
+
+	public void initSystems() {
+		ModManager.initLevelSystems(this);
+
+		if (lights == null) {
+			lights = new LightSystem(this);
+		}
+
+		if (timeday == null) {
+			timeday = new TimeDaySystem(this);
+		}
 	}
 
 	public void fillLayer(int key) {
@@ -107,29 +122,24 @@ public class Level {
 			if (l.getHeight() > tiledh) {
 				tiledh = l.getHeight();
 			}
-			for(int x = 0; x < l.getWidth(); x++) {
-				for(int y = 0; y < l.getHeight(); y++) {
+			for (int x = 0; x < l.getWidth(); x++) {
+				for (int y = 0; y < l.getHeight(); y++) {
 					Cell cell = l.getCell(x, y);
 					if (cell != null && cell.getTile() != null) {
 						GameObject obj = getGameObject(ln, x, l.getHeight()-y, cell);
-						if (obj instanceof Block) {
-							ll.add((Block) obj);
-						} else if (obj instanceof Entity) {
-							ll.add((Entity) obj);
-						}
+						ll.add(obj);
 					}
 				}
 			}
 		}
 	}
 	
-	GameObject getGameObject(int ln, int x, int y, Cell cell) {
+	protected GameObject getGameObject(int ln, int x, int y, Cell cell) {
 		int tid = cell.getTile().getId();
-		GameObject obj = null;
 		String type = (String) cell.getTile().getProperties().get("type");
 		String subtype = (String) cell.getTile().getProperties().get("subtype");
 		
-		obj = ShadowMap.convert(x, y, layers.get(ln), tid, type, subtype);
+		GameObject obj = ShadowMap.convert(x, y, layers.get(ln), tid, type, subtype);
 		
 		if (obj instanceof Player) {
 			player = (Player) obj;
@@ -139,6 +149,8 @@ public class Level {
 	}
 
 	public void tick() {
+		Rectangle vp = Shadow.cam.camrec;
+
 		tickid++;
 
 		mainLayer.inView.clear();
@@ -146,16 +158,38 @@ public class Level {
 			ll.inView.clear();
 		}
 
-		for (Block block : mainLayer.blocks) {
-			if (block == null) continue;
-			objrec.set(block.pos.x-inviewf, block.pos.y-inviewf, block.rec.width+inviewf*2f, block.rec.height+inviewf*2f);
+		float ox, oy, ow, oh;
 
-			if (Shadow.cam.camrec.overlaps(objrec)) {
-				mainLayer.inView.add(block);
-				block.layer.inView.add(block);
+		boolean shallTick;
+		for (int i = 0; i < mainLayer.blocks.size; i++) {
+			Block block = mainLayer.blocks.items[i];
+			if (block == null) continue;
+			ox = block.pos.x-inviewf;
+			oy = block.pos.y-inviewf;
+			ow = block.rec.width+inviewf*2f;
+			oh = block.rec.height+inviewf*2f;
+
+			if (vp.x < ox + ow && vp.x + vp.width > ox && vp.y < oy + oh && vp.y + vp.height > oy) {
+				Array<GameObject> inView;
+
+				inView = mainLayer.inView;
+				if (inView.size == inView.items.length) {
+					inView.items = inView.ensureCapacity(inView.size / 2);
+				}
+				inView.items[inView.size++] = block;
+
+				inView = block.layer.inView;
+				if (inView.size == inView.items.length) {
+					inView.items = inView.ensureCapacity(inView.size/2);
+				}
+				inView.items[inView.size++] = block;
+				
+				shallTick = block.tickInView;
+			} else {
+				shallTick = false;
 			}
 
-			if ((Shadow.cam.camrec.overlaps(objrec) || block.interactive || ftick) && !paused) {
+			if ((ftick || block.tickAlways || shallTick) && !paused) {
 				block.tick();
 			}
 		}
@@ -164,27 +198,48 @@ public class Level {
 		Array<Particle> particles = Garbage.particles;
 		particles.clear();
 
-		for (Entity entity : mainLayer.entities) {
+		boolean tickPaused;
+		for (int i = 0; i < mainLayer.entities.size; i++) {
+			Entity entity = mainLayer.entities.items[i];
 			if (entity == null) continue;
+			tickPaused = false;
 			if (entity instanceof Particle) {
 				if (!((Particle)entity).interactive) {
 					particles.add((Particle)entity);
 					if (particle >= maxParticles) {
-						mainLayer.remove(particles.get(0));
+						mainLayer.remove(particles.items[0]);
 						particles.removeIndex(0);
 						continue;
 					}
 					particle++;
+					tickPaused = true;
+				} else {
+					tickPaused = false;
 				}
 			}
 
-			objrec.set(entity.pos.x-inviewf, entity.pos.y-inviewf, entity.rec.width+inviewf*2f, entity.rec.height+inviewf*2f);
-			if (Shadow.cam.camrec.overlaps(objrec)) {
-				mainLayer.inView.add(entity);
-				entity.layer.inView.add(entity);
+			ox = entity.pos.x-inviewf;
+			oy = entity.pos.y-inviewf;
+			ow = entity.rec.width+inviewf*2f;
+			oh = entity.rec.height+inviewf*2f;
+
+			if (vp.x < ox + ow && vp.x + vp.width > ox && vp.y < oy + oh && vp.y + vp.height > oy) {
+				Array<GameObject> inView;
+
+				inView = mainLayer.inView;
+				if (inView.size == inView.items.length) {
+					inView.items = inView.ensureCapacity(inView.size / 2);
+				}
+				inView.items[inView.size++] = entity;
+
+				inView = entity.layer.inView;
+				if (inView.size == inView.items.length) {
+					inView.items = inView.ensureCapacity(inView.size/2);
+				}
+				inView.items[inView.size++] = entity;
 			}
 
-			if (!paused){
+			if (tickPaused || !paused) {
 				entity.tick();
 			}
 		}
@@ -194,8 +249,9 @@ public class Level {
 				timeday.tick();
 			}
 
-			if (Shadow.level == this) {
-				for (Cursor c : cursors) {
+			if (Shadow.level == this && c != null) {
+				for (int i = 0; i < cursors.size; i++) {
+					Cursor c = cursors.items[i];
 					c.tick();
 				}
 				c.tick();
@@ -206,11 +262,7 @@ public class Level {
 		}
 
 		ftick = false;
-		
-		//System.out.println("Blocks: "+nblocks+"; Entities: "+nentities);
 	}
-	
-	protected static Rectangle objrec = new Rectangle();
 	
 	public boolean canRenderImpl = true;
 	public static BitmapFont font = Fonts.light_normal;
@@ -228,26 +280,7 @@ public class Level {
 			img.draw(Shadow.spriteBatch, 0.9f);
 		*/
 		
-		/*
-		//OUTDATED: Health symbols / hearts 
-		//SEMI_TODO: Fix accurracy. 
-		for (int i = 0; i < hnum; i++) {
-			Image img = null;
-			img = hf;
-			System.out.println(player.health);
-			System.out.println(i);
-			if (((int)(10*player.health))<=i) {
-				img = he;
-			}
-			img.setScale((1f/24f));
-			img.setScaleY(-img.getScaleY());
-			img.setPosition(vp.x + Shadow.vieww/2 - (0.75f*((1+hnum)-i)) + 0.1f, vp.y + 0.75f);
-			img.draw(Shadow.spriteBatch, 0.9f);
-		}
-		*/
-
 		if (player != null) {
-			//NEW: Health bar 
 			float alpha = 0.9f;
 			
 			float bgw = 5.1f;
@@ -260,22 +293,24 @@ public class Level {
 			float yy1 = vp.y + bgh;
 			float yy2 = yy1 - 0.05f;
 
-			Image white = bgwhite;
-			if (white == null) {
-				white = Images.getImage("white");
+			Image white;
+
+			if (bgwhite == null) {
+				bgwhite = Images.getImage("white");
 			}
-			
+			white = bgwhite;
+
 			white.setColor(0f, 0f, 0f, alpha);
 			white.setPosition(xx1, yy1);
 			white.setSize(1f, -1f);
 			white.setScale(bgw, bgh);
 			white.draw(Shadow.spriteBatch, 1f);
-			
-			white = fgwhite;
-			if (white == null) {
-				white = Images.getImage("white");
+
+			if (fgwhite == null) {
+				fgwhite = Images.getImage("white");
 			}
-			
+			white = fgwhite;
+
 			white.setColor(1f-1f*(player.health/player.MAXHEALTH), 1f*(player.health/player.MAXHEALTH), 0.2f, alpha);
 			white.setPosition(xx2, yy2);
 			white.setSize(1f, -1f);

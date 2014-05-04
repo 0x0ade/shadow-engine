@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.ObjectIntMap;
-import com.badlogic.gdx.utils.ObjectMap;
 import net.fourbytes.shadow.entities.Cursor;
 
 public class Input {
@@ -14,7 +14,7 @@ public class Input {
 	public static class TouchPoint {
 		public static enum TouchMode {
 			KeyInput, 
-			Cursor;
+			Cursor
 		}
 		public TouchMode touchmode;
 		public int id = -1;
@@ -80,7 +80,7 @@ public class Input {
 			tmpkeylisteners.clear();
 			tmpkeylisteners.addAll(keylisteners);
 			for (KeyListener l : tmpkeylisteners) {
-				if (l instanceof Level && ((Level)l) != Shadow.level) {
+				if (l instanceof Level && l != Shadow.level) {
 					continue;
 				}
 				if (l instanceof GameObject && ((GameObject)l).layer.level != Shadow.level) {
@@ -95,7 +95,7 @@ public class Input {
 			tmpkeylisteners.clear();
 			tmpkeylisteners.addAll(keylisteners);
 			for (KeyListener l : tmpkeylisteners) {
-				if (l instanceof Level && ((Level)l) != Shadow.level) {
+				if (l instanceof Level && l != Shadow.level) {
 					continue;
 				}
 				if (l instanceof GameObject && ((GameObject)l).layer.level != Shadow.level) {
@@ -160,7 +160,7 @@ public class Input {
 	public static Key androidBack = new Key("Back", new int[] {Keys.BACK});
 	public static Key androidMenu = new Key("Menu", new int[] {Keys.MENU});
 	
-	public static ObjectMap<Integer, TouchPoint> touches = new ObjectMap<Integer, TouchPoint>();
+	public static IntMap<TouchPoint> touches = new IntMap<TouchPoint>();
 	
 	public static Array<KeyListener> keylisteners = new Array<KeyListener>();
 	static Array<KeyListener> tmpkeylisteners = new Array<KeyListener>();
@@ -196,7 +196,7 @@ public class Input {
 	}
 	
 	public static void tick() {
-		for (Key k :all) {
+		for (Key k : all) {
 			k.tick();
 		}
 		
@@ -205,7 +205,7 @@ public class Input {
 		
 		for (KeyListener kl : tmpkeylisteners) {
 			if (kl == null) {
-				keylisteners.removeValue(kl, true);
+				keylisteners.removeValue(null, true);
 				continue;
 			}
 			
@@ -217,24 +217,27 @@ public class Input {
 	
 	public static void check(KeyListener kl) {
 		if (kl instanceof Level) {
-			Level l = (Level) kl;
 			Level sl = Shadow.level;
-			
+
 			if (!(sl instanceof MenuLevel)) {
-				if (l instanceof MenuLevel) {
-					MenuLevel ml = (MenuLevel) l;
-					if (ml != sl) {
-						remove(kl);
+				//in-game
+				if (kl instanceof MenuLevel) {
+					remove(kl);
+				} else if (kl != sl) {
+					remove(kl);
+				}
+			} else {
+				//in menu
+				MenuLevel ml = (MenuLevel) sl;
+				boolean isInChain = false;
+				for (MenuLevel level = ml; level != null; level = level.parent) {
+					if (level == kl || level.bglevel == kl) {
+						isInChain = true;
+						break;
 					}
-				} else {
-					if (sl instanceof MenuLevel) {
-						MenuLevel ml = (MenuLevel) sl;
-						if (l != ml.bglevel) {
-							remove(kl);
-						}
-					} else {
-						remove(kl);
-					}
+				}
+				if (!isInChain) {
+					remove(kl);
 				}
 			}
 		}

@@ -32,7 +32,7 @@ public class OptionsMenuLevel extends MenuLevel {
 		if (category == null || category.trim().isEmpty()) {
 			filename = "main";
 		}
-		filename = (filename.trim().replaceAll("/.", "/"))+".menu";
+		filename = (filename.trim().replaceAll("\\.", "/"))+".menu";
 		System.out.println(filename);
 		FileHandle file = Gdx.files.internal("menus/options/"+filename);
 		String[] lines = file.readString().split("\n");
@@ -57,7 +57,7 @@ public class OptionsMenuLevel extends MenuLevel {
 				items.add(new MenuItem(this, text, new Runnable() {
 					public void run() {
 						try {
-							Class clazz = getClass().getClassLoader().loadClass(arg);
+							Class<?> clazz = getClass().getClassLoader().loadClass(arg);
 							Constructor constr = clazz.getConstructor(MenuLevel.class);
 							Shadow.level = (Level) constr.newInstance(OptionsMenuLevel.this);
 							Shadow.cam.firsttick = true;
@@ -71,7 +71,7 @@ public class OptionsMenuLevel extends MenuLevel {
 			if (type.equals("bool") || type.equals("boolean")) {
 				boolean value = Options.getBoolean(args[0], Boolean.parseBoolean(args[1]));
 				final MenuItem mi = new MenuItem(this, text+": "+(value?"Yes":"No"), null);
-				Runnable run = new Runnable() {
+				mi.action = new Runnable() {
 					public void run() {
 						boolean value = Options.getBoolean(args[0], Boolean.parseBoolean(args[1]));
 						value = !value;
@@ -80,7 +80,6 @@ public class OptionsMenuLevel extends MenuLevel {
 						mi.text = text+": "+(value?"Yes":"No");
 					}
 				};
-				mi.action = run;
 				items.add(mi);
 			}
 

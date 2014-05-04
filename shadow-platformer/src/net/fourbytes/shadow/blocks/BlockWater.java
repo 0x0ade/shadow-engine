@@ -1,22 +1,25 @@
 package net.fourbytes.shadow.blocks;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import net.fourbytes.shadow.Images;
 
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 public class BlockWater extends BlockFluid {
-	
+
+	public float lightDelta = 1f/5f;
+
 	public BlockWater() {
 	}
-	
+
+	@Override
+	public void init() {
+		passSunlight = true;
+	}
+
 	@Override
 	public void tick() {
-		block.interactive = true;
-		block.passSunlight = true;
-		block.tintSunlight.set(0f, 0.5f, 0.7625f, 1f);
-		float ff = 5f;
-		block.tintSunlight.add((1f/ff)-((float)Math.random())/ff, (1f/ff)-((float)Math.random())/ff, (1f/ff)-((float)Math.random())/ff, 0f);
+		tintSunlight.set(0f, 0.5f, 0.7625f, 1f);
+		tintSunlight.add(MathUtils.random(lightDelta), MathUtils.random(lightDelta), MathUtils.random(lightDelta), 0f);
 		super.tick();
 	}
 	

@@ -9,37 +9,39 @@ import net.fourbytes.shadow.entities.Player;
 import java.util.Random;
 
 public class BlockPoint extends BlockType {
-	
-	int subframe = 0;
-	int frame = 0;
+
+	public int subframe = 0;
+	public int frame = 0;
 	
 	public BlockPoint() {
 	}
 	
 	public static Random rand = new Random();
-	
+
+	@Override
+	public void init() {
+		solid = false;
+		passSunlight = true;
+	}
+
 	@Override 
-	public void tick() {
+	public void preRender() {
 		subframe += rand.nextInt(3);
-		block.solid = false;
-		block.passSunlight = true;
 		if (subframe > 12) {
 			frame++;
 			subframe = 0;
-			block.imgupdate = true;
+			imgupdate = true;
 		}
 		if (frame >= 4) {
 			frame = 0;
-			block.pixdur = rand.nextInt(20)+20;
+			pixdur = rand.nextInt(20)+20;
 		}
+		super.preRender();
 	}
 	
 	@Override
 	public TextureRegion getTexture(int id) {
-		TextureRegion[][] regs = Images.split("block_point", 16, 16);
-		TextureRegion reg = null;
-		reg = regs[0][frame];
-		return reg;
+		return Images.split("block_point", 16, 16)[0][frame];
 	}
 	
 	@Override
@@ -48,8 +50,8 @@ public class BlockPoint extends BlockType {
 		if (e instanceof Player) {
 			Sounds.getSound("point").play(1f, Sounds.calcPitch(1f, 0.2f), 0f);
 			Player p = (Player) e;
-			block.pixelify();
-			block.layer.remove(block);
+			pixelify();
+			layer.remove(this);
 			p.points += 1;
 		}
 	}

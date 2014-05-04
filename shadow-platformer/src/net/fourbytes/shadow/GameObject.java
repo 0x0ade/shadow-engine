@@ -10,7 +10,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.IntMap;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.particles.PixelParticle;
 
@@ -41,13 +40,13 @@ public abstract class GameObject {
 	}
 
 	public boolean imgupdate = true;
-	public IntMap<Image> images = new IntMap<Image>();
-	public IntMap<Texture> textures = new IntMap<Texture>();
-	public IntMap<TextureRegionDrawable> trds = new IntMap<TextureRegionDrawable>();
+	public Image[] images = new Image[1];
+	public TextureRegionDrawable[] trds = new TextureRegionDrawable[1];
 
 	public static boolean reuseImage = true;
 	public Image getImage(int id) {
-		if (imgupdate || images.get(id) == null) {
+		Image img = images[id];
+		if (imgupdate || img == null) {
 			TextureRegion tex = getTexture(id);
 			if (tex == null) {
 				System.out.println("("+this+(this instanceof Block?(", "+((Block)this).subtype+")"):")")+
@@ -55,20 +54,21 @@ public abstract class GameObject {
 				tex = Images.getTextureRegion("white");
 			}
 			if (!reuseImage) {
-				Image img = new Image(tex);
-				images.put(id, img);
+				img = new Image(tex);
+				images[id] = img;
 			} else {
-				if (images.get(id) == null) {
-					trds.put(id, new TextureRegionDrawable(tex));
-					images.put(id, new Image(trds.get(id)));
+				if (img == null) {
+					trds[id] = new TextureRegionDrawable(tex);
+					img = new Image(trds[id]);
+					images[id] = img;
 				} else {
-					trds.get(id).setRegion(tex);
-					images.get(id).setDrawable(trds.get(id));
+					trds[id].setRegion(tex);
+					img.setDrawable(trds[id]);
 				}
 			}
-			return images.get(id);
+			return img;
 		} else {
-			return images.get(id);
+			return img;
 		}
 	}
 	public abstract TextureRegion getTexture(int id);
@@ -78,11 +78,12 @@ public abstract class GameObject {
 	
 	private boolean disposedLayer = false;
 	
-	public final void disposeLayer() {
-		if (disposedLayer) {
+	public void disposeLayer() {
+		if (disposedLayer || layer == null) {
 			return;
 		}
 		disposedLayer = true;
+
 		if (!layer.level.layers.containsValue(layer, true)) {
 			layer.level = null;
 		}
@@ -92,9 +93,7 @@ public abstract class GameObject {
 			if (!layer.entities.contains(e, true)) {
 				layer = null;
 			}
-		}
-		
-		if (this instanceof Block) {
+		} else if (this instanceof Block) {
 			Block b = (Block) this;
 			if (!layer.blocks.contains(b, true)) {
 				layer = null;
@@ -103,8 +102,7 @@ public abstract class GameObject {
 	}
 	
 	public void preRender() {
-		for (int i = 0; i < imgIDs.length; i++) {
-			int id = imgIDs[i];
+		for (int id : imgIDs) {
 			Image img = getImage(id);
 			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
 			img.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y);
@@ -116,25 +114,26 @@ public abstract class GameObject {
 		imgupdate = false;
 	}
 	
-	protected IntMap<Color> baseColors = new IntMap<Color>();
+	protected Color[] baseColors = new Color[1];
 	
 	public void renderCalc(int id, Image img) {
 		tint(id, img);
 	}
 	
 	public void tint(int id, Image img) {
-		if (baseColors.get(id) == null) {
-			baseColors.put(id, new Color(img.getColor()));
+		if (baseColors[id] == null) {
+			baseColors[id] = new Color(img.getColor());
 		}
-		img.setColor(baseColors.get(id));
-		img.getColor().mul(layer.tint);
+		img.setColor(baseColors[id]);
+		if (layer != null) {
+			img.getColor().mul(layer.tint);
+		}
 	}
 	
 	public static Color tmpc = new Color();
 	
 	public void render() {
-		for (int i = 0; i < imgIDs.length; i++) {
-			int id = imgIDs[i];
+		for (int id : imgIDs) {
 			Image img = getImage(id);
 			Shadow.spriteBatch.setColor(tmpc.set(img.getColor()).mul(1f, 1f, 1f, alpha));
 			img.getDrawable().draw(Shadow.spriteBatch, pos.x + renderoffs.x,
@@ -149,8 +148,7 @@ public abstract class GameObject {
 	
 	Color c = new Color(0f, 0f, 0f, 0f);
 	Color cc = new Color(0f, 0f, 0f, 0f);
-	Color ccc = new Color(0f, 0f, 0f, 0f);
-	
+
 	public Array<PixelParticle> pixelify() {
 		int fac = pixfac * pixffac;
 		if (fac < 0) {
@@ -161,9 +159,7 @@ public abstract class GameObject {
 
 		Array<PixelParticle> particles = new Array<PixelParticle>();
 
-		for (int i = 0; i < imgIDs.length; i++) {
-			int id = imgIDs[i];
-
+		for (int id : imgIDs) {
 			Image img = getImage(id);
 			TextureRegion texreg = getTexture(id);
 			Texture tex = texreg.getTexture();
@@ -179,18 +175,18 @@ public abstract class GameObject {
 			int th = texreg.getRegionHeight();
 			float w = rec.width;
 			float h = rec.height;
-			float pixw = w/tw * fac;
-			float pixh = h/th * fac;
+			float pixw = w / tw * fac;
+			float pixh = h / th * fac;
 
-			for (int yy = ty; yy < ty+th; yy+=fac) {
-				for (int xx = tx; xx < tx+tw; xx+=fac) {
+			for (int yy = ty; yy < ty + th; yy += fac) {
+				for (int xx = tx; xx < tx + tw; xx += fac) {
 					int rgba = pixmap.getPixel(xx, yy);
 					for (int yyy = 0; yyy < fac; yyy++) {
 						for (int xxx = 0; xxx < fac; xxx++) {
 							c.set(0f, 0f, 0f, 0f);
 							cc.set(0f, 0f, 0f, 0f);
 							Color.rgba8888ToColor(c, rgba);
-							Color.rgba8888ToColor(cc, pixmap.getPixel(xx+xxx, yy+yyy));
+							Color.rgba8888ToColor(cc, pixmap.getPixel(xx + xxx, yy + yyy));
 							c.mul(0.5f);
 							cc.mul(0.5f);
 							c.add(cc);
@@ -202,7 +198,7 @@ public abstract class GameObject {
 					Color.rgba8888ToColor(ccc, rgba);
 					ccc.mul(img.getColor());
 					if (c.a < 0.0625f) continue;
-					PixelParticle pp = new PixelParticle(new Vector2(pos.x+((xx-tx)*pixw/fac)+renderoffs.x, pos.y+((yy-ty)*pixh/fac)+renderoffs.y), layer, 0, pixw, ccc);
+					PixelParticle pp = new PixelParticle(new Vector2(pos.x + ((xx - tx) * pixw / fac) + renderoffs.x, pos.y + ((yy - ty) * pixh / fac) + renderoffs.y), layer, 0, pixw, ccc);
 					layer.add(pp);
 					particles.add(pp);
 				}
@@ -216,15 +212,16 @@ public abstract class GameObject {
 	}
 	
 	public GameObject duplicate() {
-		Class c = getClass();
+		Class<? extends GameObject> c = getClass();
 		GameObject clone = null;
 		try {
-			clone = (GameObject) c.getConstructor(Vector2.class, Layer.class).newInstance(new Vector2(pos), layer);
+			clone = c.getConstructor(Vector2.class, Layer.class).newInstance(new Vector2(pos), layer);
 		} catch (Exception e) {
 			try {
-				BlockType type = ((TypeBlock)this).type;
-				clone = BlockType.getInstance(type.subtype, pos.x, pos.y, layer);
-				//clone = (GameObject) c.getConstructor(Vector2.class, Layer.class, BlockType.class).newInstance(new Vector2(pos), layer, type);
+				if (this instanceof Block) {
+					clone = BlockType.getInstance(((Block)this).subtype, pos.x, pos.y, layer);
+					//clone = (GameObject) c.getConstructor(Vector2.class, Layer.class, BlockType.class).newInstance(new Vector2(pos), layer, type);
+				}
 			} catch (Exception e1) {
 				System.err.println("e:");
 				e.printStackTrace();

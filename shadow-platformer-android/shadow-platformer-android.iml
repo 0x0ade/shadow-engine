@@ -2,7 +2,9 @@
 <module classpath="eclipse" classpath-dir="$MODULE_DIR$" type="JAVA_MODULE" version="4">
   <component name="FacetManager">
     <facet type="android" name="Android">
-      <configuration />
+      <configuration>
+        <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../shadow-platformer/assets" />
+      </configuration>
     </facet>
   </component>
 </module>

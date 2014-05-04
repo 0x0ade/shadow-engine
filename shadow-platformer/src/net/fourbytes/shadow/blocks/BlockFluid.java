@@ -10,87 +10,73 @@ import net.fourbytes.shadow.map.Saveable;
 import java.util.Random;
 
 public abstract class BlockFluid extends BlockType {
-	
+
+	public static Random rand = new Random();
+
 	/*Conor-ian water system. Powered by Conor's redstone brain!*/
 	public static boolean conor = true;
 	@Saveable
 	public Vector2 sourcepos;
-	
-	int subframe = -1;
-	int frame = 0;
-	
-	int gframe = 24;
-	int pframe = 20;
+
+	public int subframe = -1;
+	public int frame = 0;
+
+	public int gframe = 24;
+	public int pframe = 20;
 	
 	@Saveable
 	public int height = 16;
-	
-	boolean topblock = true;
+
+	public boolean topblock = true;
 	
 	public BlockFluid() {
 	}
 	
-	public static Random rand = new Random();
-	
 	@Override
 	public void tick() {
-		if (subframe == -1) {
-			subframe++;
-		}
-		
-		block.interactive = true;
-		block.solid = false;
-		block.alpha = 0.75f;
-		block.rendertop = 0x01;
-		
+		tickAlways = true;
+		solid = false;
+		alpha = 0.75f;
+		rendertop = 0x01;
+
 		subframe += rand.nextInt(6);
-		block.solid = false;
-		if (subframe > 24) {
-			frame++;
-			subframe = 0;
+		if (0 > subframe || subframe > 24) {
 			if (sourcepos != null && conor) {
 				if (hasThisFluid(sourcepos)) {
 					height-=3;
-					if (sourcepos.y < block.pos.y) {
+					if (sourcepos.y < pos.y) {
 						height-=3;
 					}
 				}
 			}
 			if (height <= 2) {
-				block.layer.remove(block);
+				layer.remove(this);
 			}
-			block.imgupdate = true;
+			imgupdate = true;
 		}
-		if (frame >= 4) {
-			frame = 0;
-			block.pixdur = rand.nextInt(20)+20;
-			block.imgupdate = true;
-		}
-		
-		Array<Block> al = block.layer.get(Coord.get(block.pos.x, block.pos.y));
+
+		Array<Block> al = layer.get(Coord.get(pos.x, pos.y));
 		if (al != null) {
-			for (Block b : al) {
-				if (b == block) {
+			for (int i = 0; i < al.size; i++) {
+				Block b = al.items[i];
+				if (b == this) {
 					continue;
 				}
-				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
-					block.layer.remove(block);
-					return;
-				}
-				if (b.solid) {
-					block.layer.remove(block);
+				if (b instanceof BlockFluid || b.solid) {
+					layer.remove(this);
 					return;
 				}
 			}
 		}
 		
 		topblock = true;
-		al = block.layer.get(Coord.get(block.pos.x, block.pos.y-1));
+		al = layer.get(Coord.get(pos.x, pos.y-1));
 		if (al != null) {
-			for (Block b : al) {
-				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
+			for (int i = 0; i < al.size; i++) {
+				Block b = al.items[i];
+				if (b instanceof BlockFluid) {
 					height = 16;
-					block.imgupdate = true;
+					imgupdate = true;
 					topblock = false;
 				}
 				if (b.solid) {
@@ -111,17 +97,18 @@ public abstract class BlockFluid extends BlockType {
 		pframe--;
 		
 		boolean onground = false;
-		al = block.layer.get(Coord.get(block.pos.x, block.pos.y+1));
+		al = layer.get(Coord.get(pos.x, pos.y+1));
 		if (al != null) {
-			for (Block b : al) {
-				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
+			for (int i = 0; i < al.size; i++) {
+				Block b = al.items[i];
+				if (b instanceof BlockFluid) {
 					onground = false;
-					block.imgupdate = true;
+					imgupdate = true;
 					break;
 				}
 				if (b.solid) {
 					onground = true;
-					block.imgupdate = true;
+					imgupdate = true;
 					break;
 				}
 				//if (!free) break;
@@ -136,18 +123,19 @@ public abstract class BlockFluid extends BlockType {
 			}
 		}
 		
-		block.rec.height = height/16f;
-		block.colloffs.y = (16-height)/16f;
-		block.colloffs.height = -block.colloffs.y;
-		block.renderoffs.y = 1f - 1f * (height/16f);
+		rec.height = height/16f;
+		colloffs.y = (16-height)/16f;
+		colloffs.height = -colloffs.y;
+		renderoffs.y = 1f - 1f * (height/16f);
 	}
 	
 	public boolean hasThisFluid(Vector2 pos) {
-		Class clazz = getClass();
-		Array<Block> al = block.layer.get(Coord.get((int) pos.x, Coord.get1337((int) pos.y))); //TODO Check if 1337 needed for x or not
+		Class<? extends BlockFluid> clazz = getClass();
+		Array<Block> al = layer.get(Coord.get((int) pos.x, Coord.get1337((int) pos.y))); //TODO Check if 1337 needed for x or not
 		if (al != null) {
-			for (Block b : al) {
-				if (b != null && b instanceof TypeBlock && clazz == ((TypeBlock)b).type.getClass()) {
+			for (int i = 0; i < al.size; i++) {
+				Block b = al.items[i];
+				if (b != null && clazz == b.getClass()) {
 					return true;
 				}
 			}
@@ -166,31 +154,32 @@ public abstract class BlockFluid extends BlockType {
 			height++;
 		}*/
 		
-		Array<Block> al = block.layer.get(Coord.get(block.pos.x+xo, block.pos.y+yo));
+		Array<Block> al = layer.get(Coord.get(pos.x+xo, pos.y+yo));
 		if (al != null) {
-			for (Block b : al) {
-				if (b == block) {
+			for (int i = 0; i < al.size; i++) {
+				Block b = al.items[i];
+				if (b == this) {
 					continue;
 				}
-				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockPush) {
-					((BlockPush)((TypeBlock)b).type).push((int) xo, 0);
+				if (b instanceof BlockPush) {
+					((BlockPush)b).push((int) xo, 0);
 				}
-				if (b instanceof TypeBlock && ((TypeBlock)b).type instanceof BlockFluid) {
-					if (isSameType(((TypeBlock)b).type)) {
-						BlockFluid fluid = ((BlockFluid)((TypeBlock)b).type);
-						if (!block.pos.equals(b.pos)) {
+				if (b instanceof BlockFluid) {
+					if (isSameType(b)) {
+						BlockFluid fluid = ((BlockFluid)b);
+						if (pos.x != b.pos.x && pos.y != b.pos.y) {
 							if (hupdate) {
 								fluid.height = height;
 								b.imgupdate = true;
 								if (fluid.sourcepos != null) {
-									fluid.sourcepos.set(block.pos);
+									fluid.sourcepos.set(pos);
 								}
 							} else {
 								if (fluid.height < height) {
 									fluid.height = height;
-									fluid.block.imgupdate = true;
+									fluid.imgupdate = true;
 									if (fluid.sourcepos != null) {
-										fluid.sourcepos.set(block.pos);
+										fluid.sourcepos.set(pos);
 									}
 								}
 							}
@@ -198,7 +187,7 @@ public abstract class BlockFluid extends BlockType {
 						free = false;
 						break;
 					} else {
-						boolean handled = !handleMix((BlockFluid)((TypeBlock)b).type);
+						boolean handled = !handleMix((BlockFluid)b);
 						if (handled) {
 							free = false;
 							break;
@@ -213,19 +202,18 @@ public abstract class BlockFluid extends BlockType {
 		}
 		
 		if (free) {
-			Block b = create(block.pos.x + xo, block.pos.y + yo, height);
-			block.layer.add(b);
+			Block b = create(pos.x + xo, pos.y + yo, height);
+			layer.add(b);
 		}
 		return free;
 	}
 	
 	public Block create(float x, float y, int height) {
-		TypeBlock b = (TypeBlock) BlockType.getInstance(subtype, x, y, block.layer);
-		b.interactive = true;
+		BlockFluid b = (BlockFluid) BlockType.getInstance(subtype, x, y, layer);
+		b.tickAlways = true;
 		b.solid = false;
-		BlockFluid type = (BlockFluid) b.type;
-		type.height = height;
-		type.sourcepos = new Vector2(block.pos);
+		b.height = height;
+		b.sourcepos = new Vector2(pos);
 		return b;
 	}
 	
@@ -236,19 +224,15 @@ public abstract class BlockFluid extends BlockType {
 		//if (height > 16) height = 16;
 		if (!topblock && height == 16) {
 			TextureRegion[][] regs = Images.split(getTexture0(), 16, height);
-			TextureRegion reg = null;
 			if (regs.length > 0) {
-				reg = regs[0][0];
-				return reg;
+				return regs[0][0];
 			} else {
 				return Images.getTextureRegion("white");
 			}
 		} else {
 			TextureRegion[][] regs = Images.split(getTexture1(), 16, height);
-			TextureRegion reg = null;
 			if (regs.length > 0) {
-				reg = regs[0][frame];
-				return reg;
+				return regs[0][frame];
 			} else {
 				return Images.getTextureRegion("white");
 			}
@@ -260,8 +244,19 @@ public abstract class BlockFluid extends BlockType {
 	
 	@Override
 	public void preRender() {
+		subframe += rand.nextInt(2);
+		if (subframe > 24) {
+			frame++;
+			subframe = -1;
+		}
+		if (frame >= 4) {
+			frame = 0;
+			pixdur = rand.nextInt(20)+20;
+			imgupdate = true;
+		}
+
 		super.preRender();
-		block.images.get(0).setScaleY(-1f * (height/16f));
+		images[0].setScaleY(-1f * (height/16f));
 	}
 	
 	@Override

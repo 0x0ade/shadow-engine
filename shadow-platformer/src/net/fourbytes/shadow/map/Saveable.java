@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Identifies an field in an {@link GameObject} as saveable. 
+ * Identifies an field in an GameObject as saveable.
  * It's content won't get lost upon conversion in {@link ShadowMap}.
  */
 @Target(ElementType.FIELD)

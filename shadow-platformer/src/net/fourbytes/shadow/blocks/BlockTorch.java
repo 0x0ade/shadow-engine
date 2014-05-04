@@ -12,13 +12,13 @@ import net.fourbytes.shadow.map.Saveable;
 public class BlockTorch extends BlockType implements BlockLogic {
 
 	@Saveable
-	boolean triggered = true;
-	boolean tmptriggered = true;
+	public boolean triggered = true;
+	public boolean tmptriggered = true;
 
-	int subframe = 0;
-	int frame = 0;
+	public int subframe = 0;
+	public int frame = 0;
 
-	int wall = 0;
+	public int wall = 0;
 
 	public BlockTorch() {
 	}
@@ -29,60 +29,34 @@ public class BlockTorch extends BlockType implements BlockLogic {
 	}
 
 	@Override
+	public void init() {
+		light.set(0.75f, 0.5f, 0.25f, 1f);
+		solid = false;
+		passSunlight = true;
+		tickInView = true;
+	}
+
+	@Override
 	public void tick() {
-		subframe += Shadow.rand.nextInt(5);
-		if (block.solid) {
-			block.light.set(0.75f, 0.5f, 0.25f, 1f);
-		}
-		block.solid = false;
-		block.passSunlight = true;
-		if (triggered) {
-			if (subframe > 12) {
-				frame++;
-				subframe = 0;
-				block.imgupdate = true;
-				block.light.set(0.75f, 0.5f, 0.25f, 1f);
-				block.light.mul(1f-Shadow.rand.nextFloat()*0.2f);
-				block.light.a = 1f-Shadow.rand.nextFloat()*0.15f;
-
-				for (int i = 0; i < Shadow.rand.nextInt(6)-4; i++) {
-					Vector2 pos = new Vector2(block.pos);
-					pos.add(block.rec.width/2f, block.rec.height/2f);
-					pos.add(Shadow.rand.nextFloat()-0.5f, Shadow.rand.nextFloat()-0.5f);
-
-					Color color = new Color(block.light);
-					color.mul(1f-(Shadow.rand.nextFloat()/10f));
-
-					PixelParticle pp = new PixelParticle(pos, block.layer, 0, 0.0775f, color);
-					pp.objgravity *= 0.5f;
-					pp.layer.add(pp);
-				}
-			}
-			if (frame >= 4) {
-				frame = 0;
-			}
-		} else {
-			block.light.set(0f, 0f, 0f, 0f);
-		}
 		if (triggered != tmptriggered) {
-			block.imgupdate = true;
+			imgupdate = true;
 		}
 
 		wall = 0;
-		block.renderoffs.width = 0f;
-		block.renderoffs.x = 0f;
-		Array<Block> al = block.layer.get(Coord.get(block.pos.x+1f, block.pos.y));
+		renderoffs.width = 0f;
+		renderoffs.x = 0f;
+		Array<Block> al = layer.get(Coord.get(pos.x+1f, pos.y));
 		if (al != null && al.size != 0) {
 			for (Block bb : al) {
 				if (bb.solid) {
 					wall = 1;
-					block.renderoffs.width = -2f;
-					block.renderoffs.x = 1f;
+					renderoffs.width = -2f;
+					renderoffs.x = 1f;
 					break;
 				}
 			}
 		}
-		al = block.layer.get(Coord.get(block.pos.x-1f, block.pos.y));
+		al = layer.get(Coord.get(pos.x-1f, pos.y));
 		if (al != null && al.size != 0) {
 			for (Block bb : al) {
 				if (bb.solid) {
@@ -95,11 +69,42 @@ public class BlockTorch extends BlockType implements BlockLogic {
 	}
 
 	@Override
+	public void preRender() {
+		subframe += Shadow.rand.nextInt(5);
+		if (triggered) {
+			if (subframe > 12) {
+				frame++;
+				subframe = 0;
+				imgupdate = true;
+				light.set(0.75f, 0.5f, 0.25f, 1f);
+				light.mul(1f-Shadow.rand.nextFloat()*0.2f);
+				light.a = 1f-Shadow.rand.nextFloat()*0.15f;
+
+				for (int i = 0; i < Shadow.rand.nextInt(6)-4; i++) {
+					Vector2 pos = new Vector2(this.pos);
+					pos.add(rec.width/2f, rec.height/2f);
+					pos.add(Shadow.rand.nextFloat()-0.5f, Shadow.rand.nextFloat()-0.5f);
+
+					Color color = new Color(light);
+					color.mul(1f-(Shadow.rand.nextFloat()/10f));
+
+					PixelParticle pp = new PixelParticle(pos, layer, 0, 0.0775f, color);
+					pp.objgravity *= 0.5f;
+					pp.layer.add(pp);
+				}
+			}
+			if (frame >= 4) {
+				frame = 0;
+			}
+		} else {
+			light.set(0f, 0f, 0f, 0f);
+		}
+		super.preRender();
+	}
+
+	@Override
 	public TextureRegion getTexture(int id) {
-		TextureRegion[][] regs = Images.split("block_torch_"+(triggered?"on":"off"), 16, 16);
-		TextureRegion reg = null;
-		reg = regs[frame][wall==0?0:1];
-		return reg;
+		return Images.split("block_torch_"+(triggered?"on":"off"), 16, 16)[frame][wall==0?0:1];
 	}
 
 	@Override
@@ -108,8 +113,8 @@ public class BlockTorch extends BlockType implements BlockLogic {
 		if (triggered && e instanceof Player) {
 			Sounds.getSound("hurt").play(0.6f, Sounds.calcPitch(1f, 0.2f), 0f);
 			Player p = (Player) e;
-			p.hurt(block, 0.05f);
-			p.hit(block);
+			p.hurt(this, 0.05f);
+			p.hit(this);
 		}
 	}
 

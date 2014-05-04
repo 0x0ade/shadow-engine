@@ -20,9 +20,8 @@ public class BlockGrassTop extends BlockType {
 	public float[] speed1 = {0, 0, 0, 0, 0, 0};
 	public float[] speed2 = {0, 0, 0, 0, 0, 0};
 	public float[] height = {0, 0, 0, 0, 0, 0};
-	Image[] imgcache;
-	Sprite[] spritecache;
-	
+	public Sprite[] spritecache;
+
 	public int frame = 0;
 	
 	public float depth = 0;
@@ -58,23 +57,20 @@ public class BlockGrassTop extends BlockType {
 	@Override
 	public TextureRegion getTexture(int id) {
 		TextureRegion[][] regs = Images.split("block_grasstop", 16, 16);
-		TextureRegion reg = null;
-		reg = regs[0][id];
-		if (imgcache == null || spritecache == null) {
-			imgcache = new Image[regs[0].length];
+		if (images == null || images.length != regs[0].length || spritecache == null) {
+			images = new Image[regs[0].length];
 			spritecache = new Sprite[regs[0].length];
 		}
-		return reg;
+		return regs[0][id];
 	}
 
 	@Override
 	public Image getImage(int id) {
-		if (imgcache == null || imgcache[id] == null) {
+		if (images == null || images[id] == null) {
 			Image img = new Image(getTexture(id));
-			block.images.put(id, img);
-			imgcache[id] = img;
+			images[id] = img;
 		}
-		return imgcache[id];
+		return images[id];
 	}
 
 	public Sprite getSprite(int i) {
@@ -86,12 +82,16 @@ public class BlockGrassTop extends BlockType {
 	}
 
 	@Override
+	public void init() {
+		tickInView = true;
+		solid = false;
+		rendertop = 0x02;
+		imgIDs = order;
+	}
+
+	@Override
 	public void tick() {
-		block.solid = false;
-		block.rendertop = 0x02;
-		block.imgIDs = order;
-		
-		frame++;
+		//frame++;
 		collision--;
 		super.tick();
 	}
@@ -101,13 +101,13 @@ public class BlockGrassTop extends BlockType {
 		if (e instanceof Player) {
 			if (collision <= 0) {
 				for (int i = 0; i < 3 + Shadow.rand.nextInt(3); i++) {
-					Vector2 pos = new Vector2(block.pos);
-					pos.x += block.rec.width/2f;
-					pos.y += block.rec.height/2f;
+					Vector2 pos = new Vector2(this.pos);
+					pos.x += rec.width/2f;
+					pos.y += rec.height/2f;
 					pos.x -= Shadow.rand.nextFloat() - 0.5f;
 					pos.y -= 0.5f*Shadow.rand.nextFloat() - 0.25f;
-					GrassParticle go = new GrassParticle(pos, block.layer);
-					block.layer.add(go);
+					GrassParticle go = new GrassParticle(pos, layer);
+					layer.add(go);
 				}
 			}
 			collision = 32;
@@ -116,21 +116,22 @@ public class BlockGrassTop extends BlockType {
 	
 	@Override
 	public void preRender() {
+		frame++;
 		if (spritecache == null) {
 			getTexture(0);
 		}
 		for (int i = 0; i < spritecache.length; i++) {
 			Image img = getImage(i);
 
-			img.setPosition(block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y + depth);
-			img.setSize(block.rec.width + block.renderoffs.width, (block.rec.height + block.renderoffs.height) * height[i]);
+			img.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y + depth);
+			img.setSize(rec.width + renderoffs.width, (rec.height + renderoffs.height) * height[i]);
 			img.setScaleY(-1f);
-			
+
 			Sprite sprite = getSprite(i);
 
 			sprite.setColor(img.getColor());
-			sprite.setPosition(block.pos.x + block.renderoffs.x, block.pos.y + block.rec.height + block.renderoffs.y + depth);
-			sprite.setSize(block.rec.width + block.renderoffs.width, -(block.rec.height + block.renderoffs.height) * height[i]);
+			sprite.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y + depth);
+			sprite.setSize(rec.width + renderoffs.width, -(rec.height + renderoffs.height) * height[i]);
 			
 			int offsetframe = frame + offsets[i];
 			float offs = MathUtils.sin(offsetframe / (1.3f * speed1[i]))/8f + (MathUtils.cos(offsetframe/(1.2f*speed2[i]))/8f);
@@ -150,7 +151,7 @@ public class BlockGrassTop extends BlockType {
 	public void render() {
 		for (int i = 0; i < order.length-2; i++) {
 			Sprite sprite = spritecache[order[i]];
-			sprite.setColor(block.images.get(order[i]).getColor());
+			sprite.setColor(images[order[i]].getColor());
 
 			sprite.draw(Shadow.spriteBatch);
 		}
@@ -160,7 +161,7 @@ public class BlockGrassTop extends BlockType {
 	public void renderTop() {
 		for (int i = order.length-2; i < order.length; i++) {
 			Sprite sprite = spritecache[order[i]];
-			sprite.setColor(block.images.get(order[i]).getColor());
+			sprite.setColor(images[order[i]].getColor());
 
 			sprite.draw(Shadow.spriteBatch);
 		}

@@ -39,9 +39,9 @@ public class Cursor extends Entity {
 	
 	public void tick() {
 		if (playerln == Byte.MIN_VALUE) {
-			for (IntMap.Entry entry : layer.level.layers.entries()) {
+			for (IntMap.Entry<Layer> entry : layer.level.layers.entries()) {
 				int ln = entry.key;
-				Layer ll = (Layer) entry.value;
+				Layer ll = entry.value;
 
 				if (ll.entities.contains(layer.level.player, true)) {
 					playerln = ln;
@@ -148,15 +148,13 @@ public class Cursor extends Entity {
 		oldpos.set(apos);
 		Vector2 pos = ppos;
 		pos.set(apos);
-		float tx = 0;
-		float ty = 0;
 		float g = 1f;
 		float cx = Shadow.cam.camrec.x;
 		float cy = Shadow.cam.camrec.y;
 		float mx = (pos.x * (Shadow.vieww/Shadow.dispw)) * Shadow.cam.cam.zoom;
 		float my = (pos.y * (Shadow.viewh/Shadow.disph)) * Shadow.cam.cam.zoom;
-		tx = mx + cx;
-		ty = my + cy;
+		float tx = mx + cx;
+		float ty = my + cy;
 		float otx = tx;
 		float oty = ty;
 		tx = (int)(tx/g);
@@ -176,9 +174,10 @@ public class Cursor extends Entity {
 	@Override
 	public void preRender() {
 		super.preRender();
-		images.get(0).setColor(color);
 		if (!render) {
-			images.get(0).setColor(1f, 1f, 1f, 0f);
+			images[0].setColor(1f, 1f, 1f, 0f);
+		} else {
+			images[0].setColor(color);
 		}
 	}
 	
