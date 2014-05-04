@@ -211,6 +211,12 @@ public class Input {
 			
 			check(kl);
 		}
+
+		//Using the keyTable itself is made hard as it's package-private.
+		//A workaround would be the use of a helper class / method in the same package.
+		for (KeyListener kl : timemap.keys()) {
+			remove(kl);
+		}
 	}
 	
 	public static ObjectIntMap<KeyListener> timemap = new ObjectIntMap<KeyListener>();
@@ -267,6 +273,7 @@ public class Input {
 			timemap.put(kl, 0);
 		} else if (timemap.get(kl, 0) >= 4) {
 			keylisteners.removeValue(kl, true);
+			timemap.remove(kl, 0);
 		} else {
 			timemap.put(kl, timemap.get(kl, 0)+1);
 		}
