@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.LongMap;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
 import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Mob;
@@ -14,6 +15,7 @@ import net.fourbytes.shadow.utils.Garbage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -84,8 +86,10 @@ public class ShadowMap {
 			} else if (subtype.startsWith("Mob")) {
 				try {
 					Class<? extends Mob> clazz = (Class<? extends Mob>)
-							ShadowMap.class.getClassLoader().loadClass("net.fourbytes.shadow."+subtype);
-					obj = clazz.getConstructor(Vector2.class, Layer.class).newInstance(new Vector2(x, y), layer);
+							ClassReflection.forName("net.fourbytes.shadow."+subtype);
+					Constructor<? extends Mob> constr = clazz.getConstructor(Vector2.class, Layer.class);
+					constr.setAccessible(true);
+					obj = constr.newInstance(new Vector2(x, y), layer);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -125,6 +129,7 @@ public class ShadowMap {
 		mo.layer = go.layer.level.layers.findKey(go.layer, true, Integer.MAX_VALUE);
 
 		Field[] fields = go.getClass().getFields();
+		Field.setAccessible(fields, true);
 		for (Field field : fields) {
 			Saveable saveable = field.getAnnotation(Saveable.class);
 			if (saveable != null) {
@@ -165,7 +170,9 @@ public class ShadowMap {
 		
 		for (ObjectMap.Entry<String, Object> entry : mo.args.entries()) {
 			try {
-				go.getClass().getField(entry.key).set(go, entry.value);
+				Field field = go.getClass().getField(entry.key);
+				field.setAccessible(true);
+				field.set(go, entry.value);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -216,6 +223,7 @@ public class ShadowMap {
 		for (ObjectMap.Entry param : params.entries()) {
 			try {
 				Field field = clazz.getDeclaredField((String)param.key);
+				field.setAccessible(true);
 				field.set(level, param.value);
 			} catch (Exception e) {
 				System.err.println("Failed to bind property "+param.key+" to level!");
@@ -270,6 +278,7 @@ public class ShadowMap {
 		ShadowMap map = new ShadowMap();
 
 		Field[] fields = level.getClass().getDeclaredFields();
+		Field.setAccessible(fields, true);
 		for (Field field : fields) {
 			Saveable saveable = field.getAnnotation(Saveable.class);
 			if (saveable != null) {
