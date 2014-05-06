@@ -10,17 +10,23 @@ import net.fourbytes.shadow.Input;
 import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.entities.Particle;
 import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.map.Saveable;
 
 public class PlayerLightParticle extends Particle implements Input.KeyListener {
 
-	public static boolean destroyed = false;
+	@Saveable
+	public boolean destroyed = false;
 
+	@Saveable
 	public Color color;
 	public Player player;
 
+	@Saveable
 	public float speed = 0f;
+	@Saveable
 	public float radius = 0f;
 
+	@Saveable
 	public float shift = 0f;
 
 	public PlayerLightParticle(Player player, Color color) {
@@ -75,9 +81,15 @@ public class PlayerLightParticle extends Particle implements Input.KeyListener {
 
 		movement.set(0f, 0f);
 
-		pos.set(player.pos);
-		pos.add(player.rec.width/2f, player.rec.height/2f);
-		pos.add(MathUtils.sinDeg(shift)*radius, MathUtils.cosDeg(shift)*radius);
+		if (player != null && layer != null) {
+			player = layer.level.player;
+		}
+
+		if (player != null) {
+			pos.set(player.pos);
+			pos.add(player.rec.width / 2f, player.rec.height / 2f);
+			pos.add(MathUtils.sinDeg(shift) * radius, MathUtils.cosDeg(shift) * radius);
+		}
 
 		shift += speed;
 

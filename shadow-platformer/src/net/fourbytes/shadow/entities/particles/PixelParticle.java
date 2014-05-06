@@ -8,11 +8,13 @@ import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.entities.Particle;
+import net.fourbytes.shadow.map.Saveable;
 
 import java.util.Random;
 
 public class PixelParticle extends Particle {
-	
+
+	@Saveable
 	public Color color;
 	
 	public PixelParticle(Vector2 position, Layer layer, int time, float size, Color color) {

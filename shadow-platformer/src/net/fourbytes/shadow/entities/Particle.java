@@ -5,12 +5,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Layer;
+import net.fourbytes.shadow.map.Saveable;
 
 public abstract class Particle extends Entity {
 
+	@Saveable
 	public float time = 0;
+	@Saveable
 	public float spawntime = 0;
+	@Saveable
 	public boolean fade = false;
+	@Saveable
 	public boolean interactive = false;
 
 	public Particle(Vector2 position, Layer layer, int time) {

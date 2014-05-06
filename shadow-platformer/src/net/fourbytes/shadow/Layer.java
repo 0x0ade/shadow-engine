@@ -149,16 +149,13 @@ public class Layer {
 		Array<Block> al = null;
 		if (bms == BlockMapSystem.coordinate) {
 			al = blockmap.get(c);
-		}
-		if (bms == BlockMapSystem.row) {
+		} else if (bms == BlockMapSystem.row) {
 			//rowmap.get(Coord.getY(c));
 			al = rowmap.get((int) c);
-		}
-		if (bms == BlockMapSystem.column) {
+		} else if (bms == BlockMapSystem.column) {
 			//rowmap.get(Coord.getX(c));
 			al = rowmap.get((int) (c >> 32));
-		}
-		if (bms == BlockMapSystem.none) {
+		} else if (bms == BlockMapSystem.none) {
 			al = blocks;
 		}
 		return al;
@@ -171,13 +168,11 @@ public class Layer {
 		if (bms == BlockMapSystem.coordinate) {
 			al = new Array<Block>(false, 4, Block.class);
 			blockmap.put(c, al);
-		}
-		if (bms == BlockMapSystem.row) {
+		} else if (bms == BlockMapSystem.row) {
 			al = new Array<Block>(false, 32, Block.class);
 			//rowmap.put(Coord.getY(c), al);
 			rowmap.put((int) c, al);
-		}
-		if (bms == BlockMapSystem.column) {
+		} else if (bms == BlockMapSystem.column) {
 			al = new Array<Block>(false, 32, Block.class);
 			//rowmap.put(Coord.getX(c), al);
 			rowmap.put((int) (c >> 32), al);
@@ -190,12 +185,10 @@ public class Layer {
 
 		if (bms == BlockMapSystem.coordinate) {
 			blockmap.remove(c);
-		}
-		if (bms == BlockMapSystem.row) {
+		} else if (bms == BlockMapSystem.row) {
 			//rowmap.remove(Coord.getY(c));
 			rowmap.remove((int) c);
-		}
-		if (bms == BlockMapSystem.column) {
+		} else if (bms == BlockMapSystem.column) {
 			//rowmap.remove(Coord.getX(c));
 			rowmap.remove((int) (c >> 32));
 		}

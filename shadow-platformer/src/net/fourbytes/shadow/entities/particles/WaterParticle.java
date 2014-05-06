@@ -9,9 +9,11 @@ import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.entities.Particle;
+import net.fourbytes.shadow.map.Saveable;
 
 public class WaterParticle extends Particle {
 
+	@Saveable
 	public Color color;
 
 	public WaterParticle(Vector2 position, Layer layer, float size, float xdir) {
