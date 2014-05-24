@@ -63,13 +63,30 @@ public final class ShaderHelper {
 
 		defaults.put(setting, values);
 		if (set) {
-			set(setting, values);
+			set(setting, (Object[]) values);
 		}
 	}
 
 	public static void set(String setting, Object... values) {
 		if (values[0] instanceof Object[]) {
 			values = (Object[]) values[0];
+		}
+
+		Object[] rawoldvals = ShaderHelper.values.get(setting);
+		if (rawoldvals != null && rawoldvals.length == values.length) {
+			MultiObject oldvals = Garbage.multiobjs.getNext();
+			oldvals.objects = rawoldvals;
+			MultiObject newvals = Garbage.multiobjs.getNext();
+			newvals.objects = values;
+
+			boolean equals = oldvals.equals(newvals);
+
+			oldvals.objects = null;
+			newvals.objects = null;
+
+			if (equals) {
+				return;
+			}
 		}
 
 		ShaderHelper.values.put(setting, values);

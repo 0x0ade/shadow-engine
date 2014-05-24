@@ -6,6 +6,8 @@ import net.fourbytes.shadow.map.Saveable;
 
 public class BlockLab extends BlockType {
 
+	public TextureRegion tex;
+
 	@Saveable
 	public int type;
 	
@@ -24,7 +26,7 @@ public class BlockLab extends BlockType {
 
 	@Override
 	public TextureRegion getTexture(int id) {
-		return Images.getTextureRegion("block_lab"+type);
+		return tex == null ? tex = Images.getTextureRegion("block_lab"+type) : tex;
 	}
 
 }

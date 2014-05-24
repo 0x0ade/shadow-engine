@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
+import net.fourbytes.shadow.entities.Particle;
 import net.fourbytes.shadow.utils.Cache;
 
 /**
@@ -35,6 +36,7 @@ public class Layer {
 
 	public Array<Block> blocks = new Array<Block>(false, 4096, Block.class);
 	public Array<Entity> entities = new Array<Entity>(false, 512, Entity.class);
+	public Array<Particle> particles = new Array<Particle>(false, 512, Particle.class);
 
 	public final Color tint = new Color(1f, 1f, 1f, 1f);
 
@@ -57,6 +59,8 @@ public class Layer {
 				al = put0(c);
 			}
 			al.add((Block) go);
+		} else if (go instanceof Particle) {
+			particles.add((Particle) go);
 		} else if (go instanceof Entity) {
 			entities.add((Entity) go);
 		}
@@ -80,6 +84,8 @@ public class Layer {
 					remove0(c);
 				}
 			}
+		} else if (go instanceof Particle) {
+			particles.removeValue((Particle) go, true);
 		} else if (go instanceof Entity) {
 			entities.removeValue((Entity) go, true);
 		}
@@ -144,26 +150,21 @@ public class Layer {
 	}
 	
 	protected Array<Block> get0(long c){
-		updateSystem0();
-
-		Array<Block> al = null;
 		if (bms == BlockMapSystem.coordinate) {
-			al = blockmap.get(c);
+			return blockmap.get(c);
 		} else if (bms == BlockMapSystem.row) {
 			//rowmap.get(Coord.getY(c));
-			al = rowmap.get((int) c);
+			return rowmap.get((int) c);
 		} else if (bms == BlockMapSystem.column) {
 			//rowmap.get(Coord.getX(c));
-			al = rowmap.get((int) (c >> 32));
+			return rowmap.get((int) (c >> 32));
 		} else if (bms == BlockMapSystem.none) {
-			al = blocks;
+			return blocks;
 		}
-		return al;
+		return null;
 	}
 	
 	protected Array<Block> put0(long c){
-		updateSystem0();
-
 		Array<Block> al = null;
 		if (bms == BlockMapSystem.coordinate) {
 			al = new Array<Block>(false, 4, Block.class);
@@ -181,8 +182,6 @@ public class Layer {
 	}
 	
 	protected void remove0(long c){
-		updateSystem0();
-
 		if (bms == BlockMapSystem.coordinate) {
 			blockmap.remove(c);
 		} else if (bms == BlockMapSystem.row) {
@@ -191,13 +190,6 @@ public class Layer {
 		} else if (bms == BlockMapSystem.column) {
 			//rowmap.remove(Coord.getX(c));
 			rowmap.remove((int) (c >> 32));
-		}
-	}
-	
-	protected void updateSystem0() {
-		if (lastbms != null && lastbms != bms) {
-			//TODO change the system properly instead of throwing error
-			throw new Error("Change of the blockmap system while in-level not supported!");
 		}
 	}
 	

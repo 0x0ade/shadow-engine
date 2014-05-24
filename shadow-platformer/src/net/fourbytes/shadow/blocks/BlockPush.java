@@ -10,6 +10,8 @@ import java.util.Random;
 
 public class BlockPush extends BlockType {
 
+	public TextureRegion tex;
+
 	public Vector2 lastpos;
 	public int gframe = 0;
 	public int oframe = 0;
@@ -103,7 +105,7 @@ public class BlockPush extends BlockType {
 	
 	@Override
 	public TextureRegion getTexture(int id) {
-		return Images.getTextureRegion("block_push");
+		return tex == null ? tex = Images.getTextureRegion("block_push") : tex;
 	}
 	
 	@Override

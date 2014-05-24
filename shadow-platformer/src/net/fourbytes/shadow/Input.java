@@ -143,7 +143,7 @@ public class Input {
 		}
 	}
 	
-	public static Array<Key> all = new Array<Key>();
+	public static Array<Key> all = new Array<Key>(Key.class);
 	
 	public static Key up = new Key("Up", new int[] {Keys.UP, Keys.W});
 	public static Key jump = new Key("Jump", new int[] {Keys.UP, Keys.W});
@@ -162,11 +162,12 @@ public class Input {
 	
 	public static IntMap<TouchPoint> touches = new IntMap<TouchPoint>();
 	
-	public static Array<KeyListener> keylisteners = new Array<KeyListener>();
-	static Array<KeyListener> tmpkeylisteners = new Array<KeyListener>();
+	public static Array<KeyListener> keylisteners = new Array<KeyListener>(KeyListener.class);
+	static Array<KeyListener> tmpkeylisteners = new Array<KeyListener>(KeyListener.class);
 	
 	public static void setUp() {
-		for (Key k : all) {
+		for (int i = 0; i < all.size; i++) {
+			Key k = all.items[i];
 			if (k.rec.x < 0) {
 				k.rec.x = -k.rec.x;
 			}
@@ -196,16 +197,16 @@ public class Input {
 	}
 	
 	public static void tick() {
-		for (Key k : all) {
+		for (int i = 0; i < all.size; i++) {
+			Key k = all.items[i];
 			k.tick();
 		}
 		
-		tmpkeylisteners.clear();
-		tmpkeylisteners.addAll(keylisteners);
-		
-		for (KeyListener kl : tmpkeylisteners) {
+		for (int i = 0; i < keylisteners.size; i++) {
+			KeyListener kl = keylisteners.items[i];
 			if (kl == null) {
 				keylisteners.removeValue(null, true);
+				i--;
 				continue;
 			}
 			
@@ -213,7 +214,7 @@ public class Input {
 		}
 
 		//Using the keyTable itself is made hard as it's package-private.
-		//A workaround would be the use of a helper class / method in the same package.
+		//A workaround would be the use of a helper class / method in the same package or reflection.
 		for (KeyListener kl : timemap.keys()) {
 			remove(kl);
 		}
@@ -281,7 +282,8 @@ public class Input {
 	
 	public static void render() {
 		if (isAndroid && !isOuya && !isInMenu) {
-			for (Key k : all) {
+			for (int i = 0; i < all.size; i++) {
+				Key k = all.items[i];
 				k.render();
 			}
 		}

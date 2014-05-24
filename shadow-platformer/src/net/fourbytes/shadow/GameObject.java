@@ -117,18 +117,20 @@ public abstract class GameObject {
 	}
 	
 	protected Color[] baseColors = new Color[1];
-	
+
 	public void renderCalc(int id, Image img) {
 		tint(id, img);
 	}
 	
 	public void tint(int id, Image img) {
+		Color c = img.getColor();
+
 		if (baseColors[id] == null) {
-			baseColors[id] = new Color(img.getColor());
+			baseColors[id] = new Color(c);
 		}
-		img.setColor(baseColors[id]);
+		c.set(baseColors[id]);
 		if (layer != null) {
-			img.getColor().mul(layer.tint);
+			c.mul(layer.tint);
 		}
 	}
 	

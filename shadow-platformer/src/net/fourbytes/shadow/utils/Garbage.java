@@ -18,8 +18,9 @@ public final class Garbage {
 
 	//Caches
 
-	public final static Cache<Rectangle> rects = new Cache(Rectangle.class);
-	public final static Cache<Vector2> vec2s = new Cache(Vector2.class);
+	public final static Cache<Rectangle> rects = new Cache<Rectangle>(Rectangle.class);
+	public final static Cache<Vector2> vec2s = new Cache<Vector2>(Vector2.class);
+	public final static Cache<MultiObject> multiobjs = new Cache<MultiObject>(MultiObject.class);
 
 	//Utility / helper fields
 	public final static Array<Particle> particles = new Array<Particle>(Particle.class);
@@ -57,7 +58,7 @@ public final class Garbage {
 		if (str != null) {
 			return str;
 		}
-		str = i+"";
+		str = Integer.toString(i);
 		mapIntString.put(i, str);
 		return str;
 	}

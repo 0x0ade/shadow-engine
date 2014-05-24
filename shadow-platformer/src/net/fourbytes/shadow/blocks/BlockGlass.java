@@ -2,9 +2,13 @@ package net.fourbytes.shadow.blocks;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import net.fourbytes.shadow.Images;
+import net.fourbytes.shadow.map.Saveable;
 
 public class BlockGlass extends BlockType {
-	
+
+	public TextureRegion tex;
+
+	@Saveable
 	public int type;
 	
 	public BlockGlass(int type) {
@@ -17,7 +21,7 @@ public class BlockGlass extends BlockType {
 
 	@Override
 	public TextureRegion getTexture(int id) {
-		return Images.split("block_glass", 16, 16)[0][type-1];
+		return tex == null ? tex = Images.split("block_glass", 16, 16)[0][type-1] : tex;
 	}
 
 	@Override

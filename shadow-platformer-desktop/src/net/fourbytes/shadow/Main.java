@@ -15,9 +15,13 @@ public class Main {
 		if (useJGLFW) {
 			JglfwApplicationConfiguration cfg = new JglfwApplicationConfiguration();
 			cfg.title = "shadow-platformer";
-			//cfg.useGL30 = false;
+			//cfg.useGL30 = false; //Currently not supported
 			cfg.width = 600;
 			cfg.height = 480;
+
+			cfg.runOnEDT = false;
+
+			cfg.foregroundFPS = 0;
 
 			BackendHelper.backend = new JGLFWBackend(cfg);
 			new ShadowJglfwApplication(new Shadow(), cfg);

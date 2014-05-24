@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import net.fourbytes.shadow.mod.AMod;
+import net.fourbytes.shadow.utils.Garbage;
 import net.fourbytes.shadow.utils.MultiObject;
 
 import java.io.BufferedInputStream;
@@ -156,12 +157,12 @@ public final class Images {
 	}
 
 	private static ObjectMap<MultiObject, TextureRegion[][]> splitCache = new ObjectMap<MultiObject, TextureRegion[][]>();
-	private static MultiObject tmptrimo = new MultiObject(null, null, null);
 
 	/**
 	 * Splits an texture region into... umm... guess it.
 	 */
 	public static TextureRegion[][] split(TextureRegion reg, int w, int h) {
+		MultiObject tmptrimo = Garbage.multiobjs.getNext();
 		tmptrimo.set(reg, w, h);
 
 		TextureRegion[][] got = splitCache.get(tmptrimo);

@@ -19,7 +19,6 @@ import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.Saveable;
 import net.fourbytes.shadow.map.ShadowMap;
 import net.fourbytes.shadow.mod.ModManager;
-import net.fourbytes.shadow.utils.Garbage;
 
 public class Level {
 	
@@ -30,7 +29,7 @@ public class Level {
 	public Color globalLight = new Color(1f, 1f, 1f, 1f);
 	public Player player;
 	public Cursor c;
-	public Array<Cursor> cursors = new Array<Cursor>(Cursor.class);
+	public Array<Cursor> cursors = new Array<Cursor>(false, 8, Cursor.class);
 	@Saveable
 	public float gravity = 0.02f;
 	@Saveable
@@ -155,6 +154,7 @@ public class Level {
 
 		mainLayer.inView.clear();
 		for (Layer ll : layers.values()) {
+			if (ll == null) continue;
 			ll.inView.clear();
 		}
 
@@ -194,29 +194,9 @@ public class Level {
 			}
 		}
 		
-		int particle = 0;
-		Array<Particle> particles = Garbage.particles;
-		particles.clear();
-
-		boolean tickPaused;
 		for (int i = 0; i < mainLayer.entities.size; i++) {
 			Entity entity = mainLayer.entities.items[i];
 			if (entity == null) continue;
-			tickPaused = false;
-			if (entity instanceof Particle) {
-				if (!((Particle)entity).interactive) {
-					particles.add((Particle)entity);
-					if (particle >= maxParticles) {
-						mainLayer.remove(particles.items[0]);
-						particles.removeIndex(0);
-						continue;
-					}
-					particle++;
-					tickPaused = true;
-				} else {
-					tickPaused = false;
-				}
-			}
 
 			ox = entity.pos.x-inviewf;
 			oy = entity.pos.y-inviewf;
@@ -239,8 +219,51 @@ public class Level {
 				inView.items[inView.size++] = entity;
 			}
 
-			if (tickPaused || !paused) {
+			if (!paused) {
 				entity.tick();
+			}
+		}
+
+		boolean tickPaused;
+		int particleCount = 0;
+		for (int i = 0; i < mainLayer.particles.size; i++) {
+			Particle particle = mainLayer.particles.items[i];
+			if (particle == null) continue;
+			if (!particle.interactive) {
+				if (particleCount >= maxParticles) {
+					mainLayer.remove(mainLayer.particles.items[0]);
+					continue;
+				}
+				particleCount++;
+				tickPaused = true;
+			} else {
+				tickPaused = false;
+			}
+
+
+			ox = particle.pos.x-inviewf;
+			oy = particle.pos.y-inviewf;
+			ow = particle.rec.width+inviewf*2f;
+			oh = particle.rec.height+inviewf*2f;
+
+			if (vp.x < ox + ow && vp.x + vp.width > ox && vp.y < oy + oh && vp.y + vp.height > oy) {
+				Array<GameObject> inView;
+
+				inView = mainLayer.inView;
+				if (inView.size == inView.items.length) {
+					inView.items = inView.ensureCapacity(inView.size / 2);
+				}
+				inView.items[inView.size++] = particle;
+
+				inView = particle.layer.inView;
+				if (inView.size == inView.items.length) {
+					inView.items = inView.ensureCapacity(inView.size/2);
+				}
+				inView.items[inView.size++] = particle;
+			}
+
+			if (tickPaused || !paused) {
+				particle.tick();
 			}
 		}
 

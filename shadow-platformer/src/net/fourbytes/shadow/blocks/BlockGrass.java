@@ -9,7 +9,9 @@ import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.map.Saveable;
 
 public class BlockGrass extends BlockType {
-	
+
+	public TextureRegion tex;
+
 	@Saveable
 	public int hasGrassTop = -1;
 
@@ -18,7 +20,7 @@ public class BlockGrass extends BlockType {
 	
 	@Override
 	public TextureRegion getTexture(int id) {
-		return Images.getTextureRegion("block_grass");
+		return tex == null ? tex = Images.getTextureRegion("block_grass") : tex;
 	}
 
 	@Override

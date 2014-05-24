@@ -23,7 +23,7 @@ public class Camera {
 	public static BitmapFont fpsFont = Fonts.light_normal;
 	public static boolean fpsBoundsUpdate = true;
 	public static TextBounds fpsBoundMain;
-	public static String fpsTextMain = "FPS: ";
+	public static String fpsTextMain = "FPS:";
 
 	protected static Rectangle objrec = new Rectangle();
 	protected static Image white;
@@ -149,11 +149,11 @@ public class Camera {
 			String fpsTextFPS = Garbage.getStringForInt(Shadow.fps);
 			TextBounds fpsBoundFPS = fpsFont.getBounds(fpsTextFPS);
 
-			fpsFont.draw(Shadow.spriteBatch, fpsTextMain,
-					cam.position.x + Shadow.vieww/2f - fpsBoundMain.width - fpsBoundFPS.width,
-					cam.position.y - Shadow.viewh/2f);
 			fpsFont.draw(Shadow.spriteBatch, fpsTextFPS,
-					cam.position.x + Shadow.vieww/2f - fpsBoundFPS.width/2f - (1f/(Shadow.vieww/2f)),
+					cam.position.x + Shadow.vieww/2f - fpsBoundFPS.width,
+					cam.position.y - Shadow.viewh/2f);
+			fpsFont.draw(Shadow.spriteBatch, fpsTextMain,
+					cam.position.x + Shadow.vieww/2f - fpsBoundMain.width - fpsFont.getSpaceWidth() - fpsBoundFPS.width,
 					cam.position.y - Shadow.viewh/2f);
 		}
 
@@ -165,8 +165,8 @@ public class Camera {
 		Shadow.spriteBatch.setProjectionMatrix(cam.combined);
 
 		Shadow.spriteBatch.end();
-		/*//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
-		System.out.println("(Camera) max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
+		//To disable / enable debugging, just add / remove "/*" to / from the beginning of this line.
+		/*System.out.println("(Camera) max sprites in batch: "+Shadow.spriteBatch.maxSpritesInBatch);
 		System.out.println("(Camera) render calls: "+Shadow.spriteBatch.renderCalls);
 		Shadow.spriteBatch.maxSpritesInBatch = 0;
 		/*
@@ -359,7 +359,7 @@ public class Camera {
 
 			go.preRender();
 
-			if (doCheck && go instanceof Block) {
+			if (doCheck && go instanceof Block && !go.blending) {
 				int taken = 0;
 				Array<Block> blocks;
 

@@ -7,7 +7,9 @@ import net.fourbytes.shadow.Input;
 import net.fourbytes.shadow.entities.Player;
 
 public class BlockLadder extends BlockType {
-	
+
+	public TextureRegion tex;
+
 	public BlockLadder() {
 	}
 	
@@ -19,7 +21,7 @@ public class BlockLadder extends BlockType {
 	
 	@Override
 	public TextureRegion getTexture(int id) {
-		return Images.getTextureRegion("block_ladder");
+		return tex == null ? tex = Images.getTextureRegion("block_ladder") : tex;
 	}
 	
 	@Override
