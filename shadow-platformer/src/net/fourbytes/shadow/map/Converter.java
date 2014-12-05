@@ -58,7 +58,7 @@ public class Converter {
 
 		System.gc();
 
-		ShadowMap shadowMap = ShadowMap.createFrom(level);
+		ShadowMap shadowMap = ShadowMap.createNewFrom(level);
 		shadowMap.save(output);
 
 		System.out.println("Conversion succeeded!");

@@ -4,13 +4,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 
 public class BlockButton extends BlockType implements BlockLogic {
 	
-	@Saveable
+	@IsSaveable
 	public boolean triggered = false;
-	@Saveable
+	@IsSaveable
 	public int mode = 0;
 	
 	public BlockButton() {
@@ -39,13 +39,13 @@ public class BlockButton extends BlockType implements BlockLogic {
 			Player p = (Player) e;
 			
 			if (mode == 1) {
-				p.spawnpos.set(p.pos);
+				p.spawnpos.set(p.spawnpos);
 			}
 			
 			//TODO: only trigger if player is ON the button
-			if (!triggered && p.pos.y < pos.y-0.1f) {
+			if (!triggered) {
 				Sounds.getSound("button_ingame").play(1f, Sounds.calcPitch(1f, 0.2f), 0f);
-				imgupdate = true;
+				texupdate = true;
 				triggered = true;
 				
 				for (Layer l : layer.level.layers.values()) {

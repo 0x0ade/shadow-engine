@@ -8,30 +8,34 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Images;
+import net.fourbytes.shadow.Particle;
 import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.entities.particles.GrassParticle;
+import net.fourbytes.shadow.map.IsSaveable;
+import net.fourbytes.shadow.systems.IParticleManager;
+import net.fourbytes.shadow.utils.Garbage;
 
+@IsSaveable(false)
 public class BlockGrassTop extends BlockType {
 	
 	public int[] order = {0, -2, -2};
-	public int[] offsets = {0, 0, 0, 0, 0, 0};
+	public float[] offsets = {0, 0, 0, 0, 0, 0};
 	public float[] factors = {0, 0, 0, 0, 0, 0};
 	public float[] speed1 = {0, 0, 0, 0, 0, 0};
 	public float[] speed2 = {0, 0, 0, 0, 0, 0};
 	public float[] height = {0, 0, 0, 0, 0, 0};
 	public Sprite[] spritecache;
 
-	public int frame = 0;
+	public float frame = 0;
 	
 	public float depth = 0;
 
-	public int collision = 0;
+	public float collision = 0f;
 	
 	public BlockGrassTop() {
 		frame = Shadow.rand.nextInt(1000);
 		for (int i = 0; i < offsets.length; i++) {
-			offsets[i] = Shadow.rand.nextInt(400);
+			offsets[i] = MathUtils.random(6f);
 			factors[i] = 1f - ((float)Shadow.rand.nextInt(100))/300f;
 			speed1[i] = 10f+Shadow.rand.nextInt(10);
 			speed2[i] = 20f+Shadow.rand.nextInt(20);
@@ -90,33 +94,38 @@ public class BlockGrassTop extends BlockType {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(float delta) {
 		//frame++;
-		collision--;
-		super.tick();
+		super.tick(delta);
 	}
 
 	@Override
 	public void collide(Entity e) {
 		if (e instanceof Player) {
-			if (collision <= 0) {
+			if (collision <= 0f) {
+				Vector2 pos = Garbage.vec2s.getNext();
 				for (int i = 0; i < 3 + Shadow.rand.nextInt(3); i++) {
-					Vector2 pos = new Vector2(this.pos);
+					pos.set(this.pos);
 					pos.x += rec.width/2f;
 					pos.y += rec.height/2f;
-					pos.x -= Shadow.rand.nextFloat() - 0.5f;
-					pos.y -= 0.5f*Shadow.rand.nextFloat() - 0.25f;
-					GrassParticle go = new GrassParticle(pos, layer);
+					pos.x -= MathUtils.random(-0.5f, 0.5f);
+					pos.y -= MathUtils.random(-0.25f, 0.25f);
+					Particle go = layer.level.systems.get(IParticleManager.class).create("GrassParticle", pos, layer, null, 0, 0);
 					layer.add(go);
 				}
 			}
-			collision = 32;
+			collision = 0.25f;
 		}
 	}
-	
+
+	@Override
+	public void frame(float delta) {
+		frame += delta;
+        collision -= delta;
+	}
+
 	@Override
 	public void preRender() {
-		frame++;
 		if (spritecache == null) {
 			getTexture(0);
 		}
@@ -133,7 +142,7 @@ public class BlockGrassTop extends BlockType {
 			sprite.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y + depth);
 			sprite.setSize(rec.width + renderoffs.width, -(rec.height + renderoffs.height) * height[i]);
 			
-			int offsetframe = frame + offsets[i];
+			float offsetframe = (frame + offsets[i])*60f;
 			float offs = MathUtils.sin(offsetframe / (1.3f * speed1[i]))/8f + (MathUtils.cos(offsetframe/(1.2f*speed2[i]))/8f);
 			offs *= 1.15f;
 			offs *= factors[i];
@@ -145,6 +154,9 @@ public class BlockGrassTop extends BlockType {
 			verts[SpriteBatch.X2] = x2;
 			verts[SpriteBatch.X3] = x3;
 		}
+
+		imgupdate = false;
+		texupdate = false;
 	}
 	
 	@Override

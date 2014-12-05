@@ -2,7 +2,10 @@ package net.fourbytes.shadow.mod;
 
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Level;
+import net.fourbytes.shadow.ParticleType;
 import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.network.Data;
+import net.fourbytes.shadow.systems.ISystem;
 
 /**
  * The ModAPIDefault is the default IModAPI used by
@@ -32,41 +35,41 @@ public class ModAPIDefault implements IModAPIStandard {
 	}
 
 	@Override
-	public void preTick() {
+	public void preTick(float delta) {
 		for (int i = 0; i < ModManager.mods.size; i++) {
 			IMod mod = ModManager.mods.items[i];
 			if (mod instanceof IModStandard) {
-				((IModStandard) mod).preTick();
+				((IModStandard) mod).preTick(delta);
 			}
 		}
 	}
 
 	@Override
-	public void postTick() {
+	public void postTick(float delta) {
 		for (int i = 0; i < ModManager.mods.size; i++) {
 			IMod mod = ModManager.mods.items[i];
 			if (mod instanceof IModStandard) {
-				((IModStandard) mod).postTick();
+				((IModStandard) mod).postTick(delta);
 			}
 		}
 	}
 
 	@Override
-	public void preRender() {
+	public void preRender(float delta) {
 		for (int i = 0; i < ModManager.mods.size; i++) {
 			IMod mod = ModManager.mods.items[i];
 			if (mod instanceof IModStandard) {
-				((IModStandard) mod).preRender();
+				((IModStandard) mod).preRender(delta);
 			}
 		}
 	}
 
 	@Override
-	public void postRender() {
+	public void postRender(float delta) {
 		for (int i = 0; i < ModManager.mods.size; i++) {
 			IMod mod = ModManager.mods.items[i];
 			if (mod instanceof IModStandard) {
-				((IModStandard) mod).postRender();
+				((IModStandard) mod).postRender(delta);
 			}
 		}
 	}
@@ -123,6 +126,62 @@ public class ModAPIDefault implements IModAPIStandard {
 				((IModStandard) mod).initLevelSystems(level);
 			}
 		}
+	}
+
+	@Override
+	public ISystem initLevelSystem(Level level, String name) {
+		ISystem system = null;
+		for (int i = 0; i < ModManager.mods.size; i++) {
+			IMod mod = ModManager.mods.items[i];
+			if (mod instanceof IModStandard) {
+				system = ((IModStandard) mod).initLevelSystem(level, name);
+				if (system != null) {
+					break;
+				}
+			}
+		}
+		return system;
+	}
+
+	@Override
+	public ParticleType getParticleType(String typeName) {
+		ParticleType pt = null;
+		for (int i = 0; i < ModManager.mods.size; i++) {
+			IMod mod = ModManager.mods.items[i];
+			if (mod instanceof IModStandard) {
+				pt = ((IModStandard) mod).getParticleType(typeName);
+				if (pt != null) {
+					break;
+				}
+			}
+		}
+		return pt;
+	}
+
+	@Override
+	public boolean handleClient(Data data, Object target) {
+		for (int i = 0; i < ModManager.mods.size; i++) {
+			IMod mod = ModManager.mods.items[i];
+			if (mod instanceof IModStandard) {
+				if (((IModStandard) mod).handleClient(data, target)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean handleServer(Data data, Object target) {
+		for (int i = 0; i < ModManager.mods.size; i++) {
+			IMod mod = ModManager.mods.items[i];
+			if (mod instanceof IModStandard) {
+				if (((IModStandard) mod).handleServer(data, target)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 }

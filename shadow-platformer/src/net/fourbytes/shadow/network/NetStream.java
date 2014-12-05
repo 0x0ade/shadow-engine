@@ -4,18 +4,20 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.EndPoint;
+import net.fourbytes.shadow.utils.Cache;
+
+import java.io.IOException;
 
 /**
  * This class is the standard networking class supporting queuing {@link Data} to send and 
  * to handle received data when {@link #tick()}ing. <br> 
- * It's using KryoNet as underlying implementation.
  */
 public abstract class NetStream {
+
+	protected Cache<Entry> entries = new Cache<Entry>(Entry.class, 1024);
 	
-	public static int port = 1157; //TODO Find better port.
-	public static int bufferObject = 4096;
-	public static int bufferWriteClient = bufferObject*5;
-	public static int bufferWriteServer = bufferObject*10;
+	public static int portTCP = 1337; //TODO Find better port.
+    public static int portUDP = 1338; //TODO Find better port.
 	public static int maxSent = 10; //TODO Find perfect count
 	
 	public Array<Entry> queueSend = new Array<Entry>();
@@ -30,12 +32,20 @@ public abstract class NetStream {
 			if (i >= maxSent) {
 				break;
 			}
-			send0(e.value, e.key);
+            if (e == null) {
+                continue;
+            }
+			send(e.value, e.key, true);
+            queueSend.removeValue(e, true);
 			i++;
 		}
-		
+
 		for (Entry e : queueHandle) {
-			handle(e.value, e.key);
+            if (e == null) {
+                continue;
+            }
+			handle((Data) e.value, e.key);
+            queueHandle.removeValue(e, true);
 		}
 	}
 	
@@ -55,7 +65,19 @@ public abstract class NetStream {
 	 */
 	public final void send(Object o, Object target, boolean priority) {
 		if (priority) {
-			send0(o, target);
+			Data data;
+
+			if (o instanceof Data) {
+				data = (Data) o;
+			} else {
+				data = new DataObject(o);
+			}
+
+			if (data.getOrdered()) {
+				sendTCP(data, target);
+			} else {
+				sendUDP(data, target);
+			}
 		} else {
 			Entry entry = new Entry();
 			entry.key = target;
@@ -63,23 +85,35 @@ public abstract class NetStream {
 			queueSend.add(entry);
 		}
 	}
-	
+
 	/**
-	 * Called internally when sending object. Subclasses should override this instead of {@link #send(Object)}.
+	 * Called internally when sending data. Subclasses should override this instead of {@link #send(Object)}.
 	 */
-	protected abstract void send0(Object o, Object target);
-	
+	protected abstract void sendTCP(Data data, Object target);
+
+	/**
+	 * Called internally when sending data. Subclasses should override this instead of {@link #send(Object)}.
+	 */
+	protected abstract void sendUDP(Data data, Object target);
+
 	/**
 	 * This method forwards the data got to the sever / client to be handled.
 	 */
-	public abstract void handle(Object obj, Object target);
-	
-	/**
-	 * Registers the EndPoint (Server, Client). Should be called after creating it.
-	 * @param ep EndPoint / Server / Client / ... to register
-	 */
-	public static final void register(EndPoint ep) {
-		Kryo kryo = ep.getKryo();
-		kryo.setRegistrationRequired(false);
-	}
+	public abstract void handle(Data data, Object target);
+
+    /**
+     * Starts the server. Doesn't do anything on clients.
+     */
+    public abstract void start();
+
+    /**
+     * Connects to the given IP. Doesn't do anything on servers.
+     */
+    public abstract void connect(String ip);
+
+    /**
+     * Disconnects from the currently connected server or kills the connections to all clients.
+     */
+    public abstract void disconnect();
+
 }

@@ -1,17 +1,24 @@
 package net.fourbytes.shadow;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.KeyListener;
 import net.fourbytes.shadow.Input.TouchPoint;
+import net.fourbytes.shadow.systems.DefaultSystemManager;
+import net.fourbytes.shadow.systems.ISystemManager;
 import net.fourbytes.shadow.utils.Garbage;
 import net.fourbytes.shadow.utils.Options;
 
@@ -38,28 +45,31 @@ public abstract class MenuLevel extends Level implements KeyListener {
 	public Color dimm = new Color(0f, 0f, 0f, 0.3f);
 	public float stepspeed = 0.9f;
 	public float step = 0f;
-	public int logostep = 0;
+	public float logostep = 0f;
 	public boolean showtitle = true;
-	
+
 	public MenuLevel() {
 		this(null);
 	}
 	
 	public MenuLevel(MenuLevel parent) {
-		hasvoid = false;
 		this.parent = parent;
 		if (parent != null) {
 			this.bglevel = parent.bglevel;
 		}
 		Input.keylisteners.add(this);
 
-		lights = null;
-		
 		System.gc();
 	}
 
 	@Override
-	public void tick() {
+	public ISystemManager createSystems() {
+		ISystemManager systems = new DefaultSystemManager(this);
+		return systems;
+	}
+
+	@Override
+	public void tick(float delta) {
 		if (bglevel != null) {
 			boolean lastInteract = true;
 			if (bglevel.player != null) {
@@ -68,7 +78,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 				player.canInteract = false;
 			}
 			bglevel.paused = bgpaused;
-			bglevel.tick();
+			bglevel.tick(delta);
 			bglevel.paused = false;
 			if (bglevel.player != null) {
 				player.canInteract = lastInteract;
@@ -79,7 +89,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		if (current == null || !items.contains(current, true)) {
 			current = items.items[0];
 		}
-		
+
 		TouchPoint tp = null;
 		for (TouchPoint ttp : Input.touches.values()) {
 			if (ttp != null) {
@@ -89,15 +99,15 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		}
 		if (tp != null) {
 			Vector2 newpos = calcMousePos(tp.pos);
-			
+
 			float mx = newpos.x;
 			float my = newpos.y;
-			
+
 			Rectangle r = Garbage.rects.getNext();
 			for (MenuItem mi : items) {
 				r.set(mi.mouser);
 				r.height = -r.height;
-				
+
 				if (r.contains(mx, my)) {
 					if (tp.button == 0 || Input.isAndroid) {
 						mi.mouseDown = true;
@@ -115,15 +125,15 @@ public abstract class MenuLevel extends Level implements KeyListener {
 					mi.mouseDown = false;
 				}
 			}
-			
+
 		}
-		
+
 		step *= stepspeed;
-		logostep++;
+		logostep += 100f*delta;
 	}
-	
+
 	protected final static Vector2 oldpos = new Vector2();
-	
+
 	public Vector2 calcMousePos(Vector2 apos) {
 		oldpos.set(apos);
 		Vector2 pos = Garbage.vec2s.getNext();
@@ -159,31 +169,33 @@ public abstract class MenuLevel extends Level implements KeyListener {
 		}
 		omitloop = false;
 		Rectangle vp = Shadow.cam.camrec;
-		if (dimmimg == null) {
-			dimmimg = Images.getImage("white");
+		if (!Options.getBoolean("gfx.blur", true) || bglevel == null) {
+			if (dimmimg == null) {
+				dimmimg = Images.getImage("white");
+			}
+			dimmimg.setPosition(vp.x, vp.y + vp.height);
+			dimmimg.setSize(1f, -1f);
+			dimmimg.setScale(vp.width, vp.height);
+			dimmimg.setColor(dimm);
+			dimmimg.draw(Shadow.spriteBatch, 1f);
 		}
-		dimmimg.setPosition(vp.x, vp.y+vp.height);
-		dimmimg.setSize(1f,  -1f);
-		dimmimg.setScale(vp.width, vp.height);
-		dimmimg.setColor(dimm);
-		dimmimg.draw(Shadow.spriteBatch, 1f);
-		
+
 		if (largeUI) {
 			font = Fonts.light_large;
 		} else {
 			font = Fonts.light_normal;
 		}
 		font.setScale(Shadow.vieww/Shadow.dispw, -Shadow.viewh/Shadow.disph);
-		
+
 		float x1 = font.getScaleX();
 		float y1 = font.getScaleY();
-		
+
 		if (showtitle) {
 			if (logo == null) {
 				logo = Images.getImage("logo");
 			}
 			logo.setScale(font.getScaleX(), font.getScaleY());
-			float possibruu = MathUtils.sin(logostep / 16f)/8f;
+            float possibruu = MathUtils.sin(logostep / 16f)/8f;
 			logo.setPosition(vp.x + vp.width - logo.getWidth()*logo.getScaleX()
 					- x1*32f - 0.125f + Shadow.cam.offs.x*2f,
 					vp.y - logo.getHeight()*logo.getScaleY()
@@ -193,7 +205,6 @@ public abstract class MenuLevel extends Level implements KeyListener {
 
 		if (image != null) {
 			//Render the "cursor" in between of map / title and font for less render calls.
-			//BTW: How does lowering the amount of render calls fix unstable maxSpritesInBatch but also raise it?
 			image.setColor(0f, 0f, 0f, 0.5f);
 			image.draw(Shadow.spriteBatch, 1f);
 			image.setPosition(image.getX() - 0.0825f, image.getY() - 0.0825f);
@@ -215,7 +226,7 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			MenuItem mi = items.items[i];
 			String txt = mi.text;
 			TextBounds tb = font.getBounds(txt);
-			
+
 			float x = vp.width/2 - maxw;
 			x += vp.x + vp.width/2;
 			x -= x1*32f;
@@ -229,21 +240,21 @@ public abstract class MenuLevel extends Level implements KeyListener {
 			font.draw(Shadow.spriteBatch, txt, x + 0.0825f, y + 0.0825f);
 			font.setColor(1f, 1f, 1f, 1f);
 			font.draw(Shadow.spriteBatch, txt, x, y);
-			
+
 			mi.mouser.set(x, y, tb.width, tb.height);
-			
+
 			if (mi == current) {
 				if (image == null) {
 					TextureRegion reg = Images.split("player", 16, 16)[1][0];
 					image = new Image(reg);
 				}
-				
+
 				float zoomscale = 2f;
 
 				if (largeUI) {
 					zoomscale = 4f;
 				}
-				
+
 				image.setScale(font.getScaleX()*zoomscale, font.getScaleY()*zoomscale);
 				image.setPosition(x - 16f*image.getScaleX()*1.5f + 0.0825f, (y+step) - 16f*image.getScaleY() - 3f/16f + 0.0825f);
 			}

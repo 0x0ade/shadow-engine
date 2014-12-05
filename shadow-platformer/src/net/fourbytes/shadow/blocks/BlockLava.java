@@ -13,11 +13,11 @@ public class BlockLava extends BlockFluid {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(float delta) {
 		light.set(1f, 0.35f, 0.01f, 1f);
 		light.add(MathUtils.random(lightDelta), MathUtils.random(lightDelta), MathUtils.random(lightDelta), 0f);
 		tintSunlight.set(light);
-		super.tick();
+		super.tick(delta);
 	}
 
 	@Override

@@ -51,7 +51,13 @@ public class MultiObject {
 	@Override
 	public int hashCode() {
 		int hash = Integer.MIN_VALUE;
+        if (objects == null) {
+            return hash;
+        }
 		for (Object o : objects) {
+            if (o == null) {
+                continue;
+            }
 			hash += o.hashCode();
 			hash *= 0.75f;
 		}

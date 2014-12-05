@@ -1,3 +1,4 @@
 cat gfx.renderer Setup renderer
-cat gfx.blur Setup pause menu blur
+cat gfx.blur Setup blur
+cat gfx.light Setup light system
 cat gfx.advanced Advanced options

@@ -4,6 +4,8 @@
     <facet type="android" name="Android">
       <configuration>
         <option name="ASSETS_FOLDER_RELATIVE_PATH" value="/../shadow-platformer/assets" />
+        <option name="UPDATE_PROPERTY_FILES" value="true" />
+        <includeAssetsFromLibraries>true</includeAssetsFromLibraries>
       </configuration>
     </facet>
   </component>

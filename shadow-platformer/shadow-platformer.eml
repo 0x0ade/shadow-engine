@@ -3,21 +3,19 @@
 	<exclude-output/>
 	<contentEntry url="file://$MODULE_DIR$">
 		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
+		<excludeFolder url="file://$MODULE_DIR$/gifs"/>
 		<excludeFolder url="file://$MODULE_DIR$/logs"/>
 		<excludeFolder url="file://$MODULE_DIR$/saves"/>
+		<excludeFolder url="file://$MODULE_DIR$/screenshots"/>
 	</contentEntry>
 	<lib name="gdx-controllers.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/libs/gdx-controllers-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-controllers-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-controllers.jar!/"/>
+		<srcroot url="jar://$USER_HOME$/libjars/libgdx/extensions/gdx-controllers/sources/gdx-controllers-sources.jar!/"/>
 	</lib>
 	<lib name="gdx-freetype.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-freetype.jar!/"/>
+		<srcroot url="jar://$USER_HOME$/libjars/libgdx/extensions/gdx-freetype/sources/gdx-freetype-sources.jar!/"/>
 	</lib>
 	<lib name="gdx.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/libs/gdx-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx.jar!/"/>
+		<srcroot url="jar://$USER_HOME$/libjars/libgdx/sources/gdx-sources.jar!/"/>
 	</lib>
 	<lib name="kryonet-2.18-all.jar" scope="COMPILE">
 		<srcroot url="jar://$MODULE_DIR$/libs/kryonet-source.jar!/"/>

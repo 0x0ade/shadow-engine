@@ -6,23 +6,9 @@
 		<excludeFolder url="file://$MODULE_DIR$/bin"/>
 	</contentEntry>
 	<lib name="gdx-backend-android.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/libs/gdx-backend-android-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android.jar!/"/>
+		<srcroot url="jar://$USER_HOME$/libjars/libgdx/sources/gdx-backend-android-sources.jar!/"/>
 	</lib>
 	<lib name="gdx-controllers-android.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/libs/gdx-controllers-android-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer-android/libs/gdx-controllers-android-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-android/libs/gdx-controllers-android.jar!/"/>
-	</lib>
-	<lib name="gdx-freetype.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/../shadow-platformer/libs/gdx-freetype-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-freetype-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-freetype.jar!/"/>
-	</lib>
-	<lib name="gdx.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/../shadow-platformer/libs/gdx-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer/libs/gdx.jar!/"/>
+		<srcroot url="jar://$USER_HOME$/libjars/libgdx/extensions/gdx-controllers/sources/gdx-controllers-android-sources.jar!/"/>
 	</lib>
 </component>

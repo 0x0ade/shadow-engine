@@ -10,8 +10,8 @@ import com.badlogic.gdx.utils.ObjectIntMap;
 import net.fourbytes.shadow.entities.Cursor;
 
 public class Input {
-	
-	public static class TouchPoint {
+
+    public static class TouchPoint {
 		public static enum TouchMode {
 			KeyInput, 
 			Cursor
@@ -164,7 +164,16 @@ public class Input {
 	
 	public static Array<KeyListener> keylisteners = new Array<KeyListener>(KeyListener.class);
 	static Array<KeyListener> tmpkeylisteners = new Array<KeyListener>(KeyListener.class);
-	
+
+    public static Key getKey(String name) {
+        for (Key key : all) {
+            if (key.name.equals(name)) {
+                return key;
+            }
+        }
+        return null;
+    }
+
 	public static void setUp() {
 		for (int i = 0; i < all.size; i++) {
 			Key k = all.items[i];
@@ -212,28 +221,19 @@ public class Input {
 			
 			check(kl);
 		}
-
-		//Using the keyTable itself is made hard as it's package-private.
-		//A workaround would be the use of a helper class / method in the same package or reflection.
-		for (KeyListener kl : timemap.keys()) {
-			remove(kl);
-		}
 	}
 	
 	public static ObjectIntMap<KeyListener> timemap = new ObjectIntMap<KeyListener>();
 	
 	public static void check(KeyListener kl) {
+		if (Shadow.level instanceof LoadingLevel) {
+			return;
+		}
+
 		if (kl instanceof Level) {
 			Level sl = Shadow.level;
 
-			if (!(sl instanceof MenuLevel)) {
-				//in-game
-				if (kl instanceof MenuLevel) {
-					remove(kl);
-				} else if (kl != sl) {
-					remove(kl);
-				}
-			} else {
+			if (sl instanceof MenuLevel) {
 				//in menu
 				MenuLevel ml = (MenuLevel) sl;
 				boolean isInChain = false;
@@ -244,39 +244,37 @@ public class Input {
 					}
 				}
 				if (!isInChain) {
-					remove(kl);
+					keylisteners.removeValue(kl, true);
+				}
+			} else {
+				//in-game
+				if (kl instanceof MenuLevel) {
+					keylisteners.removeValue(kl, true);
+				} else if (kl != sl) {
+					keylisteners.removeValue(kl, true);
 				}
 			}
 		}
+
 		if (kl instanceof GameObject) {
 			GameObject go = (GameObject) kl;
 			Level clevel = Shadow.level;
 			if (clevel instanceof MenuLevel) {
 				clevel = ((MenuLevel)clevel).bglevel;
 			}
+
 			if (go instanceof Entity) {
 				Entity e = (Entity) go;
 				if (e.layer == null || !e.layer.entities.contains(e, true) || clevel != e.layer.level) {
-					remove(kl);
+					keylisteners.removeValue(kl, true);
 				}
 			}
 			if (go instanceof Block) {
 				Block b = (Block) go;
 				if (b.layer == null || !b.layer.blocks.contains(b, true) || clevel != b.layer.level) {
-					remove(kl);
+					keylisteners.removeValue(kl, true);
 				}
 			}
-		}
-	}
-	
-	private static void remove(KeyListener kl) {
-		if (!timemap.containsKey(kl)) {
-			timemap.put(kl, 0);
-		} else if (timemap.get(kl, 0) >= 4) {
-			keylisteners.removeValue(kl, true);
-			timemap.remove(kl, 0);
-		} else {
-			timemap.put(kl, timemap.get(kl, 0)+1);
 		}
 	}
 	

@@ -1,6 +1,7 @@
 package net.fourbytes.shadow.blocks;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import net.fourbytes.shadow.Entity;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Sounds;
@@ -10,7 +11,7 @@ import java.util.Random;
 
 public class BlockPoint extends BlockType {
 
-	public int subframe = 0;
+	public float subframe = 0f;
 	public int frame = 0;
 	
 	public BlockPoint() {
@@ -24,18 +25,21 @@ public class BlockPoint extends BlockType {
 		passSunlight = true;
 	}
 
-	@Override 
-	public void preRender() {
-		subframe += rand.nextInt(3);
-		if (subframe > 12) {
+	@Override
+	public void frame(float delta) {
+		subframe += delta * MathUtils.random(3f/60f);
+		if (subframe > 12f/60f) {
 			frame++;
 			subframe = 0;
-			imgupdate = true;
+			texupdate = true;
 		}
 		if (frame >= 4) {
 			frame = 0;
-			pixdur = rand.nextInt(20)+20;
 		}
+	}
+
+	@Override 
+	public void preRender() {
 		super.preRender();
 	}
 	

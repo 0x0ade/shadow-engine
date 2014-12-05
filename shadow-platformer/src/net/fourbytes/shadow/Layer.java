@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.LongMap;
-import net.fourbytes.shadow.entities.Particle;
+import net.fourbytes.shadow.systems.IParticleManager;
 import net.fourbytes.shadow.utils.Cache;
 
 /**
@@ -15,7 +15,7 @@ import net.fourbytes.shadow.utils.Cache;
  */
 public class Layer {
 
-	protected final static Cache<Array<Block>> cache = new Cache(Array.class, 16,
+	protected final Cache<Array<Block>> cache = new Cache(Array.class, 32,
 			new Object[] {false, 4, Block.class}, new Class[] {boolean.class, int.class, Class.class});
 
 	public static enum BlockMapSystem {
@@ -26,7 +26,6 @@ public class Layer {
 	}
 
 	public static BlockMapSystem bms = BlockMapSystem.coordinate;
-	protected static BlockMapSystem lastbms;
 	public static int round = 1;
 	protected IntMap<Array<Block>> rowmap = new IntMap<Array<Block>>(256);
 	protected LongMap<Array<Block>> blockmap = new LongMap<Array<Block>>(1024);
@@ -38,6 +37,9 @@ public class Layer {
 	public Array<Entity> entities = new Array<Entity>(false, 512, Entity.class);
 	public Array<Particle> particles = new Array<Particle>(false, 512, Particle.class);
 
+	public LongMap<Chunk> chunkmap = new LongMap<Chunk>(256);
+	public Array<Chunk> chunks = new Array<Chunk>(false, 256, Chunk.class);
+
 	public final Color tint = new Color(1f, 1f, 1f, 1f);
 
 	public Layer(Level level) {
@@ -47,29 +49,53 @@ public class Layer {
 	public void add(GameObject go) {
 		if (this != level.mainLayer) {
 			level.mainLayer.add(go);
+		} else {
+            level.goIDMap.put(go.getID(), go);
+        }
+
+		long cc = (long) ((int)(go.pos.x/Chunk.size)) << 32 | ((int)(go.pos.y/Chunk.size)) & 0xFFFFFFFFL;
+		Chunk chunk = chunkmap.get(cc);
+		if (chunk == null) {
+			chunk = new Chunk((int)(go.pos.x/Chunk.size), (int)(go.pos.y/Chunk.size), this);
+			chunkmap.put(cc, chunk);
+			chunks.add(chunk);
 		}
+		go.chunk = chunk;
 
 		//long c = Coord.get(go.pos.x/round, go.pos.y/round);
 		long c = (long) ((int)(go.pos.x/round)) << 32 | ((int)(go.pos.y/round)) & 0xFFFFFFFFL;
 
 		if (go instanceof Block) {
 			blocks.add((Block) go);
+			chunk.blocks.add((Block) go);
 			Array<Block> al = get0(c);
 			if (al == null) {
 				al = put0(c);
 			}
 			al.add((Block) go);
+
+			chunk.dirtify();
+			if (!((Block) go).dynamic) {
+				chunk.rerender = true;
+			}
 		} else if (go instanceof Particle) {
 			particles.add((Particle) go);
+			chunk.particles.add((Particle) go);
 		} else if (go instanceof Entity) {
 			entities.add((Entity) go);
+			chunk.entities.add((Entity) go);
 		}
 	}
 	
 	public void remove(GameObject go) {
 		if (this != level.mainLayer) {
 			level.mainLayer.remove(go);
-		}
+		} else {
+            level.goIDMap.remove(go.getID());
+        }
+
+		long cc = (long) ((int)(go.pos.x/Chunk.size)) << 32 | ((int)(go.pos.y/Chunk.size)) & 0xFFFFFFFFL;
+		Chunk chunk = chunkmap.get(cc);
 
 		//long c = Coord.get(go.pos.x/round, go.pos.y/round);
 		long c = (long) ((int)(go.pos.x/round)) << 32 | ((int)(go.pos.y/round)) & 0xFFFFFFFFL;
@@ -77,6 +103,15 @@ public class Layer {
 		inView.removeValue(go, true);
 		if (go instanceof Block) {
 			blocks.removeValue((Block) go, true);
+
+			if (chunk != null) {
+				chunk.blocks.removeValue((Block) go, true);
+				chunk.dirtify();
+				if (!((Block) go).dynamic) {
+					chunk.rerender = true;
+				}
+			}
+
 			Array<Block> al = get0(c);
 			if (al != null) {
 				al.removeValue((Block) go, true);
@@ -85,16 +120,68 @@ public class Layer {
 				}
 			}
 		} else if (go instanceof Particle) {
+			if (this == level.mainLayer) {
+				level.systems.get(IParticleManager.class).reset((Particle) go);
+			}
+
 			particles.removeValue((Particle) go, true);
+
+			if (chunk != null) {
+				chunk.particles.removeValue((Particle) go, true);
+			}
 		} else if (go instanceof Entity) {
 			entities.removeValue((Entity) go, true);
+
+			if (chunk != null) {
+				chunk.entities.removeValue((Entity) go, true);
+			}
+		}
+
+		go.chunk = null;
+
+		if (chunk != null && chunk.blocks.size == 0 && chunk.particles.size == 0 && chunk.entities.size == 0) {
+			chunkmap.remove(cc);
+			chunks.removeValue(chunk, true);
 		}
 	}
 
 	public void move(Block b, long oldc, long newc) {
+		if (oldc == newc) {
+			return;
+		}
+
 		if (this != level.mainLayer) {
 			level.mainLayer.move(b, oldc, newc);
 		}
+
+		long oldcc = (long) (((int) (oldc >> 32)) / Chunk.size) << 32 | (((int) (oldc)) / Chunk.size) & 0xFFFFFFFFL;
+		Chunk oldchunk = chunkmap.get(oldcc);
+		if (oldchunk != null) {
+			oldchunk.blocks.removeValue(b, true);
+			if (!b.dynamic) {
+				oldchunk.rerender = true;
+			}
+			if (oldchunk.blocks.size == 0 && oldchunk.particles.size == 0 && oldchunk.entities.size == 0) {
+				chunkmap.remove(oldcc);
+				chunks.removeValue(oldchunk, true);
+			}
+		}
+
+
+		long newcc = (long) (((int) (newc >> 32)) / Chunk.size) << 32 | (((int) (newc)) / Chunk.size) & 0xFFFFFFFFL;
+		Chunk newchunk = chunkmap.get(newcc);
+		if (newchunk == null) {
+			newchunk = new Chunk((((int) (newc >> 32)) / Chunk.size), (((int) (newc)) / Chunk.size), this);
+			chunkmap.put(newcc, newchunk);
+			chunks.add(newchunk);
+		}
+		if (newchunk != oldchunk) {
+			newchunk.dirtify();
+			if (!b.dynamic) {
+				oldchunk.rerender = true;
+			}
+		}
+		b.chunk = newchunk;
 
 		//oldc = Coord.div(oldc, round));
 		oldc = (long) (((int) (oldc >> 32)) / round) << 32 | (((int) (oldc)) / round) & 0xFFFFFFFFL;
@@ -125,7 +212,7 @@ public class Layer {
 		int cy = (int) c;
 
 		//c = Coord.div(c, round));
-		c = (long) (((int) (c >> 32)) / round) << 32 | (((int) (c)) / round) & 0xFFFFFFFFL;
+		c = (long) ((int)(cx/round)) << 32 | ((int)(cy/round)) & 0xFFFFFFFFL;
 
 		Array<Block> vv = get0(c);
 		Array<Block> v;

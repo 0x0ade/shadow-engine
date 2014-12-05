@@ -6,13 +6,13 @@ import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Coord;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Sounds;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 
 public class BlockDissolve extends BlockType implements BlockLogic {
 	
-	@Saveable
+	@IsSaveable
 	public boolean triggered = false;
-	@Saveable
+	@IsSaveable
 	public boolean inverted = false;
 	
 	public BlockDissolve() {
@@ -23,8 +23,13 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 	}
 	
 	@Override 
-	public void tick() {
+	public void init() {
 		tickAlways = true;
+		blending = false;
+	}
+
+	@Override
+	public void tick(float delta) {
 		if (!inverted) {
 			solid = !triggered;
 		} else {
@@ -32,7 +37,6 @@ public class BlockDissolve extends BlockType implements BlockLogic {
 		}
 		passSunlight = !solid;
 		alpha = solid?1f:0f;
-		blending = false;
 	}
 	
 	@Override

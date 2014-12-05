@@ -7,12 +7,15 @@ import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.controllers.mappings.Ouya;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.badlogic.gdx.utils.ObjectMap.Entry;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.MenuLevel.MenuItem;
 import net.fourbytes.shadow.utils.Cache;
+import net.fourbytes.shadow.utils.Garbage;
+import net.fourbytes.shadow.utils.Options;
 import net.fourbytes.shadow.utils.backend.ControllerNumerator;
 
 /**
@@ -23,9 +26,10 @@ import net.fourbytes.shadow.utils.backend.ControllerNumerator;
  * such as the controllers created by a GDXRemote server, it is
  * advised to use this class to poll for currently connected
  * controllers. Also, this class manages mapping with help of
- * the ControllerInput class and it's subclasses ControllerButton
- * and ControllerAxis. POVs, accelerators and more are to come.
- * <br>
+ * the ControllerHelper.ControllerInput class and it's subclasses
+ * ControllerHelper.ControllerButton and ControllerHelper.ControllerAxis.
+ * POVs, accelerators and more are to come.
+ * <br><br>
  * This class is instance of ControllerListener but uses polling
  * of Controllers' ControllerManager's controllers. Custom
  * controllers may get added into the list of the Controllers'
@@ -33,8 +37,175 @@ import net.fourbytes.shadow.utils.backend.ControllerNumerator;
  * instance of this class (sitting in Shadow by default) to the
  * list of their ControllerListeners manually and load the
  * mapping manually by calling connected manually.
+ * <br><br>
+ * Possible automatic mappings of the controller buttons to in-game buttons
+ * may happen by creating a new ControllerHelper.Mapping subclass and adding
+ * an instance of that class into the mappings array of the current
+ * ControllerHelper instance. Default mappings for OUYA, PS3 (Linux and
+ * OUYA only) and Sanmos (Linux only) controllers are given.
  */
 public final class ControllerHelper implements ControllerListener {
+
+	//MAPPINGS (may move into separate package in future)
+
+	public static abstract interface Mapping {
+		public String getName();
+
+		/**
+		 * @return true if mapped; false otherwise
+		 */
+		public boolean map(Controller controller, ControllerHelper controllerHelper);
+	}
+
+    public static class ConfigMapping implements Mapping {
+        @Override
+        public String getName() {
+            return "User-created mapping loaded from file";
+        }
+
+        @Override
+        public boolean map(Controller controller, ControllerHelper controllerHelper) {
+            String jsonString = Options.getString("controller.\""+controller.getName()+"\"", null);
+
+            if (jsonString == null) {
+                return false;
+            }
+
+            JsonValue json = Garbage.jsonReader.parse(jsonString);
+
+            JsonValue axes = json.get("axes");
+            for (JsonValue axis = axes.child; axis != null; axis = axis.next) {
+                int id = Integer.parseInt(axis.name);
+                boolean negative = axis.name.startsWith("-");
+                if (negative) {
+                    id = -id;
+                }
+                for (JsonValue key = axis.child; key != null; key = key.next) {
+                    String keyName = key.asString();
+                    Key keyInput = Input.getKey(keyName);
+                    ControllerAxis axisController = new ControllerAxis(controller, id, negative);
+                    controllerHelper.map(keyInput, axisController);
+                }
+            }
+
+            JsonValue buttons = json.get("buttons");
+            for (JsonValue button = buttons.child; button != null; button = button.next) {
+                int id = Integer.parseInt(button.name);
+                for (JsonValue key = button.child; key != null; key = key.next) {
+                    String keyName = key.asString();
+                    Key keyInput = Input.getKey(keyName);
+                    ControllerButton axisController = new ControllerButton(controller, id);
+                    controllerHelper.map(keyInput, axisController);
+                }
+            }
+
+            return true;
+        }
+    }
+
+	public static class OuyaMapping implements Mapping {
+		@Override
+		public String getName() {
+			return "Default OUYA mapping";
+		}
+
+		@Override
+		public boolean map(Controller controller, ControllerHelper controllerHelper) {
+			if (Ouya.ID.equals(controller.getName())) {
+				System.out.println("Automapping OUYA controller...");
+				controllerHelper.map(Input.up, new ControllerButton(controller, Ouya.BUTTON_DPAD_UP));
+				controllerHelper.map(Input.down, new ControllerButton(controller, Ouya.BUTTON_DPAD_DOWN));
+				controllerHelper.map(Input.left, new ControllerButton(controller, Ouya.BUTTON_DPAD_LEFT));
+				controllerHelper.map(Input.right, new ControllerButton(controller, Ouya.BUTTON_DPAD_RIGHT));
+				controllerHelper.map(Input.up, new ControllerAxis(controller, Ouya.AXIS_LEFT_Y, true));
+				controllerHelper.map(Input.down, new ControllerAxis(controller, Ouya.AXIS_LEFT_Y, false));
+				controllerHelper.map(Input.left, new ControllerAxis(controller, Ouya.AXIS_LEFT_X, true));
+				controllerHelper.map(Input.right, new ControllerAxis(controller, Ouya.AXIS_LEFT_X, false));
+				controllerHelper.map(Input.jump, new ControllerButton(controller, Ouya.BUTTON_O));
+				controllerHelper.map(Input.pause, new ControllerButton(controller, Ouya.BUTTON_MENU));
+				controllerHelper.map(Input.enter, new ControllerButton(controller, Ouya.BUTTON_O));
+				controllerHelper.map(Input.androidBack, new ControllerButton(controller, Ouya.BUTTON_A));
+				return true;
+			}
+			return false;
+		}
+	}
+
+	public static class PS3Mapping implements Mapping {
+		@Override
+		public String getName() {
+			return "Default PS3 mapping";
+		}
+
+		@Override
+		public boolean map(Controller controller, ControllerHelper controllerHelper) {
+			String os = System.getProperty("os.name").toLowerCase();
+			if (controller.getName().contains("PLAYSTATION(R)3")) {
+				//Sidenote: Third-Party bluetooth PS3 controllers should use the same button mapping as the original controller.
+				//Otherwise, the PS3 itself would even have problems with the button IDs being different.
+				if (Input.isOuya) {
+					System.out.println("Automapping PS3 controller on Ouya...");
+					controllerHelper.map(Input.up, new ControllerButton(controller, 19));
+					controllerHelper.map(Input.down, new ControllerButton(controller, 20));
+					controllerHelper.map(Input.left, new ControllerButton(controller, 21));
+					controllerHelper.map(Input.right, new ControllerButton(controller, 22));
+					controllerHelper.map(Input.up, new ControllerAxis(controller, 1, true));
+					controllerHelper.map(Input.down, new ControllerAxis(controller, 1, false));
+					controllerHelper.map(Input.left, new ControllerAxis(controller, 0, true));
+					controllerHelper.map(Input.right, new ControllerAxis(controller, 0, false));
+					controllerHelper.map(Input.jump, new ControllerButton(controller, 96));
+					controllerHelper.map(Input.pause, new ControllerButton(controller, 108));
+					controllerHelper.map(Input.pause, new ControllerButton(controller, 86));
+					controllerHelper.map(Input.enter, new ControllerButton(controller, 96));
+					controllerHelper.map(Input.androidBack, new ControllerButton(controller, 97));
+					return true;
+				} else if ((os.equals("linux") || os.equals("unix"))) {
+					System.out.println("Automapping PS3 controller on Linux...");
+					controllerHelper.map(Input.up, new ControllerButton(controller, 4));
+					controllerHelper.map(Input.down, new ControllerButton(controller, 6));
+					controllerHelper.map(Input.left, new ControllerButton(controller, 7));
+					controllerHelper.map(Input.right, new ControllerButton(controller, 5));
+					controllerHelper.map(Input.up, new ControllerAxis(controller, 1, true));
+					controllerHelper.map(Input.down, new ControllerAxis(controller, 1, false));
+					controllerHelper.map(Input.left, new ControllerAxis(controller, 0, true));
+					controllerHelper.map(Input.right, new ControllerAxis(controller, 0, false));
+					controllerHelper.map(Input.jump, new ControllerButton(controller, 14));
+					controllerHelper.map(Input.pause, new ControllerButton(controller, 3));
+					controllerHelper.map(Input.enter, new ControllerButton(controller, 14));
+					controllerHelper.map(Input.androidBack, new ControllerButton(controller, 13));
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+	public static class SanmosMapping implements Mapping {
+		@Override
+		public String getName() {
+			return "Default Sanmos mapping";
+		}
+
+		@Override
+		public boolean map(Controller controller, ControllerHelper controllerHelper) {
+			String os = System.getProperty("os.name").toLowerCase();
+			if ((os.equals("linux") || os.equals("unix")) && controller.getName().contains("Sanmos TWIN SHOCK")) {
+				System.out.println("Automapping Sanmos TWIN SHOCK on Linux...");
+				controllerHelper.map(Input.up, new ControllerAxis(controller, 1, true));
+				controllerHelper.map(Input.down, new ControllerAxis(controller, 1, false));
+				controllerHelper.map(Input.left, new ControllerAxis(controller, 0, true));
+				controllerHelper.map(Input.right, new ControllerAxis(controller, 0, false));
+				controllerHelper.map(Input.jump, new ControllerButton(controller, 2));
+				controllerHelper.map(Input.pause, new ControllerButton(controller, 11));
+				controllerHelper.map(Input.enter, new ControllerButton(controller, 2));
+				controllerHelper.map(Input.androidBack, new ControllerButton(controller, 3));
+				return true;
+			}
+			return false;
+		}
+	}
+
+	//INPUTS
 
 	public static abstract class ControllerInput {
 		public Controller controller;
@@ -142,56 +313,148 @@ public final class ControllerHelper implements ControllerListener {
 		}
 	}
 
+	//CACHES
+
 	protected final static Cache<Array<Key>> cacheKeys = new Cache(Array.class, 32,
-			new Object[] {false, 4}, new Class[] {boolean.class, int.class});
-	protected final static Cache<ControllerButton> cacheButtons = new Cache(ControllerButton.class, 64);
-	protected final static Cache<ControllerAxis> cacheAxes = new Cache(ControllerAxis.class, 64);
+			new Object[] {false, 4, Key.class}, new Class[] {boolean.class, int.class, Class.class});
+	protected final static Cache<ControllerButton> cacheButtons = new Cache<ControllerButton>(ControllerButton.class, 64);
+	protected final static Cache<ControllerAxis> cacheAxes = new Cache<ControllerAxis>(ControllerAxis.class, 64);
+
+	//CONTROLLERHELPER
 
 	public static float deadzone = 0.25f;
 
-	public final ObjectMap<Key, Array<ControllerInput>> mapping = new ObjectMap<Key, Array<ControllerInput>>();
+	public final ObjectMap<Key, Array<ControllerInput>> keymap = new ObjectMap<Key, Array<ControllerInput>>();
 	public final ObjectMap<Key, Array<ControllerInput>> tmpmap = new ObjectMap<Key, Array<ControllerInput>>();
+    public final ObjectMap<Controller, JsonValue> tmpconfmap = new ObjectMap<Controller, JsonValue>();
+
+	public final Array<Mapping> mappings = new Array<Mapping>(Mapping.class);
 	
 	private Key tmpkey;
 	public Key assignKey;
 	public MenuItem assignKeyHelper;
 	public Controller assignKeyController;
 
-	public Array<Controller> controllers = new Array<Controller>();
-	public Array<Controller> controllersAuto = new Array<Controller>();
+	public Array<Controller> controllers = new Array<Controller>(Controller.class);
+	public Array<Controller> controllersAuto = new Array<Controller>(Controller.class);
 
 	public ControllerNumerator numerator;
 
 	public ControllerHelper() {
-		for (Controller controller : Controllers.getControllers()) {
-			connected(controller);
+        mappings.add(new ConfigMapping());
+		if (!Input.isOuya) {//The OUYA has got it's own mapping for the OUYA controller since OUYA Everywhere.
+			mappings.add(new OuyaMapping());
 		}
+		mappings.add(new PS3Mapping());
+		mappings.add(new SanmosMapping());
 	}
 
-	public void refreshMapping() {
+	public void refreshKeymap() {
 		tmpmap.clear();
-		synchronized (mapping) {
-			for (Entry<Key, Array<ControllerInput>> entry : mapping.entries()) {
+        tmpconfmap.clear();
+		synchronized (keymap) {
+            for (Controller controller : controllers) {
+                JsonValue json = new JsonValue(JsonValue.ValueType.object);
+
+                json.child = new JsonValue(JsonValue.ValueType.object);
+                json.child.name = "buttons";
+
+                json.child.prev = new JsonValue(JsonValue.ValueType.object);
+                json.child.prev.next = json.child;
+                json.child = json.child.prev;
+                json.child.name = "axes";
+
+                tmpconfmap.put(controller, json);
+            }
+
+			for (Entry<Key, Array<ControllerInput>> entry : keymap.entries()) {
 				Array<ControllerInput> inputs = entry.value;
 				Key key = entry.key;
 
 				for (ControllerInput input : inputs) {
 					if (!controllers.contains(input.controller, true)) {
 						inputs.removeValue(input, false);
+                        continue;
 					}
+
+                    JsonValue json = tmpconfmap.get(input.controller);
+                    if (input instanceof ControllerAxis) {
+                        JsonValue axes = json.get("axes");
+                        JsonValue axis = axes.get((((ControllerAxis) input).negative?"-":"") + ((ControllerAxis) input).axisCode);
+
+                        if (axis == null) {
+                            axis = new JsonValue(JsonValue.ValueType.array);
+                            axis.name = (((ControllerAxis) input).negative?"-":"") + ((ControllerAxis) input).axisCode;
+                            if (axes.child == null) {
+                                axes.child = axis;
+                            } else {
+                                JsonValue child = axes.child;
+                                axes.child = axis;
+                                child.prev = axis;
+                                axis.next = child;
+                            }
+                        }
+
+                        JsonValue keyValue = new JsonValue(key.name);
+                        keyValue.name = "";
+                        if (axis.child == null) {
+                            axis.child = keyValue;
+                        } else {
+                            JsonValue child = axis.child;
+                            axis.child = keyValue;
+                            child.prev = keyValue;
+                            keyValue.next = child;
+                        }
+                    } else if (input instanceof ControllerButton) {
+                        JsonValue buttons = json.get("buttons");
+                        JsonValue button = buttons.get("" + ((ControllerButton) input).buttonCode);
+
+                        if (button == null) {
+                            button = new JsonValue(JsonValue.ValueType.array);
+                            button.name = "" + ((ControllerButton) input).buttonCode;
+                            if (buttons.child == null) {
+                                buttons.child = button;
+                            } else {
+                                JsonValue child = buttons.child;
+                                buttons.child = button;
+                                child.prev = button;
+                                button.next = child;
+                            }
+                        }
+
+                        JsonValue keyValue = new JsonValue(key.name);
+                        keyValue.name = "";
+                        if (button.child == null) {
+                            button.child = keyValue;
+                        } else {
+                            JsonValue child = button.child;
+                            button.child = keyValue;
+                            child.prev = keyValue;
+                            keyValue.next = child;
+                        }
+                    }
 				}
 
 				if (inputs.size == 0) {
-					mapping.remove(key);
+					keymap.remove(key);
 				}
 			}
+
+            for (Entry<Controller, JsonValue> entry : tmpconfmap.entries()) {
+                Controller controller = entry.key;
+                JsonValue json = entry.value;
+                String jsonString = json.toString();
+                Options.putString("controller.\""+controller.getName()+"\"", jsonString);
+            }
+
+            Options.flush();
 		}
 	}
 
 	public Array<Key> getKeysForInput(ControllerInput input) {
 		Array<Key> keys = cacheKeys.getNext();
 		keys.clear();
-		for (Entry<Key, Array<ControllerInput>> entry : mapping.entries()) {
+		for (Entry<Key, Array<ControllerInput>> entry : keymap.entries()) {
 			Array<ControllerInput> einputs = entry.value;
 			Key ekey = entry.key;
 			if (einputs.contains(input, false)) {
@@ -202,7 +465,7 @@ public final class ControllerHelper implements ControllerListener {
 	}
 	
 	public String getInputLabelForKey(Key key) {
-		Array<ControllerInput> inputs = mapping.get(key);
+		Array<ControllerInput> inputs = keymap.get(key);
 		if (inputs == null) {
 			return "NONE";
 		}
@@ -213,11 +476,14 @@ public final class ControllerHelper implements ControllerListener {
 			}
 			return input.getLabel();
 		}
+        if (inputs.size == 0) {
+            return "NONE";
+        }
 		return "MULTI";
 	}
 
 	public String getInputLabelForKey(Key key, Controller controller) {
-		Array<ControllerInput> inputs = mapping.get(key);
+		Array<ControllerInput> inputs = keymap.get(key);
 		if (inputs == null) {
 			return "NONE";
 		}
@@ -245,11 +511,11 @@ public final class ControllerHelper implements ControllerListener {
 	}
 	
 	public void map(Key key, ControllerInput input) {
-		synchronized (mapping) {
-			Array<ControllerInput> inputs = mapping.get(key);
+		synchronized (keymap) {
+			Array<ControllerInput> inputs = keymap.get(key);
 			if (inputs == null) {
-				inputs = new Array<ControllerInput>(2);
-				mapping.put(key, inputs);
+				inputs = new Array<ControllerInput>(true, 2, ControllerInput.class);
+				keymap.put(key, inputs);
 			}
 			inputs.add(input);
 		}
@@ -288,8 +554,8 @@ public final class ControllerHelper implements ControllerListener {
 		}
 		
 		//"Unstick" axes.
-		synchronized (mapping) {
-			for (Entry<Key, Array<ControllerInput>> entry : mapping.entries()) {
+		synchronized (keymap) {
+			for (Entry<Key, Array<ControllerInput>> entry : keymap.entries()) {
 				Array<ControllerInput> inputs = entry.value;
 				Key key = entry.key;
 
@@ -322,69 +588,13 @@ public final class ControllerHelper implements ControllerListener {
 			controllersAuto.add(controller);
 		}
 
-		String os = System.getProperty("os.name").toLowerCase();
-		if (controller.getName().contains("PLAYSTATION(R)3")) {
-			//Sidenote: Third-Party bluetooth PS3 controllers should use the same button mapping as the original controller.
-			//Otherwise, the PS3 itself would even have problems with the button IDs being different.
-			if (Input.isOuya) {
-				System.out.println("Automapping PS3 controller on Ouya...");
-				map(Input.up, new ControllerButton(controller, 19));
-				map(Input.down, new ControllerButton(controller, 20));
-				map(Input.left, new ControllerButton(controller, 21));
-				map(Input.right, new ControllerButton(controller, 22));
-				map(Input.up, new ControllerAxis(controller, 1, true));
-				map(Input.down, new ControllerAxis(controller, 1, false));
-				map(Input.left, new ControllerAxis(controller, 0, true));
-				map(Input.right, new ControllerAxis(controller, 0, false));
-				map(Input.jump, new ControllerButton(controller, 96));
-				map(Input.pause, new ControllerButton(controller, 108));
-				map(Input.pause, new ControllerButton(controller, 86));
-				map(Input.enter, new ControllerButton(controller, 96));
-				map(Input.androidBack, new ControllerButton(controller, 97));
-			} else if ((os.equals("linux") || os.equals("unix"))) {
-				System.out.println("Automapping PS3 controller on Linux...");
-				map(Input.up, new ControllerButton(controller, 4));
-				map(Input.down, new ControllerButton(controller, 6));
-				map(Input.left, new ControllerButton(controller, 7));
-				map(Input.right, new ControllerButton(controller, 5));
-				map(Input.up, new ControllerAxis(controller, 1, true));
-				map(Input.down, new ControllerAxis(controller, 1, false));
-				map(Input.left, new ControllerAxis(controller, 0, true));
-				map(Input.right, new ControllerAxis(controller, 0, false));
-				map(Input.jump, new ControllerButton(controller, 14));
-				map(Input.pause, new ControllerButton(controller, 3));
-				map(Input.enter, new ControllerButton(controller, 14));
-				map(Input.androidBack, new ControllerButton(controller, 13));
+		for (Mapping mapping : mappings) {
+			if (mapping.map(controller, this)) {
+				break;
 			}
 		}
-		if ((os.equals("linux") || os.equals("unix")) && controller.getName().contains("Sanmos TWIN SHOCK")) {
-			System.out.println("Automapping Sanmos TWIN SHOCK on Linux...");
-			map(Input.up, new ControllerAxis(controller, 1, true));
-			map(Input.down, new ControllerAxis(controller, 1, false));
-			map(Input.left, new ControllerAxis(controller, 0, true));
-			map(Input.right, new ControllerAxis(controller, 0, false));
-			map(Input.jump, new ControllerButton(controller, 2));
-			map(Input.pause, new ControllerButton(controller, 11));
-			map(Input.enter, new ControllerButton(controller, 2));
-			map(Input.androidBack, new ControllerButton(controller, 3));
-		}
-		if (Ouya.ID.equals(controller.getName())) {
-			System.out.println("Automapping Ouya controller...");
-			map(Input.up, new ControllerButton(controller, Ouya.BUTTON_DPAD_UP));
-			map(Input.down, new ControllerButton(controller, Ouya.BUTTON_DPAD_DOWN));
-			map(Input.left, new ControllerButton(controller, Ouya.BUTTON_DPAD_LEFT));
-			map(Input.right, new ControllerButton(controller, Ouya.BUTTON_DPAD_RIGHT));
-			map(Input.up, new ControllerAxis(controller, Ouya.AXIS_LEFT_Y, true));
-			map(Input.down, new ControllerAxis(controller, Ouya.AXIS_LEFT_Y, false));
-			map(Input.left, new ControllerAxis(controller, Ouya.AXIS_LEFT_X, true));
-			map(Input.right, new ControllerAxis(controller, Ouya.AXIS_LEFT_X, false));
-			map(Input.jump, new ControllerButton(controller, Ouya.BUTTON_O));
-			map(Input.pause, new ControllerButton(controller, Ouya.BUTTON_MENU));
-			map(Input.enter, new ControllerButton(controller, Ouya.BUTTON_O));
-			map(Input.androidBack, new ControllerButton(controller, Ouya.BUTTON_A));
-		}
-		
-		refreshMapping();
+
+		refreshKeymap();
 	}
 	
 	@Override
@@ -399,7 +609,7 @@ public final class ControllerHelper implements ControllerListener {
 			controllersAuto.removeValue(controller, true);
 		}
 
-		refreshMapping();
+		refreshKeymap();
 	}
 	
 	@Override
@@ -415,7 +625,7 @@ public final class ControllerHelper implements ControllerListener {
 		if (assignKey != null && controller == assignKeyController) {
 			System.out.println("Mapped in-game key \""+assignKey.name+"\" to button "+buttonCode+" on controller "+(controller.getName()));
 			map(assignKey, new ControllerButton(button));
-			refreshMapping();
+			refreshKeymap();
 			if (assignKeyHelper != null) {
 				assignKeyHelper.text = assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(assignKey, assignKeyController)+")";
 			}
@@ -459,7 +669,7 @@ public final class ControllerHelper implements ControllerListener {
 			if (pvalue >= 0.3f && assignKey != null && controller == assignKeyController) {//To eliminate minor accidental movements while assigning
 				System.out.println("Mapped in-game key \""+assignKey.name+"\" to axis "+axisCode+" on controller "+(controller.getName()));
 				map(assignKey, new ControllerAxis(axis));
-				refreshMapping();
+				refreshKeymap();
 				if (assignKeyHelper != null) {
 					assignKeyHelper.text = assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(assignKey, assignKeyController)+")";
 				}

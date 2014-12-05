@@ -16,6 +16,7 @@ public class BlockImage extends BlockType {
 
 	@Override
 	public void init() {
+		dynamic = false;
 		blending = false;
 	}
 

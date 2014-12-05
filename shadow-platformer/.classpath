@@ -3,9 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="assets"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry exported="true" kind="lib" path="libs/gdx-controllers.jar" sourcepath="libs/gdx-controllers-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/gdx-freetype.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/gdx.jar" sourcepath="libs/gdx-sources.jar"/>
+	<classpathentry exported="true" kind="var" path="USER_HOME/libjars/libgdx/extensions/gdx-controllers/gdx-controllers.jar" sourcepath="/USER_HOME/libjars/libgdx/extensions/gdx-controllers/sources/gdx-controllers-sources.jar"/>
+	<classpathentry exported="true" kind="var" path="USER_HOME/libjars/libgdx/extensions/gdx-freetype/gdx-freetype.jar" sourcepath="/USER_HOME/libjars/libgdx/extensions/gdx-freetype/sources/gdx-freetype-sources.jar"/>
+	<classpathentry exported="true" kind="var" path="USER_HOME/libjars/libgdx/gdx.jar" sourcepath="/USER_HOME/libjars/libgdx/sources/gdx-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/kryonet-2.18-all.jar" sourcepath="libs/kryonet-source.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

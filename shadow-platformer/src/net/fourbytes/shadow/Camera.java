@@ -1,19 +1,25 @@
 package net.fourbytes.shadow;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.BitmapFont.TextBounds;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.systems.ILightSystem;
+import net.fourbytes.shadow.systems.LightSystemHelper;
+import net.fourbytes.shadow.utils.ChunkRenderer;
 import net.fourbytes.shadow.utils.Garbage;
-import net.fourbytes.shadow.utils.Options;
+import net.fourbytes.shadow.utils.ShaderHelper;
 
 public class Camera {
 	
@@ -26,7 +32,7 @@ public class Camera {
 	public static String fpsTextMain = "FPS:";
 
 	protected static Rectangle objrec = new Rectangle();
-	protected static Image white;
+	protected static TextureRegion white;
 
 	protected Player player;
 
@@ -38,7 +44,9 @@ public class Camera {
 
 	public float inviewf = 2f;
 
-	public static FrameBuffer tmpFB;
+	public static ChunkRenderer chunkrenderer;
+
+    public static FrameBuffer tmpFB;
 	public static FrameBuffer blurFB;
 	public static FrameBuffer blurXFB;
 	/**
@@ -47,6 +55,17 @@ public class Camera {
 	public static float blursize = 2f;
 	public static int blurrad = 4;
 	public static float blurdist = 0.1f;
+
+	public static boolean blur;
+	public static boolean blurHD;
+    public static boolean blurLight;
+
+	public static boolean shadows;
+	public static boolean shadowsCheck;
+
+	public static boolean multiblend;
+
+	public static boolean showRAM;
 
 	public Camera() {
 		this.cam = new OrthographicCamera(Shadow.vieww, -Shadow.viewh);
@@ -60,41 +79,12 @@ public class Camera {
 		cam.update();
 	}
 	
-	public void render() {
-		if (Shadow.level == null) {
-			cam.position.set(0f, 0f, 0f);
-			cam.zoom = 2f;
-			cam.update();
-
-			camrec.set(cam.position.x, cam.position.y, cam.viewportWidth*cam.zoom, -cam.viewportHeight*cam.zoom);
-			camrec.x -= camrec.width/2f;
-			camrec.y -= camrec.height/2f;
-
-			Shadow.spriteBatch.setProjectionMatrix(cam.combined);
-			Shadow.spriteBatch.begin();
-			if (bg == null) {
-				bg = Background.getDefault();
-			}
-			Shadow.spriteBatch.disableBlending();
-			bg.render();
-			Shadow.spriteBatch.enableBlending();
-			Image logo = Images.getImage("logo");
-			logo.setScale(Shadow.vieww/Shadow.dispw * cam.zoom, -Shadow.viewh/Shadow.disph * cam.zoom);
-			logo.setPosition(0f - (logo.getScaleX()*logo.getWidth())/2f, 0f - (logo.getScaleY()*logo.getHeight())/2f);
-			logo.draw(Shadow.spriteBatch, 1f);
-
-			if (Shadow.loadstate < 2) {
-				Shadow.spriteBatch.setColor(0f, 0f, 0f, 1f);
-				Shadow.spriteBatch.draw(Images.getTextureRegion("white"), -Shadow.vieww / 2, Shadow.viewh / 2 + 2, Shadow.vieww, 1);
-				Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
-				Shadow.spriteBatch.draw(Images.getTextureRegion("white"), -Shadow.vieww / 2, Shadow.viewh / 2 + 2, Shadow.vieww * Shadow.loadtick / Shadow.loadticks[0][Shadow.loadticks[0].length - 1], 1);
-			}
-
-			Shadow.spriteBatch.end();
-
-			return;
+	public void render(float delta) {
+		if (white == null) {
+			white = Images.getTextureRegion("white");
 		}
-		if (!(Shadow.level instanceof MenuLevel)) {
+
+		if (!(Shadow.level instanceof MenuLevel) && !(Shadow.level instanceof LoadingLevel)) {
 			player = Shadow.level.player;
 		}
 		float goalx;
@@ -112,14 +102,16 @@ public class Camera {
 			cam.position.y = goaly;
 			firsttick = false;
 		}
-		cam.position.x += (goalx-cam.position.x)/15f;
-		cam.position.y += (goaly-cam.position.y)/20f;
+		cam.position.x += ((goalx-cam.position.x)/15f)*(delta*60f);
+		cam.position.y += ((goaly-cam.position.y)/20f)*(delta*60f);
 		offs.set(goalx - cam.position.x, goaly - cam.position.y);
 		cam.update();
 
 		camrec.set(cam.position.x, cam.position.y, cam.viewportWidth*cam.zoom, -cam.viewportHeight*cam.zoom);
 		camrec.x -= camrec.width/2f;
 		camrec.y -= camrec.height/2f;
+
+        ShaderHelper.set("s_viewport", (cam.position.x/cam.viewportWidth)*Shadow.dispw, (cam.position.y/cam.viewportHeight)*Shadow.disph);
 
 		Shadow.spriteBatch.setProjectionMatrix(cam.combined);
 		Shadow.spriteBatch.maxSpritesInBatch = 0;
@@ -131,6 +123,26 @@ public class Camera {
 		bg.render();
 
 		renderLevel(Shadow.level);
+
+		//TODO REMOVE THIS AND FOLLOWING LINES
+		//Shadow.spriteBatch.draw(chunkrenderer.tex, camrec.x, camrec.y, camrec.width, camrec.height);
+
+		if (showRAM) {
+			float width = camrec.width / Shadow.ramLogMax;
+			double ramTotal = 0f;
+			for (int i = 0; i < Shadow.ramTotal.size; i++) {
+				if (Shadow.ramTotal.items[i] > ramTotal) {
+					ramTotal = (double) Shadow.ramTotal.items[i];
+				}
+			}
+			for (int i = 0; i < Shadow.ramUsed.size; i++) {
+				double ramUsed = (double) Shadow.ramUsed.items[i];
+				float height = (float) (ramUsed / ramTotal) * camrec.height;
+				float r = 1f - ((float) i / (float) Shadow.ramLogMax);
+				Shadow.spriteBatch.setColor(r, r, r, 0.5f);
+				Shadow.spriteBatch.draw(white, camrec.x + camrec.width - i*width - width, camrec.y + camrec.height, width, -height);
+			}
+		}
 
 		if (fpsFont == null) {
 			fpsFont = Fonts.light_normal;
@@ -155,6 +167,13 @@ public class Camera {
 			fpsFont.draw(Shadow.spriteBatch, fpsTextMain,
 					cam.position.x + Shadow.vieww/2f - fpsBoundMain.width - fpsFont.getSpaceWidth() - fpsBoundFPS.width,
 					cam.position.y - Shadow.viewh/2f);
+
+			if (showRAM) {
+				String fpsTextMEM = Double.toString(Shadow.ramUsed.items[0]/1000000D) + "MB";
+				fpsFont.draw(Shadow.spriteBatch, fpsTextMEM,
+						cam.position.x - Shadow.vieww / 2f,
+						cam.position.y - Shadow.viewh / 2f);
+			}
 		}
 
 		Shadow.spriteBatch.flush();
@@ -175,74 +194,45 @@ public class Camera {
 
 	public void renderLevel(Level level) {
 		if (!(level instanceof MenuLevel)) {
-			if (Options.getBoolean("gfx.blur", true) &&
-					//!(level instanceof MenuLevel) && Shadow.level instanceof MenuLevel) {
-					!this.level) {
-				if (Options.getBoolean("gfx.blur.hq", true)) {
-					tmpFB.begin();
-				} else {
-					blurFB.begin();
-				}
-				Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
-				Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+			if (blurLight && LightSystemHelper.lightFB != null) {
+                tmpFB.begin();
+            } else if (blur && !this.level) {
+				blurFB.begin();
 			}
 
 			for (Layer ll : level.layers.values()) {
 				renderLayer(ll);
 			}
 
-			if (level.lights != null) {
-				LightSystem.updateLightBounds();
-				level.lights.renderFBO();
+			ILightSystem lights = level.systems.get(ILightSystem.class);
+			if (lights != null) {
+				LightSystemHelper.updateLightBounds();
+				lights.renderFBO();
 			}
 
-			if (level.hasvoid) {
-				Image levoid = Images.getImage("void");
-				objrec.set(camrec.x, level.tiledh - 2, 1024, 1);
-				levoid.setScaleY(-1f);
-				//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-				levoid.setPosition(objrec.x, objrec.y + objrec.height*2);
-				levoid.setSize(objrec.width, objrec.height + objrec.height);
-				levoid.draw(Shadow.spriteBatch, 1f);
-
-				Shadow.spriteBatch.disableBlending();
-				float fy = level.tiledh;
-				if (camrec.y > fy) {
-					fy = camrec.y;
-				}
-				objrec.set(camrec.x, fy, camrec.width, -camrec.height);
-				Image lewhite = Images.getImage("white");
-				lewhite.setColor(0f, 0f, 0f, 1f);
-				lewhite.setPosition(objrec.x, objrec.y);
-				lewhite.setSize(1f, 1f);
-				lewhite.setScale(objrec.width, objrec.height);
-				lewhite.draw(Shadow.spriteBatch, 1f);
-				Shadow.spriteBatch.enableBlending();
-			}
-
-			if (Options.getBoolean("gfx.blur", true) &&
-					!this.level) {
+			if ((blur && !this.level) || (blurLight && LightSystemHelper.lightFB != null)) {
 				Shadow.spriteBatch.flush();
-				if (Options.getBoolean("gfx.blur.hq", true)) {
-					tmpFB.end();
-				} else {
-					blurFB.end();
-				}
+                if (blurLight && LightSystemHelper.lightFB != null) {
+                    tmpFB.end();
 
-				Shadow.spriteBatch.disableBlending();
+                    if (!blur || this.level) {
+                        Shadow.spriteBatch.disableBlending();
+                        Shadow.spriteBatch.draw(tmpFB.getColorBufferTexture(),
+                                camrec.x, camrec.y, camrec.width, camrec.height);
+                        Shadow.spriteBatch.enableBlending();
+                    }
 
-				if (Options.getBoolean("gfx.blur.hq", true)) {
-					blurFB.begin();
-					Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
-					Shadow.spriteBatch.draw(tmpFB.getColorBufferTexture(),
-							camrec.x, camrec.y, camrec.width, camrec.height);
-					Shadow.spriteBatch.flush();
-					blurFB.end();
-				}
+                    blurFB.begin();
+                    Shadow.spriteBatch.disableBlending();
+                    Shadow.spriteBatch.draw(tmpFB.getColorBufferTexture(),
+                            camrec.x, camrec.y, camrec.width, camrec.height);
+                    Shadow.spriteBatch.enableBlending();
+                    blurFB.end();
+                } else if (blur && !this.level) {
+                    blurFB.end();
+                }
 
-				if (Options.getBoolean("gfx.blur.hd", true)) {
-					Shadow.spriteBatch.enableBlending();
-
+				if (blurHD) {
 					float a;
 
 					blurXFB.begin();
@@ -274,15 +264,48 @@ public class Camera {
 					}
 					Shadow.spriteBatch.flush();
 					blurFB.end();
-
-					Shadow.spriteBatch.disableBlending();
 				}
 
-				Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
-				Shadow.spriteBatch.draw(blurFB.getColorBufferTexture(),
-						camrec.x, camrec.y, camrec.width, camrec.height);
+                if (Shadow.level instanceof MenuLevel) {
+                    Color c = ((MenuLevel) Shadow.level).dimm;
+                    Shadow.spriteBatch.setColor(1f - (1f - c.r) * c.a,
+                            1f - (1f - c.g) * c.a,
+                            1f - (1f - c.b) * c.a, 1f);
+                } else {
+                    Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
+                }
 
-				Shadow.spriteBatch.enableBlending();
+                if (blur && !this.level) {
+                    Shadow.spriteBatch.disableBlending();
+                    Shadow.spriteBatch.draw(blurFB.getColorBufferTexture(),
+                            camrec.x, camrec.y, camrec.width, camrec.height);
+                    Shadow.spriteBatch.enableBlending();
+                }
+
+                if (blurLight && LightSystemHelper.lightFB != null) {
+                    Shadow.spriteBatch.flush();
+
+                    String shaderOld = ShaderHelper.getCurrentShaderName();
+                    ShaderHelper.setCurrentShader("blurlight");
+                    ShaderHelper.set("u_light", 1);
+                    float lightIntensity = (level.globalLight.r + level.globalLight.g + level.globalLight.b) / 3f;
+                    lightIntensity = lightIntensity * lightIntensity * lightIntensity * lightIntensity;
+                    ShaderHelper.set("u_lightBlurIntensity", 1f - lightIntensity);
+
+                    LightSystemHelper.lightFB.getColorBufferTexture().bind(1);
+                    Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
+
+                    Shadow.spriteBatch.draw(blurFB.getColorBufferTexture(),
+                            camrec.x, camrec.y, camrec.width, camrec.height);
+
+                    Shadow.spriteBatch.flush();
+
+                    LightSystemHelper.lightFB.getColorBufferTexture().bind(0);
+
+                    ShaderHelper.setCurrentShader(shaderOld);
+                }
+
+				Shadow.spriteBatch.setColor(1f, 1f, 1f, 1f);
 			}
 
 		}
@@ -310,21 +333,25 @@ public class Camera {
 
 		Array<GameObject> gos = l.inView;
 
+		if (chunkrenderer != null) {
+			chunkrenderer.render(l);
+		}
+
 		boolean prerendered;
-		if (Options.getBoolean("gfx.shadows", true)) {
-			renderShadows(gos, Options.getBoolean("gfx.shadows.check", false));
+		if (shadows) {
+			renderShadows(l, shadowsCheck);
 			prerendered = true;
 		} else {
 			prerendered = false;
 		}
 
 		boolean multiblended;
-		if (Options.getBoolean("gfx.multiblend", true)) {
-			renderObjects(gos, false, false, prerendered);
-			renderObjects(gos, false, true, prerendered);
+		if (multiblend) {
+			renderObjects(l, false, false, prerendered);
+			renderObjects(l, false, true, prerendered);
 
-			renderObjects(gos, true, false, prerendered);
-			renderObjects(gos, true, true, prerendered);
+			renderObjects(l, true, false, prerendered);
+			renderObjects(l, true, true, prerendered);
 
 			multiblended = true;
 		} else {
@@ -340,12 +367,16 @@ public class Camera {
 		}
 	}
 
-	protected void renderShadows(Array<GameObject> gos, boolean doCheck) {
+	protected void renderShadows(Layer l, boolean doCheck) {
+		Array<GameObject> gos = l.inView;
 		float ox, oy, ow, oh;
 		for (int i = 0; i < gos.size; i++) {
 			GameObject go = gos.items[i];
 
 			if (go == null) continue;
+			if (chunkrenderer != null && go instanceof Block && !((Block)go).dynamic) {
+				continue;
+			}
 
 			ox = go.pos.x-inviewf;
 			oy = go.pos.y-inviewf;
@@ -412,12 +443,17 @@ public class Camera {
 		}
 	}
 	
-	protected void renderObjects(Array<GameObject> gos, boolean fgonly, boolean blending, boolean prerendered) {
+	protected void renderObjects(Layer l, boolean fgonly, boolean blending, boolean prerendered) {
+		Array<GameObject> gos = l.inView;
 		float ox, oy, ow, oh;
 		boolean blendingSwitched = false;
 		for (int i = 0; i < gos.size; i++) {
 			GameObject go = gos.items[i];
 			if (go == null) continue;
+			if (chunkrenderer != null && go instanceof Block && !((Block)go).dynamic) {
+				continue;
+			}
+			if (go.alpha < 0.05f) continue;
 			ox = go.pos.x-inviewf;
 			oy = go.pos.y-inviewf;
 			ow = go.rec.width+inviewf*2f;
@@ -471,6 +507,9 @@ public class Camera {
 		for (int i = 0; i < gos.size; i++) {
 			GameObject go = gos.items[i];
 			if (go == null) continue;
+			if (chunkrenderer != null && go instanceof Block && !((Block)go).dynamic) {
+				continue;
+			}
 			ox = go.pos.x-inviewf;
 			oy = go.pos.y-inviewf;
 			ow = go.rec.width+inviewf*2f;

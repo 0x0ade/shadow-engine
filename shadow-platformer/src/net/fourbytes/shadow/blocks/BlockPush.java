@@ -5,6 +5,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.entities.Player;
+import net.fourbytes.shadow.map.IsSaveable;
+import net.fourbytes.shadow.map.ShadowMap;
+import net.fourbytes.shadow.network.ClientLevel;
+import net.fourbytes.shadow.network.DataMapUpdate;
+import net.fourbytes.shadow.network.ServerLevel;
 
 import java.util.Random;
 
@@ -12,10 +17,14 @@ public class BlockPush extends BlockType {
 
 	public TextureRegion tex;
 
+    @IsSaveable
 	public Vector2 lastpos;
-	public int gframe = 0;
-	public int oframe = 0;
-	public int pframe = 0;
+    @IsSaveable
+	public float gframe = 0;
+    @IsSaveable
+	public float oframe = 0;
+    @IsSaveable
+	public float pframe = 0;
 	
 	public BlockPush() {
 	}
@@ -30,8 +39,8 @@ public class BlockPush extends BlockType {
 	}
 
 	@Override 
-	public void tick() {
-		gframe--;
+	public void tick(float delta) {
+		gframe -= delta * 60f;
 		if (gframe <= 0) {
 			boolean free = true;
 			
@@ -71,17 +80,17 @@ public class BlockPush extends BlockType {
 				lastpos.set(pos);
 				int lastx = (int)pos.x;
 				int lasty = (int)pos.y;
-				pos.y += 1f;
+                pos.y += 1f;
 				int newx = (int)pos.x;
 				int newy = (int)pos.y;
 				layer.move(this, Coord.get(lastx, lasty), Coord.get(newx, newy));
-				gframe = 18;
-				oframe = 15;
+				gframe = 18f;
+				oframe = 15f;
 			}
 		}
 		
 		if (oframe > 0) {
-			oframe--;
+			oframe -= delta * 60f;
 		}
 		
 		if (lastpos != null) {
@@ -98,7 +107,7 @@ public class BlockPush extends BlockType {
 		}
 		
 		if (pframe > 0) {
-			pframe--;
+			pframe -= delta * 60f;
 		}
 		
 	}
@@ -152,7 +161,7 @@ public class BlockPush extends BlockType {
 				if (b instanceof BlockPush && count < 6) {
 					((BlockPush)b).push(dir, count+1);
 					free = false;
-					pframe = 4;
+					pframe = 4f;
 					break;
 				}
 				free = false;
@@ -168,13 +177,24 @@ public class BlockPush extends BlockType {
 			lastpos.set(pos);
 			int lastx = (int)pos.x;
 			int lasty = (int)pos.y;
-			pos.x += dir;
+            pos.x += dir;
 			int newx = (int)pos.x;
 			int newy = (int)pos.y;
 			layer.move(this, Coord.get(lastx, lasty), Coord.get(newx, newy));
 			renderoffs.set(lastpos.x-pos.x, lastpos.y-pos.y, 0f, 0f);
-			oframe = 15;
-			pframe = 2;
+			oframe = 15f;
+			pframe = 2f;
+
+            if (Shadow.level instanceof ClientLevel || Shadow.level instanceof ServerLevel) {
+                DataMapUpdate dmu = new DataMapUpdate();
+                dmu.mode = DataMapUpdate.MapUpdateModes.UPDATE;
+                dmu.object = ShadowMap.convert(this);
+                if (Shadow.level instanceof ClientLevel) {
+                    Shadow.client.send(dmu);
+                } else {
+                    Shadow.server.send(dmu);
+                }
+            }
 		}
 		
 		return free;

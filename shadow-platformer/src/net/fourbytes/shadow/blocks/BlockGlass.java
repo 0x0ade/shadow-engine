@@ -2,13 +2,13 @@ package net.fourbytes.shadow.blocks;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import net.fourbytes.shadow.Images;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 
 public class BlockGlass extends BlockType {
 
 	public TextureRegion tex;
 
-	@Saveable
+	@IsSaveable
 	public int type;
 	
 	public BlockGlass(int type) {
@@ -26,6 +26,7 @@ public class BlockGlass extends BlockType {
 
 	@Override
 	public void init() {
+		dynamic = false;
 		passSunlight = true;
 	}
 	

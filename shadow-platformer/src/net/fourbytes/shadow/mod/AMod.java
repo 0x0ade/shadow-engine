@@ -2,7 +2,10 @@ package net.fourbytes.shadow.mod;
 
 import net.fourbytes.shadow.Layer;
 import net.fourbytes.shadow.Level;
+import net.fourbytes.shadow.ParticleType;
 import net.fourbytes.shadow.blocks.BlockType;
+import net.fourbytes.shadow.network.Data;
+import net.fourbytes.shadow.systems.ISystem;
 
 /**
  * AMod (short for AbstractMod) overrides IMod and
@@ -26,18 +29,26 @@ public abstract class AMod implements IModStandard {
 	@Override
 	public void dispose() {}
 	@Override
-	public void preTick() {}
+	public void preTick(float delta) {}
 	@Override
-	public void postTick() {}
+	public void postTick(float delta) {}
 	@Override
-	public void preRender() {}
+	public void preRender(float delta) {}
 	@Override
-	public void postRender() {}
+	public void postRender(float delta) {}
 	@Override
 	public BlockType getTypeBlock(String subtype, float x, float y, Layer layer) {return null;}
 	@Override
 	public boolean generateTile(Level genLevel, int xx, int x, int y, int ln) {return true;}
 	@Override
 	public void initLevelSystems(Level level) {}
+	@Override
+	public ISystem initLevelSystem(Level level, String name) {return null;}
+    @Override
+    public ParticleType getParticleType(String typeName) {return null;}
+	@Override
+	public boolean handleClient(Data data, Object target) {return false;}
+	@Override
+	public boolean handleServer(Data data, Object target) {return false;}
 
 }

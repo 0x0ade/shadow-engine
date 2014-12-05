@@ -1,6 +1,7 @@
 package net.fourbytes.shadow;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.BufferUtils;
 import com.badlogic.gdx.utils.ObjectMap;
 import net.fourbytes.shadow.mod.AMod;
 import net.fourbytes.shadow.utils.Garbage;
@@ -19,6 +21,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.net.URL;
+import java.nio.IntBuffer;
 
 public final class Images {
 	private Images() {}
@@ -131,7 +134,26 @@ public final class Images {
 		}
 	}
 	
-	private static void packPixmap(Pixmap pm, String savename) {
+	private static void packPixmap(final Pixmap pm, final String savename) {
+		if (Thread.currentThread() != Shadow.thread) {
+			final boolean[] done = {false};
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					packPixmap(pm, savename);
+					done[0] = true;
+				}
+			});
+			while (!done[0]) {
+				/*try {
+					Thread.sleep(10L);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}*/
+				Thread.yield();
+			}
+			return;
+		}
+
 		if (packer == null) {
 			packer = new PixmapPacker(1024, 1024, Format.RGBA8888, 2, true);
 			atlas = packer.generateTextureAtlas(TextureFilter.MipMapNearestNearest, TextureFilter.Nearest, true);

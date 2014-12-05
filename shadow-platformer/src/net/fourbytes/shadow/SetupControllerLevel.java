@@ -120,14 +120,15 @@ public class SetupControllerLevel extends MenuLevel {
 		}
 		if (Shadow.controllerHelper.assignKey != null) {
 			if (key == Input.pause || key == Input.androidBack) {
-				//FIXME It still goes back...
-				Array<ControllerHelper.ControllerInput> mapping =
-						Shadow.controllerHelper.mapping.get(Shadow.controllerHelper.assignKey);
-				for (ControllerHelper.ControllerInput input : mapping) {
-					if (input.controller == Shadow.controllerHelper.assignKeyController) {
-						mapping.removeValue(input, false);
-					}
-				}
+				Array<ControllerHelper.ControllerInput> keymap =
+						Shadow.controllerHelper.keymap.get(Shadow.controllerHelper.assignKey);
+                if (keymap != null) {
+                    for (ControllerHelper.ControllerInput input : keymap) {
+                        if (input.controller == Shadow.controllerHelper.assignKeyController) {
+                            keymap.removeValue(input, false);
+                        }
+                    }
+                }
 				if (Shadow.controllerHelper.assignKeyHelper != null) {
 					Shadow.controllerHelper.assignKeyHelper.text = Shadow.controllerHelper.assignKey.name+" ("+Shadow.controllerHelper.getInputLabelForKey(Shadow.controllerHelper.assignKey)+")";
 				}

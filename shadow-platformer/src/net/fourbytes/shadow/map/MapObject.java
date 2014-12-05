@@ -9,7 +9,8 @@ import net.fourbytes.shadow.network.Data;
  * additional data (f.e. fluid height, [insert example here], ...).
  */
 public class MapObject extends Data {
-	
+
+    public long id;
 	public float x;
 	public float y;
 	public String type;

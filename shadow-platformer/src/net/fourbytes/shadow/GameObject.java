@@ -5,50 +5,76 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.blocks.BlockType;
-import net.fourbytes.shadow.entities.particles.PixelParticle;
+import net.fourbytes.shadow.systems.IParticleManager;
 
 import java.lang.reflect.Constructor;
 
 public abstract class GameObject {
-	
+
+    private boolean idSet = false;
+    private long id = 0L;
+
+    public final long getID() {
+        if (!idSet) {
+            setID(Shadow.rand.nextLong());
+            return id;
+        }
+
+        return id;
+    }
+
+    public final void setID(long id) {
+        idSet = true;
+
+        if (layer != null && layer.level != null) {
+            layer.level.goIDMap.remove(this.id);
+            layer.level.goIDMap.put(id, this);
+        }
+
+        this.id = id;
+    }
+
 	public boolean blending = true;
 	public float alpha = 1f;
-	public transient Layer layer;
+	public Layer layer;
+	public Chunk chunk;
 	public Vector2 pos = new Vector2(0, 0);
-	public Rectangle rec = new Rectangle(0, 0, 0, 0);
+    public Rectangle rec = new Rectangle(0, 0, 0, 0);
 	public Rectangle renderoffs = new Rectangle(0, 0, 0, 0);
-	public boolean solid = true;
+    public boolean solid = true;
+    public float slowdown = 0.7f;
 	public Color light = new Color(1f, 1f, 1f, 0f);
 	public boolean passSunlight = false;
 	public Color tintSunlight = new Color(1f, 1f, 1f, 1f);
 	public Color tintDarklight = new Color(0f, 0f, 0f, 1f);
 	public int[] imgIDs = {0};
-	
-	public GameObject(Vector2 pos, Layer layer) {
+
+    public GameObject(Vector2 pos, Layer layer) {
 		this.pos = pos;
-		setSize(1f, 1f);
+        setSize(1f, 1f);
 		this.layer = layer;
 	}
-	
+
 	public void setSize(float w, float h) {
-		rec.width = w;
-		rec.height = h;
+		rec.set(0f, 0f, w, h);
 	}
 
 	public boolean imgupdate = true;
+	public boolean texupdate = true;
 	public Image[] images = new Image[1];
 	public TextureRegionDrawable[] trds = new TextureRegionDrawable[1];
 
 	public static boolean reuseImage = true;
 	public Image getImage(int id) {
 		Image img = images[id];
-		if (imgupdate || img == null) {
+		if (texupdate || img == null) {
 			TextureRegion tex = getTexture(id);
 			if (tex == null) {
 				System.out.println("("+this+(this instanceof Block?(", "+((Block)this).subtype+")"):")")+
@@ -75,48 +101,29 @@ public abstract class GameObject {
 	}
 	public abstract TextureRegion getTexture(int id);
 	
-	public void tick() {
+	public void tick(float delta) {
 	}
-	
-	private boolean disposedLayer = false;
-	
-	public void disposeLayer() {
-		if (disposedLayer || layer == null) {
-			return;
-		}
-		disposedLayer = true;
 
-		if (!layer.level.layers.containsValue(layer, true)) {
-			layer.level = null;
-		}
-		
-		if (this instanceof Entity) {
-			Entity e = (Entity) this;
-			if (!layer.entities.contains(e, true)) {
-				layer = null;
-			}
-		} else if (this instanceof Block) {
-			Block b = (Block) this;
-			if (!layer.blocks.contains(b, true)) {
-				layer = null;
-			}
-		}
+	public void frame(float delta) {
 	}
-	
+
 	public void preRender() {
-		for (int id : imgIDs) {
-			Image img = getImage(id);
-			//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
-			img.setPosition(pos.x + renderoffs.x, pos.y + rec.height + renderoffs.y);
-			img.setSize(rec.width + renderoffs.width, rec.height + renderoffs.height);
-			img.setScaleY(-1f);
-			renderCalc(id, img);
+		if (imgupdate || texupdate) {
+			for (int id : imgIDs) {
+				Image img = getImage(id);
+				//i.setPosition(pos.x * Shadow.dispw/Shadow.vieww, pos.y * Shadow.disph/Shadow.viewh);
+				img.setPosition(pos.x + renderoffs.x, pos.y + renderoffs.y);
+				img.setSize(rec.width + renderoffs.width, rec.height + renderoffs.height);
+				img.setScaleY(-1f);
+				renderCalc(id, img);
+			}
 		}
 
 		imgupdate = false;
+		texupdate = false;
 	}
-	
-	protected Color[] baseColors = new Color[1];
+
+	public Color[] baseColors = new Color[1];
 
 	public void renderCalc(int id, Image img) {
 		tint(id, img);
@@ -134,12 +141,11 @@ public abstract class GameObject {
 		}
 	}
 	
-	public static Color tmpc = new Color();
-	
 	public void render() {
 		for (int id : imgIDs) {
 			Image img = getImage(id);
-			Shadow.spriteBatch.setColor(tmpc.set(img.getColor()).mul(1f, 1f, 1f, alpha));
+			Color imgc = img.getColor();
+			Shadow.spriteBatch.setColor(imgc.r, imgc.g, imgc.b, imgc.a * alpha);
 			img.getDrawable().draw(Shadow.spriteBatch, pos.x + renderoffs.x,
 					pos.y + rec.height + renderoffs.y,
 					rec.width + renderoffs.width, -rec.height + renderoffs.height);
@@ -147,13 +153,14 @@ public abstract class GameObject {
 	}
 	
 	public int pixfac = 1;
-	public int pixdur = 1;
 	public static int pixffac = 1;
 	
 	Color c = new Color(0f, 0f, 0f, 0f);
 	Color cc = new Color(0f, 0f, 0f, 0f);
+	Color ccc = new Color(0f, 0f, 0f, 0f);
+	Vector2 ppos = new Vector2();
 
-	public Array<PixelParticle> pixelify() {
+	public Array<Particle> pixelify() {
 		int fac = pixfac * pixffac;
 		if (fac < 0) {
 			fac = 1;
@@ -161,7 +168,7 @@ public abstract class GameObject {
 		
 		//pixfac = 2; //DEBUG LINE, COMMENT WHOLE LINE OUT IF NOT DEBUGGING!
 
-		Array<PixelParticle> particles = new Array<PixelParticle>();
+		Array<Particle> particles = new Array<Particle>();
 
 		for (int id : imgIDs) {
 			Image img = getImage(id);
@@ -198,11 +205,12 @@ public abstract class GameObject {
 						}
 					}
 					//System.out.println("X: "+xx+"; Y: "+yy+"; RGBA: "+Integer.toHexString(rgba));
-					Color ccc = new Color(0f, 0f, 0f, 0f);
 					Color.rgba8888ToColor(ccc, rgba);
 					ccc.mul(img.getColor());
 					if (c.a < 0.0625f) continue;
-					PixelParticle pp = new PixelParticle(new Vector2(pos.x + ((xx - tx) * pixw / fac) + renderoffs.x, pos.y + ((yy - ty) * pixh / fac) + renderoffs.y), layer, 0, pixw, ccc);
+
+					ppos.set(pos.x + ((xx - tx) * pixw / fac) + renderoffs.x, pos.y + ((yy - ty) * pixh / fac) + renderoffs.y);
+					Particle pp = layer.level.systems.get(IParticleManager.class).create("PixelParticle", ppos, layer, ccc, pixw, 0);
 					layer.add(pp);
 					particles.add(pp);
 				}
@@ -221,7 +229,7 @@ public abstract class GameObject {
 		try {
 			Constructor<? extends GameObject> constr = c.getConstructor(Vector2.class, Layer.class);
 			constr.setAccessible(true);
-			clone = constr.newInstance(new Vector2(pos), layer);
+			clone = constr.newInstance(pos, layer);
 		} catch (Exception e) {
 			try {
 				if (this instanceof Block) {

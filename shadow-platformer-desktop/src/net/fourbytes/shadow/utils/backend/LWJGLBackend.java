@@ -2,7 +2,7 @@ package net.fourbytes.shadow.utils.backend;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
-public class LWJGLBackend extends Backend {
+public class LWJGLBackend extends DesktopBackend {
 
 	public LwjglApplicationConfiguration cfgApp;
 
@@ -11,17 +11,4 @@ public class LWJGLBackend extends Backend {
 		this.cfgApp = cfgApp;
 	}
 
-	@Override
-	public void create() {
-	}
-
-	@Override
-	public ModLoader newModLoader() {
-		return new DesktopModLoader();
-	}
-
-	@Override
-	public ControllerNumerator newControllerNumerator() {
-		return new DefaultControllerNumerator();
-	}
 }

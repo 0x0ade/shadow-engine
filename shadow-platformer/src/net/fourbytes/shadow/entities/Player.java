@@ -1,28 +1,34 @@
 package net.fourbytes.shadow.entities;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import net.fourbytes.shadow.*;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 
 public class Player extends Entity implements Input.KeyListener {
 	
-	@Saveable
+	@IsSaveable
 	public int points = 0;
-	@Saveable
+	@IsSaveable
 	public float speed = 0.1f;
-	@Saveable
+    @IsSaveable
+    public float speedBoost = 6f;
+	@IsSaveable
 	public float jumph = 0.4f;
-	public boolean standing = true;
-	int subframe = 0;
-	public int frame = 0;
-	int hframe = 0;
-	@Saveable
+    @IsSaveable
+    public boolean standing = true;
+    @IsSaveable
+	public float subframe = 0f;
+    @IsSaveable
+    public int frame = 0;
+	public float hframe = 0f;
+	@IsSaveable
 	public int canJump = 0;
-	@Saveable
+	@IsSaveable
 	public int maxJump = 2;
-	@Saveable
+	@IsSaveable
 	public Vector2 spawnpos;
 	
 	public boolean canInteract = true;
@@ -34,54 +40,53 @@ public class Player extends Entity implements Input.KeyListener {
 		setSize(1f, 1f);
 		//light.set(0.25f, 0.5f, 0.75f, 1f);
 	}
-	
+
 	@Override
 	public void dead() {
 		health = MAXHEALTH;
 		pos.set(spawnpos);
-		movement.set(0, 0);
-		hframe = 0;
+		movement.set(0f, 0f);
+		hframe = 0f;
 	}
 	
 	boolean invoid = false;
 	
 	@Override
-	public void tick() {
+	public void tick(float delta) {
 		if (canInteract) {
 			if (Input.left.isDown) {
 				movement.add(-speed, 0f);
 				facingLeft = true;
 				standing = false;
-				imgupdate = true;
-				subframe++;
+				subframe += delta;
 			}
 			if (Input.right.isDown) {
 				movement.add(speed, 0f);
 				facingLeft = false;
 				standing = false;
-				imgupdate = true;
-				subframe++;
+				subframe += delta;
 			}
 			if (!Input.right.isDown && !Input.left.isDown && canJump == maxJump) {
 				standing = true;
-				imgupdate = true;
+				//imgupdate = true;
 			}
 		}
 		if (canJump < maxJump) {
 			standing = false;
-			imgupdate = true;
+			//imgupdate = true;
 		}
-		if (subframe >= 4) {
+		if (subframe >= (4f/60f)) {
 			frame++;
-			subframe = 0;
+			subframe = 0f;
+            texupdate = true;
 		}
 		if (frame >= 4) {
 			frame = 0;
-			imgupdate = true;
+			texupdate = true;
 		}
 		
-		if ((layer != null && layer.level != null && layer.level.hasvoid) || movement.y > 5f) {
-			if (pos.y > layer.level.tiledh && !invoid) {
+		if (movement.y > 5f) {
+			if (!invoid) {
 				health = 0f;
 				invoid = true;
 			} else {
@@ -89,7 +94,7 @@ public class Player extends Entity implements Input.KeyListener {
 			}
 		}
 		
-		super.tick();
+		super.tick(delta);
 
 		if (this != layer.level.player) {
 			hframe = 0;
@@ -111,10 +116,7 @@ public class Player extends Entity implements Input.KeyListener {
 	
 	@Override
 	public TextureRegion getTexture(int id) {
-		TextureRegion[][] regs = Images.split("player", 16, 16);
-		TextureRegion reg = null;
-		reg = regs[facingLeft?0:1][frame];
-		return reg;
+		return Images.split("player", 16, 16)[facingLeft?0:1][frame];
 	}
 	
 	@Override
@@ -123,9 +125,9 @@ public class Player extends Entity implements Input.KeyListener {
 		if (key == Input.jump && canInteract) {
 			if (canJump > 0) {
 				Sounds.getSound("jump").play(1f, Sounds.calcPitch(1f, 0.3f), 0f);
-				movement.add(0f, -movement.y - jumph);
+				movement.y = -jumph;
 				/*
-				for (PixelParticle pp : pixelify()) {
+				for (Particle pp : pixelify()) {
 					pp.light.set(pp.color);
 					pp.light.a = 0.0775f;
 				}
@@ -135,6 +137,11 @@ public class Player extends Entity implements Input.KeyListener {
 		}
 		
 		if (key == Input.down) {
+			for (Particle pp : pixelify()) {
+                pp.pos.x += MathUtils.random(facingLeft ? -speedBoost : speedBoost)
+                        * MathUtils.random() * MathUtils.random();
+			}
+            pos.add(facingLeft ? -speedBoost : speedBoost, 0f);
 			//health -= 0.1f;
 			//hurt(null, 0.1f);
 		}
@@ -160,11 +167,11 @@ public class Player extends Entity implements Input.KeyListener {
 			return;
 		}
 		
-		if (hframe >= 40) {
+		if (hframe >= 1f) {
 			return;
 		}
-		
-		float alpha = (40-hframe)/15f;
+
+		float alpha = (1f-hframe)*2f;
 		if (alpha > 1f) {
 			alpha = 1f;
 		}
@@ -181,8 +188,8 @@ public class Player extends Entity implements Input.KeyListener {
 		
 		float xx1 = pos.x + rec.height/2 - bgw/2;
 		float xx2 = pos.x + rec.height/2 - bgw/2 + 0.05f;
-		float yy1 = pos.y - 0.1f - bgh;
-		float yy2 = pos.y - 0.1f - bgh - 0.05f;
+		float yy1 = pos.y - 0.05f - bgh;
+		float yy2 = pos.y - 0.05f - bgh - 0.05f;
 		
 		Image white = bgwhite;
 		if (white == null) {

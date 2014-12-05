@@ -3,7 +3,7 @@ package net.fourbytes.shadow.entities;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 
 public abstract class Mob extends Entity {
 	
@@ -11,14 +11,14 @@ public abstract class Mob extends Entity {
 	public float JUMPH = 0.25f;
 	public int JUMPHAI = 1;
 	public boolean standing = false;
-	int subframe = 0;
+	public float subframe = 0f;
 	public int frame = 0;
 	public int maxframe = 4;
-	public int animSpeed = 4;
-	public int animSpeedInAir = 4;
+	public float animSpeed = 4f/60f;
+	public float animSpeedInAir = 4f/60f;
 	public int canJump = 0;
 	public int maxJump = 1;
-	@Saveable
+	@IsSaveable
 	public Vector2 spawnpos;
 	public boolean invertedImage = false;
 	
@@ -40,43 +40,42 @@ public abstract class Mob extends Entity {
 	@Override
 	public void dead() {
 		health = MAXHEALTH;
-		pos.set(spawnpos);
-		movement.set(0, 0);
+		//pos.set(spawnpos);
+		//movement.set(0, 0);
 	}
 	
 	boolean invoid = false;
 	
 	@Override
-	public void tick() {
+	public void tick(float delta) {
 		if (!standing) {
 			if (facingLeft) {
 				movement.add(-SPEED, 0f);
-				subframe++;
+				subframe += delta;
 			}
 			if (!facingLeft) {
 				movement.add(SPEED, 0f);
-				subframe++;
+				subframe += delta;
 			}
 			//movement.add((float)Math.random()/12f-1f/24f, 0f);
 			//movement.add(0f, (float)Math.random()/16f-1f/32f);
 			movement.add(0f, -0.0075f);
 		}
-		int animSpeed_ = animSpeed;
+		float animSpeed_ = animSpeed;
 		if (canJump != maxJump) {
 			animSpeed_ = animSpeedInAir;
 		}
 		if (subframe >= animSpeed_) {
 			frame++;
 			imgupdate = true;
-			subframe = 0;
+			subframe = 0f;
 		}
 		if (frame >= maxframe) {
 			frame = 0;
 			imgupdate = true;
 		}
 		
-		if ((layer != null && layer.level != null && layer.level.hasvoid && pos.y > layer.level.tiledh) ||
-				(movement.y > 5f)) {
+		if (movement.y > 5f) {
 			if (!invoid) {
 				health = 0f;
 				invoid = true;
@@ -146,7 +145,7 @@ public abstract class Mob extends Entity {
 				}
 				for (int x = minx; x <= maxx; x++) {
 					for (int y = -JUMPHAI-1; y <= -2; y++) {
-						Array<Block> blocks = layer.get(Coord.get(pos.x + x, Coord.get1337((int)(pos.y + y))));
+						Array<Block> blocks = layer.get(Coord.get(pos.x + x, Coord.get1337((int) (pos.y + y))));
 						if (blocks != null) {
 							for (Block b : blocks) {
 								if (b == null) continue;
@@ -193,7 +192,7 @@ public abstract class Mob extends Entity {
 		}
 		turnTick++;
 		
-		super.tick();
+		super.tick(delta);
 		
 		if (invertedImage?!facingLeft:facingLeft) {
 			renderoffs.width = -rec.width*2;

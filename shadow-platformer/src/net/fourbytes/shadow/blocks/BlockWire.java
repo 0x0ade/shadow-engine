@@ -3,13 +3,13 @@ package net.fourbytes.shadow.blocks;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 
 public class BlockWire extends BlockType implements BlockLogic {
 	
-	@Saveable
+	@IsSaveable
 	public boolean triggered = false;
-	@Saveable
+	@IsSaveable
 	public int send = 0;
 	
 	public BlockWire() {
@@ -25,7 +25,7 @@ public class BlockWire extends BlockType implements BlockLogic {
 	}
 
 	@Override 
-	public void tick() {
+	public void tick(float delta) {
 		if (send == -6) {
 			for (Layer l : layer.level.layers.values()) {
 				for (int xo = -1; xo <= 1; xo++) {

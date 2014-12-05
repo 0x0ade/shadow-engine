@@ -8,8 +8,10 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.SpriteCache;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.utils.LongArray;
 import net.fourbytes.shadow.Input.Key;
 import net.fourbytes.shadow.Input.Key.Triggerer;
 import net.fourbytes.shadow.Input.KeyListener;
@@ -17,9 +19,9 @@ import net.fourbytes.shadow.Input.TouchPoint;
 import net.fourbytes.shadow.Input.TouchPoint.TouchMode;
 import net.fourbytes.shadow.map.Converter;
 import net.fourbytes.shadow.mod.ModManager;
-import net.fourbytes.shadow.network.NetClient;
-import net.fourbytes.shadow.network.NetServer;
 import net.fourbytes.shadow.network.NetStream;
+import net.fourbytes.shadow.systems.ILightSystem;
+import net.fourbytes.shadow.systems.LightSystemHelper;
 import net.fourbytes.shadow.utils.*;
 import net.fourbytes.shadow.utils.backend.BackendHelper;
 
@@ -33,6 +35,10 @@ import java.util.Calendar;
 import java.util.Random;
 
 public final class Shadow implements ApplicationListener, InputProcessor, KeyListener {
+
+    public static String gameID = "Shadow Engine v0.0.0b0";
+
+	public static Thread thread;
 
 	public static Random rand = new Random();
 	
@@ -52,26 +58,35 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public static float touchw = 1f;
 	public static float touchh = 1f;
 	public static SpriteBatch spriteBatch;
+	public static SpriteCache spriteCache;
 	
 	public static int frames = 0;
 	public static long lastfmicro = 0;
 	public static int fps = 0;
 	public static int efps = 0;
-	
+
+	protected static Runtime runtime = Runtime.getRuntime();
+	public static int ramLogMax = 64;
+	public static long ramTime = 0;
+	public static long ramTimeDelay = 100;
+	public static LongArray ramTotal = new LongArray();
+	public static LongArray ramFree = new LongArray();
+	public static LongArray ramUsed = new LongArray();
+
 	public static boolean isAndroid = false;
 	public static boolean isOuya = false;
 	public static boolean gdxpaused = false;
 	
-	public static int loadstate = 0;
-	public static int loadtick = 0;
-	public static int[][] loadticks = {{0, 1, 2, 3, 4, 5, 6, 7}};
-	
-	public static String clientID = getSecureRandomBytes(512);
+	public static PlayerInfo playerInfo;
 	public static NetStream client;
 	public static NetStream server;
 
 	public static boolean record = false;
 	public static String recordDirName;
+
+	public static boolean glclear;
+
+    public static float shaderTime = 0f;
 
 	public Shadow() {
 		super();
@@ -127,6 +142,8 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 
 	@Override
 	public void create() {
+		thread = Thread.currentThread();
+
 		Options.setup();
 
 		Gdx.input.setCatchBackKey(true);
@@ -198,40 +215,51 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 
 	@Override
 	public void render() {
+        float delta = Gdx.graphics.getDeltaTime();
+
 		subtick();
 		
-		if (loadstate == 0) {
+		if (spriteBatch == null) {
 			return;
 		}
 
-		tick();
+        shaderTime += delta;
+        ShaderHelper.set("s_time", shaderTime);
+
+		tick(delta);
 
 		/*
 		Sidenote: LightSystem.render() is rendering, yes,
 		but it's rendering to another FrameBuffer than the
 		default one and switching "back" while rendering
-		to another FBO (f.e. when  == true) glitches out.
+		to another FBO creates glitches.
 		 */
 		if (level != null) {
 			Level llevel = level;
-			while (llevel != null && llevel instanceof MenuLevel) {
+			if (llevel instanceof MenuLevel) {
 				llevel = ((MenuLevel)llevel).bglevel;
 			}
-			if (llevel != null && llevel.lights != null) {
-				llevel.lights.render();
+			if (llevel != null && llevel instanceof LoadingLevel) {
+				llevel = ((LoadingLevel)llevel).bglevel;
+			}
+			if (llevel != null) {
+				ILightSystem lights = llevel.systems.get(ILightSystem.class);
+				if (lights != null) {
+					lights.render();
+				}
 			}
 		}
 
-		if (Options.getBoolean("gfx.clear", true)) {
+		if (glclear) {
 			Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 			Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		}
 
 		spriteBatch.setColor(1f, 1f, 1f, 1f);
-		ModManager.preRender();
+		ModManager.preRender(delta);
 		Input.isInMenu = level != null && level instanceof MenuLevel;
-		cam.render();
-		ModManager.postRender();
+		cam.render(delta);
+		ModManager.postRender(delta);
 
 		if (record) {
 			ScreenshotUtil.frameRecord();
@@ -249,25 +277,35 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			frames = 0;
 		}
 
-		efps = (int)(1f/Gdx.graphics.getDeltaTime());
+		efps = (int)(1f/delta);
+
+		if (time - ramTime >= ramTimeDelay) {
+			ramTime = time;
+			ramTotal.insert(0, runtime.totalMemory());
+			ramTotal.truncate(ramLogMax);
+			ramFree.insert(0, runtime.freeMemory());
+			ramFree.truncate(ramLogMax);
+			ramUsed.insert(0, ramTotal.items[0] - ramFree.items[0]);
+			ramUsed.truncate(ramLogMax);
+		}
+
 	}
 	
 	public void subtick() {
 		while (Gdx.graphics == null) {
 			Thread.yield();
 		}
-		if (loadstate == 0) {
-			//Gdx.graphics.setVSync(true);
+
+		if (spriteBatch == null) {
+			Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
 
 			ShaderProgram.pedantic = false;
 
 			ShaderProgram defaultShader = ShaderHelper.loadShader("shaders/default");
 			ShaderHelper.addShader(defaultShader);
 
-			ShaderProgram noiseOffsetShader = ShaderHelper.loadShader("shaders/noiseoffs");
-			ShaderHelper.addShader(noiseOffsetShader, "noiseoffs");
-
 			spriteBatch = new SpriteBatch(4096);
+			spriteCache = new SpriteCache(4096, true);
 
 			ShaderHelper.resetCurrentShader();
 
@@ -278,74 +316,29 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 
 			//At this point it's safe to assume that most stuff needeed for a backend setup is set up.
 			BackendHelper.setUp();
-			
-			loadstate = 1;
-			loadtick = 0;
+			playerInfo = BackendHelper.backend.newPlayerInfo();
+			playerInfo.setSessionID(getSecureRandomBytes(512));
+			System.out.println("Username: "+playerInfo.getUserName());
+			System.out.println("UUID: "+playerInfo.getUserID());
+
+			//Init the first loading screen (InitLoadLevel)
+			LoadingLevel loadinglevel = new InitLoadingLevel();
+			level = loadinglevel;
+			loadinglevel.start();
 
 			//Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1f);
 			//Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 			
 			//cam.render();
-		} else if (loadstate == 1) {
-			if (loadtick == loadticks[0][0]) {
-				resize();
-			}
-			if (loadtick == loadticks[0][1]) {
-				//Fonts
-				Fonts.load();
-			}
-			if (loadtick == loadticks[0][2]) {
-				//More images
-				Images.loadImages();
-				//Sounds
-				Sounds.loadSounds();
-			}
-			if (loadtick == loadticks[0][3]) {
-				//Set up various smaller values, options or machine-dependent / Android-only stuff.
-				if (isAndroid) {
-					GameObject.pixffac = 2;
-					Level.maxParticles = 128;
-					Camera.blursize = 4f;
-					resize();
-				}
-			}
-			if (loadtick == loadticks[0][4]) {
-				if (!Converter.convertOnly && !isAndroid) {
-					//TODO Set up streams
-					client = new NetClient();
-					server = new NetServer();
-				}
-			}
-			if (loadtick == loadticks[0][5]) {
-				//TODO add random stuff to load
-			}
-			if (loadtick == loadticks[0][6]) {
-				ModManager.loader.init(null);
-				ModManager.create();
-			}
-			if (loadtick == loadticks[0][7]) {
-				//Jump into first level (TitleLevel).
-				if (Converter.convertOnly) {
-					System.out.println("Starting internal converter...");
-
-					Converter.convertAll();
-
-					Gdx.app.exit();
-				} else {
-					level = new TitleLevel();
-				}
-				loadstate = 2;
-			}
-			loadtick++;
 		}
 	}
 	
-	public void tick() {
-		ModManager.preTick();
+	public void tick(float delta) {
+		ModManager.preTick(delta);
 		controllerHelper.tick();
 		Input.tick();
 		if (!Converter.convertOnly && level != null) {
-			level.tick();
+			level.tick(delta);
 		}
 		if (!Converter.convertOnly && server != null) {
 			server.tick();
@@ -353,7 +346,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 		if (!Converter.convertOnly && client != null) {
 			client.tick();
 		}
-		ModManager.postTick();
+		ModManager.postTick(delta);
 	}
 	
 	@Override
@@ -362,6 +355,15 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	}
 	
 	public static void resize() {
+		if (Thread.currentThread() != Shadow.thread) {
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					resize();
+				}
+			});
+			return;
+		}
+
 		if (Gdx.graphics != null) {
 			dispw = Gdx.graphics.getWidth();
 			disph = Gdx.graphics.getHeight();
@@ -397,19 +399,17 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 
 			ShaderHelper.set("s_resolution", dispw, disph);
 
-			if (Camera.tmpFB != null) {
-				Camera.tmpFB.dispose();
-			}
-			Camera.tmpFB = new FrameBuffer(Pixmap.Format.RGB888,
-					(int)dispw, (int)disph, false);
-			Camera.tmpFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear,
-					Texture.TextureFilter.Linear);
+            if (Camera.tmpFB != null) {
+                Camera.tmpFB.dispose();
+            }
+            Camera.tmpFB = new FrameBuffer(Pixmap.Format.RGB888,
+                    (int) dispw, (int) disph, false);
 
 			if (Camera.blurFB != null) {
 				Camera.blurFB.dispose();
 			}
-			Camera.blurFB = new FrameBuffer(Pixmap.Format.RGB888,
-					(int)(dispw/Camera.blursize), (int)(disph/Camera.blursize), false);
+            Camera.blurFB = new FrameBuffer(Pixmap.Format.RGB888,
+                    (int) (dispw / Camera.blursize), (int) (disph / Camera.blursize), false);
 			Camera.blurFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear,
 					Texture.TextureFilter.Linear);
 
@@ -421,9 +421,9 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 			Camera.blurXFB.getColorBufferTexture().setFilter(Texture.TextureFilter.Linear,
 					Texture.TextureFilter.Linear);
 
-			if (LightSystem.lightFB != null) {
-				LightSystem.lightFB.dispose();
-				LightSystem.lightFB = null;
+			if (LightSystemHelper.lightFB != null) {
+				LightSystemHelper.lightFB.dispose();
+				LightSystemHelper.lightFB = null;
 			}
 		}
 	}
@@ -470,6 +470,10 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 
 	@Override
 	public boolean keyTyped(char c) {
+        if (level instanceof TextInputLevel) {
+            ((TextInputLevel)level).keyTyped(c);
+            return true;
+        }
 		return false;
 	}
 	
@@ -560,7 +564,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	public boolean mouseMoved(int screenX, int screenY) {
 		boolean handled = false;
 		if (level != null && level.c != null) {
-			//No touch point while moving as no "touch" is occuring.
+			//No touch point while moving as no "touch" is occurring.
 			Garbage.vec2s.next();
 			Garbage.vec2s.get().x = screenX;
 			Garbage.vec2s.get().y = screenY;
@@ -583,7 +587,7 @@ public final class Shadow implements ApplicationListener, InputProcessor, KeyLis
 	
 	@Override
 	public void keyDown(Key key) {
-		if (!(level instanceof MenuLevel) &&
+		if (!(level instanceof MenuLevel || level instanceof LoadingLevel) &&
 				(key == Input.pause ||
 						(isAndroid && (key == Input.androidBack || key == Input.androidMenu)))) {
 			MenuLevel pause = new PauseLevel();

@@ -47,7 +47,7 @@ public final class ScreenshotUtil {
 	}
 
 	public static byte[] getScreenData(int x, int y, int w, int h) {
-		//Gdx.gl.glPixelStorei(GL20.GL_PACK_ALIGNMENT, 1);
+		Gdx.gl.glPixelStorei(GL20.GL_PACK_ALIGNMENT, 1);
 		int numBytes = w * h * 3;
 		ByteBuffer pixels = getPixelBuffer(numBytes);
 		Gdx.gl.glReadPixels(x, y, w, h, GL20.GL_RGB, GL20.GL_UNSIGNED_BYTE, pixels);

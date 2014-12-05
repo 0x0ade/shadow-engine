@@ -12,89 +12,92 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.LongMap;
 import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Cursor;
-import net.fourbytes.shadow.entities.Particle;
 import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 import net.fourbytes.shadow.map.ShadowMap;
-import net.fourbytes.shadow.mod.ModManager;
+import net.fourbytes.shadow.systems.DefaultSystemManager;
+import net.fourbytes.shadow.systems.ISystemManager;
 
 public class Level {
-	
+
+    public LongMap<GameObject> goIDMap = new LongMap<GameObject>();
+
+	public ShadowMap map;
+
+	public ISystemManager systems = createSystems();
 	public IntMap<Layer> layers = new IntMap<Layer>(16);
 	public Layer mainLayer = new Layer(this);
-	public LightSystem lights;
-	public TimeDaySystem timeday;
+    @IsSaveable
 	public Color globalLight = new Color(1f, 1f, 1f, 1f);
 	public Player player;
 	public Cursor c;
 	public Array<Cursor> cursors = new Array<Cursor>(false, 8, Cursor.class);
-	@Saveable
-	public float gravity = 0.02f;
-	@Saveable
-	public float xgravity = 0.0f;
-	
-	public static int maxParticles = 512;
+    @IsSaveable
+    public float gravity = 0.02f;
+    @IsSaveable
+    public float xgravity = 0.0f;
+
 	public static float inviewf = 10f;
 
 	//Abstract constructor, can be used for non-gameplay levels (menus).
 	public Level() {
-		ready = true;
 	}
 	
-	@Saveable
-	public int tiledw = -1;
-	@Saveable
-	public int tiledh = -1;
-	@Saveable
+	@IsSaveable
 	public String nextlvl;
 
-	@Saveable
-	public boolean hasvoid = true;
 	public boolean ready = false;
 	public boolean paused = false;
 	public boolean ftick = true;
 	public long tickid = 0;
+	public boolean dirtify = false;
 
-	
 	public Level(String name) {
+		this(name, null);
+	}
+
+	public Level(String name, LoadingLevel loading) {
+		if (loading != null) {
+			loading.bgpaused = true;
+			loading.bglevel = this;
+		}
+
+		dirtify = false;
+
+		fillLayer(0);
+		c = new Cursor(new Vector2(0f, 0f), layers.get(0));
+
 		if (Gdx.files.internal("data/levels/"+name+".smf").exists()) {
-			ShadowMap map = ShadowMap.loadFile(Gdx.files.internal("data/levels/"+name+".smf"));
-			map.fillLevel(this);
+			map = ShadowMap.loadFile(Gdx.files.internal("data/levels/"+name+".smf"));
+			map.fillLevel(this, loading);
 		} else if (Gdx.files.internal("data/levels/"+name+".tmx").exists()) {
+			map = new ShadowMap();
 			try {
 				TmxMapLoader tml = new TmxMapLoader();
 				//TODO Custom TmxMapLoader that loads TiledMaps without loading tileset images
-				initTilED(tml.load("data/levels/"+name+".tmx"));
+				initTilED(tml.load("data/levels/"+name+".tmx"), loading);
 				ready = true;
 			} catch (Throwable t) {
 				t.printStackTrace();
 			}
 		} else {
+			map = new ShadowMap();
 			System.err.println("Map not found: "+name);
 		}
 
-		fillLayer(0);
-		c = new Cursor(new Vector2(0f, 0f), layers.get(0));
-
-		initSystems();
-
 		System.gc();
 
+		dirtify = true;
 		ready = true;
 	}
 
-	public void initSystems() {
-		ModManager.initLevelSystems(this);
-
-		if (lights == null) {
-			lights = new LightSystem(this);
-		}
-
-		if (timeday == null) {
-			timeday = new TimeDaySystem(this);
-		}
+	public ISystemManager createSystems() {
+		ISystemManager systems = new DefaultSystemManager(this);
+		systems.init();
+		return systems;
 	}
 
 	public void fillLayer(int key) {
@@ -102,25 +105,24 @@ public class Level {
 			layers.put(key, new Layer(this));
 		}
 	}
-	
+
 	public void initTilED(TiledMap map) {
+		initTilED(map);
+	}
+
+	public void initTilED(TiledMap map, LoadingLevel loading) {
+		if (loading != null) {
+			loading.progress = 0;
+			loading.progressMax = 0;
+		}
 		map.dispose();
 		//tiledw = map.width;
 		//tiledh = map.height;
 		nextlvl = (String) map.getProperties().get("nextlvl");
-		if (map.getProperties().get("hasvoid") != null && !((String) map.getProperties().get("hasvoid")).isEmpty()) {
-			hasvoid = Boolean.parseBoolean((String) map.getProperties().get("hasvoid"));
-		}
 		for (int ln = 0; ln < map.getLayers().getCount(); ln++) {
 			Layer ll = new Layer(this);
 			layers.put(ln, ll);
 			TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(ln);
-			if (l.getWidth() > tiledw) {
-				tiledw = l.getWidth();
-			}
-			if (l.getHeight() > tiledh) {
-				tiledh = l.getHeight();
-			}
 			for (int x = 0; x < l.getWidth(); x++) {
 				for (int y = 0; y < l.getHeight(); y++) {
 					Cell cell = l.getCell(x, y);
@@ -147,7 +149,7 @@ public class Level {
 		return obj;
 	}
 
-	public void tick() {
+	public void tick(float delta) {
 		Rectangle vp = Shadow.cam.camrec;
 
 		tickid++;
@@ -190,8 +192,10 @@ public class Level {
 			}
 
 			if ((ftick || block.tickAlways || shallTick) && !paused) {
-				block.tick();
+				block.tick(delta);
 			}
+
+			block.frame(delta);
 		}
 		
 		for (int i = 0; i < mainLayer.entities.size; i++) {
@@ -220,26 +224,15 @@ public class Level {
 			}
 
 			if (!paused) {
-				entity.tick();
+				entity.tick(delta);
 			}
+
+            entity.frame(delta);
 		}
 
-		boolean tickPaused;
-		int particleCount = 0;
 		for (int i = 0; i < mainLayer.particles.size; i++) {
 			Particle particle = mainLayer.particles.items[i];
 			if (particle == null) continue;
-			if (!particle.interactive) {
-				if (particleCount >= maxParticles) {
-					mainLayer.remove(mainLayer.particles.items[0]);
-					continue;
-				}
-				particleCount++;
-				tickPaused = true;
-			} else {
-				tickPaused = false;
-			}
-
 
 			ox = particle.pos.x-inviewf;
 			oy = particle.pos.y-inviewf;
@@ -262,24 +255,22 @@ public class Level {
 				inView.items[inView.size++] = particle;
 			}
 
-			if (tickPaused || !paused) {
-				particle.tick();
-			}
+			particle.tick(delta);
 		}
 
-		if (!paused) {
-			if (timeday != null) {
-				timeday.tick();
-			}
+		if (ready) {
+			systems.tick(delta);
 
-			if (Shadow.level == this && c != null) {
-				for (int i = 0; i < cursors.size; i++) {
-					Cursor c = cursors.items[i];
-					c.tick();
-				}
-				c.tick();
-				if (pointblock != null) {
-					pointblock.tick();
+			if (!paused) {
+				if (Shadow.level == this && c != null) {
+					for (int i = 0; i < cursors.size; i++) {
+						Cursor c = cursors.items[i];
+						c.tick(delta);
+					}
+					c.tick(delta);
+					if (pointblock != null) {
+						pointblock.tick(delta);
+					}
 				}
 			}
 		}
@@ -288,7 +279,7 @@ public class Level {
 	}
 	
 	public boolean canRenderImpl = true;
-	public static BitmapFont font = Fonts.light_normal;
+	public BitmapFont font = Fonts.light_normal;
 	protected static Image bgwhite;
 	protected static Image fgwhite;
 	protected Block pointblock;

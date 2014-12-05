@@ -7,8 +7,6 @@ uniform sampler2D u_texture;
 varying vec4 v_color;
 varying vec2 v_texCoord;
 
-varying float v_noise;
-
 void main() {
     vec4 texColor = texture2D(u_texture, v_texCoord) * v_color;
 

@@ -6,13 +6,13 @@ import net.fourbytes.shadow.Block;
 import net.fourbytes.shadow.Coord;
 import net.fourbytes.shadow.Images;
 import net.fourbytes.shadow.Shadow;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 
 public class BlockGrass extends BlockType {
 
 	public TextureRegion tex;
 
-	@Saveable
+	@IsSaveable
 	public int hasGrassTop = -1;
 
 	public BlockGrass() {
@@ -25,6 +25,7 @@ public class BlockGrass extends BlockType {
 
 	@Override
 	public void init() {
+		dynamic = false;
 		blending = false;
 		if (hasGrassTop == -1) {
 			hasGrassTop = Shadow.rand.nextInt(3);

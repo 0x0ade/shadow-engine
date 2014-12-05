@@ -2,6 +2,10 @@ package net.fourbytes.shadow.utils;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import net.fourbytes.shadow.Background;
+import net.fourbytes.shadow.Camera;
+import net.fourbytes.shadow.Shadow;
+import net.fourbytes.shadow.systems.LightSystemHelper;
 
 import java.util.Map;
 
@@ -100,9 +104,64 @@ public final class Options {
 		for (String key : back.get().keySet()) {
 			if (key.equals("gfx.vsync")) {
 				Gdx.graphics.setVSync(getBoolean(key));
-			}
+			} else if (key.equals("gfx.blur")) {
+				Camera.blur = getBoolean(key);
+			} else if (key.equals("gfx.blur.hd")) {
+				Camera.blurHD = getBoolean(key);
+			} else if (key.equals("gfx.multiblend")) {
+				Camera.multiblend = getBoolean(key);
+			} else if (key.equals("gfx.shadows")) {
+				Camera.shadows = getBoolean(key);
+			} else if (key.equals("gfx.shadows.check")) {
+				Camera.shadowsCheck = getBoolean(key);
+			} else if (key.equals("dev.show.ram")) {
+				Camera.showRAM = getBoolean(key);
+			} else if (key.equals("gfx.clear")) {
+				Shadow.glclear = getBoolean(key);
+			} else if (key.equals("gfx.blur.hq")) {
+				if (getBoolean(key)) {
+					Camera.blursize = 2f;
+					Camera.blurrad = 4;
+					Camera.blurdist = 1f/16f;
+				} else {
+					Camera.blursize = 3f;
+					Camera.blurrad = 4;
+					Camera.blurdist = 1f/16f;
+				}
+				if (Shadow.cam != null) {
+					Shadow.resize();
+				}
+			} else if (key.equals("gfx.light.hd")) {
+                if (getBoolean(key)) {
+                    LightSystemHelper.lightFBFactor = 1f;
+                    LightSystemHelper.lightFBSpeed = 1;
+                } else {
+                    LightSystemHelper.lightFBFactor = 0.5f;
+                    LightSystemHelper.lightFBSpeed = 2;
+                }
+                if (Shadow.cam != null) {
+                    Shadow.resize();
+                }
+            } else if (key.equals("gfx.light.blur")) {
+                Camera.blurLight = getBoolean(key);
+			} else if (key.equals("gfx.light.noclear")) {
+				LightSystemHelper.lightFBClear = !getBoolean(key);
+			} else if (key.equals("mp.user.name")) {
+                if (Shadow.playerInfo != null) {
+                    Shadow.playerInfo.setUserName(getString(key));
+                }
+            } else if (key.equals("mp.user.id")) {
+                if (Shadow.playerInfo != null) {
+                    Shadow.playerInfo.setUserID(getString(key));
+                }
+            } else if (key.equals("mp.user.session")) {
+                if (Shadow.playerInfo != null) {
+                    Shadow.playerInfo.setSessionID(getString(key));
+                }
+            }
 
 			//TODO Add more entries
+			//TODO Mod support
 		}
 	}
 
@@ -114,6 +173,7 @@ public final class Options {
 		}
 		back = Gdx.app.getPreferences(Options.class.getName()+".settings");
 		//TODO add more
+		//TODO load from files...
 		putBoolean("gfx.vsync", getBoolean("gfx.vsync", true));
 		putBoolean("gfx.multiblend", getBoolean("gfx.multiblend", true));
 		putBoolean("gfx.shadows", getBoolean("gfx.shadows", true));
@@ -122,7 +182,10 @@ public final class Options {
 		putBoolean("gfx.blur", getBoolean("gfx.blur", false));
 		putBoolean("gfx.blur.hq", getBoolean("gfx.blur.hq", false));
 		putBoolean("gfx.blur.hd", getBoolean("gfx.blur.hd", false));
+		putBoolean("gfx.light.hd", getBoolean("gfx.light.hd", false));
+		putBoolean("gfx.light.noglclear", getBoolean("gfx.light.noglclear", false));
 		putBoolean("gfx.large", getBoolean("gfx.large", false));
+		putBoolean("dev.show.ram", getBoolean("dev.show.ram", false));
 		flush();
 	}
 }

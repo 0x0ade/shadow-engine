@@ -15,6 +15,7 @@ public class BlockLadder extends BlockType {
 	
 	@Override
 	public void init() {
+		dynamic = false;
 		solid = false;
 		passSunlight = true;
 	}
@@ -30,11 +31,11 @@ public class BlockLadder extends BlockType {
 			Player p = (Player) e;
 			
 			if (Input.up.isDown) {
-				p.movement.add(0, -p.movement.y - p.jumph * 0.35f);
+				p.movement.y = -p.jumph * 0.35f;
 			} else if (Input.down.isDown) {
-				p.movement.add(0, -p.movement.y + p.jumph * 0.35f);
+				p.movement.y = p.jumph * 0.35f;
 			} else {
-				p.movement.add(0, -p.movement.y * 0.75f);
+				p.movement.y *= 0.75f;
 			}
 			
 			p.canJump = p.maxJump;

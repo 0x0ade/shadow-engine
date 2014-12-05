@@ -1,31 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component inheritJdk="true">
 	<exclude-output/>
+	<contentEntry url="file://$PARENT-1-PROJECT_LOC$/shadow-platformer-android/assets"/>
 	<contentEntry url="file://$MODULE_DIR$">
 		<excludeFolder url="file://$MODULE_DIR$/.settings"/>
 	</contentEntry>
-	<contentEntry url="file://$PARENT-1-PROJECT_LOC$/shadow-platformer-android/assets"/>
-	<lib name="gdx-backend-lwjgl-natives.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl-natives.jar!/"/>
-	</lib>
 	<lib name="gdx-backend-lwjgl.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/libs/gdx-backend-lwjgl-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl.jar!/"/>
-	</lib>
-	<lib name="gdx-controllers-desktop-natives.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-controllers-desktop-natives.jar!/"/>
+		<srcroot url="jar://$USER_HOME$/libjars/libgdx/sources/gdx-backend-lwjgl-sources.jar!/"/>
 	</lib>
 	<lib name="gdx-controllers-desktop.jar" scope="COMPILE">
-		<srcroot url="jar://$MODULE_DIR$/libs/gdx-controllers-desktop-sources.jar!/"/>
-		<relative-module-src project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-controllers-desktop-sources.jar!/"/>
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-controllers-desktop.jar!/"/>
-	</lib>
-	<lib name="gdx-freetype-natives.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-freetype-natives.jar!/"/>
-	</lib>
-	<lib name="gdx-natives.jar" scope="COMPILE">
-		<relative-module-cls project-related="jar://$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-natives.jar!/"/>
+		<srcroot url="jar://$USER_HOME$/libjars/libgdx/extensions/gdx-controllers/sources/gdx-controllers-desktop-sources.jar!/"/>
 	</lib>
 	<levels>
 		<level name="gdx-backend-jglfw-natives" value="project"/>

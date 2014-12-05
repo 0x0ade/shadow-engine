@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
+import net.fourbytes.shadow.utils.Options;
 
 public class Background {
 	
@@ -114,7 +115,7 @@ public class Background {
 		Shadow.spriteBatch.enableBlending();
 		
 		if (starsAlpha > 0f) {
-			for (int ii = 0; ii < stars.size; ii++) {
+            for (int ii = 0; ii < stars.size; ii++) {
 				Star s = stars.items[ii];
 				s.pos.add(starsScrollX, starsScrollY);
 				s.vpp.add(starsScrollX, starsScrollY);

@@ -4,8 +4,10 @@ import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.mod.ModManager;
 
 public final class BackendHelper {
+	private BackendHelper() {
+	}
 
-	public final static void checkBackend() {
+	public static void checkBackend() {
 		if (backend == null) {
 			throw new IllegalStateException("No Shadow backend found!");
 		}

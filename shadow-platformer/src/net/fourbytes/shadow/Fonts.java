@@ -23,6 +23,15 @@ public class Fonts {
 	public static BitmapFont light_large;
 
 	public static void load() {
+		if (Thread.currentThread() != Shadow.thread) {
+			Gdx.app.postRunnable(new Runnable() {
+				public void run() {
+					load();
+				}
+			});
+			return;
+		}
+
 		//atlasPacker = new PixmapPacker(1024, 1024, Pixmap.Format.RGBA8888, 2, true);
 		//atlas = atlasPacker.generateTextureAtlas(TextureFilter.MipMapNearestNearest, TextureFilter.Nearest, true);
 

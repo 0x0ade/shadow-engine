@@ -10,7 +10,7 @@ import net.fourbytes.shadow.Images;
 public class BlockSpring extends BlockType {
 	
 	public boolean doanim = false;
-	public int subframe = 0;
+	public float subframe = 0;
 	public int frame = 0;
 	
 	public BlockSpring() {
@@ -23,7 +23,7 @@ public class BlockSpring extends BlockType {
 	}
 
 	@Override 
-	public void tick() {
+	public void tick(float delta) {
 		Array<Block> al = layer.get(Coord.get(pos.x, pos.y-1));
 		boolean hasBlockTop = false;
 		if (al != null) {
@@ -43,16 +43,16 @@ public class BlockSpring extends BlockType {
 
 
 		if (doanim) {
-			subframe++;
-			if (subframe > 8) {
+			subframe += delta;
+			if (subframe > 8f/60f) {
 				frame++;
 				subframe = 0;
-				imgupdate = true;
+				texupdate = true;
 			}
 			if (frame >= 4) {
 				frame = 0;
 				doanim = false;
-				imgupdate = true;
+				texupdate = true;
 			}
 		}
 	}

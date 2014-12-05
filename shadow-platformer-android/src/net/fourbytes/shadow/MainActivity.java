@@ -10,11 +10,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.LifecycleListener;
 import com.badlogic.gdx.backends.android.*;
 import com.badlogic.gdx.backends.android.surfaceview.FillResolutionStrategy;
-import com.badlogic.gdx.controllers.mappings.Ouya;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import net.fourbytes.shadow.utils.backend.AndroidBackend;
 import net.fourbytes.shadow.utils.backend.BackendHelper;
 import net.fourbytes.shadow.utils.backend.OuyaBackend;
+import net.fourbytes.slimodk.SlimODK;
 
 import java.lang.reflect.Method;
 
@@ -36,16 +36,20 @@ public class MainActivity extends AndroidApplication {
 
         Input.isAndroid = true;
         Shadow.isAndroid = true;
-        if (Ouya.runningOnOuya){
+		//TODO integrate the dev UUID somewhere else...
+		//TODO use a sample dev UUID
+		SlimODK.init(this, "932e4746-a42b-49a3-8aad-d1af9ce7ecc2");
+		if (SlimODK.getDeviceID() > -2) {
 			Input.isOuya = true;
 			Shadow.isOuya = true;
-		}
 
-		if (Shadow.isOuya) {
 			BackendHelper.backend = new OuyaBackend(cfg);
 		} else {
+			SlimODK.end();
+
 			BackendHelper.backend = new AndroidBackend(cfg);
 		}
+
         initialize(new Shadow(), cfg);
     }
 

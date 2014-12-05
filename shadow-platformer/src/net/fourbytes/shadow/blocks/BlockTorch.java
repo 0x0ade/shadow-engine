@@ -6,16 +6,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
 import net.fourbytes.shadow.entities.Player;
-import net.fourbytes.shadow.entities.particles.PixelParticle;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
+import net.fourbytes.shadow.systems.IParticleManager;
+import net.fourbytes.shadow.utils.Garbage;
 
 public class BlockTorch extends BlockType implements BlockLogic {
 
-	@Saveable
+	@IsSaveable
 	public boolean triggered = true;
 	public boolean tmptriggered = true;
 
-	public int subframe = 0;
+	public float subframe = 0;
 	public int frame = 0;
 
 	public int wall = 0;
@@ -37,9 +38,9 @@ public class BlockTorch extends BlockType implements BlockLogic {
 	}
 
 	@Override
-	public void tick() {
+	public void tick(float delta) {
 		if (triggered != tmptriggered) {
-			imgupdate = true;
+			texupdate = true;
 		}
 
 		wall = 0;
@@ -69,26 +70,27 @@ public class BlockTorch extends BlockType implements BlockLogic {
 	}
 
 	@Override
-	public void preRender() {
-		subframe += Shadow.rand.nextInt(5);
+	public void frame(float delta) {
+		subframe += delta * Shadow.rand.nextInt(5);
 		if (triggered) {
-			if (subframe > 12) {
+			if (subframe > 12f/60f) {
 				frame++;
 				subframe = 0;
-				imgupdate = true;
+				texupdate = true;
 				light.set(0.75f, 0.5f, 0.25f, 1f);
 				light.mul(1f-Shadow.rand.nextFloat()*0.2f);
 				light.a = 1f-Shadow.rand.nextFloat()*0.15f;
 
+				Vector2 pos = Garbage.vec2s.getNext();
 				for (int i = 0; i < Shadow.rand.nextInt(6)-4; i++) {
-					Vector2 pos = new Vector2(this.pos);
+					pos.set(this.pos);
 					pos.add(rec.width/2f, rec.height/2f);
 					pos.add(Shadow.rand.nextFloat()-0.5f, Shadow.rand.nextFloat()-0.5f);
 
-					Color color = new Color(light);
+					Color color = Garbage.colors.getNext().set(light);
 					color.mul(1f-(Shadow.rand.nextFloat()/10f));
 
-					PixelParticle pp = new PixelParticle(pos, layer, 0, 0.0775f, color);
+					Particle pp = layer.level.systems.get(IParticleManager.class).create("PixelParticle", pos, layer, color, 0.0775f, 0);
 					pp.objgravity *= 0.5f;
 					pp.layer.add(pp);
 				}
@@ -99,6 +101,10 @@ public class BlockTorch extends BlockType implements BlockLogic {
 		} else {
 			light.set(0f, 0f, 0f, 0f);
 		}
+	}
+
+	@Override
+	public void preRender() {
 		super.preRender();
 	}
 

@@ -30,8 +30,14 @@ public final class ShaderHelper {
 
 	public static void setCurrentShader(String name) {
 		current = getShader(name);
+        if (current == null) {
+            ShaderProgram shader = ShaderHelper.loadShader("shaders/"+name);
+            ShaderHelper.addShader(shader, name);
+            current = shader;
+        }
 		currentName = name;
 		Shadow.spriteBatch.setShader(current);
+		Shadow.spriteCache.setShader(current);
 		setAll();
 	}
 
@@ -49,11 +55,10 @@ public final class ShaderHelper {
 
 	public static void addShader(ShaderProgram shader, String name) {
 		shaders.put(name, shader);
-		shader.begin();
 		for (ObjectMap.Entry entry : values.entries()) {
-			set((String)entry.key, entry.value);
+            values.remove((String) entry.key);
+			set((String) entry.key, entry.value);
 		}
-		shader.end();
 	}
 
 	public static void setDefault(boolean set, String setting, Object... values) {
@@ -75,18 +80,20 @@ public final class ShaderHelper {
 		Object[] rawoldvals = ShaderHelper.values.get(setting);
 		if (rawoldvals != null && rawoldvals.length == values.length) {
 			MultiObject oldvals = Garbage.multiobjs.getNext();
+            Object[] oldobjects = oldvals.objects;
 			oldvals.objects = rawoldvals;
 			MultiObject newvals = Garbage.multiobjs.getNext();
+            Object[] newobjects = newvals.objects;
 			newvals.objects = values;
 
 			boolean equals = oldvals.equals(newvals);
 
-			oldvals.objects = null;
-			newvals.objects = null;
+			oldvals.objects = oldobjects;
+			newvals.objects = newobjects;
 
-			if (equals) {
-				return;
-			}
+            if (equals) {
+                return;
+            }
 		}
 
 		ShaderHelper.values.put(setting, values);
@@ -102,7 +109,9 @@ public final class ShaderHelper {
 					value = Boolean.parseBoolean((String)values[0]);
 				}
 				for (ShaderProgram shader : shaders.values()) {
+					shader.begin();
 					shader.setUniformi(setting, value?1:0);
+					shader.end();
 				}
 				return;
 			} catch (Exception e) {
@@ -116,7 +125,9 @@ public final class ShaderHelper {
 					value = Integer.parseInt((String)values[0]);
 				}
 				for (ShaderProgram shader : shaders.values()) {
+					shader.begin();
 					shader.setUniformi(setting, value);
+					shader.end();
 				}
 				return;
 			} catch (Exception e) {
@@ -130,7 +141,9 @@ public final class ShaderHelper {
 					value = Float.parseFloat((String)values[0]);
 				}
 				for (ShaderProgram shader : shaders.values()) {
+					shader.begin();
 					shader.setUniformf(setting, value);
+					shader.end();
 				}
 				return;
 			} catch (Exception e) {
@@ -155,7 +168,9 @@ public final class ShaderHelper {
 					value2 = Float.parseFloat((String)values[1]);
 				}
 				for (ShaderProgram shader : shaders.values()) {
+					shader.begin();
 					shader.setUniformf(setting, value1, value2);
+					shader.end();
 				}
 				return;
 			} catch (Exception e) {
@@ -186,7 +201,9 @@ public final class ShaderHelper {
 					value3 = Float.parseFloat((String)values[2]);
 				}
 				for (ShaderProgram shader : shaders.values()) {
+					shader.begin();
 					shader.setUniformf(setting, value1, value2, value3);
+					shader.end();
 				}
 				return;
 			} catch (Exception e) {
@@ -223,7 +240,9 @@ public final class ShaderHelper {
 					value4 = Float.parseFloat((String)values[3]);
 				}
 				for (ShaderProgram shader : shaders.values()) {
+					shader.begin();
 					shader.setUniformf(setting, value1, value2, value3, value4);
+					shader.end();
 				}
 				return;
 			} catch (Exception e) {

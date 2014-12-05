@@ -1,0 +1,3 @@
+boolean gfx.light.hd;false HD light and lower latency
+boolean gfx.light.noclear;false Avoid using glClear
+boolean gfx.light.blur;false Blur the light

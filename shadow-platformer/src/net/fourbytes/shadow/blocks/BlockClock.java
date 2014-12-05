@@ -3,36 +3,44 @@ package net.fourbytes.shadow.blocks;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Array;
 import net.fourbytes.shadow.*;
-import net.fourbytes.shadow.map.Saveable;
+import net.fourbytes.shadow.map.IsSaveable;
 
 public class BlockClock extends BlockType implements BlockLogic {
 
-	@Saveable
+	@IsSaveable
 	public boolean triggered = false;
-	@Saveable
-	public int factor = 32;
-	@Saveable
-	public int totime = 4;
-	@Saveable
-	public int timer = 0;
+	@IsSaveable
+	public float cycle = 128f/60f;
+	@IsSaveable
+	public float time = 0f;
 	
 	public BlockClock() {
 	}
-	
-	public BlockClock(int timer) {
-		this.timer = timer*factor;
+
+
+	public BlockClock(int time) {
+		this.time = time*32f/60f;
 	}
-	
-	@Override 
-	public void tick() {
+
+    public BlockClock(float time, float cycle) {
+        this.time = time;
+        this.cycle = cycle;
+    }
+
+	@Override
+	public void init() {
 		tickAlways = true;
 		solid = false;
 		alpha = 0f;
 		passSunlight = false;
 		blending = false;
-		timer++;
-		if (timer >= totime*factor) {
-			timer = 0;
+	}
+
+	@Override 
+	public void tick(float delta) {
+		time += delta;
+		if (time >= cycle) {
+			time = 0f;
 			triggered = !triggered;
 			
 			for (Layer l : layer.level.layers.values()) {

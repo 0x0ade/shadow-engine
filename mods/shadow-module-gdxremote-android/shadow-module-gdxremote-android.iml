@@ -16,6 +16,7 @@
     <orderEntry type="jdk" jdkName="Android API 15 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="shadow-module-gdxremote" exported="" />
+    <orderEntry type="library" name="gdxremote" level="application" />
   </component>
 </module>
 

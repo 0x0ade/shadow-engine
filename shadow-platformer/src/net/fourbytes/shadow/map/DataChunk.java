@@ -1,8 +1,12 @@
 package net.fourbytes.shadow.map;
 
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
-import net.fourbytes.shadow.*;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
+import net.fourbytes.shadow.Chunk;
+import net.fourbytes.shadow.Coord;
+import net.fourbytes.shadow.GameObject;
+import net.fourbytes.shadow.Level;
 import net.fourbytes.shadow.network.Data;
 import net.fourbytes.shadow.network.NetStream;
 
@@ -13,14 +17,12 @@ import net.fourbytes.shadow.network.NetStream;
  * It is containing it's children as Data for saving space and
  * avoiding infinite recursion / bi-directional references when serializing.
  */
-public class DataChunk extends Data {
-	
-	public static int size = 8;
+public class DataChunk extends Data implements Json.Serializable {
 	
 	public int x;
 	public int y;
 	
-	public Array<MapObject> objects = new Array<MapObject>();
+	public Array<MapObject> objects = new Array<MapObject>(MapObject.class);
 	
 	protected DataChunk() {
 		this(0, 0);
@@ -31,42 +33,63 @@ public class DataChunk extends Data {
 		this.y = y;
 	}
 	
-	public final static Rectangle tmpcb = new Rectangle();
-	public final static Rectangle tmpeb = new Rectangle();
-	
 	/**
-	 * Creates and returns an chunk to send thru {@link NetStream}s.
+	 * Creates and returns a chunk to send through {@link NetStream}s.
 	 * @param x Initial x position
 	 * @param y Initial y position
 	 * @param level Level to get the chunk from
-	 * @return Chunk containing all game objects in area of (x, y) to (x+size, y+size)
+	 * @return Chunk containing all game objects in area of (x*size, y*size) to (x*size+size, y*size+size)
 	 */
 	public static DataChunk create(int x, int y, Level level) {
+		return create(x, y, level, false);
+	}
+
+	/**
+	 * Creates and returns a chunk to send through {@link NetStream}s.
+	 * @param x Initial x position
+	 * @param y Initial y position
+	 * @param level Level to get the chunk from
+	 * @param checkDirty only convert dirty chunks; return null otherwise.
+	 * @return DataChunk containing all game objects in area of (x*size, y*size) to (x*size+size, y*size+size); null otherwise
+	 */
+	public static DataChunk create(int x, int y, Level level, boolean checkDirty) {
+		Chunk lvlchunk = level.mainLayer.chunkmap.get(Coord.get(x, y));
+
+		if (lvlchunk == null || (checkDirty && lvlchunk.dirty == 0)) {
+			return null;
+		}
+
 		DataChunk chunk = new DataChunk(x, y);
-		tmpcb.set(x, y, size, size);
-		
-		for (Entity e : level.mainLayer.entities) {
-			tmpeb.set(e.pos.x, e.pos.y, e.rec.width, e.rec.height);
-			if (tmpeb.overlaps(tmpcb)) {
-				chunk.objects.add(ShadowMap.convert(e));
-			}
+
+		for (int i = 0; i < lvlchunk.entities.size; i++) {
+			chunk.objects.add(ShadowMap.convert(lvlchunk.entities.items[i]));
 		}
-		
-		for (int xx = x; xx <= x+size; xx++) {
-			for (int yy = y; yy <= y+size; yy++) {
-				Array<Block> blocks = level.mainLayer.get(Coord.get(xx, yy));
-				if (blocks != null) {
-					for (Block b : blocks) {
-						tmpeb.set(b.pos.x, b.pos.y, b.rec.width, b.rec.height);
-						if (tmpeb.overlaps(tmpcb)) {
-							chunk.objects.add(ShadowMap.convert(b));
-						}
-					}
-				}
-			}
+
+		for (int i = 0; i < lvlchunk.blocks.size; i++) {
+			chunk.objects.add(ShadowMap.convert(lvlchunk.blocks.items[i]));
 		}
-		
+
 		return chunk;
+	}
+
+	@Override
+	public void write(Json json) {
+		json.writeValue("x", x);
+		json.writeValue("y", y);
+		json.writeValue("objects", objects);
+	}
+
+	@Override
+	public void read(Json json, JsonValue jsonData) {
+		x = jsonData.getInt("x", 0);
+		y = jsonData.getInt("y", 0);
+		JsonValue objects = jsonData.get("objects");
+		if (objects != null && !objects.isNull()) {
+			//iterate as the arrays may have different item-array types
+			for (JsonValue current = objects.child; current != null; current = current.next) {
+				this.objects.add(json.readValue(MapObject.class, current));
+			}
+		}
 	}
 	
 }

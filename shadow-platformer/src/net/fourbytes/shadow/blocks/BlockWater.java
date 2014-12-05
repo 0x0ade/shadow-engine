@@ -13,14 +13,15 @@ public class BlockWater extends BlockFluid {
 
 	@Override
 	public void init() {
+		super.init();
 		passSunlight = true;
 	}
 
 	@Override
-	public void tick() {
+	public void tick(float delta) {
 		tintSunlight.set(0f, 0.5f, 0.7625f, 1f);
 		tintSunlight.add(MathUtils.random(lightDelta), MathUtils.random(lightDelta), MathUtils.random(lightDelta), 0f);
-		super.tick();
+		super.tick(delta);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import com.angelde.gdxremote.RemoteController;
 import com.angelde.gdxremote.RemoteControllerListener;
 import com.angelde.gdxremote.RemoteServer;
 import com.angelde.gdxremote.Util;
+import net.fourbytes.shadow.ParticleType;
 import net.fourbytes.shadow.Shadow;
 import net.fourbytes.shadow.mod.AMod;
 
@@ -63,4 +64,5 @@ public class GDXRemoteMod extends AMod implements RemoteControllerListener {
 	public void controllerDisconnected(RemoteController remoteController) {
 		Shadow.controllerHelper.disconnected(remoteController);
 	}
+
 }

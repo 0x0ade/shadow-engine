@@ -21,7 +21,7 @@ public class BlockSpringTop extends BlockType {
 	}
 
 	@Override 
-	public void tick() {
+	public void tick(float delta) {
 		if (block_spring == null) {
 			Array<Block> al = layer.get(Coord.get(pos.x, pos.y+1));
 			for (Block b : al) {
@@ -47,7 +47,7 @@ public class BlockSpringTop extends BlockType {
 				if (block_spring != null) {
 					block_spring.doanim = true;
 					block_spring.frame = 1;
-					block_spring.imgupdate = true;
+					block_spring.texupdate = true;
 				}
 			}
 			

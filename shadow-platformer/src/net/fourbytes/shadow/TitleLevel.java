@@ -17,9 +17,25 @@ public class TitleLevel extends MenuLevel {
 			Shadow.cam.firsttick = true;
 		}}));
 		items.add(new MenuItem(this, "Start Test", new Runnable(){public void run(){
-			Shadow.level = new Level("test");
+			//Shadow.level = new Level("test");
+
+			final LoadingLevel loadinglevel = new LoadingLevel();
+			loadinglevel.steps = new Runnable[] {
+					new Runnable() {
+						public void run() {
+							Shadow.level = new Level("test", loadinglevel);
+						}
+					}
+			};
+			Shadow.level = loadinglevel;
+			loadinglevel.start();
+
 			Shadow.cam.firsttick = true;
 		}}));
+        items.add(new MenuItem(this, "Multiplayer", new Runnable(){public void run(){
+            Shadow.level = new MultiplayerMenuLevel(TitleLevel.this);
+            Shadow.cam.firsttick = true;
+        }}));
 		items.add(new MenuItem(this, "Options", new Runnable(){public void run(){
 			Shadow.level = new OptionsMenuLevel(TitleLevel.this);
 			Shadow.cam.firsttick = true;
