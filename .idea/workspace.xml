@@ -24,190 +24,14 @@
     <bookmark url="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java" description="&#9;&#9;BackendHelper.setUp();" line="202" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="15eebb7c-6d1c-4ed7-8c18-f626a2aaa7b2" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/menus/AddServerMenuLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/AsyncThread.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Chunk.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/ChunkRenderer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/ClientLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataChatMessage.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataConnected.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataDisconnected.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataKick.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataMapUpdate.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataObject.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/DefaultParticleManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/DefaultSystemManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/DefaultWeatherSystem.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/src/net/fourbytes/shadow/utils/backend/DesktopBackend.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/ILightSystem.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/INextDay.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/IParticleManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/ISystem.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/ISystemManager.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/ITickable.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/ITimeDaySystem.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/IWeatherSystem.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/InitLoadingLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/gdx/IntLongMap.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/IntroLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/menus/JoinMenuLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/KryoNetClient.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/KryoNetServer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/KryoNetStream.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/LightSystemHelper.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/LoadingLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MultiplayerMenuLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/NetPlayer.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/OuyaPlayerInfo.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/OuyaSystemControllerMapping.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/ParticleType.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/PlayerInfo.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/particles/RainParticle.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/weathers/RainWeather.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/ServerLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/slimodk/SlimODK.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/slimodk/SlimODKController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/slimodk/SlimODKCursor.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/slimodk/SlimODKIAP.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/particles/SnowParticle.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/weathers/SnowWeather.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/SystemData.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TextInputLevel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/Weather.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/particles/WindParticle.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/weathers/WindWeather.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/assets/data/bodies.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/gfx/light.menu" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/dev/main.menu" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/map.smf" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi-v7a/libandroidgl20.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi/libandroidgl20.so" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android-sources.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/gdx-backend-android.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/gdx-controllers-android-sources.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/gdx-controllers-android.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-jglfw-natives.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-jglfw-sources.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-jglfw.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl-natives.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl-sources.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-backend-lwjgl.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-controllers-desktop-natives.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-controllers-desktop-sources.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-controllers-desktop.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-freetype-natives.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/libs/gdx-natives.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/libs/gdx-controllers-sources.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/libs/gdx-controllers.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/libs/gdx-freetype-sources.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/libs/gdx-freetype.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/libs/gdx-sources.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/libs/gdx.jar" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPlayerLight.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/PlayerLightParticle.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/WaterParticle.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/NetClient.java" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/NetServer.java" afterPath="" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/shadow-platformer/assets/shaders/noiseoffs.frag.glsl" afterPath="$PROJECT_DIR$/shadow-platformer/assets/shaders/blurlight.frag.glsl" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/shadow-platformer/assets/shaders/noiseoffs.vert.glsl" afterPath="$PROJECT_DIR$/shadow-platformer/assets/shaders/blurlight.vert.glsl" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/LightSystem.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/DefaultLightSystem.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TimeDaySystem.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/DefaultTimeDaySystem.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Particle.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Particle.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/GrassParticle.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/particles/GrassParticle.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/particles/PixelParticle.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/particles/PixelParticle.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/Saveable.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/IsSaveable.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi/libgdx-freetype.so" afterPath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi/libgdx-freetype.so" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi-v7a/libgdx-freetype.so" afterPath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi-v7a/libgdx-freetype.so" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi/libgdx.so" afterPath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi/libgdx.so" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi-v7a/libgdx.so" afterPath="$PROJECT_DIR$/shadow-platformer-android/libs/armeabi-v7a/libgdx.so" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/assets/data/logo.png" afterPath="$PROJECT_DIR$/shadow-platformer/assets/data/logo.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/assets/data/logo.xcf" afterPath="$PROJECT_DIR$/shadow-platformer/assets/data/logo.xcf" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/.classpath" afterPath="$PROJECT_DIR$/shadow-platformer/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/.classpath" afterPath="$PROJECT_DIR$/shadow-platformer-android/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/.classpath" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/.classpath" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/AMod.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/AMod.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/AndroidBackend.java" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/AndroidBackend.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/backend/Backend.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/backend/Backend.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/backend/BackendHelper.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/backend/BackendHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Background.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Background.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Block.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Block.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockButton.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockButton.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockClock.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockClock.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockDissolve.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockDissolve.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockFluid.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockFluid.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGlass.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGlass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrass.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrass.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrassTop.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockGrassTop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockImage.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockImage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLab.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLab.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLadder.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLadder.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLava.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockLava.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPoint.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPoint.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPush.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPush.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSignBG.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSignBG.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpring.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpring.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockSpringTop.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockTorch.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockTorch.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWater.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWater.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWire.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockWire.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Camera.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mods/shadow-module-gdxremote/src/net/fourbytes/shadow/mod/Config.java" afterPath="$PROJECT_DIR$/mods/shadow-module-gdxremote/src/net/fourbytes/shadow/mod/Config.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/ControllerHelper.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/ControllerHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/Converter.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/Converter.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/src/net/fourbytes/shadow/ConverterLauncher.java" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/src/net/fourbytes/shadow/ConverterLauncher.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Cursor.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Cursor.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/Data.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/Data.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/DataChunk.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/DataChunk.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataHandshake.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataHandshake.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Entity.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Entity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Fonts.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Fonts.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mods/shadow-module-gdxremote/src/com/angelde/gdxremote/shadow/GDXRemoteMod.java" afterPath="$PROJECT_DIR$/mods/shadow-module-gdxremote/src/com/angelde/gdxremote/shadow/GDXRemoteMod.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/GameObject.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/GameObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/Garbage.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/Garbage.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/genlevel/GenLevel.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/genlevel/GenLevel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/IModAPIStandard.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/IModAPIStandard.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/IModStandard.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/IModStandard.java" />
+    <list default="true" id="15eebb7c-6d1c-4ed7-8c18-f626a2aaa7b2" name="Default" comment="Random 4F branding; Dashing tweakes">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/assets/data/light_alpha.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/assets/data/logo_4f.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/shadow-platformer/assets/data/logo_lq.xcf" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/assets/data/light.png" afterPath="$PROJECT_DIR$/shadow-platformer/assets/data/light.png" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Images.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Images.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Input.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Input.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/src/net/fourbytes/shadow/utils/backend/JGLFWBackend.java" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/src/net/fourbytes/shadow/utils/backend/JGLFWBackend.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/src/net/fourbytes/shadow/utils/backend/LWJGLBackend.java" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/src/net/fourbytes/shadow/utils/backend/LWJGLBackend.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Layer.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Layer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Level.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Level.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/MainActivity.java" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/MapObject.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/MapObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/MathHelper.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/MathHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Mob.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Mob.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/ModAPIDefault.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/ModAPIDefault.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/ModManager.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/mod/ModManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/MultiObject.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/MultiObject.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/NetStream.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/NetStream.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/Options.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/Options.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/OuyaBackend.java" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/OuyaBackend.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/OuyaControllerNumerator.java" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/OuyaControllerNumerator.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/OuyaInput.java" afterPath="$PROJECT_DIR$/shadow-platformer-android/src/net/fourbytes/shadow/utils/backend/OuyaInput.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/PauseLevel.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/PauseLevel.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/IntroLevel.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/IntroLevel.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/ScreenshotUtil.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/ScreenshotUtil.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/SetupControllerLevel.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/SetupControllerLevel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/ShaderHelper.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/utils/ShaderHelper.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/ShadowMap.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/ShadowMap.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java" afterPath="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/gfx/advanced.menu" afterPath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/gfx/advanced.menu" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/gfx/blur.menu" afterPath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/gfx/blur.menu" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/debug.sh" afterPath="$PROJECT_DIR$/debug.sh" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/assets/shaders/default.frag.glsl" afterPath="$PROJECT_DIR$/shadow-platformer/assets/shaders/default.frag.glsl" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/main.menu" afterPath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/main.menu" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/gfx/main.menu" afterPath="$PROJECT_DIR$/shadow-platformer/assets/menus/options/gfx/main.menu" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/project.properties" afterPath="$PROJECT_DIR$/shadow-platformer-android/project.properties" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/mods/shadow-module-gdxremote-android/shadow-module-gdxremote-android.iml" afterPath="$PROJECT_DIR$/mods/shadow-module-gdxremote-android/shadow-module-gdxremote-android.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/shadow-platformer-android.eml" afterPath="$PROJECT_DIR$/shadow-platformer-android/shadow-platformer-android.eml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-android/shadow-platformer-android.iml" afterPath="$PROJECT_DIR$/shadow-platformer-android/shadow-platformer-android.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer-desktop/shadow-platformer-desktop.eml" afterPath="$PROJECT_DIR$/shadow-platformer-desktop/shadow-platformer-desktop.eml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/shadow-platformer/shadow-platformer.eml" afterPath="$PROJECT_DIR$/shadow-platformer/shadow-platformer.eml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="shadow.iws" />
@@ -231,61 +55,73 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="ServerLevel.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/ServerLevel.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="1692" max-vertical-offset="2862">
-              <caret line="94" column="33" selection-start-line="94" selection-start-column="33" selection-end-line="94" selection-end-column="33" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BlockPush.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/blocks/BlockPush.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="3528" max-vertical-offset="3762">
-              <caret line="196" column="13" selection-start-line="196" selection-start-column="13" selection-end-line="196" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ShadowMap.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/map/ShadowMap.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4698" max-vertical-offset="13878">
-              <caret line="261" column="54" selection-start-line="261" selection-start-column="54" selection-end-line="261" selection-end-column="54" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="NetStream.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/NetStream.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="666" max-vertical-offset="2250">
-              <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Cursor.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Cursor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="4044" max-vertical-offset="5472">
+            <state vertical-scroll-proportion="0.0" vertical-offset="4680" max-vertical-offset="5832">
               <caret line="260" column="13" selection-start-line="260" selection-start-column="13" selection-end-line="260" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Player.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="Player.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3008596" vertical-offset="2253" max-vertical-offset="3960">
-              <caret line="138" column="32" selection-start-line="138" selection-start-column="32" selection-end-line="138" selection-end-column="32" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="2574" max-vertical-offset="4140">
+              <caret line="143" column="13" selection-start-line="143" selection-start-column="13" selection-end-line="143" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Images.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Images.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1332" max-vertical-offset="4302">
+              <caret line="74" column="44" selection-start-line="74" selection-start-column="44" selection-end-line="74" selection-end-column="44" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TitleLevel.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.6125828" vertical-offset="242" max-vertical-offset="918">
+              <caret line="41" column="13" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IntroLevel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/IntroLevel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1073" max-vertical-offset="1998">
+              <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="DefaultLightSystem.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/DefaultLightSystem.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="1512" max-vertical-offset="2646">
+              <caret line="84" column="12" selection-start-line="84" selection-start-column="12" selection-end-line="84" selection-end-column="12" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="MenuLevel.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2700" max-vertical-offset="5904">
+              <caret line="150" column="20" selection-start-line="150" selection-start-column="20" selection-end-line="150" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -294,18 +130,8 @@
       <file leaf-file-name="Entity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="212" max-vertical-offset="3438">
+            <state vertical-scroll-proportion="0.0" vertical-offset="486" max-vertical-offset="3564">
               <caret line="27" column="18" selection-start-line="27" selection-start-column="18" selection-end-line="27" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DataMapUpdate.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/DataMapUpdate.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="82" max-vertical-offset="504">
-              <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
               <folding />
             </state>
           </provider>
@@ -314,7 +140,7 @@
       <file leaf-file-name="GameObject.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/GameObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="2336" max-vertical-offset="4302">
+            <state vertical-scroll-proportion="0.0" vertical-offset="2772" max-vertical-offset="4626">
               <caret line="154" column="26" selection-start-line="154" selection-start-column="26" selection-end-line="154" selection-end-column="26" />
               <folding />
             </state>
@@ -334,9 +160,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/KryoNetStream.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/KryoNetClient.java" />
-        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/GDXNetStream.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/GDXNetServer.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/GDXNetClient.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Shadow.java" />
@@ -384,7 +207,10 @@
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/NetStream.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Entity.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Cursor.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Images.java" />
         <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/IntroLevel.java" />
+        <option value="$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java" />
       </list>
     </option>
   </component>
@@ -489,7 +315,61 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="systems" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow-platformer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="entities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow-platformer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="shadow-platformer" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -600,19 +480,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method />
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -638,6 +505,19 @@
       <envs />
       <properties />
       <listeners />
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -751,12 +631,16 @@
       <created>1400966889533</created>
       <updated>1400966889533</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="I forgot what I've changed since the last commit.">
+      <created>1417797291022</created>
+      <updated>1417797291022</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="-3" width="1366" height="771" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884902" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -769,20 +653,20 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32884902" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2706767" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.37142858" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2569546" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.38345864" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.2569546" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.30225563" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32781956" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2706767" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="UnknownFeatures">
@@ -829,41 +713,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/Weather.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="378">
-          <caret line="14" column="32" selection-start-line="14" selection-start-column="32" selection-end-line="14" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/weathers/RainWeather.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="317" max-vertical-offset="828">
-          <caret line="34" column="38" selection-start-line="34" selection-start-column="38" selection-end-line="34" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/SystemData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="414" max-vertical-offset="1152">
-          <caret line="27" column="54" selection-start-line="27" selection-start-column="54" selection-end-line="27" selection-end-column="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/DefaultWeatherSystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1414" max-vertical-offset="1854">
-          <caret line="57" column="75" selection-start-line="57" selection-start-column="75" selection-end-line="57" selection-end-column="75" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/network/Data.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="558">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/ISystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.38709676" vertical-offset="0" max-vertical-offset="372">
@@ -948,13 +797,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="918">
-          <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/libjars/libgdx/sources/gdx-sources.jar!/com/badlogic/gdx/utils/IntMap.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.33333334" vertical-offset="10362" max-vertical-offset="13896">
@@ -966,13 +808,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.45614034" vertical-offset="2874" max-vertical-offset="5130">
           <caret line="162" column="37" selection-start-line="162" selection-start-column="37" selection-end-line="162" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1548" max-vertical-offset="5868">
-          <caret line="93" column="41" selection-start-line="93" selection-start-column="41" selection-end-line="93" selection-end-column="41" />
         </state>
       </provider>
     </entry>
@@ -1072,7 +907,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1211" max-vertical-offset="2340">
           <caret line="75" column="30" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1080,7 +914,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1458">
           <caret line="12" column="15" selection-start-line="12" selection-start-column="15" selection-end-line="12" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1088,7 +921,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="6084">
           <caret line="25" column="29" selection-start-line="25" selection-start-column="29" selection-end-line="25" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1110,7 +942,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="1234" max-vertical-offset="2574">
           <caret line="94" column="33" selection-start-line="94" selection-start-column="33" selection-end-line="94" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1118,7 +949,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="2597" max-vertical-offset="3528">
           <caret line="196" column="13" selection-start-line="196" selection-start-column="13" selection-end-line="196" selection-end-column="13" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1126,7 +956,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="82" max-vertical-offset="504">
           <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1141,7 +970,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="4176" max-vertical-offset="13320">
           <caret line="261" column="54" selection-start-line="261" selection-start-column="54" selection-end-line="261" selection-end-column="54" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1149,23 +977,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="390" max-vertical-offset="2106">
           <caret line="37" column="36" selection-start-line="37" selection-start-column="36" selection-end-line="37" selection-end-column="36" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$USER_HOME$/libjars/libgdx/sources/gdx-sources.jar!/com/badlogic/gdx/math/MathUtils.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33333334" vertical-offset="2192" max-vertical-offset="4320">
-          <caret line="160" column="24" selection-start-line="160" selection-start-column="24" selection-end-line="160" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/GameObject.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2336" max-vertical-offset="4302">
-          <caret line="154" column="26" selection-start-line="154" selection-start-column="26" selection-end-line="154" selection-end-column="26" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1181,7 +992,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-3.5238094" vertical-offset="1490" max-vertical-offset="9648">
           <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1193,10 +1003,86 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/Images.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="702" max-vertical-offset="3816">
+          <caret line="74" column="44" selection-start-line="74" selection-start-column="44" selection-end-line="74" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/libjars/libgdx/sources/gdx-sources.jar!/com/badlogic/gdx/scenes/scene2d/Actor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="6.8230767" vertical-offset="4269" max-vertical-offset="12078">
+          <caret line="464" column="29" selection-start-line="464" selection-start-column="29" selection-end-line="464" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/libjars/libgdx/sources/gdx-sources.jar!/com/badlogic/gdx/scenes/scene2d/ui/Image.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="943" max-vertical-offset="2862">
+          <caret line="84" column="12" selection-start-line="84" selection-start-column="12" selection-end-line="84" selection-end-column="12" />
+          <folding>
+            <element signature="n#!!doc" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/entities/Player.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3008596" vertical-offset="2253" max-vertical-offset="3960">
-          <caret line="138" column="32" selection-start-line="138" selection-start-column="32" selection-end-line="138" selection-end-column="32" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="2163" max-vertical-offset="3978">
+          <caret line="143" column="13" selection-start-line="143" selection-start-column="13" selection-end-line="143" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/MenuLevel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2174" max-vertical-offset="5508">
+          <caret line="150" column="20" selection-start-line="150" selection-start-column="20" selection-end-line="150" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$USER_HOME$/libjars/libgdx/sources/gdx-sources.jar!/com/badlogic/gdx/math/MathUtils.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="140" max-vertical-offset="4284">
+          <caret line="29" column="30" selection-start-line="29" selection-start-column="30" selection-end-line="29" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/systems/DefaultLightSystem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1026" max-vertical-offset="2412">
+          <caret line="84" column="12" selection-start-line="84" selection-start-column="12" selection-end-line="84" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/GameObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2336" max-vertical-offset="4302">
+          <caret line="154" column="26" selection-start-line="154" selection-start-column="26" selection-end-line="154" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/IntroLevel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1073" max-vertical-offset="1998">
+          <caret line="68" column="44" selection-start-line="68" selection-start-column="44" selection-end-line="68" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/shadow-platformer/src/net/fourbytes/shadow/TitleLevel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6125828" vertical-offset="242" max-vertical-offset="918">
+          <caret line="41" column="13" selection-start-line="41" selection-start-column="13" selection-end-line="41" selection-end-column="13" />
           <folding />
         </state>
       </provider>

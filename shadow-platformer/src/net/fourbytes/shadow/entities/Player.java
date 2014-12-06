@@ -138,9 +138,10 @@ public class Player extends Entity implements Input.KeyListener {
 		
 		if (key == Input.down) {
 			for (Particle pp : pixelify()) {
-                pp.pos.x += MathUtils.random(facingLeft ? -speedBoost : speedBoost)
-                        * MathUtils.random() * MathUtils.random();
-			}
+                pp.pos.x += MathUtils.random(facingLeft ? -speedBoost : speedBoost) * MathUtils.random();
+                pp.movement.x = MathUtils.random(facingLeft ? -0.5f : 0.5f);
+                pp.objgravity = 0f;
+ 			}
             pos.add(facingLeft ? -speedBoost : speedBoost, 0f);
 			//health -= 0.1f;
 			//hurt(null, 0.1f);

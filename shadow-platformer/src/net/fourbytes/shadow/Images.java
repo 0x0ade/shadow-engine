@@ -67,6 +67,7 @@ public final class Images {
 		addImage("white", "data/white.png");
 
 		addImage("logo", "data/logo.png");
+        addImage("logo_4f", "data/logo_4f.png");
 	}
 	
 	public static void loadImages() {
