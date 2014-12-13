@@ -118,9 +118,7 @@ public class ShadowMap extends Data implements Json.Serializable {
 			//System.out.println("tid: "+tid);
 			Block block = BlockType.getInstance(subtype, x, y, layer);
 			block.subtype = subtype;
-			if (block.getTexture(block.imgIDs[0]) != null) {
-				obj = block;
-			}
+			obj = block;
         } else if ("particle".equals(type)) {
             Color color = null;
             if (subtype.contains(".")) {

@@ -29,6 +29,7 @@ public class DefaultSystemManager implements ISystemManager {
 		init("LightSystem");
 		init("WeatherSystem");
 		init("TimeDaySystem");
+        init("MusicSystem");
 		ModManager.initLevelSystems(level);
 	}
 

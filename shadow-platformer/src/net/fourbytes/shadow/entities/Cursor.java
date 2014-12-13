@@ -16,6 +16,7 @@ import net.fourbytes.shadow.network.ClientLevel;
 import net.fourbytes.shadow.network.DataMapUpdate;
 import net.fourbytes.shadow.network.ServerLevel;
 import net.fourbytes.shadow.systems.IParticleManager;
+import net.fourbytes.shadow.systems.ITimeDaySystem;
 import net.fourbytes.shadow.utils.Garbage;
 
 public class Cursor extends Entity {
@@ -313,6 +314,10 @@ public class Cursor extends Entity {
 	}
 
 	public void scroll(int amount) {
+        ITimeDaySystem time = layer.level.systems.get(ITimeDaySystem.class);
+        if (time != null) {
+            time.setTime(time.getTime() + amount);
+        }
 	}
 	
 }

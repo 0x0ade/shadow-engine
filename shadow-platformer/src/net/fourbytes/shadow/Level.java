@@ -3,7 +3,11 @@ package net.fourbytes.shadow;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer.Cell;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -17,9 +21,13 @@ import net.fourbytes.shadow.blocks.BlockType;
 import net.fourbytes.shadow.entities.Cursor;
 import net.fourbytes.shadow.entities.Player;
 import net.fourbytes.shadow.map.IsSaveable;
+import net.fourbytes.shadow.map.MapObject;
 import net.fourbytes.shadow.map.ShadowMap;
 import net.fourbytes.shadow.systems.DefaultSystemManager;
 import net.fourbytes.shadow.systems.ISystemManager;
+
+import java.lang.reflect.Field;
+import java.util.Iterator;
 
 public class Level {
 
@@ -100,10 +108,13 @@ public class Level {
 		return systems;
 	}
 
-	public void fillLayer(int key) {
-		if (!layers.containsKey(key)) {
-			layers.put(key, new Layer(this));
+	public Layer fillLayer(int key) {
+        Layer layer = layers.get(key);
+		if (layer == null) {
+            layer = new Layer(this);
+			layers.put(key, layer);
 		}
+        return layer;
 	}
 
 	public void initTilED(TiledMap map) {
@@ -118,27 +129,49 @@ public class Level {
 		map.dispose();
 		//tiledw = map.width;
 		//tiledh = map.height;
+        int gridWidth = map.getProperties().get("tilewidth", Integer.class);
+        int gridHeight = map.getProperties().get("tileheight", Integer.class);
 		nextlvl = (String) map.getProperties().get("nextlvl");
-		for (int ln = 0; ln < map.getLayers().getCount(); ln++) {
-			Layer ll = new Layer(this);
-			layers.put(ln, ll);
-			TiledMapTileLayer l = (TiledMapTileLayer) map.getLayers().get(ln);
-			for (int x = 0; x < l.getWidth(); x++) {
-				for (int y = 0; y < l.getHeight(); y++) {
-					Cell cell = l.getCell(x, y);
-					if (cell != null && cell.getTile() != null) {
-						GameObject obj = getGameObject(ln, x, l.getHeight()-y, cell);
-						ll.add(obj);
-					}
-				}
-			}
+        int pln = 0;
+		for (int li = 0; li < map.getLayers().getCount(); li++) {
+			MapLayer l = map.getLayers().get(li);
+            int ln = li;
+            if (l.getProperties().containsKey("layer")) {
+                ln = pln + Integer.parseInt(l.getProperties().get("layer", String.class));
+            }
+            Layer ll = fillLayer(ln);
+            if (l instanceof TiledMapTileLayer) {
+                TiledMapTileLayer tl = (TiledMapTileLayer) l;
+                for (int x = 0; x < tl.getWidth(); x++) {
+                    for (int y = 0; y < tl.getHeight(); y++) {
+                        Cell cell = tl.getCell(x, y);
+                        if (cell != null && cell.getTile() != null) {
+                            GameObject go = getGameObject(ln, x, tl.getHeight() - y, cell);
+                            if (go instanceof Player) {
+                                pln = ln;
+                            }
+                            ll.add(go);
+                        }
+                    }
+                }
+            }
+            MapObjects objs = l.getObjects();
+            if (objs != null) {
+                for (int i = 0; i < objs.getCount(); i++) {
+                    com.badlogic.gdx.maps.MapObject mo = objs.get(i);
+                    GameObject go = getGameObject(ln,
+                            (int) (mo.getProperties().get("x", Float.class) / gridWidth),
+                            map.getProperties().get("height", Integer.class) - (int) (mo.getProperties().get("y", Float.class) / gridHeight), mo);
+                    ll.add(go);
+                }
+            }
 		}
 	}
 	
 	protected GameObject getGameObject(int ln, int x, int y, Cell cell) {
 		int tid = cell.getTile().getId();
-		String type = (String) cell.getTile().getProperties().get("type");
-		String subtype = (String) cell.getTile().getProperties().get("subtype");
+		String type = cell.getTile().getProperties().get("type", String.class);
+		String subtype = cell.getTile().getProperties().get("subtype", String.class);
 		
 		GameObject obj = ShadowMap.convert(x, y, layers.get(ln), tid, type, subtype);
 		
@@ -148,6 +181,52 @@ public class Level {
 		
 		return obj;
 	}
+
+    protected GameObject getGameObject(int ln, int x, int y, com.badlogic.gdx.maps.MapObject mo) {
+        String subtype = mo.getProperties().get("type", String.class);
+
+        GameObject obj = ShadowMap.convert(x, y, layers.get(ln), -1, null, subtype);
+
+        if (obj instanceof Player) {
+            player = (Player) obj;
+        }
+
+        Class<? extends GameObject> clazz = obj.getClass();
+
+        Iterator<String> keys = mo.getProperties().getKeys();
+        String key;
+        while (keys.hasNext()) {
+            key = keys.next();
+            try {
+                Field field = clazz.getField(key);
+                field.setAccessible(true);
+                Object value = mo.getProperties().get(key);
+                Class type = field.getType();
+                if (type.equals(byte.class)) {
+                    field.setByte(obj, Byte.parseByte((String) value));
+                } else if (type.equals(short.class)) {
+                    field.setShort(obj, Short.parseShort((String) value));
+                } else if (type.equals(int.class)) {
+                    field.setInt(obj, Integer.parseInt((String) value));
+                } else if (type.equals(long.class)) {
+                    field.setLong(obj, Long.parseLong((String) value));
+                } else if (type.equals(float.class)) {
+                    field.setFloat(obj, Float.parseFloat((String) value));
+                } else if (type.equals(double.class)) {
+                    field.setDouble(obj, Double.parseDouble((String) value));
+                } else if (type.equals(boolean.class)) {
+                    field.setBoolean(obj, Boolean.parseBoolean((String) value));
+                } else if (type.equals(char.class)) {
+                    field.setChar(obj, ((String) value).charAt(0));
+                } else {
+                    field.set(obj, value);
+                }
+            } catch (Exception e) {
+            }
+        }
+
+        return obj;
+    }
 
 	public void tick(float delta) {
 		Rectangle vp = Shadow.cam.camrec;

@@ -150,6 +150,7 @@ public class Input {
 	public static Key down = new Key("Down", new int[] {Keys.DOWN, Keys.S});
 	public static Key left = new Key("Left", new int[] {Keys.LEFT, Keys.A});
 	public static Key right = new Key("Right", new int[] {Keys.RIGHT, Keys.D});
+    public static Key dash = new Key("Dash", new int[] {Keys.SHIFT_RIGHT, Keys.Q, Keys.E});
 	
 	public static Key pause = new Key("Pause", new int[] {Keys.ESCAPE});
 	public static Key enter = new Key("Confirm", new int[] {Keys.ENTER});

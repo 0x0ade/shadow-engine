@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="100" height="60" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="100" height="60" tilewidth="16" tileheight="16" nextobjectid="14">
  <properties>
   <property name="bg" value="bg_grey 0 1 0"/>
   <property name="hasvoid" value="false"/>
@@ -292,6 +292,23 @@
    H4sIAAAAAAAAA+2ay3LbMAxF6Ti1V7G87KJdZNXx//9gw4k5RWEABCnqQfGeGUwsxYw094gPSQkBAAAAAAAAAACYx4+tT0DhntkG6zKqj9PWJ6Awoo8Tqb0xmo/k4SPMd3IP7fMaycfJqBouz2rJSD4eX/Uu1MPRlvaFi1ASvyrOcSQfEZp/8uNBcpBzAh95eP4eHzHra3jN/yrsp6zp46R8PgrnZ2nZX4V93An1cTcqsO9Z25TYv+kc+Pksus8zFq/NubLeSEnjU85J8mGtI2ibeMyf4d91cHtu39j3cmsS63hb+tGyleqS2a/NGdxF2o7Q/uFx8kbONW5P4dvFFOb7WAPJtdcBzSAov+ceONZ8EqnxQY8/kar1sSaecUbK2+LCPufuL7T+EuHzuWfMypXnHmqrZw9avrnMl8CaPzilTmi/s3zQ+XyPrO3Fu961fEhrg7TfcgEHeUp8JCfaeq1HF3vDuh8sHbPgYj6e+3PLSeorcNGGGh/eAuV4n1/BxTqUPk+Ei2Wpeb4bgYtlqPURgYf2zPHRoj34H/jYF/CxL1r50J5jz6HV3+mJVj6k9zcpyz+FJb2XGIWW45XlxONFez80Eq3nD+1dJx/HNBfSe7qRWGI+z/0fQMk70yPxm5SG5sPT1mqfc6LVkfFkeiNV2jZS6yPyEPYdGStT6mEKr07m+oiM2Ackbs6aWHnb8bIY0Qe9hrWsl6wcufn8SPDrdE0PHheJ0rVWr/BspLy2dkE5+jrLyl76TknWS/iI1Ljoqe/Q+djrQ9vPc27tIlHaL3qaezx5Teyn1tZznBbUjFE9jWm5TK0cS3Ju5SNSk28PLhK1WbXMuITaa70XHz3S0/U+AvCxL+ACAADAHvkLUu3dWMBdAAA=
   </data>
  </layer>
+ <objectgroup name="layer0-obj" opacity="0.5">
+  <properties>
+   <property name="layer" value="0"/>
+  </properties>
+  <object id="7" type="BlockMusic" x="304" y="288" width="16" height="16">
+   <properties>
+    <property name="radius" value="48"/>
+    <property name="slot" value="2"/>
+   </properties>
+  </object>
+  <object id="9" type="BlockMusic" x="1200" y="704" width="16" height="16">
+   <properties>
+    <property name="radius" value="48"/>
+    <property name="slot" value="3"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer name="layer1" width="100" height="60" opacity="0.79">
   <properties>
    <property name="solid" value="false"/>

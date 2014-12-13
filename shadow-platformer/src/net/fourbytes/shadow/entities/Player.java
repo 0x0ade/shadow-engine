@@ -136,7 +136,7 @@ public class Player extends Entity implements Input.KeyListener {
 			canJump--;
 		}
 		
-		if (key == Input.down) {
+		if (key == Input.dash) {
 			for (Particle pp : pixelify()) {
                 pp.pos.x += MathUtils.random(facingLeft ? -speedBoost : speedBoost) * MathUtils.random();
                 pp.movement.x = MathUtils.random(facingLeft ? -0.5f : 0.5f);

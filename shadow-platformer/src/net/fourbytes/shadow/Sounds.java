@@ -2,6 +2,7 @@ package net.fourbytes.shadow;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ObjectMap;
@@ -176,11 +177,10 @@ public class Sounds {
 		float disty = pos.y - origpos.y;
 		float distsq = distx*distx + disty * disty;
 
-		float vol = distsq / maxdistsq;
-		if (vol > 1f) {
-			vol = 1f;
-		}
-		vol = 1f - vol;
+        float vol = 0f;
+        if (distsq <= maxdistsq) {
+            vol = 0.5f * MathUtils.cos(distsq * (MathUtils.PI / maxdistsq)) + 0.5f;
+        }
 
 		return vol;
 	}

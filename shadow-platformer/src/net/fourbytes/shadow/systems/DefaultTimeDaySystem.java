@@ -157,6 +157,13 @@ public class DefaultTimeDaySystem implements ITimeDaySystem {
 
     @Override
     public void setTime(float time) {
+        if (time > fullday) {
+            time -= fullday;
+            day++;
+        } else if (time < 0f) {
+            time += fullday;
+            day--;
+        }
         this.time = time;
     }
 
